@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "D:\\TPKSource_old\\WebMVC\\WebMVC\\WebMVC.csproj": {}
+    "D:\\git2\\webmvc\\WebMVC.csproj": {}
   },
   "projects": {
-    "D:\\TPKSource_old\\WebMVC\\WebMVC\\WebMVC.csproj": {
+    "D:\\git2\\webmvc\\WebMVC.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\TPKSource_old\\WebMVC\\WebMVC\\WebMVC.csproj",
+        "projectUniqueName": "D:\\git2\\webmvc\\WebMVC.csproj",
         "projectName": "WebMVC",
-        "projectPath": "D:\\TPKSource_old\\WebMVC\\WebMVC\\WebMVC.csproj",
+        "projectPath": "D:\\git2\\webmvc\\WebMVC.csproj",
         "packagesPath": "C:\\Users\\Admin\\.nuget\\packages\\",
-        "outputPath": "D:\\TPKSource_old\\WebMVC\\WebMVC\\obj\\",
+        "outputPath": "D:\\git2\\webmvc\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\Admin\\AppData\\Roaming\\NuGet\\NuGet.Config"
@@ -118,11 +118,6 @@
             }
           },
           "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.413/PortableRuntimeIdentifierGraph.json"
-        }
-      },
-      "runtimes": {
-        "win-x64": {
-          "#import": []
         }
       }
     }

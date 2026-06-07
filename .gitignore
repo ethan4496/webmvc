@@ -1,0 +1,14 @@
+# Build results
+[Dd]ebug/
+[Rr]elease/
+x64/
+x86/
+
+# .NET
+bin/
+obj/
+
+# Visual Studio
+.vs/
+*.user
+*.suo
