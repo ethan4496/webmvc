@@ -1,0 +1,479 @@
+﻿@using WebMVC.Entities
+@using WebMVC.Interfaces
+@using WebMVC.Models.Responses
+@using WebMVC.Ultilities.Enums
+@model TransportationResponse
+@inject IHttpContextService _httpContextService;
+@{
+    var loggedModel = _httpContextService.GetLoggedModel();
+    var imageExt = new[] { ".jpg", ".jpeg", ".png", ".gif", ".webp" };
+}
+@{
+    ViewData["Title"] = "Chi tiết đơn";
+}
+<div class="container-fluid mt-2">
+    <!-- Thông tin bao hàng -->
+    <div class="row ">
+        <div class="card col-md-4">
+            <div class="card-header">
+                <strong>Chi tiết đơn #@Model.Id</strong>
+            </div>
+            <div class="card-body">
+                <div id="bag-info-form">
+                    <div class="row my-2">
+                        <div class="col-md-4">Mã vận đơn: </div>
+                        <div class="col-md-8">
+                            <input value="@Model.Barcode" type="text" class="form-control" id="barCode" name="barCode" readonly>
+                        </div>
+                    </div>
+                    <div class="row my-2">
+                        <div class="col-md-4">Username: </div>
+                        <div class="col-md-8">
+                            <input value="@Model.AccountName" type="text" class="form-control" id="username" name="username">
+                        </div>
+                    </div>
+                    <div class="row my-2">
+                        <div class="col-md-12">
+                            <textarea class="form-control" rows="4" id="userNote">@Model.UserNote</textarea>
+                        </div>
+                    </div>
+                    <div class="row my-2">
+                        <div class="col-md-4">Trạng thái: </div>
+                        <div class="col-md-8">
+                            <select id="status" class="form-select" name="Status">
+                                @foreach (var status in Enum.GetValues(typeof(ETransportationStatus)).Cast<ETransportationStatus>().Where(s => s != ETransportationStatus.Cancel))
+                                {
+                                    var statusValue = (int)status;
+                                    var statusName = ETransportationStatusName.GetStatusName(statusValue);
+                                    if (statusValue == Model.Status)
+                                    {
+                                        <option value="@statusValue" selected>
+                                            @statusName
+                                        </option>
+                                    }
+                                    else
+                                    {
+                                        <option value="@statusValue">
+                                            @statusName
+                                        </option>
+                                    }
+                                }
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row my-2">
+                        <div class="col-md-4">Kho TQ: </div>
+                        <div class="col-md-8">
+                            <select class="form-select" id="fromSelect" style="width:100%"></select>
+                            <span class="text-danger" id="fromSelectError"></span>
+                        </div>
+                    </div>
+                    <div class="row my-2">
+                        <div class="col-md-4">Kho gửi: </div>
+                        <div class="col-md-8">
+                            <select class="form-select" id="toSelect" style="width:100%"></select>
+                            <span class="text-danger" id="toSelectError"></span>
+                        </div>
+                    </div>
+                    <div class="row my-2">
+                        <div class="col-md-4">Phương thức vận chuyển: </div>
+                        <div class="col-md-8">
+                            <select class="form-select" id="shipSelect" style="width:100%"></select>
+                            <span class="text-danger" id="shipSelectError"></span>
+                        </div>
+                    </div>
+                    <div class="row my-2">
+                        <div class="col-md-4">Số kiện: </div>
+                        <div class="col-md-8">
+                            <input value="@Model.Quantity" type="number" class="form-control" id="totalItems" min="1">
+                        </div>
+                    </div>
+                    <div class="row my-2">
+                        <div class="col-md-4">Tổng cân: </div>
+                        <div class="col-md-8">
+                            <input value="@Model.Weight" type="number" class="form-control" id="totalWeight">
+                        </div>
+                    </div>
+                    <div class="row my-2">
+                        <div class="col-md-4">Tổng khối: </div>
+                        <div class="col-md-8">
+                            <input value="@Model.Volume" type="number" class="form-control" id="totalVolume">
+                        </div>
+                    </div>
+
+                    <div class="row my-2">
+                        <div class="col-md-4">Tỷ giá: </div>
+                        <div class="col-md-8">
+                            <input value="@Model.Currency" class="form-control input-money" id="currency">
+                        </div>
+                    </div>
+
+                    <div class="row my-2">
+                        <div class="col-md-4">Đơn giá cân: </div>
+                        <div class="col-md-8">
+                            <input value="@Model.UnitWeight" class="form-control input-money" id="unitWeight">
+                        </div>
+                    </div>
+                    <div class="row my-2">
+                        <div class="col-md-4">Đơn giá khối: </div>
+                        <div class="col-md-8">
+                            <input value="@Model.UnitVolume" class="form-control input-money" id="unitVolume">
+                        </div>
+                    </div>
+                    <div class="row my-2">
+                        <div class="col-md-4">Phụ phí: </div>
+                        <div class="col-md-8">
+                            <input value="@Model.Surcharge" class="form-control" id="surcharge">
+                        </div>
+                    </div>
+                    <div class="row my-2">
+                        <div class="col-md-4">Phụ phí (VND): </div>
+                        <div class="col-md-8">
+                            <input value="@Model.SurchargeVND" class="form-control input-money" id="surchargeVND" readonly>
+                        </div>
+                    </div>
+                    <div class="row my-2">
+                        <div class="col-md-4">Phí vận chuyển: </div>
+                        <div class="col-md-8">
+                            <input value="@Model.PriceShipping" class="form-control input-money" id="priceShipping">
+                        </div>
+                    </div>
+                    <div class="row my-2">
+                        <div class="col-md-4">Tổng tiền: </div>
+                        <div class="col-md-8">
+                            <input value="@Model.TotalPriceVND" class="form-control input-money" id="totalPriceVND">
+                        </div>
+                    </div>
+                    @if(Model.ShipId != 5){
+                    <div class="row my-2">
+                        <div class="col-md-4">File SP: </div>
+                        <div class="col-md-8">
+                            @if (!string.IsNullOrEmpty(Model.UserUploadImage))
+                            {
+                                var images = Model.UserUploadImage.Split("|");
+                                foreach (var image in images)
+                                {
+                                    var ext = System.IO.Path.GetExtension(image).ToLower();
+                                    var isImage = imageExt.Contains(ext);
+
+                                    if (isImage)
+                                    {
+                                        <img src="@image"
+                                             alt=""
+                                             style="max-width: 5rem; border-radius: 8px; cursor: pointer;"
+                                             onclick="window.open(this.src)">
+                                    }
+                                    else
+                                    {
+                                        var fileName = System.IO.Path.GetFileName(image);
+                                        <a href="@image" download="@fileName" style="display:block;" class="btn btn-sm btn-secondary">
+                                            Tải file
+                                        </a>
+                                    }
+                                }
+                            }
+                            @if (loggedModel.RoleId == (int)ERoleId.Admin && loggedModel.IsStaff == 1)
+                            {
+                                <input type="file" class="form-control" id="image" multiple required>
+                            }
+                        </div>
+                    </div>
+                    }
+                    <div class="row my-2">
+                        <div class="col-md-4"></div>
+                        <div class="col-md-8">
+                            <button type="button" class="btn btn-primary w-100" id="updateButton">Cập nhật</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-8">
+            @if (Model.ShipId == 5)
+            {
+                <div class="card mb-4">
+                    <div class="card-header">
+                        Thông tin khách hàng khai báo
+                    </div>
+                    <div class="card-body">
+                        <div class="table-content">
+                            <table class="table table-bordered align-middle text-start">
+                                <thead>
+                                    <tr>
+                                        <th>Số lượng</th>
+                                        <th>Số cân</th>
+                                        <th>Số khối</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>@Model.UserUploadQuantity</td>
+                                        <td>@Model.UserUploadWeight kg</td>
+                                        <td>@Model.UserUploadVolume m3</td>
+                                    </tr>
+                                </tbody>
+                                <thead>
+                                    <tr>
+                                        <th>Khai báo chi tiết</th>
+                                        <th>
+                                            <button class="btn btn-success" onclick="exportList()">Xuất Excel</button>
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <thead>
+                                    <tr>
+                                        <th>Tên hàng</th>
+                                        <th>Số lượng</th>
+                                        <th>Kích thước</th>
+                                        <th>Công suất điện áp,<br /> chất liệu</th>
+                                        <th>File SP</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @if (Model.Products != null && Model.Products.Any())
+                                    {
+                                        foreach (var item in Model.Products)
+                                        {
+                                            <tr>
+                                                <td>@item.Name</td>
+                                                <td>@item.Quantity</td>
+                                                <td>@item.Dimensions</td>
+                                                <td>@item.OtherInfor</td>
+                                                <td class="text-center">
+                                                    @if (!string.IsNullOrEmpty(item.Image))
+                                                    {
+                                                        var ext = System.IO.Path.GetExtension(@item.Image).ToLower();
+                                                        var isImage = imageExt.Contains(ext);
+                                                        if (isImage)
+                                                        {
+                                                            <img src="@item.Image" alt="" style="max-width: 5rem; border-radius: 8px;cursor: pointer;" onclick="window.open(this.src)">
+                                                        }
+                                                        else
+                                                        {
+                                                            var fileName = System.IO.Path.GetFileName(@item.Image);
+                                                            <a href="@item.Image" download="@fileName" class="btn btn-sm btn-secondary">
+                                                                Tải file
+                                                            </a>
+                                                        }
+                                                    }
+                                                </td>
+                                            </tr>
+                                        }
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            }
+
+            <div class="card ">
+                <div class="card-header">
+                    Lịch sử
+                </div>
+                <div class="card-body">
+                    <div class="table-content" id="history-table-content">
+                        <table class="table table-hover table-bordered">
+                            <thead>
+                                <tr>
+                                    <th class="text-center">Thời gian</th>
+                                    <th class="text-center">Nội dung</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @if (Model.TransportationHistories != null && Model.TransportationHistories.Any())
+                                {
+                                    @for (int i = 0; i < Model.TransportationHistories.Count; i++)
+                                    {
+                                        <tr>
+                                            <td class="text-center">@Model.TransportationHistories[i].Created.ToString("dd/MM/yyyy HH:mm")</td>
+                                            <td class="td-break-space">@Model.TransportationHistories[i].Content</td>
+                                        </tr>
+                                    }
+                                }
+                                else
+                                {
+                                    <tr>
+                                        <td colspan="3" class="text-center">Không có lịch sử</td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+<style>
+    /* Đảm bảo cả hai card có cùng chiều cao */
+    .equal-height {
+        display: flex;
+    }
+    /* Đặt chiều cao cố định và thêm thanh cuộn cho lịch sử */
+    #history-table-content {
+        max-height: 300px; /* Thay đổi giá trị này cho phù hợp với chiều cao bạn muốn */
+        overflow-y: auto;
+    }
+</style>
+@section Scripts {
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            formatAllInputs(); // Gọi khi trang load
+        });
+        $(document).ready(function () {
+            $.ajax({
+                url: '/Warehouse/GetActive',
+                type: 'GET',
+                dataType: 'json',
+                success: function (data) {
+                    var fromSelect = $('#fromSelect');
+                    fromSelect.empty();
+                    var toSelect = $('#toSelect');
+                    toSelect.empty();
+                    var shipSelect = $('#shipSelect');
+                    shipSelect.empty();
+                    $.each(data, function (index, item) {
+                        switch (item.Type) {
+                            case 1:
+                                fromSelect.append($('<option>', {
+                                    value: item.Id,
+                                    text: item.Name,
+                                    selected: item.Id === @Model.FromId
+                                                            }));
+                                break;
+                            case 2:
+                                toSelect.append($('<option>', {
+                                    value: item.Id,
+                                    text: item.Name,
+                                    selected: item.Id === @Model.ToId
+                                                            }));
+                                break;
+                            case 3:
+                                shipSelect.append($('<option>', {
+                                    value: item.Id,
+                                    text: item.Name,
+                                    selected: item.Id === @Model.ShipId
+                                                            }));
+                                break;
+                            default:
+                                break;
+                        }
+                    });
+                },
+                error: function () {
+                    showToast(response.responseJSON.Message, response.responseJSON.Type, false);
+                }
+            });
+        });
+        $('#updateButton').click(function () {
+            const fromId = $('#fromSelect').val();
+            const toId = $('#toSelect').val();
+            const shipId = $('#shipSelect').val();
+            if (!fromId) {
+                $('#fromSelectError').text('Vui lòng chọn kho gửi.');
+                return;
+            }
+            if (!toId) {
+                $('#toSelectError').text('Vui lòng chọn Kho TQ.');
+                return;
+            }
+            if (!shipId) {
+                $('#shipSelectError').text('Vui lòng chọn phương thức vận chuyển.');
+                return;
+            }
+
+            const quantity = parseInt($('#totalItems').val()) || 0;
+            const weight = parseFloat($('#totalWeight').val()) || 0;
+            const volume = parseFloat($('#totalVolume').val()) || 0;
+
+            if (quantity <= 0 || weight < 0 || volume < 0) {
+                showToast('Vui lòng nhập số kiện, tổng cân, và tổng khối hợp lệ', 2, false);
+                return;
+            }
+
+            const formData = new FormData();
+
+            // Append các field đơn
+            formData.append("Quantity", quantity);
+            formData.append("Weight", weight);
+            formData.append("Volume", volume);
+
+            formData.append("Status", parseInt($('#status').val()) || 0);
+            formData.append("Currency", parseFloat(getRawValue($('#currency').val())) || 0);
+            formData.append("UnitWeight", parseFloat(getRawValue($('#unitWeight').val())) || 0);
+            formData.append("UnitVolume", parseFloat(getRawValue($('#unitVolume').val())) || 0);
+            formData.append("Surcharge", parseFloat(getRawValue($('#surcharge').val())) || 0);
+            formData.append("PriceShipping", parseFloat(getRawValue($('#priceShipping').val())) || 0);
+            formData.append("TotalPriceVND", parseFloat(getRawValue($('#totalPriceVND').val())) || 0);
+            formData.append("FromId", fromId);
+            formData.append("ToId", toId);
+            formData.append("ShipId", shipId);
+            formData.append("UserNote", $('#userNote').val());
+            formData.append("Username", $('#username').val() || ' ');
+
+            const imageInput = $("#image")[0];
+            if (imageInput?.files?.length > 0) {
+                for (let i = 0; i < imageInput.files.length; i++) {
+                    formData.append("Images", imageInput.files[i]);
+                }
+            }
+            // const request = {
+            //     Quantity: parseInt($('#totalItems').val()) || 0,
+            //     Weight: parseFloat($('#totalWeight').val()) || 0,
+            //     Volume: parseFloat($('#totalVolume').val()) || 0,
+            //     Status: parseInt($('#status').val()) || 0,
+            //     Currency: parseFloat(getRawValue($('#currency').val())) || 0,
+            //     UnitWeight: parseFloat(getRawValue($('#unitWeight').val())) || 0,
+            //     UnitVolume: parseFloat(getRawValue($('#unitVolume').val())) || 0,
+            //     Surcharge: parseFloat(getRawValue($('#surcharge').val())) || 0,
+            //     PriceShipping: parseFloat(getRawValue($('#priceShipping').val())) || 0,
+            //     TotalPriceVND: parseFloat(getRawValue($('#totalPriceVND').val())) || 0,
+            //     FromId: fromId,
+            //     ToId: toId,
+            //     ShipId: shipId
+            // };
+
+            disableButton();
+            $.ajax({
+                url: `/Transportation/Update?id=${@Model.Id}`,
+                type: 'PUT',
+                data: formData,
+                // contentType: 'application/json',
+                // data: JSON.stringify(request),
+                processData: false,
+                contentType: false,
+                success: function (response) {
+                    showToast(response.Message, response.Type, true);
+                },
+                error: function (response) {
+                    showToast(response.responseJSON.Message, response.responseJSON.Type, false);
+                },
+                complete: function () {
+                    enableButton();
+                }
+            });
+        });
+        function exportList() {
+            fetch(`/Transportation/ExportProduct?id=${@Model.Id}`)
+                .then(response => response.blob())
+                .then(blob => {
+                    const url = window.URL.createObjectURL(blob);
+                    const a = document.createElement('a');
+                    a.href = url;
+                    a.download = "Sản phẩm.xlsx";
+                    document.body.appendChild(a);
+                    a.click();
+                    document.body.removeChild(a);
+                })
+                .catch(error => console.error("Lỗi khi tải file mẫu:", error));
+        }
+        // Nhận thông báo confirm từ server
+        connection.on(`UpdatedBarcode-@Model.Barcode`, (message) => {
+            showConfirmModal(message, function () {
+                window.location.reload();
+            });
+        });
+    </script>
+}

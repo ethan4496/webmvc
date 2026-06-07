@@ -1,0 +1,118 @@
+﻿@using WebMVC.Interfaces
+@using WebMVC.Models.Responses
+@using WebMVC.Ultilities.Enums
+@model int
+@inject IHttpContextService _httpContextService;
+@{
+    var loggedModel = _httpContextService.GetLoggedModel();
+}
+@{
+    ViewData["Title"] = "Import Excel";
+}
+
+<div class="container-fluid mt-4">
+    <div class="card mb-4">
+        <div class="card-header d-flex justify-content-between align-items-center">
+            <h2>Import Excel @(ETransportationStatusName.GetStatusName(Model))</h2>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-3">
+                    <label for="excelFile" class="form-label">File mã vận đơn</label>
+                    <input type="file" class="form-control" id="excelFile" accept=".xlsx, .xls">
+                </div>
+                <div class="col-md-3">
+                    <label for="type" class="form-label">Loại hàng</label>
+                    <select id="type" class="form-select" name="Type">
+                        @if (loggedModel.TransportationType > 0)
+                        {
+                            <option value="@loggedModel.TransportationType">
+                                @ETransportationTypeName.GetTypeName(loggedModel.TransportationType)
+                            </option>
+                        }
+                        else
+                        {
+                            @foreach (var item in Enum.GetValues(typeof(ETransportationType)).Cast<ETransportationType>())
+                            {
+                                var itemValue = (int)item;
+                                var itemName = ETransportationTypeName.GetTypeName(itemValue);
+                                <option value="@itemValue">
+                                    @itemName
+                                </option>
+                            }
+                        }
+                    </select>
+                </div>
+            </div>
+            <div class="row pt-2">
+                <div class="col-md-3">
+                    <button type="button" class="btn btn-warning" onclick="exportSample()">Xuất file mẫu</button>
+                </div>
+                <div class="col-md-3 d-flex align-items-end">
+                    <button type="button" class="btn btn-success" onclick="importExcel()">Import</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        function exportSample() {
+            fetch('/Scan/ExportSampleExcel')
+                .then(response => response.blob())
+                .then(blob => {
+                    const url = window.URL.createObjectURL(blob);
+                    const a = document.createElement('a');
+                    a.href = url;
+                    a.download = "ImportTemplate.xlsx";
+                    document.body.appendChild(a);
+                    a.click();
+                    document.body.removeChild(a);
+                })
+                .catch(error => console.error("Lỗi khi tải file mẫu:", error));
+        }
+        function importExcel() {
+            let formData = new FormData();
+            let fileInput = document.getElementById("excelFile");
+
+            if (fileInput.files.length === 0) {
+                showToast("Vui lòng chọn file Excel.", 2, false);
+                return;
+            }
+
+            formData.append("file", fileInput.files[0]);
+            const type = $('#status').val();
+            disableButton();
+            showLoading();
+            fetch(`/Scan/ImportExcel/?id=${@Model}&type=${type}`, {
+                method: "POST",
+                body: formData
+            })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error("Lỗi trong quá trình import");
+                    }
+                    return response.blob();
+                })
+                .then(blob => {
+                    const url = window.URL.createObjectURL(blob);
+                    const a = document.createElement('a');
+                    a.href = url;
+                    a.download = "ImportResult.xlsx";
+                    document.body.appendChild(a);
+                    a.click();
+                    document.body.removeChild(a);
+                })
+                .catch(error => {
+                    console.error("Lỗi khi import file:", error);
+                    showToast("Lỗi khi import file", 2, false);
+                })
+                .finally(() => {
+                    enableButton();
+                    hideLoading();
+                });
+        }
+
+    </script>
+}

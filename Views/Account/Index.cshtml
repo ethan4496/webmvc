@@ -1,0 +1,115 @@
+﻿@using WebMVC.Entities
+@using WebMVC.Models.Responses
+@model List<AccountResponse>
+@using WebMVC.Interfaces
+@using WebMVC.Ultilities.Enums
+@{
+    ViewData["Title"] = "Danh sách nhân viên";
+}
+
+<div class="container-fluid mt-4">
+    <div class="card mb-4">
+        <div class="card-header d-flex justify-content-between align-items-center">
+            <h2>Bảng giá</h2>
+            <div>
+                <button id="toggleFilterButton" class="btn btn-primary">Ẩn bộ lọc</button>
+            </div>
+        </div>
+        <div class="card-body" id="filterContainer">
+            <div class="row">
+                <div class="col-md-3">
+                    <label for="name" class="form-label">Username</label>
+                    <select class="form-select" id="usernameSelect" style="width:100%" name="Username"></select>
+                </div>
+                <div class="col-md-3">
+                    <label for="role" class="form-label">Phân quyền</label>
+                    <select id="role" class="form-select" name="role">
+                        <option value="">
+                            Tất cả
+                        </option>
+                        @foreach (var status in Enum.GetValues(typeof(ERoleId)).Cast<ERoleId>())
+                        {
+                            var statusValue = (int)status;
+                            var statusName = ERoleIdName.GetRoleName(statusValue);
+                            <option value="@statusValue">
+                                @statusName
+                            </option>
+                        }
+                    </select>
+                </div>
+                <div class="col-md-2 d-flex align-items-end">
+                    <button type="button" class="btn btn-primary btn-search" onclick="loadPage(1)">Tìm kiếm</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    @await Html.PartialAsync("_AccountTable", new List<AccountResponse>())
+</div>
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            loadPage(1);
+        });
+        function loadPage(page) {
+            const request = {
+                PageIndex: page,
+                AccountId: $('#usernameSelect').val() ? parseInt($('#usernameSelect').val()) : null,
+                RoleId: $('#role').val() ? parseInt($('#role').val()) : null,
+            };
+            showLoading();
+            $.ajax({
+                url: '/Account/GetStaffPaging',
+                data: request,
+                type: 'GET',
+                success: function (data) {
+                    $('#table-container').html(data);
+                },
+                error: function (response) {
+                    showToast(response.responseJSON.Message, response.responseJSON.Type, false);
+                },
+                complete: function () {
+                    hideLoading();
+                }
+            });
+        }
+
+        $('#toggleFilterButton').on('click', function () {
+            $('#filterContainer').toggle();
+            let isVisible = $('#filterContainer').is(':visible');
+            $(this).text(isVisible ? 'Ẩn bộ lọc' : 'Hiện bộ lọc');
+        });
+
+        $("#usernameSelect").select2({
+            placeholder: "Chọn username",
+            allowClear: true,
+            theme: "bootstrap-5",
+            ajax: {
+                url: "/Account/Paging",
+                dataType: 'json',
+                delay: 250,
+                data: function (params) {
+                    return {
+                        Username: params.term || '',
+                        PageIndex: params.page || 1,
+                        PageSize: 10,
+                        IsCustomer: 0,
+                        SaleId: 0
+                    };
+                },
+                processResults: function (data, params) {
+                    return {
+                        results: data.Items.map(item => ({
+                            id: item.Id,
+                            text: item.Username
+                        })),
+                        pagination: {
+                            more: data.PageIndex < data.TotalPage && params.term
+                        }
+                    };
+                },
+                cache: true
+            }
+        });
+    </script>
+}

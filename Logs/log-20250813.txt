@@ -1,0 +1,64 @@
+2025-08-13 09:48:02.822 +07:00 [INF] Application Starting
+2025-08-13 10:13:17.260 +07:00 [INF] Application Starting
+2025-08-13 10:14:48.554 +07:00 [INF] Application Starting
+2025-08-13 10:16:07.213 +07:00 [INF] Application Starting
+2025-08-13 10:17:59.102 +07:00 [INF] Sign Up: admin; 11111111;
+2025-08-13 10:39:15.870 +07:00 [INF] Application Starting
+2025-08-13 10:41:07.283 +07:00 [INF] Application Starting
+2025-08-13 13:21:47.871 +07:00 [INF] Application Starting
+2025-08-13 13:22:52.382 +07:00 [INF] Application Starting
+2025-08-13 13:29:00.499 +07:00 [INF] Application Starting
+2025-08-13 13:29:34.245 +07:00 [INF] Application Starting
+2025-08-13 13:33:01.036 +07:00 [INF] Application Starting
+2025-08-13 13:46:35.989 +07:00 [INF] Application Starting
+2025-08-13 16:12:16.795 +07:00 [INF] Application Starting
+2025-08-13 16:13:40.349 +07:00 [INF] Application Starting
+2025-08-13 16:16:47.043 +07:00 [INF] Application Starting
+2025-08-13 16:24:20.806 +07:00 [INF] Application Starting
+2025-08-13 16:26:12.438 +07:00 [INF] Application Starting
+2025-08-13 16:27:28.744 +07:00 [INF] Application Starting
+2025-08-13 16:28:42.885 +07:00 [INF] Application Starting
+2025-08-13 16:38:29.016 +07:00 [INF] Application Starting
+2025-08-13 16:52:24.839 +07:00 [INF] Application Starting
+2025-08-13 16:53:44.599 +07:00 [INF] Application Starting
+2025-08-13 16:54:21.932 +07:00 [INF] Application Starting
+2025-08-13 16:54:24.560 +07:00 [WRN] Unable to configure Browser Link script injection on the response. 
+2025-08-13 17:08:34.809 +07:00 [INF] Application Starting
+2025-08-13 17:09:22.996 +07:00 [INF] Application Starting
+2025-08-13 17:12:48.240 +07:00 [INF] Application Starting
+2025-08-13 17:12:50.886 +07:00 [WRN] Unable to configure Browser Link script injection on the response. 
+2025-08-13 17:12:50.888 +07:00 [WRN] Unable to configure browser refresh script injection on the response. Consider manually adding '<script src="/_framework/aspnetcore-browser-refresh.js"></script>' to the body of the page.
+2025-08-13 17:13:27.046 +07:00 [WRN] Unable to configure Browser Link script injection on the response. 
+2025-08-13 17:13:27.046 +07:00 [WRN] Unable to configure browser refresh script injection on the response. Consider manually adding '<script src="/_framework/aspnetcore-browser-refresh.js"></script>' to the body of the page.
+2025-08-13 17:14:29.022 +07:00 [INF] Application Starting
+2025-08-13 17:15:36.613 +07:00 [INF] Application Starting
+2025-08-13 17:16:32.015 +07:00 [INF] Application Starting
+2025-08-13 19:16:16.138 +07:00 [INF] Application Starting
+2025-08-13 19:23:37.141 +07:00 [INF] Application Starting
+2025-08-13 19:27:41.583 +07:00 [INF] Application Starting
+2025-08-13 19:29:23.717 +07:00 [INF] Application Starting
+2025-08-13 19:47:33.317 +07:00 [INF] Application Starting
+2025-08-13 19:48:02.252 +07:00 [INF] Sign Up: admin; 11111111;
+2025-08-13 19:50:08.474 +07:00 [INF] Application Starting
+2025-08-13 19:56:39.026 +07:00 [INF] Application Starting
+2025-08-13 19:57:14.967 +07:00 [INF] Application Starting
+2025-08-13 20:00:34.351 +07:00 [INF] Application Starting
+2025-08-13 20:04:31.304 +07:00 [INF] Application Starting
+2025-08-13 20:19:45.140 +07:00 [INF] Application Starting
+2025-08-13 20:20:27.535 +07:00 [INF] Application Starting
+2025-08-13 21:20:11.499 +07:00 [INF] Application Starting
+2025-08-13 21:21:34.115 +07:00 [INF] Application Starting
+2025-08-13 21:24:48.841 +07:00 [INF] Application Starting
+2025-08-13 21:25:29.812 +07:00 [INF] Application Starting
+2025-08-13 21:26:49.753 +07:00 [INF] Application Starting
+2025-08-13 21:41:32.172 +07:00 [INF] Application Starting
+2025-08-13 21:44:36.176 +07:00 [INF] Application Starting
+2025-08-13 21:46:20.404 +07:00 [INF] Application Starting
+2025-08-13 21:49:00.209 +07:00 [INF] Application Starting
+2025-08-13 21:53:34.306 +07:00 [INF] Application Starting
+2025-08-13 21:57:59.411 +07:00 [INF] Application Starting
+2025-08-13 21:58:24.621 +07:00 [INF] Application Starting
+2025-08-13 21:59:07.395 +07:00 [INF] Application Starting
+2025-08-13 22:05:23.393 +07:00 [INF] Application Starting
+2025-08-13 22:06:47.263 +07:00 [INF] Application Starting
+2025-08-13 22:08:32.507 +07:00 [INF] Application Starting

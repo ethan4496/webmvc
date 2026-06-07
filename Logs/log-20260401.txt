@@ -1,0 +1,12 @@
+2026-04-01 12:56:09.453 +07:00 [INF] Application Starting
+2026-04-01 12:57:21.558 +07:00 [WRN] Failed to determine the https port for redirect.
+2026-04-01 12:59:07.449 +07:00 [INF] Application Starting
+2026-04-01 12:59:44.392 +07:00 [WRN] Failed to determine the https port for redirect.
+2026-04-01 13:00:45.392 +07:00 [INF] Application Starting
+2026-04-01 13:00:55.204 +07:00 [WRN] Failed to determine the https port for redirect.
+2026-04-01 13:02:57.813 +07:00 [INF] Application Starting
+2026-04-01 13:03:30.250 +07:00 [WRN] Failed to determine the https port for redirect.
+2026-04-01 13:06:07.441 +07:00 [INF] Application Starting
+2026-04-01 13:06:07.914 +07:00 [WRN] Failed to determine the https port for redirect.
+2026-04-01 13:07:33.106 +07:00 [WRN] Savepoints are disabled because Multiple Active Result Sets (MARS) is enabled. If 'SaveChanges' fails, then the transaction cannot be automatically rolled back to a known clean state. Instead, the transaction should be rolled back by the application before retrying 'SaveChanges'. See https://go.microsoft.com/fwlink/?linkid=2149338 for more information and examples. To identify the code which triggers this warning, call 'ConfigureWarnings(w => w.Throw(SqlServerEventId.SavepointsDisabledBecauseOfMARS))'.
+2026-04-01 13:07:38.438 +07:00 [WRN] Savepoints are disabled because Multiple Active Result Sets (MARS) is enabled. If 'SaveChanges' fails, then the transaction cannot be automatically rolled back to a known clean state. Instead, the transaction should be rolled back by the application before retrying 'SaveChanges'. See https://go.microsoft.com/fwlink/?linkid=2149338 for more information and examples. To identify the code which triggers this warning, call 'ConfigureWarnings(w => w.Throw(SqlServerEventId.SavepointsDisabledBecauseOfMARS))'.

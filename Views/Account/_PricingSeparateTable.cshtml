@@ -1,0 +1,45 @@
+﻿@using WebMVC.Entities
+@using WebMVC.Interfaces
+@using WebMVC.Models.Responses
+@using WebMVC.Ultilities.Enums
+@model List<PricingResponse>
+<div id="table-container">
+    <div class="table-content">
+        <table class="table table-hover table-bordered">
+            <thead class="table">
+                <tr>
+                    <th class="text-center">#</th>
+                    <th class="text-center">PT vận chuyển</th>
+                    <th class="text-center">Loại</th>
+                    <th class="text-center">Từ - đến</th>
+                    <th class="text-center">Đơn giá</th>
+                    <th class="text-center">Ngày cập nhật</th>
+                    <th class="text-center"></th>
+                </tr>
+            </thead>
+            <tbody>
+                @for (int i = 0; i < Model.Count; i++)
+                {
+                    <tr>
+                        <td class="text-center align-content-center">@(i + 1)</td>
+                        <td class="text-center align-content-center">
+                            @Model[i].ShipName
+                        </td>
+                        <td class="text-center align-content-center">@Model[i].TypeName</td>
+                        <td class="text-center align-content-center">@Model[i].RangeMin - @Model[i].RangeMax</td>
+                        <td class="text-center align-content-center">@string.Format("{0:N0}", Model[i].PricePerUnit) đ</td>
+                        <td class="text-center align-content-center">@Model[i].Updated?.ToString("dd/MM/yyyy")</td>
+                        <td class="text-center align-content-center">
+                            <p>
+                                <button class="btn btn-sm btn-warning" onclick='editItem(@Html.Raw(Json.Serialize(Model[i])))' data-bs-toggle="modal" data-bs-target="#editModal">Cập nhật</button>
+                            </p>
+                            <p>
+                                <button class="btn btn-sm btn-danger" onclick='deletePricing(@Model[i].Id)'>Xóa</button>
+                            </p>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

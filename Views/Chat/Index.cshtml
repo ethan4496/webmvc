@@ -1,0 +1,299 @@
+﻿@using WebMVC.Models.Responses
+@model LoggedModel
+@{
+    ViewData["Title"] = "Tin nhắn";
+}
+<div class="container-fluid mt-4 ">
+    <div>
+        <div class="row ">
+            <div class="col-md-4 card" style=" height: 80vh;">
+                <div class="card-body">
+                    <div class="row pb-2">
+                        <div class="col-md-9">
+                            <select class="form-select" id="username" style="width:100%" name="Username"></select>
+                        </div>
+                        <div class="col-md-3 d-flex align-items-end">
+                            <button type="button" class="btn btn-primary" onclick="loadConversion(1)"><i class="bi bi-search"></i></button>
+                        </div>
+                    </div>
+                    @await Html.PartialAsync("_ChatConversationTable", new List<ChatConversationResponse>())
+                </div>
+            </div>
+            <div class="col-md-8 card " style=" height: 80vh;">
+                <div class="chatbox card-body">
+                    <div class="chatbox-header">
+
+                    </div>
+                    <div class="chatbox-body" id="chatMessages">
+                    </div>
+                    @*                     <div id="imagePreviewContainer" style="display: none;">
+                        <img id="imagePreview" style="max-width: 100px; max-height: 100px; border-radius: 8px;">
+                        <button id="removeImageBtn" class="btn">❌</button>
+                    </div>
+                    <div class="chat-input-container">
+                        <textarea type="text" id="chatInput" class="form-control" placeholder="Nhập tin nhắn..."></textarea>
+                        <input type="file" id="imageInput" accept="image/*" style="display: none;">
+                        <button id="uploadImageBtn" class="btn btn-primary"><i class="bi bi-camera-fill"></i></button>
+                        <button class="btn btn-primary" onclick="sendGroupMessage()">Gửi</button>
+                    </div> *@
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            document.getElementById("chatWindow").innerHTML = "";
+            localStorage.setItem("chatLanguage", "vi");
+            chatLanguage = "vi";
+            loadConversion(1);
+        });
+        function loadConversion(page){
+            const request = {
+                Page: page,
+                AccountId: $('#username').val() || null,
+            };
+            showLoading();
+            $.ajax({
+                url: '/Chat/GetAllConversation',
+                data: request,
+                type: 'GET',
+                success: function (data) {
+                    $('#table-container').html(data);
+                },
+                error: function () {
+                },
+                complete: function () {
+                    hideLoading();
+                }
+            });
+        }
+
+        async function openChatGroup(conversation){
+            document.getElementById("chatMessages").innerHTML = "";
+            try {
+                // Gửi tin nhắn và đợi cho tới khi hoàn tất
+                await connection.invoke("JoinChatGroup", conversation.User1Id, conversation.User2Id);
+            } catch (err) {
+                console.log("Error sending message: ", err.toString());
+            }
+            currentPage = 1;
+            hasMoreMessages = true;
+            isLoading = false;
+            const receiver = {
+                Id : conversation.User2Id,
+                ConversationId : conversation.Id,
+            }
+            currentConversation = receiver;
+            loadGroupMessages(receiver);
+        }
+
+        // async function sendGroupMessage() {
+        //     const message = document.getElementById("chatInput").value;
+        //     const imageInput = document.getElementById("imageInput");
+        //     const imageFile = imageInput.files[0];
+        //     if (message === "" && !imageFile) return;
+
+        //     let fileUrl = "";
+        //     // Nếu có ảnh, thì upload ảnh lên server trước
+        //     if (imageFile) {
+        //         let formData = new FormData();
+        //         formData.append("file", imageFile);
+
+        //         try {
+        //             let response = await fetch("/api/uploadfile/upload", {
+        //                 method: "POST",
+        //                 body: formData
+        //             });
+
+        //             let result = await response.json();
+        //             if (result.FileUrl) {
+        //                 fileUrl = result.FileUrl; // Lưu URL ảnh
+        //                 document.getElementById("removeImageBtn").click();
+        //             }
+        //         } catch (error) {
+        //             console.error("Lỗi tải ảnh:", error);
+        //             return;
+        //         }
+        //     }
+        //     try {
+        //         await connection.invoke("SendGroupMessage", currentConversation.User1Id, currentConversation.User2Id, message, fileUrl, chatLanguage);
+        //         // Xóa nội dung input
+        //         const chatInput = document.getElementById("chatInput");
+        //         chatInput.value = ''; // Xóa nội dung trong ô nhập
+        //         chatInput.style.height = '45px'; // Đặt lại chiều cao của textarea về mặc định
+
+        //         imageInput.value = "";
+        //     } catch (err) {
+        //         console.log("Error sending message: ", err.toString());
+        //     }
+
+        // }
+        function loadGroupMessages(receiver) {
+            if (isLoading || !hasMoreMessages) return;
+            isLoading = true;
+            $.ajax({
+                url: `/Chat/GetGroupMessages?conversationId=${receiver.ConversationId}&page=${currentPage}&pageSize=${pageSize}`,
+                type: 'GET',
+                success: function (messages) {
+                    if (messages.length < pageSize) {
+                    }
+                    const chatMessages = document.getElementById("chatMessages");
+                    let firstMessage = chatMessages.firstChild; // Ghi nhớ vị trí tin nhắn đầu tiên
+
+                    messages.forEach(message => {
+                        const messageDiv = document.createElement("div");
+                        // messageDiv.classList.add("group-message");
+
+                        // const innerDiv = document.createElement("div");
+                        // if (message.SenderId == @Model.Id) {
+                        //     innerDiv.classList.add("sent");
+                        // } else {
+                        //     innerDiv.classList.add("received");
+                        // }
+
+                        // // Hiển thị ngày tạo tin nhắn
+                        // const dateElement = document.createElement("i");
+                        // dateElement.classList.add("create-date");
+                        // dateElement.textContent = message.SenderUsername + "-"+ message.CreatedAt || "Không rõ ngày"; // Thay CreatedAt bằng dữ liệu ngày gửi thực tế
+
+                        // // Hiển thị nội dung tin nhắn hoặc hình ảnh
+                        // const messageContent = document.createElement("div");
+                        // messageContent.classList.add("message-content");
+
+                        // if (message.FileUrl) {
+                        //     messageContent.innerHTML = `<img src="${message.FileUrl}" alt="Image" style="max-width: 100%; border-radius: 8px; cursor: pointer;" onclick="window.open(this.src)">`;
+                        // } else {
+                        //     messageContent.textContent = message.Message;
+                        // }
+                        // innerDiv.appendChild(messageContent);
+                        // innerDiv.appendChild(dateElement);
+                        // messageDiv.appendChild(innerDiv);
+
+                        // chatMessages.prepend(messageDiv);
+                        if (message.SenderId == receiver.Id) {
+                            messageDiv.classList.add("message", "received");
+                        } else {
+                            messageDiv.classList.add("message", "sent");
+                        }
+                        if (message.FileUrl) {
+                            messageDiv.innerHTML = `<img src="${message.FileUrl}" alt="Image" style="max-width: 100%; border-radius: 8px;cursor: pointer;" onclick="window.open(this.src)">`;
+                        } else {
+                            messageDiv.innerHTML = chatLanguage == "vi" ? message.Message : message.MessageSecondLanguage;
+                        }
+                        chatMessages.prepend(messageDiv);
+                    });
+
+
+                    // Cuộn xuống tin nhắn cũ nhất vừa load
+                    if (firstMessage instanceof HTMLElement) {
+                        firstMessage.scrollIntoView();
+                    } else {
+                        chatMessages.scrollTop = chatMessages.scrollHeight; // Cuộn xuống cuối nếu lần đầu load
+                    }
+                    currentPage++; // Tăng số trang để lần sau load tiếp
+                    isLoading = false;
+                },
+                error: function () {
+                },
+                complete: function () {
+                    hideLoading();
+                    isLoading = false;
+                }
+            });
+        }
+
+        $("#username").select2({
+            placeholder: "Chọn username",
+            allowClear: true,
+            theme: "bootstrap-5",
+            ajax: {
+                url: "/Account/Paging",
+                dataType: 'json',
+                delay: 250,
+                data: function (params) {
+                    return {
+                        Username: params.term || '',
+                        PageIndex: params.page || 1,
+                        PageSize: 10
+                    };
+                },
+                processResults: function (data, params) {
+                    return {
+                        results: data.Items.map(item => ({
+                            id: item.Id,
+                            text: item.Username
+                        })),
+                        pagination: {
+                            more: data.PageIndex < data.TotalPage && params.term
+                        }
+                    };
+                },
+                cache: true
+            }
+        });
+
+    </script>
+}
+<style>
+
+    .chatbox {
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+    }
+
+    .chatbox-body {
+        flex-grow: 1;
+        overflow-y: auto;
+        display: flex;
+        flex-direction: column;
+        padding: 10px;
+        overflow-y: auto;
+    }
+
+    .chat-input-container {
+        display: flex;
+        gap: 5px;
+        padding-top: 10px;
+        background: #fff;
+    }
+    /*
+        .group-message {
+        }
+
+        .create-date {
+            font-size: xx-small;
+        }
+
+        .group-message .sent {
+            display: flex;
+            flex-direction: column;
+            align-items: end;
+        }
+
+        .sent .message-content {
+            background-color: #dcf8c6;
+            max-width: 60%;
+            padding: 10px;
+            border-radius: 8px;
+            margin: 5px 0;
+            word-wrap: break-word;
+        }
+        .group-message .received {
+            display: flex;
+            flex-direction: column;
+            align-items: start;
+        }
+
+        .received .message-content {
+            background-color: #f1f1f1;
+            max-width: 60%;
+            padding: 10px;
+            border-radius: 8px;
+            margin: 5px 0;
+            word-wrap: break-word;
+        } */
+</style>

@@ -1,0 +1,4 @@
+2026-01-28 15:30:17.956 +07:00 [INF] Application Starting
+2026-01-28 15:30:38.075 +07:00 [INF] Sign Up: admin; 11111111;
+2026-01-28 15:46:09.352 +07:00 [INF] Application Starting
+2026-01-28 15:48:05.248 +07:00 [WRN] Savepoints are disabled because Multiple Active Result Sets (MARS) is enabled. If 'SaveChanges' fails, then the transaction cannot be automatically rolled back to a known clean state. Instead, the transaction should be rolled back by the application before retrying 'SaveChanges'. See https://go.microsoft.com/fwlink/?linkid=2149338 for more information and examples. To identify the code which triggers this warning, call 'ConfigureWarnings(w => w.Throw(SqlServerEventId.SavepointsDisabledBecauseOfMARS))'.

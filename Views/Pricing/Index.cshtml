@@ -1,0 +1,379 @@
+﻿@using WebMVC.Entities
+@using WebMVC.Models.Responses
+@model List<Warehouse>
+@using WebMVC.Interfaces
+@using WebMVC.Ultilities.Enums
+@{
+    ViewData["Title"] = "Bảng giá";
+}
+
+<div class="container-fluid mt-4">
+    <div class="card mb-4">
+        <div class="card-header d-flex justify-content-between align-items-center">
+            <h2>Bảng giá</h2>
+            <div>
+                <button id="toggleFilterButton" class="btn btn-primary">Ẩn bộ lọc</button>
+                <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#addModal">
+                    <i class="bi bi-plus"></i> Thêm mới
+                </button>
+            </div>
+        </div>
+        <div class="card-body" id="filterContainer">
+            <div class="row">
+                <div class="col-md-2">
+                    <label for="warehouseFrom" class="form-label">Kho TQ</label>
+                    <select id="warehouseFrom" class="form-select" required>
+                        <option value="">Chọn Kho TQ</option>
+                        @foreach (var item in Model.Where(x => x.Type == (int)EWarehouseType.Reciever).ToList())
+                        {
+                            <option value=@item.Id>@item.Name</option>
+                        }
+                    </select>
+                </div>
+                <div class="col-md-2">
+                    <label for="warehouseTo" class="form-label">Kho VN</label>
+                    <select id="warehouseTo" class="form-select" required>
+                        <option value="">Chọn Kho VN</option>
+                        @foreach (var item in Model.Where(x => x.Type == (int)EWarehouseType.Destination).ToList())
+                        {
+                            <option value=@item.Id>@item.Name</option>
+                        }
+                    </select>
+                </div>
+                <div class="col-md-2">
+                    <label for="type" class="form-label">Loại</label>
+                    <select id="type" class="form-select" name="Type">
+                        <option value="">
+                            Tất cả
+                        </option>
+                        @foreach (var type in Enum.GetValues(typeof(EPricingType)).Cast<EPricingType>())
+                        {
+                            var typeValue = (int)type;
+                            var typeName = EPricingTypeName.GetPricingTypeName(typeValue);
+                            <option value="@typeValue">
+                                @typeName
+                            </option>
+                        }
+                    </select>
+                </div>
+                <div class="col-md-2 d-flex align-items-end">
+                    <button type="button" class="btn btn-primary btn-search" onclick="loadPage(1,null)">Tìm kiếm</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <ul class="nav nav-tabs" id="shippingTabs" style=" background-color: black; ">
+        @foreach (var item in Model.Where(x => x.Type == (int)EWarehouseType.Shipping).ToList())
+        {
+            <li class="nav-item">
+                <a class="nav-link" href="#" onclick="loadPage(1,@item.Id)">@item.Name</a>
+            </li>
+        }
+    </ul>
+
+    @await Html.PartialAsync("_PricingTable", new List<PricingResponse>())
+</div>
+
+<div class="modal fade" id="addModal" tabindex="-1" aria-labelledby="addModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Tạo mới</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="addForm">
+                    <div class="row">
+                        <div class="col-6 mb-3">
+                            <label for="addWarehouseFrom" class="form-label">Kho TQ</label>
+                            <select id="addWarehouseFrom" class="form-select" required>
+                                <option value="">Chọn Kho TQ</option>
+                                @foreach (var item in Model.Where(x => x.Type == (int)EWarehouseType.Reciever).ToList())
+                                {
+                                    <option value=@item.Id>@item.Name</option>
+                                }
+                            </select>
+                        </div>
+                        <div class="col-6 mb-3">
+                            <label for="addWarehouseTo" class="form-label">Kho VN</label>
+                            <select id="addWarehouseTo" class="form-select" required>
+                                <option value="">Chọn Kho VN</option>
+                                @foreach (var item in Model.Where(x => x.Type == (int)EWarehouseType.Destination).ToList())
+                                {
+                                    <option value=@item.Id>@item.Name</option>
+                                }
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-6 mb-3">
+                            <label for="addShip" class="form-label">Phương thức vận chuyển</label>
+                            <select id="addShip" class="form-select" required>
+                                <option value="">Chọn Phương thức vận chuyển</option>
+                                @foreach (var item in Model.Where(x => x.Type == (int)EWarehouseType.Shipping).ToList())
+                                {
+                                    <option value=@item.Id>@item.Name</option>
+                                }
+                            </select>
+                        </div>
+                        <div class="col-6 mb-3">
+                            <label for="addType" class="form-label">Loại</label>
+                            <select id="addType" class="form-select" name="addType">
+                                @foreach (var type in Enum.GetValues(typeof(EPricingType)).Cast<EPricingType>())
+                                {
+                                    var typeValue = (int)type;
+                                    var typeName = EPricingTypeName.GetPricingTypeName(typeValue);
+                                    <option value="@typeValue">
+                                        @typeName
+                                    </option>
+                                }
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-6 mb-3">
+                            <label for="addRangeMin" class="form-label">Giá trị từ</label>
+                            <input type="number" class="form-control" id="addRangeMin" required>
+                        </div>
+                        <div class="col-6 mb-3">
+                            <label for="addRangeMax" class="form-label">Giá trị đến</label>
+                            <input type="number" class="form-control" id="addRangeMax" required>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-6 mb-3">
+                            <label for="addAmount" class="form-label">Đơn giá</label>
+                            <input class="form-control input-money" id="addAmount" required>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-success">Lưu</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editModalLabel">Cập nhật</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="editForm">
+                    <div class="row">
+                        <div class="col-6 mb-3">
+                            <label for="editWarehouseFrom" class="form-label">Kho TQ</label>
+                            <select id="editWarehouseFrom" class="form-select" required>
+                                <option value="">Chọn Kho TQ</option>
+                                @foreach (var item in Model.Where(x => x.Type == (int)EWarehouseType.Reciever).ToList())
+                                {
+                                    <option value=@item.Id>@item.Name</option>
+                                }
+                            </select>
+                        </div>
+                        <div class="col-6 mb-3">
+                            <label for="editWarehouseTo" class="form-label">Kho VN</label>
+                            <select id="editWarehouseTo" class="form-select" required>
+                                <option value="">Chọn Kho VN</option>
+                                @foreach (var item in Model.Where(x => x.Type == (int)EWarehouseType.Destination).ToList())
+                                {
+                                    <option value=@item.Id>@item.Name</option>
+                                }
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-6 mb-3">
+                            <label for="editShip" class="form-label">Phương thức vận chuyển</label>
+                            <select id="editShip" class="form-select" required>
+                                <option value="">Chọn Phương thức vận chuyển</option>
+                                @foreach (var item in Model.Where(x => x.Type == (int)EWarehouseType.Shipping).ToList())
+                                {
+                                    <option value=@item.Id>@item.Name</option>
+                                }
+                            </select>
+                        </div>
+                        <div class="col-6 mb-3">
+                            <label for="editType" class="form-label">Loại</label>
+                            <select id="editType" class="form-select" name="editType">
+                                @foreach (var type in Enum.GetValues(typeof(EPricingType)).Cast<EPricingType>())
+                                {
+                                    var typeValue = (int)type;
+                                    var typeName = EPricingTypeName.GetPricingTypeName(typeValue);
+                                    <option value="@typeValue">
+                                        @typeName
+                                    </option>
+                                }
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-6 mb-3">
+                            <label for="editRangeMin" class="form-label">Giá trị từ</label>
+                            <input type="number" class="form-control" id="editRangeMin" required>
+                        </div>
+                        <div class="col-6 mb-3">
+                            <label for="editRangeMax" class="form-label">Giá trị đến</label>
+                            <input type="number" class="form-control" id="editRangeMax" required>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-6 mb-3">
+                            <label for="editAmount" class="form-label">Đơn giá</label>
+                            <input class="form-control input-money" id="editAmount" required>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-success">Lưu</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            loadPage(1);
+        });
+        function loadPage(page, shipId) {
+            const request = {
+                PageIndex: page,
+                FromId: $('#warehouseFrom').val() ? parseInt($('#warehouseFrom').val()) : null,
+                ToId: $('#warehouseTo').val() ? parseInt($('#warehouseTo').val()) : null,
+                ShipId: shipId,
+                Type: $('#type').val() ? parseInt($('#type').val()) : null,
+            };
+            showLoading();
+            $.ajax({
+                url: '/Pricing/GetPaging',
+                data: request,
+                type: 'GET',
+                success: function (data) {
+                    $('#table-container').html(data);
+                },
+                error: function (response) {
+                    showToast(response.responseJSON.Message, response.responseJSON.Type, false);
+                },
+                complete: function () {
+                    hideLoading();
+                }
+            });
+        }
+
+        $('#toggleFilterButton').on('click', function () {
+            $('#filterContainer').toggle();
+            let isVisible = $('#filterContainer').is(':visible');
+            $(this).text(isVisible ? 'Ẩn bộ lọc' : 'Hiện bộ lọc');
+        });
+
+        document.getElementById("addForm").addEventListener("submit", async function (event) {
+            event.preventDefault();
+
+            const warehouseFrom = $("#addWarehouseFrom").val();
+            const warehouseTo = $("#addWarehouseTo").val();
+            const ship = $("#addShip").val();
+            const type = $("#addType").val();
+            const rangeMin = $("#addRangeMin").val();
+            const rangeMax = $("#addRangeMax").val();
+            const pricePerUnit = getRawValue($("#addAmount").val());
+
+            const createData = {
+                FromWarehouseId: warehouseFrom,
+                ToWarehouseId: warehouseTo,
+                ShipId: ship,
+                RangeMin: rangeMin,
+                RangeMax: rangeMax,
+                PricePerUnit: pricePerUnit,
+                Type: type
+            }
+            disableButton();
+            $.ajax({
+                url: "/Pricing/Create",
+                type: "POST",
+                data: { Request: createData },
+                success: function (response) {
+                    showToast(response.Message, response.Type, true);
+                },
+                error: function (response) {
+                    showToast(response.responseJSON?.Message || "Lỗi không xác định", response.responseJSON?.Type || 2, false);
+                },
+                complete: function () {
+                    enableButton();
+                }
+            });
+        });
+
+        function editItem(item) {
+            $("#editWarehouseFrom").val(item.FromWarehouseId);
+            $("#editWarehouseTo").val(item.ToWarehouseId);
+            $("#editShip").val(item.ShipId);
+            $("#editType").val(item.Type);
+            $("#editRangeMin").val(item.RangeMin);
+            $("#editRangeMax").val(item.RangeMax);
+            $("#editAmount").val(item.PricePerUnit.toLocaleString("en-US"));
+            // Lưu ID item vào form để gửi khi cập nhật
+            $("#editForm").data("item-id", item.Id);
+        }
+
+        $("#editForm").submit(async function (event) {
+            event.preventDefault();
+
+            const itemId = $(this).data("item-id");
+            const warehouseFrom = $("#editWarehouseFrom").val();
+            const warehouseTo = $("#editWarehouseTo").val();
+            const ship = $("#editShip").val();
+            const type = $("#editType").val();
+            const rangeMin = $("#editRangeMin").val();
+            const rangeMax = $("#editRangeMax").val();
+            const pricePerUnit = getRawValue($("#editAmount").val());
+
+            const updateData = {
+                FromWarehouseId: warehouseFrom,
+                ToWarehouseId: warehouseTo,
+                ShipId: ship,
+                RangeMin: rangeMin,
+                RangeMax: rangeMax,
+                PricePerUnit: pricePerUnit,
+                Type: type
+            }
+
+            disableButton();
+            $.ajax({
+                url: `/Pricing/Update?id=${itemId}`,
+                type: "PUT",
+                data: { Request: updateData },
+                success: function (response) {
+                    showToast(response.Message, response.Type, true);
+                },
+                error: function (response) {
+                    showToast(response.responseJSON?.Message || "Lỗi không xác định", response.responseJSON?.Type || 2, false);
+                },
+                complete: function () {
+                    enableButton();
+                }
+            });
+        });
+
+        function deletePricing(id) {
+            showConfirmModal('Bạn chắc chắn muốn xóa bảng giá này?', function () {
+                disableButton();
+                $.ajax({
+                    url: '/Pricing/Delete',
+                    data: { Id: id },
+                    type: 'DELETE',
+                    success: function (response) {
+                        showToast(response.Message, response.Type, true);
+                    },
+                    error: function (response) {
+                        showToast(response.responseJSON.Message, response.responseJSON.Type, false);
+                    },
+                    complete: function () {
+                        enableButton();
+                    }
+                });
+            });
+        }
+    </script>
+}

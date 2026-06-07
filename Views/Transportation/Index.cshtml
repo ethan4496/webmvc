@@ -1,0 +1,493 @@
+﻿@using WebMVC.Entities
+@using WebMVC.Models.Responses
+@using WebMVC.Interfaces
+@using WebMVC.Ultilities.Enums
+@model List<Warehouse>
+@inject IHttpContextService _httpContextService;
+@{
+    var loggedModel = _httpContextService.GetLoggedModel();
+}
+@{
+    ViewData["Title"] = "Danh sách đơn ký gửi";
+}
+
+<div class="container-fluid mt-4">
+    <div class="card mb-4">
+        <div class="card-header d-flex justify-content-between align-items-center">
+            <h2>Danh sách đơn ký gửi</h2>
+            <div class="d-flex gap-2">
+                <button class="btn btn-success" onclick="exportList()">Xuất Excel</button>
+                <button id="toggleFilterButton" class="btn btn-primary">Ẩn bộ lọc</button>
+            </div>
+
+        </div>
+        <div class="card-body" id="filterContainer">
+            <div class="row">
+                <div class="col-md-2">
+                    <label for="barCode" class="form-label">Mã vận đơn</label>
+                    <input type="text" class="form-control" id="barCode" name="barCode" placeholder="">
+                </div>
+                <div class="col-md-2">
+                    <label for="status" class="form-label">Trạng thái</label>
+                    <select id="status" class="form-select" name="Status">
+                        <option value="">
+                            Tất cả
+                        </option>
+                        @foreach (var status in Enum.GetValues(typeof(ETransportationStatus)).Cast<ETransportationStatus>()
+                        .Where(s => (int)s != (int)ETransportationStatus.Cancel))
+                        {
+                            var statusValue = (int)status;
+                            var statusName = ETransportationStatusName.GetStatusName(statusValue);
+                            <option value="@statusValue">
+                                @statusName
+                            </option>
+                        }
+                    </select>
+                </div>
+                <div class="col-md-2">
+                    <label for="fromDate" class="form-label">Từ ngày</label>
+                    <input type="text" class="form-control datepicker" id="fromDate" name="fromDate" placeholder="">
+                </div>
+                <div class="col-md-2">
+                    <label for="toDate" class="form-label">Đến ngày</label>
+                    <input type="text" class="form-control datepicker" id="toDate" name="toDate" placeholder="">
+                </div>
+                <div class="col-md-2">
+                    <label for="filterDay" class="form-label">Lọc ngày</label>
+                    <select id="filterDay" class="form-select" name="filterDay">
+                        <option value="">Tất cả</option>
+                        <option value="1">1 ngày trước</option>
+                        <option value="2">2 ngày trước</option>
+                        <option value="3">3 ngày trước</option>
+                        <option value="4">4 ngày trước</option>
+                        <option value="5">5 ngày trước</option>
+                        <option value="6">6 ngày trước</option>
+                        <option value="7">7 ngày trước</option>
+                    </select>
+                </div>
+                <div class="col-md-2 d-flex align-items-end justify-content-end">
+                    <a class="btn btn-primary px-4" href="/transportation"><i class="bi bi-arrow-clockwise"></i></a>
+                </div>
+            </div>
+            @if (loggedModel.IsStaff == 1)
+            {
+                <div class="row pt-2">
+                    <div class="col-md-2">
+                        <label for="username" class="form-label">Username</label>
+                        <select class="form-select" id="username" style="width:100%" name="Username"></select>
+                    </div>
+
+                    <div class="col-md-2">
+                        <label for="bigPackageName" class="form-label">Mã bao</label>
+                        <input type="text" class="form-control" id="bigPackageName" name="bigPackageName" placeholder="">
+                    </div>
+
+                    <div class="col-md-2">
+                        <label for="shipId" class="form-label">Hình Thức Vận Chuyển</label>
+                        <select id="shipId" class="form-select" required>
+                            <option value="">Chọn Hình Thức</option>
+                            @foreach (var item in Model)
+                            {
+                                <option value=@item.Id>@item.Name</option>
+                            }
+                        </select>
+                    </div>
+                    <div class="col-md-2">
+                        <label for="postOffice" class="form-label">Bưu cục</label>
+                        <select id="postOffice" class="form-select" name="postOffice" @(loggedModel.PostOffice != "" ? "disabled" : "")>
+                            @if (!string.IsNullOrEmpty(loggedModel.PostOffice))
+                            {
+                                <option value="@loggedModel.PostOffice" selected>
+                                    @loggedModel.PostOffice
+                                </option>
+                            }
+                            else
+                            {
+                                <option value="">Tất cả</option>
+                                @foreach (var status in PostOfficeName.GetPostOffice())
+                                {
+                                    <option value="@status">
+                                        @status
+                                    </option>
+                                }
+                            }
+                        </select>
+                    </div>
+                    <div class="col-md-2 d-flex align-items-baseline flex-column-reverse">
+                        <div class="form-check">
+                            <label class="form-check-label" for="isNotAccount">Đơn trôi nổi</label>
+                            <input type="checkbox" class="form-check-input" id="isNotAccount">
+                        </div>
+                        <div class="form-check">
+                            <label class="form-check-label" for="isOutStock">Đơn đã yêu cầu</label>
+                            <input type="checkbox" class="form-check-input" id="isOutStock">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row pt-2">
+                    <div class="col-md-9 d-flex align-items-end gap-3">
+                        @if ((loggedModel.RoleId == (int)ERoleId.Admin
+                       || new[] { 6783, 6899, 9602, 25 }.Contains(loggedModel.Id))
+                       && loggedModel.IsStaff == 1)
+                        {
+                            <button type="button" class="btn btn-danger" onclick="deleteFilterd()">Xóa theo bộ lọc</button>
+                            <button type="button" class="btn btn-danger d-none" onclick="deleteSelected()" id="btnDeleteSelected">Xóa đã chọn</button>
+                        }
+                        <button type="button" class="btn btn-success d-none" onclick="exportSpecialFile()" id="btnExportSpecialFile">Xuất file chính ngạch</button>
+                    </div>
+                    <div class="col-md-3 d-flex justify-content-end gap-3">
+                        <button type="button" class="btn btn-primary btn-search" onclick="loadPage(1)">Tìm kiếm</button>
+                    </div>
+                </div>
+
+            }
+            else
+            {
+                <div class="row pt-2">
+                    <div class="text-end">
+                        <button type="button" class="btn btn-primary btn-search" onclick="loadPage(1)">Tìm kiếm</button>
+                    </div>
+                </div>
+            }
+
+
+        </div>
+    </div>
+    @await Html.PartialAsync("_TransportationTable", new List<TransportationResponse>())
+</div>
+@section Scripts {
+    <script>
+        $(document).ready(async function () {
+            await restoreFilters(); // đợi load xong account
+        });
+
+        // Hàm lấy giá trị từ URL và gán lại vào input
+        async function restoreFilters() {
+            const urlParams = new URLSearchParams(window.location.search);
+
+            const accountId = urlParams.get('AccountId');
+
+            if (accountId) {
+                try {
+                    const data = await $.ajax({
+                        url: "/Account/Paging",
+                        type: "GET",
+                        data: { AccountId: accountId, PageSize: 1 }
+                    });
+
+                    if (data && data.Items && data.Items.length > 0) {
+                        const item = data.Items[0];
+
+                        const option = new Option(item.Username, item.Id, true, true);
+                        $('#username').append(option).trigger('change');
+                    }
+                } catch (err) {
+                    console.error("Load Account lỗi:", err);
+                }
+            }
+            $('#barCode').val(urlParams.get('Barcode') || '');
+            $('#bigPackageName').val(urlParams.get('BigPackageName') || '');
+            $('#status').val(urlParams.get('Status') || '');
+            $('#postOffice').val(urlParams.get('PostOffice') || $('#postOffice').val());
+            $('#shipId').val(urlParams.get('ShipId') || $('#shipId').val());
+            const isNotAccount = urlParams.get('IsNotAccount');
+            const isOutStock = urlParams.get('IsOutStock');
+
+            if (isNotAccount !== null) {
+                $('#isNotAccount').prop('checked', isNotAccount === 'true');
+            }
+
+            if (isOutStock !== null) {
+                $('#isOutStock').prop('checked', isOutStock === 'true');
+            }
+
+            const fromDate = urlParams.get('FromDate');
+            const toDate = urlParams.get('ToDate');
+
+            if (fromDate) $('#fromDate').val(formatDateForInput(new Date(fromDate)));
+            if (toDate) $('#toDate').val(formatDateForInput(new Date(toDate)));
+
+            $('#filterDay').val(urlParams.get('FilterDay') || '');
+
+            const page = urlParams.get('PageIndex');
+            loadPage(page);
+        }
+
+        function loadPage(page) {
+            const fromDateInput = $('#fromDate').val();
+            const toDateInput = $('#toDate').val();
+            const fromDate = fromDateInput ? parseDate(fromDateInput) : null;
+            const toDate = toDateInput ? parseDate(toDateInput) : null;
+
+            const params = new URLSearchParams();
+
+            // Danh sách các input cần kiểm tra
+            const filters = {
+                'PageIndex': page > 1 ? page : null,
+                'AccountId': $('#username').val() || null,
+                'Barcode': $('#barCode').val(),
+                'BigPackageName': $('#bigPackageName').val() || null,
+                'Status': $('#status').val(),  // Giữ giá trị 0 nếu có
+                'FromDate': fromDate ? fromDate : '',
+                'ToDate': toDate ? toDate : '',
+                'PostOffice': $('#postOffice').val() || null,
+                'ShipId': $('#shipId').val() || null,
+                'IsNotAccount': $('#isNotAccount').length && $('#isNotAccount').prop('checked') ? true : null,
+                'IsOutStock': $('#isOutStock').length && $('#isOutStock').prop('checked') ? true : null,
+                'FilterDay': $('#filterDay').val(),
+            };
+
+            // Chỉ thêm vào query string nếu giá trị không phải null hoặc chuỗi rỗng
+            Object.keys(filters).forEach(key => {
+                if (filters[key] !== null && filters[key] !== '') {
+                    params.set(key, filters[key]);
+                }
+            });
+
+            // Nếu có query string thì thêm vào URL, nếu không thì đặt lại về `/Transportation`
+            const queryString = params.toString();
+            const newUrl = queryString ? '?' + queryString : 'transportation';
+
+            history.pushState({}, '', newUrl);
+
+            $.ajax({
+                url: '/Transportation/GetTransportationPaging?' + queryString,
+                type: 'GET',
+                success: function (data) {
+                    $('#table-container').html(data);
+                },
+                error: function () {
+                    alert('Lỗi khi tải dữ liệu');
+                }
+            });
+        }
+
+        function exportList() {
+            const fromDateInput = $('#fromDate').val();
+            const toDateInput = $('#toDate').val();
+            const fromDate = fromDateInput ? parseDate(fromDateInput) : null;
+            const toDate = toDateInput ? parseDate(toDateInput) : null;
+
+            const params = new URLSearchParams();
+
+            const filters = {
+                'AccountId': $('#username').val() || null,
+                'Barcode': $('#barCode').val(),
+                'BigPackageName': $('#bigPackageName').val() || null,
+                'Status': $('#status').val(),  // Giữ giá trị 0 nếu có
+                'FromDate': fromDate ? fromDate : '',
+                'ToDate': toDate ? toDate : '',
+                'PostOffice': $('#postOffice').val() || null,
+                'ShipId': $('#shipId').val() || null,
+                'IsNotAccount': $('#isNotAccount').length && $('#isNotAccount').prop('checked') ? true : null,
+                'IsOutStock': $('#isOutStock').length && $('#isOutStock').prop('checked') ? true : null
+            };
+
+            Object.keys(filters).forEach(key => {
+                if (filters[key] !== null && filters[key] !== '') {
+                    params.set(key, filters[key]);
+                }
+            });
+
+            const queryString = params.toString();
+            const newUrl = queryString ? '?' + queryString : '';
+
+            fetch('/Transportation/Export' + newUrl)
+                .then(response => response.blob())
+                .then(blob => {
+                    const url = window.URL.createObjectURL(blob);
+                    const a = document.createElement('a');
+                    a.href = url;
+                    a.download = "Đơn hàng.xlsx";
+                    document.body.appendChild(a);
+                    a.click();
+                    document.body.removeChild(a);
+                })
+                .catch(error => console.error("Lỗi khi tải file mẫu:", error));
+        }
+        function deleteTransportation(transportationId) {
+            showConfirmModal('Bạn chắc chắn muốn hủy đơn ký gửi này?', function () {
+                disableButton();
+                $.ajax({
+                    url: '/Transportation/Cancel',
+                    data: { Id: transportationId },
+                    type: 'PUT',
+                    success: function (response) {
+                        showToast(response.Message, response.Type, true);
+                    },
+                    error: function (response) {
+                        showToast(response.responseJSON.Message, response.responseJSON.Type, false);
+                    },
+                    complete: function () {
+                        enableButton();
+                    }
+                });
+            });
+        }
+
+        function deleteFilterd() {
+            const fromDateInput = $('#fromDate').val();
+            const toDateInput = $('#toDate').val();
+            const fromDate = fromDateInput ? parseDate(fromDateInput) : null;
+            const toDate = toDateInput ? parseDate(toDateInput) : null;
+            const request = {
+                AccountId: $('#username').val() || null,
+                Barcode: $('#barcode').val(),
+                BigPackageName: $('#bigPackageName').val(),
+                Status: $('#status').val() ? parseInt($('#status').val()) : null,
+                FromDate: fromDate ? fromDate : null,
+                ToDate: toDate ? toDate : null,
+                PostOffice: $('#postOffice').val() || null,
+                ShipId: $('#shipId').val() || null,
+                IsNotAccount: $('#isNotAccount').length && $('#isNotAccount').prop('checked') ? true : null,
+                IsOutStock: $('#isOutStock').length && $('#isOutStock').prop('checked') ? true : null
+            };
+            showConfirmModal(`Bạn chắc chắn xóa dữ liệu`, function () {
+                showLoading();
+                $.ajax({
+                    url: '/Transportation/DeleteFilterd',
+                    data: JSON.stringify(request),
+                    contentType: 'application/json',
+                    dataType: 'json',
+                    type: 'DELETE',
+                    success: function (response) {
+                        showToast(response.Message, response.Type, true);
+                    },
+                    error: function (response) {
+                        showToast(response.responseJSON.Message, response.responseJSON.Type, false);
+                    },
+                    complete: function () {
+                        hideLoading();
+                    }
+                });
+            });
+        }
+        function deleteSelected() {
+            const $rows = $('.waybillCheckbox:checked').closest('tr');
+            const ids = $rows.map((_, tr) => $(tr).attr('item-id')).get();   // [1,2,3]
+
+            if (ids.length === 0) return;
+            showConfirmModal(`Bạn chắc chắn xóa dữ liệu`, function () {
+                showLoading();
+                $.ajax({
+                    url: '/Transportation/DeleteSelected',
+                    data: JSON.stringify(ids),
+                    contentType: 'application/json',
+                    type: 'DELETE',
+                    dataType: 'json',
+                    success: function (response) {
+                        showToast(response.Message, response.Type, true);
+                    },
+                    error: function (response) {
+                        showToast(response.responseJSON.Message, response.responseJSON.Type, false);
+                    },
+                    complete: function () {
+                        hideLoading();
+                    }
+                });
+            });
+        }
+        var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+        tooltipTriggerList.forEach(function (tooltipTriggerEl) {
+            new bootstrap.Tooltip(tooltipTriggerEl)
+        })
+        $('#toggleFilterButton').on('click', function () {
+            $('#filterContainer').toggle();
+            let isVisible = $('#filterContainer').is(':visible');
+            $(this).text(isVisible ? 'Ẩn bộ lọc' : 'Hiện bộ lọc');
+        });
+        $(document).on('change', '.waybillCheckbox', function () {
+            const anyChecked = $('.waybillCheckbox:checked').length > 0;
+            $('#btnDeleteSelected').toggleClass('d-none', !anyChecked);
+        });
+        $("#username").select2({
+            placeholder: "Chọn username",
+            allowClear: true,
+            theme: "bootstrap-5",
+            ajax: {
+                url: "/Account/Paging",
+                dataType: 'json',
+                delay: 250,
+                data: function (params) {
+                    return {
+                        Username: params.term || '',
+                        PageIndex: params.page || 1,
+                        PageSize: 10
+                    };
+                },
+                processResults: function (data, params) {
+                    return {
+                        results: data.Items.map(item => ({
+                            id: item.Id,
+                            text: item.Username
+                        })),
+                        pagination: {
+                            more: data.PageIndex < data.TotalPage && params.term
+                        }
+                    };
+                },
+                cache: true
+            }
+        });
+
+        document.getElementById('shipId').addEventListener('change', function () {
+            const btn = document.getElementById('btnExportSpecialFile');
+
+            if (this.value === '5') {
+                btn.classList.remove('d-none');
+            } else {
+                btn.classList.add('d-none');
+            }
+        });
+
+        function exportSpecialFile() {
+            const fromDateInput = $('#fromDate').val();
+            const toDateInput = $('#toDate').val();
+            const fromDate = fromDateInput ? parseDate(fromDateInput) : null;
+            const toDate = toDateInput ? parseDate(toDateInput) : null;
+
+            const params = new URLSearchParams();
+
+            const filters = {
+                'AccountId': $('#username').val() || null,
+                'Barcode': $('#barCode').val(),
+                'BigPackageName': $('#bigPackageName').val() || null,
+                'Status': $('#status').val(),  // Giữ giá trị 0 nếu có
+                'FromDate': fromDate ? fromDate : '',
+                'ToDate': toDate ? toDate : '',
+                'PostOffice': $('#postOffice').val() || null,
+                'ShipId': 5,
+                'IsNotAccount': $('#isNotAccount').length && $('#isNotAccount').prop('checked') ? true : null,
+                'IsOutStock': $('#isOutStock').length && $('#isOutStock').prop('checked') ? true : null
+            };
+
+            Object.keys(filters).forEach(key => {
+                if (filters[key] !== null && filters[key] !== '') {
+                    params.set(key, filters[key]);
+                }
+            });
+
+            const queryString = params.toString();
+            const newUrl = queryString ? '?' + queryString : '';
+
+            fetch('/Transportation/ExportSpecialFile' + newUrl)
+                .then(response => response.blob())
+                .then(blob => {
+                    const url = window.URL.createObjectURL(blob);
+                    const a = document.createElement('a');
+                    a.href = url;
+                    a.download = "Đơn chính ngạch.xlsx";
+                    document.body.appendChild(a);
+                    a.click();
+                    document.body.removeChild(a);
+                })
+                .catch(error => console.error("Lỗi khi tải file mẫu:", error));
+        }
+    </script>
+    <style>
+        [data-bs-toggle="tooltip"] {
+            cursor: pointer;
+        }
+    </style>
+}

@@ -1,0 +1,486 @@
+﻿@using WebMVC.Models.Responses;
+@using WebMVC.Ultilities.Enums
+@model TrackingResponse;
+
+<div id="trackingContent">
+    <div class="row">
+        <div class="col-md-6">
+            <div class="card mb-4 p-3">
+                <h6 class="text-primary fw-bold">Tracking</h6>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-2">
+                        </div>
+                        <div class="col-md-2">
+                            <select class="form-select" id="toSelect" style="width:100%"></select>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="input-group mb-4">
+                                <input type="text" class="form-control" id="barcode" placeholder="Nhập mã vận đơn" value="@Model?.Barcode">
+                                <button class="btn btn-primary" onclick="searchTracking()">Tra cứu</button>
+                            </div>
+                        </div>
+                        <div class="col-md-2"></div>
+
+                    </div>
+                    <!-- Form tra cứu -->
+                    @if (Model.Id > 0)
+                    {
+                        <!-- Timeline trạng thái -->
+                        <div class="timeline d-flex flex-wrap justify-content-between align-items-center position-relative">
+                            @foreach (var status in Enum.GetValues(typeof(ETransportationStatus)).Cast<ETransportationStatus>())
+                            {
+                                if (status == ETransportationStatus.Cancel)
+                                    continue;
+                                var isActive = (int)status <= Model.Status ? "active" : "";
+                                <div class="step @isActive text-center flex-fill">
+                                    @switch (status)
+                                    {
+                                        case ETransportationStatus.New:
+                                            <div class="icon rounded-circle mx-auto">
+                                                <i class="bi bi-clipboard-check"></i>
+                                            </div>
+                                            <p class="mt-2">@ETransportationStatusName.GetStatusName((int)ETransportationStatus.New)</p>
+                                            <p class="mt-2">@Model.Created.ToString("dd/MM/yyyy HH:mm")</p>
+                                            break;
+                                        case ETransportationStatus.ArrivedAtTQWarehouse:
+                                            <div class="icon rounded-circle mx-auto">
+                                                <i class="bi bi-box-arrow-in-down"></i>
+                                            </div>
+                                            <p class="mt-2">@ETransportationStatusName.GetStatusName((int)ETransportationStatus.ArrivedAtTQWarehouse)</p>
+                                            <p class="mt-2">@(!string.IsNullOrEmpty(Model.DateArrivedAtTQWarehouse?.ToString()) ? Model.DateArrivedAtTQWarehouse?.ToString("dd/MM/yyyy HH:mm") : "---")</p>
+                                            break;
+                                        case ETransportationStatus.ExitedFromTQWarehouse:
+                                            <div class="icon rounded-circle mx-auto">
+                                                <i class="bi bi-truck"></i>
+                                            </div>
+                                            <p class="mt-2">@ETransportationStatusName.GetStatusName((int)ETransportationStatus.ExitedFromTQWarehouse)</p>
+                                            <p class="mt-2">@(!string.IsNullOrEmpty(Model.DateExitedFromTQWarehouse?.ToString()) ? Model.DateExitedFromTQWarehouse?.ToString("dd/MM/yyyy HH:mm") : "---")</p>
+                                            break;
+                                        case ETransportationStatus.CustomsInspectedGoods:
+                                            <div class="icon rounded-circle mx-auto">
+                                                <i class="bi bi-truck"></i>
+                                            </div>
+                                            <p class="mt-2">@ETransportationStatusName.GetStatusName((int)ETransportationStatus.CustomsInspectedGoods)</p>
+                                            <p class="mt-2">@(!string.IsNullOrEmpty(Model.DateCustomsInspectedGoods?.ToString()) ? Model.DateCustomsInspectedGoods?.ToString("dd/MM/yyyy HH:mm") : "---")</p>
+                                            break;
+                                        case ETransportationStatus.ReturningToVNWarehouse:
+                                            <div class="icon rounded-circle mx-auto">
+                                                <i class="bi bi-box-arrow-in-right"></i>
+                                            </div>
+                                            <p class="mt-2">@ETransportationStatusName.GetStatusName((int)ETransportationStatus.ReturningToVNWarehouse)</p>
+                                            <p class="mt-2">@(!string.IsNullOrEmpty(Model.DateReturningToVNWarehouse?.ToString()) ? Model.DateReturningToVNWarehouse?.ToString("dd/MM/yyyy HH:mm") : "---")</p>
+                                            break;
+                                        case ETransportationStatus.ArrivedAtVNWarehouse:
+                                            <div class="icon rounded-circle mx-auto">
+                                                <i class="bi bi-box-arrow-in-right"></i>
+                                            </div>
+                                            <p class="mt-2">@ETransportationStatusName.GetStatusName((int)ETransportationStatus.ArrivedAtVNWarehouse)</p>
+                                            <p class="mt-2">@(!string.IsNullOrEmpty(Model.DateArrivedAtVNWarehouse?.ToString()) ? Model.DateArrivedAtVNWarehouse?.ToString("dd/MM/yyyy HH:mm") : "---")</p>
+                                            break;
+                                        case ETransportationStatus.Completed:
+                                            <div class="icon rounded-circle mx-auto">
+                                                <i class="bi bi-check-circle"></i>
+                                            </div>
+                                            <p class="mt-2">@ETransportationStatusName.GetStatusName((int)ETransportationStatus.Completed)</p>
+                                            <p class="mt-2">@(!string.IsNullOrEmpty(Model.DateCompleted?.ToString()) ? Model.DateCompleted?.ToString("dd/MM/yyyy HH:mm") : "---")</p>
+                                            break;
+                                    }
+                                </div>
+                            }
+                        </div>
+
+                        <!-- Thông tin vận chuyển -->
+                        <div class="mb-4 row">
+                            <div class="col-6">
+                                <p><strong>Kho gửi:</strong> @Model.WarehouseFrom</p>
+                                <p><strong>Kho TQ:</strong> @Model.WarehouseTo</p>
+                                <p><strong>Hình thức vận chuyển:</strong> @Model.ShipName</p>
+                                <p><strong>Thông tin hàng:</strong> @Model.Weight (kg) - @Model.Volume (m3) - @Model.Quantity (kiện)</p>
+                            </div>
+                            <div class="col-6">
+                                <p>
+                                    <strong>Ảnh SP:</strong>
+                                    @if (!string.IsNullOrEmpty(Model.UserUploadImage))
+                                    {
+                                        var images = Model.UserUploadImage.Split("|");
+                                        foreach (var image in images)
+                                        {
+                                            <img src="@image" alt="" style="max-width: 10rem; border-radius: 8px;cursor: pointer;" onclick="window.open(this.src)">
+                                        }
+                                    }
+                                </p>
+
+                            </div>
+                        </div>
+                    }
+                    else
+                    {
+                        <p class="d-flex justify-content-center">Vui lòng nhập mã vận đơn để tra cứu thông tin.</p>
+                    }
+                    @if (Model?.ShipId == 5)
+                    {
+                        <div class="col-12 mt-4 table-content">
+                            <table class="table table-bordered">
+                                <thead class="table-light">
+                                    <tr>
+                                        <th><span class="required-mark">* </span>Tên hàng</th>
+                                        <th><span class="required-mark">* </span>Số lượng</th>
+                                        <th><span class="required-mark">* </span>Kích thước</th>
+                                        <th><span class="required-mark">* </span>Công suất điện áp, chất liệu</th>
+                                        <th colspan="2"><span class="required-mark">* </span>Hình ảnh</th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var item in Model.Products)
+                                    {
+                                        <tr>
+                                            <td>
+                                                <input type="text" class="form-control productName" value="@item.Name" required>
+                                            </td>
+                                            <td>
+                                                <input type="number" class="form-control productQuantity" value="@item.Quantity" min="1" required>
+                                            </td>
+                                            <td>
+                                                <input type="text" class="form-control productDimensions" value="@item.Dimensions" required>
+                                            </td>
+                                            <td>
+                                                <input type="text" class="form-control productOtherInfor" value="@item.OtherInfor" required>
+                                            </td>
+                                            <td>
+                                                <img src="@item.Image" alt="" style="max-width: 5rem; border-radius: 8px;cursor: pointer;" onclick="window.open(this.src)">
+                                            </td>
+                                            <td>
+                                                <input type="file" class="form-control productImage" accept=".jpg, .jpeg, .png, .gif" required>
+                                            </td>
+                                            <td>
+                                                <button class="btn btn-sm btn-warning w-100 update-button" data-id="@item.Id">Cập nhật</button>
+                                            </td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    }
+                </div>
+            </div>
+
+        </div>
+        <div class="col-md-6">
+            <div class="card mb-4 p-3">
+                <h6 class="text-primary fw-bold ">Tính phí</h6>
+                <div class="row">
+                    
+                    <div class="col-md-4">
+                        <select class="form-select" id="toSelectCal" style="width:100%"></select>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="input-group mb-4">
+                            <input type="text" class="form-control" id="barcodeCal" placeholder="Nhập mã vận đơn" value="@Model?.Barcode">
+                        </div>
+                    </div>
+                    <div class="col-md-2"></div>
+
+                </div>
+
+                <div class="col-12  table-content">
+                    <table class="table table-bordered">
+                        <thead class="table-light">
+                            <tr>
+                                <th>Tên hàng</th>
+                                <th>Tổng tiền + <br> ship nội địa TQ (Tệ)</th>
+                                <th>Cân nặng (Kg)</th>
+                                <th>Số khối (m3)</th>
+                                <th>Phí ship quốc tế <br>(KG/VNĐ)</th>
+                                <th>Phí ship quốc tế <br>(m3/VNĐ)</th>
+                                <th>Số lượng <br>(chiếc)</th>
+                                <th>Ship nội địa VN <br>(nếu có)</th>
+                                <th>Đơn giá <br>(Tệ)</th>
+                                <th>Đơn giá <br>về tay (VNĐ)</th>
+                                <th>Ghi chú</th>
+                                <th>Thao tác</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><input id="ProductName" class="form-control" /></td>
+                                <td><input id="TotalShip" type="number" class="form-control" value="0" /></td>
+                                <td><input id="Weight" type="number" class="form-control" value="0" /></td>
+                                <td><input id="Volume" type="number" class="form-control" value="0" /></td>
+                                <td><input id="ShipVN" type="number" class="form-control" value="0" /></td>
+                                <td><input id="ShipVNVolume" type="number" class="form-control" value="0" /></td>
+                                <td><input id="Number" type="number" class="form-control" value="1" /></td>
+                                <td><input id="ShipInVN" type="number" class="form-control" value="0" /></td>
+                                <td><input id="UnitPrice" type="number" class="form-control" readonly /></td>
+                                <td><input id="TotalPrice" type="number" class="form-control" readonly /></td>
+                                <td><input id="Note" class="form-control" /></td>
+                                <td>
+                                    <button type="button" class="btn btn-primary" onclick="calculateTracking()">Tính</button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+</div>
+<!-- Script remains unchanged -->
+<style>
+    .timeline {
+        display: flex;
+        justify-content: space-between;
+        position: relative;
+        flex-wrap: wrap;
+    }
+
+    .step {
+        flex: 1;
+        text-align: center;
+        position: relative;
+        z-index: 2;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 20px; /* Add some space for mobile view */
+    }
+
+        .step .icon {
+            width: 50px;
+            height: 50px;
+            line-height: 50px;
+            background-color: #ddd;
+            color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 24px;
+            margin: 0 auto;
+            border: 2px solid #ddd;
+            transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+            position: relative;
+        }
+
+        .step.active .icon {
+            background-color: #ff5722;
+            color: white;
+            border-color: #ff5722;
+        }
+
+        .step p {
+            margin-top: 8px;
+            font-size: 14px;
+            color: #333;
+        }
+
+        /* Đoạn đường nối */
+        .step:not(:last-child)::after {
+            content: '';
+            position: absolute;
+            top: 20%;
+            right: -50%;
+            width: 100%;
+            height: 2px;
+            background-color: #ddd;
+            z-index: -1;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+        }
+
+        .step.active::after {
+            background-color: #ff5722;
+        }
+
+
+
+        .step.active::before {
+            background-color: #ff5722;
+        }
+
+    /* Responsive styling for smaller screens */
+    @@media (max-width: 768px) {
+        .step {
+            flex: 0 0 48%; /* Two items per row */
+            margin-bottom: 20px;
+        }
+
+        .timeline {
+            flex-direction: column;
+        }
+        /* Xoay đường nối xuống dưới khi màn hình nhỏ */
+        .step:not(:last-child)::after {
+            transform: rotate(90deg);
+            transform-origin: center center;
+            position: unset;
+        }
+    }
+
+    @@media (max-width: 480px) {
+        .step {
+            flex: 0 0 100%; /* One item per row */
+        }
+
+        .timeline {
+            flex-direction: column;
+        }
+
+        .step:not(:last-child)::after {
+            transform: rotate(90deg);
+            transform-origin: center center;
+            position: unset;
+        }
+    }
+</style>
+
+<script>
+    function searchTracking() {
+        const barcode = document.getElementById('barcode').value.trim();
+        $.ajax({
+            url: '/Tracking/IndexContent',
+            type: 'GET',
+            data: { barcode: barcode },
+            success: function (html) {
+                // Giả sử phần partial nằm trong div có id="trackingContent"
+                $('#trackingContent').html(html);
+            },
+            error: function (xhr) {
+                console.error("Lỗi khi load partial:", xhr.responseText);
+            }
+        });
+    }
+
+    $(document).ready(function () {
+        const barcode = document.getElementById('barcode').value.trim();
+        if (barcode) {
+            getTracking(barcode);
+        }
+        $.ajax({
+            url: '@Url.Action("GetActive", "Warehouse")',
+            type: 'GET',
+            dataType: 'json',
+            success: function (data) {
+                var toSelect = $('#toSelect');
+                toSelect.empty();
+                var toSelectCal = $('#toSelectCal');
+                toSelectCal.empty();
+                $.each(data, function (index, item) {
+                    switch (item.Type) {
+                        case 2:
+                            toSelect.append($('<option>', {
+                                value: item.Id,
+                                text: item.Name
+                            }));
+                            toSelectCal.append($('<option>', {
+                                value: item.Id,
+                                text: item.Name
+                            }));
+                            break;
+                        default:
+                            break;
+                    }
+                });
+            },
+            error: function (xhr, status, error) {
+                console.log("Lỗi gọi API:", xhr.responseText);
+            }
+        });
+    });
+
+    function calculateTracking() {
+        const data = {
+            ProductName: $('#ProductName').val(),
+            TotalShip: parseFloat($('#TotalShip').val()),
+            TotalWeight: parseFloat($('#Weight').val()),
+            TotalVolume: parseFloat($('#Volume').val()),
+            ShipInVn: parseFloat($('#ShipInVN').val()),
+            Number: parseInt($('#Number').val()),
+            Note: $('#Note').val(),
+            Warehouse: $('#toSelectCal').val(),
+            Barcode: document.getElementById('barcodeCal').value.trim()
+        };
+
+        $.ajax({
+            url: '@Url.Action("CalculateTracking", "Tracking")',
+            type: 'POST',
+            data: JSON.stringify(data),
+            contentType: 'application/json',
+            success: function (res) {
+                $('#ShipVN').val(res.ShipVn);
+                $('#ShipVNVolume').val(res.ShipVnVolume);
+                $('#UnitPrice').val(res.UnitPrice);
+                $('#TotalPrice').val(res.TotalPrice);
+            },
+            error: function (xhr, status, error) {
+                console.log("Lỗi gọi API:", xhr.responseText);
+            }
+        });
+    }
+
+    function getTracking(barcode) {
+        $.ajax({
+            url: '@Url.Action("GetTracking", "Tracking")',
+            type: 'GET',
+            data: { Barcode: barcode },
+            success: function (res) {
+                $('#ProductName').val(res.ProductName);
+                $('#TotalShip').val(res.TotalShip);
+                $('#Weight').val(res.Weight);
+                $('#Volume').val(res.Volume);
+                $('#ShipVN').val(res.ShipVn);
+                $('#ShipVNVolume').val(res.ShipVnVolume);
+                $('#Number').val(res.Number);
+                $('#ShipInVN').val(res.ShipInVn);
+                $('#UnitPrice').val(res.UnitPrice);
+                $('#TotalPrice').val(res.TotalPrice);
+                $('#Note').val(res.Note);
+            },
+            error: function (xhr, status, error) {
+                console.log("Lỗi gọi API:", xhr.responseText);
+            }
+        });
+    }
+
+    $(document).on("click", ".update-button", function () {
+        const id = $(this).data("id");
+        const current = $(this).closest("tr");
+
+        const name = current.find(".productName").val()?.trim();
+        const quantity = parseInt(current.find(".productQuantity").val()) || 0;
+        const dimensions = current.find(".productDimensions").val()?.trim();
+        const otherInfor = current.find(".productOtherInfor").val()?.trim();
+        const imageInput = current.find(".productImage")[0];
+
+        const formData = new FormData();
+        formData.append("Id", id);
+        formData.append("Name", name);
+        formData.append("Quantity", quantity);
+        formData.append("Dimensions", dimensions);
+        formData.append("OtherInfor", otherInfor);
+
+        if (imageInput?.files?.length > 0) {
+            formData.append("ImageFile", imageInput.files[0]);
+        }
+
+        $.ajax({
+            url: `/Tracking/UpdateProduct`,
+            type: 'POST', // Đổi từ PUT → POST
+            data: formData,
+            processData: false,
+            contentType: false,
+            success: function (response) {
+                showToast(response.Message, response.Type, true);
+            },
+            error: function (response) {
+                showToast(response.responseJSON?.Message || "Lỗi không xác định", response.responseJSON?.Type || 2, false);
+                console.error(response);
+            }
+        });
+    });
+
+</script>
+

@@ -1,0 +1,553 @@
+﻿@using WebMVC.Models.Responses
+@using WebMVC.Interfaces
+@using WebMVC.Ultilities.Enums
+@{
+    ViewData["Title"] = "Danh sách phiên xuất kho";
+}
+<script src="~/js/printOutStock.js?v=@DateTime.Now.Ticks"></script>
+
+<div class="container-fluid mt-4">
+    <div class="card mb-4">
+        <div class="card-header d-flex justify-content-between align-items-center">
+            <h2>Danh sách phiên xuất kho</h2>
+            <button id="toggleFilterButton" class="btn btn-primary">Ẩn bộ lọc</button>
+        </div>
+        <div class="card-body" id="filterContainer">
+            <div class="row">
+                <div class="col-md-3">
+                    <label for="id" class="form-label">Mã phiếu</label>
+                    <input type="text" class="form-control" id="id" name="id" placeholder="">
+                </div>
+                <div class="col-md-3">
+                    <label for="barCode" class="form-label">Mã vận đơn</label>
+                    <input type="text" class="form-control" id="barCode" name="barCode" placeholder="">
+                </div>
+                <div class="col-md-3">
+                    <label for="username" class="form-label">Username</label>
+@*                     <select class="form-select" id="username" style="width:100%" name="Username"></select>*@
+                    <input type="text" class="form-control" id="username" name="username" placeholder="">
+                </div>
+                <div class="col-md-3">
+                    <label for="postOffice" class="form-label">Bưu cục</label>
+                    <select id="postOffice" class="form-select" name="postOffice">
+                        <option value="">
+                            Tất cả
+                        </option>
+                        @foreach (var status in PostOfficeName.GetPostOffice())
+                        {
+                            <option value="@status">
+                                @status
+                            </option>
+                        }
+                    </select>
+                </div>
+            </div>
+            <div class="row pt-2">
+                <div class="col-md-3">
+                    <label for="status" class="form-label">Trạng thái xuất kho</label>
+                    <select id="status" class="form-select" name="Status">
+                        <option value="">
+                            Tất cả
+                        </option>
+                        @foreach (var status in Enum.GetValues(typeof(EOutOfStockStatus)).Cast<EOutOfStockStatus>())
+                        {
+                            var statusValue = (int)status;
+                            var statusName = EOutOfStockStatusName.GetStatusName(statusValue);
+                            <option value="@statusValue">
+                                @statusName
+                            </option>
+                        }
+                    </select>
+                </div>
+                <div class="col-md-3">
+                    <label for="statusPayment" class="form-label">Trạng thái thanh toán</label>
+                    <select id="statusPayment" class="form-select" name="StatusPayment">
+                        <option value="">
+                            Tất cả
+                        </option>
+                        @foreach (var status in Enum.GetValues(typeof(EPaymentOutOfStockStatus)).Cast<EPaymentOutOfStockStatus>())
+                        {
+                            var statusValue = (int)status;
+                            var statusName = EPaymentOutOfStockStatusName.GetStatusName(statusValue);
+                            <option value="@statusValue">
+                                @statusName
+                            </option>
+                        }
+                        <option value="100">
+                            Đã yêu cầu
+                        </option>
+                    </select>
+                </div>
+                <div class="col-md-3">
+                    <label for="fromDate" class="form-label">Từ ngày</label>
+                    <input type="text" class="form-control datepicker" id="fromDate" name="fromDate" placeholder="">
+                </div>
+                <div class="col-md-3">
+                    <label for="toDate" class="form-label">Đến ngày</label>
+                    <input type="text" class="form-control datepicker" id="toDate" name="toDate" placeholder="">
+                </div>
+            </div>
+            <div class="row pt-2">
+                <div class="col-md-9 d-flex align-items-end gap-3">
+                    <button type="button" class="btn btn-success d-none" onclick="sendNotificationSelected()" id="btnSendNotificationSelected">Gửi thông báo</button>
+                    <button type="button" class="btn btn-success d-none" onclick="exportOutOfStockSelected()" id="btnExportOutOfStockSelected">In phiếu đã chọn</button>
+                    <button type="button" class="btn btn-success d-none" onclick="printTempOutOfStockSelected()" id="btnPrintTempOutOfStockSelected">In phiếu tạm đã chọn</button>
+                    <span id="txtTotalItem"></span>
+                    <span id="txtTotalPriceVNDSelected"></span>
+                </div>
+                <div class="text-end col-md-3">
+                    <button type="button" class="btn btn-primary btn-search" onclick="loadPage(1)">Tìm kiếm</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    @await Html.PartialAsync("_ManageOutOfStockTable", new List<ManageOutOfStockResponse>())
+</div>
+<style>
+    #txtTotalPriceVNDSelected {
+        font-weight: bold;
+        color: #dc3545; /* đỏ Bootstrap */
+        font-size: 16px;
+        align-self: center; /* nằm giữa theo chiều dọc */
+        white-space: nowrap;
+    }
+
+    #txtTotalItem {
+        font-weight: bold;
+        color: #dc3545; /* đỏ Bootstrap */
+        font-size: 16px;
+        align-self: center; /* nằm giữa theo chiều dọc */
+        white-space: nowrap;
+    }
+
+</style>
+@section Scripts {
+    <script>
+        $(document).ready(async function () {
+            await restoreFilters(); // đợi load xong account
+        });
+        $(document).on('change', '.waybillCheckbox', function () {
+            const anyChecked = $('.waybillCheckbox:checked').length > 0;
+            $('#btnSendNotificationSelected').toggleClass('d-none', !anyChecked);
+            $('#btnExportOutOfStockSelected').toggleClass('d-none', !anyChecked);
+            $('#btnPrintTempOutOfStockSelected').toggleClass('d-none', !anyChecked);
+            calcTotalPriceSelected();
+        });
+        // Hàm lấy giá trị từ URL và gán lại vào input
+        async function restoreFilters() {
+            const urlParams = new URLSearchParams(window.location.search);
+
+            // const accountId = urlParams.get('AccountId');
+
+            // if (accountId) {
+            //     try {
+            //         const data = await $.ajax({
+            //             url: "/Account/Paging",
+            //             type: "GET",
+            //             data: { AccountId: accountId, PageSize: 1 }
+            //         });
+
+            //         if (data && data.Items && data.Items.length > 0) {
+            //             const item = data.Items[0];
+
+            //             const option = new Option(item.Username, item.Id, true, true);
+            //             $('#username').append(option).trigger('change');
+            //         }
+            //     } catch (err) {
+            //         console.error("Load Account lỗi:", err);
+            //     }
+            // }
+
+            $('#username').val(urlParams.get('Username') || '');
+            $('#barCode').val(urlParams.get('Barcode') || '');
+            $('#id').val(urlParams.get('Id') || '');
+            $('#status').val(urlParams.get('Status') || '');
+            $('#statusPayment').val(urlParams.get('StatusPayment') || '');
+            $('#postOffice').val(urlParams.get('PostOffice') || '');
+
+            const fromDate = urlParams.get('FromDate');
+            const toDate = urlParams.get('ToDate');
+
+            if (fromDate) $('#fromDate').val(formatDateForInput(new Date(fromDate)));
+            if (toDate) $('#toDate').val(formatDateForInput(new Date(toDate)));
+            const page = urlParams.get('PageIndex');
+            loadPage(page);
+
+        }
+        function loadPage(page) {
+            const fromDateInput = $('#fromDate').val();
+            const toDateInput = $('#toDate').val();
+            const fromDate = fromDateInput ? parseDate(fromDateInput) : null;
+            const toDate = toDateInput ? parseDate(toDateInput) : null;
+
+            const params = new URLSearchParams();
+
+            // Danh sách các input cần kiểm tra
+            const filters = {
+                'PageIndex': page > 1 ? page : null,
+                'Id': $('#id').val(),
+                // 'AccountId': $('#username').val(),
+                'Username': $('#username').val(),
+                'Barcode': $('#barCode').val(),
+                'Status': $('#status').val(),
+                'StatusPayment': $('#statusPayment').val(),
+                'FromDate': fromDate ? fromDate : '',
+                'ToDate': toDate ? toDate : '',
+                'PostOffice': $('#postOffice').val()
+            };
+
+            // Chỉ thêm vào query string nếu giá trị không phải null hoặc chuỗi rỗng
+            Object.keys(filters).forEach(key => {
+                if (filters[key] !== null && filters[key] !== '') {
+                    params.set(key, filters[key]);
+                }
+            });
+
+            const queryString = params.toString();
+            const newUrl = queryString ? '?' + queryString : 'out-of-stock-manage';
+
+            history.pushState({}, '', newUrl);
+
+            $.ajax({
+                url: '/OutOfStock/GetOutOfStockManagePaging?' + queryString,
+                type: 'GET',
+                success: function (data) {
+                    $('#table-container').html(data);
+                    formatAllInputs();
+                    bindInputMoneyEvents();
+                },
+                error: function () {
+                    alert('Lỗi khi tải dữ liệu');
+                }
+            });
+        }
+
+        function deleteOutOfStock(id) {
+            showConfirmModal('Bạn chắc chắn muốn hủy phiên xuất kho này?', function () {
+                disableButton();
+                $.ajax({
+                    url: '/OutOfStock/Cancel',
+                    data: { Id: id },
+                    type: 'PUT',
+                    success: function (response) {
+                        showToast(response.Message, response.Type, true);
+                    },
+                    error: function (response) {
+                        showToast(response.responseJSON.Message, response.responseJSON.Type, false);
+                    },
+                    complete: function () {
+                        enableButton();
+                    }
+                });
+            });
+        }
+
+        function updatePaied(id) {
+            showConfirmModal('Bạn xác nhận thanh toán phiên xuất kho này?', function () {
+                disableButton();
+                $.ajax({
+                    url: '/OutOfStock/Paied',
+                    data: { Id: id },
+                    type: 'PUT',
+                    success: function (response) {
+                        showToast(response.Message, response.Type, true);
+                    },
+                    error: function (response) {
+                        showToast(response.responseJSON.Message, response.responseJSON.Type, false);
+                    },
+                    complete: function () {
+                        enableButton();
+                    }
+                });
+            });
+        }
+
+        function exportOutOfStock(outOfStockId) {
+            showConfirmModal('Bạn chắc chắn muốn xuất kho phiếu này?', function () {
+                disableButton();
+                $.ajax({
+                    url: '/OutOfStock/Export',
+                    data: { Id: outOfStockId },
+                    type: 'POST',
+                    success: function (response) {
+                        showToast(response.Message, response.Type, true);
+                        printOutOfStock(outOfStockId);
+                    },
+                    error: function (response) {
+                        showToast(response.responseJSON.Message, response.responseJSON.Type, false);
+                    },
+                    complete: function () {
+                        enableButton();
+                    }
+                });
+            });
+        }
+
+        function sendDeliveryNote(outOfStockId) {
+            disableButton();
+            $.ajax({
+                url: '/OutOfStock/SendDeliveryNote',
+                data: { Id: outOfStockId },
+                type: 'PUT',
+                success: function (response) {
+                    showToast(response.Message, response.Type, true);
+                },
+                error: function (response) {
+                    showToast(response.responseJSON.Message, response.responseJSON.Type, false);
+                },
+                complete: function () {
+                    enableButton();
+                }
+            });
+        }
+
+        function updateDeliveryInfo(outOfStockId) {
+            var row = document.querySelector(`tr[out-stock-id='${outOfStockId}']`);
+            var deliveryInfo = row.querySelector(".deliveryInfo").value;
+            disableButton();
+            $.ajax({
+                url: `/OutOfStock/DeliveryInfo?id=${outOfStockId}`,
+                data: { deliveryInfo: deliveryInfo },
+                type: 'PUT',
+                success: function (response) {
+                    showToast(response.Message, response.Type, true);
+                },
+                error: function (response) {
+                    showToast(response.responseJSON.Message, response.responseJSON.Type, false);
+                },
+                complete: function () {
+                    enableButton();
+                }
+            });
+        }
+
+        function updateTotalPriceVND(outOfStockId) {
+            var row = document.querySelector(`tr[out-stock-id='${outOfStockId}']`);
+            var totalPriceVND = row.querySelector(".totalPriceVND").value;
+            disableButton();
+            $.ajax({
+                url: `/OutOfStock/TotalPriceVND?id=${outOfStockId}`,
+                data: { totalPriceVND: totalPriceVND },
+                type: 'PUT',
+                success: function (response) {
+                    showToast(response.Message, response.Type, true);
+                },
+                error: function (response) {
+                    showToast(response.responseJSON.Message, response.responseJSON.Type, false);
+                },
+                complete: function () {
+                    enableButton();
+                }
+            });
+        }
+
+        function updatePostOffice(outOfStockId) {
+            var row = document.querySelector(`tr[out-stock-id='${outOfStockId}']`);
+            var postOffice = row.querySelector(".postOffice").value;
+            disableButton();
+            $.ajax({
+                url: `/OutOfStock/PostOffice?id=${outOfStockId}`,
+                data: { postOffice: postOffice },
+                type: 'PUT',
+                success: function (response) {
+                    showToast(response.Message, response.Type, true);
+                },
+                error: function (response) {
+                    showToast(response.responseJSON.Message, response.responseJSON.Type, false);
+                },
+                complete: function () {
+                    enableButton();
+                }
+            });
+        }
+
+        function updatedeliveryMethod(outOfStockId) {
+            var row = document.querySelector(`tr[out-stock-id='${outOfStockId}']`);
+            var deliveryMethod = row.querySelector(".deliveryMethod").value;
+            disableButton();
+            $.ajax({
+                url: `/OutOfStock/DeliveryMethod?id=${outOfStockId}`,
+                data: { deliveryMethod: deliveryMethod },
+                type: 'PUT',
+                success: function (response) {
+                    showToast(response.Message, response.Type, true);
+                },
+                error: function (response) {
+                    showToast(response.responseJSON.Message, response.responseJSON.Type, false);
+                },
+                complete: function () {
+                    enableButton();
+                }
+            });
+        }
+
+        function updateTranportation(outOfStockId, barcode) {
+            var row1 = document.querySelector(`tr[transportation-barcode-1-out-stock-id-${outOfStockId}='${barcode}']`);
+            var weight = row1.querySelector(".weight").value;
+            var volume = row1.querySelector(".volume").value;
+            var row2 = document.querySelector(`tr[transportation-barcode-2-out-stock-id-${outOfStockId}='${barcode}']`);
+            var unitWeight = row2.querySelector(".unitWeight").value;
+            var unitVolume = row2.querySelector(".unitVolume").value;
+            const updateData = {
+                Barcode: barcode,
+                Weight: weight,
+                Volume: volume,
+                UnitWeight: unitWeight,
+                UnitVolume: unitVolume
+            };
+            disableButton();
+            $.ajax({
+                url: `/OutOfStock/UpdateTransportationAtOutOfStockManage?id=${outOfStockId}`,
+                data: { Request: updateData },
+                type: 'PUT',
+                success: function (response) {
+                    showToast(response.Message, response.Type, true);
+                },
+                error: function (response) {
+                    showToast(response.responseJSON.Message, response.responseJSON.Type, false);
+                },
+                complete: function () {
+                    enableButton();
+                }
+            });
+        }
+
+        function sendNotificationSelected() {
+            const $rows = $('.waybillCheckbox:checked').closest('tr');
+            const ids = $rows.map((_, tr) => $(tr).attr('out-stock-id')).get();   // [1,2,3]
+            if (ids.length === 0) return;
+            disableButton();
+            $.ajax({
+                url: '/OutOfStock/SendOutStockNoti',
+                data: JSON.stringify(ids),
+                contentType: 'application/json',
+                type: 'POST',
+                success: function (response) {
+                    showToast(response.Message, response.Type, true);
+                },
+                error: function (response) {
+                    showToast(response.responseJSON.Message, response.responseJSON.Type, false);
+                },
+                complete: function () {
+                    enableButton();
+                }
+            });
+        }
+
+        function printTempOutOfStockSelected() {
+            const $rows = $('.waybillCheckbox:checked').closest('tr');
+            const ids = $rows.map((_, tr) => $(tr).attr('out-stock-id')).get();   // [1,2,3]
+            if (ids.length === 0) return;
+            printTempSelected(ids);
+        }
+
+        function printTempSelected(ids) {
+            disableButton();
+            return $.ajax({
+                url: '/OutOfStock/PrintTempSelected',
+                data: { ids: ids },
+                traditional: true,
+                type: 'GET'
+            }).done(function (response) {
+                printInvoice(response.Data);
+            }).fail(function (response) {
+                showToast(response.responseJSON.Message, response.responseJSON.Type, false);
+            }).always(function () {
+                enableButton();
+            });
+        }
+
+        function exportOutOfStockSelected() {
+            const $rows = $('.waybillCheckbox:checked').closest('tr');
+            const ids = $rows.map((_, tr) => $(tr).attr('out-stock-id')).get();
+            if (ids.length === 0) return;
+
+            showConfirmModal('Bạn chắc chắn muốn xuất kho các phiếu này?', function () {
+                disableButton();
+                $.ajax({
+                    url: '/OutOfStock/ExportSelected',
+                    data: JSON.stringify(ids),
+                    contentType: 'application/json',
+                    type: 'POST'
+                }).done(function (response) {
+                    printTempSelected(ids).done(function () {
+                        showToast(response.Message, response.Type, true);
+                    });
+                }).fail(function (response) {
+                    showToast(response.responseJSON.Message, response.responseJSON.Type, false);
+                }).always(function () {
+                    enableButton();
+                });
+            });
+        }
+
+
+        $('#toggleFilterButton').on('click', function () {
+            $('#filterContainer').toggle();
+            let isVisible = $('#filterContainer').is(':visible');
+            $(this).text(isVisible ? 'Ẩn bộ lọc' : 'Hiện bộ lọc');
+        });
+
+        // $("#username").select2({
+        //     placeholder: "Chọn username",
+        //     allowClear: true,
+        //     theme: "bootstrap-5",
+        //     ajax: {
+        //         url: "/Account/Paging",
+        //         dataType: 'json',
+        //         delay: 250,
+        //         data: function (params) {
+        //             return {
+        //                 Username: params.term || '',
+        //                 PageIndex: params.page || 1,
+        //                 PageSize: 10
+        //             };
+        //         },
+        //         processResults: function (data, params) {
+        //             return {
+        //                 results: data.Items.map(item => ({
+        //                     id: item.Id,
+        //                     text: item.Username
+        //                 })),
+        //                 pagination: {
+        //                     more: data.PageIndex < data.TotalPage && params.term
+        //                 }
+        //             };
+        //         },
+        //         cache: true
+        //     }
+        // });
+
+        function formatMoney(v) {
+            return v.toLocaleString('vi-VN') + ' đ';
+        }
+
+        function calcTotalPriceSelected() {
+            let total = 0;
+
+            $('.waybillCheckbox:checked').each(function () {
+                const row = $(this).closest('tr');
+
+                let price = row.find('.totalPriceVND').val() || '0';
+
+                // bỏ dấu phẩy / chấm nếu có
+                price = price.replace(/,/g, '').replace(/\./g, '');
+
+                total += parseFloat(price) || 0;
+            });
+
+            if (total > 0) {
+                $('#txtTotalPriceVNDSelected')
+                    .text('Tổng tiền: ' + formatMoney(total))
+                    .removeClass('d-none');
+            } else {
+                $('#txtTotalPriceVNDSelected').text('').addClass('d-none');
+            }
+        }
+
+        $(document).on('input', '.totalPriceVND', function () {
+            calcTotalPriceSelected();
+        });
+
+    </script>
+}

@@ -1,0 +1,186 @@
+﻿@using WebMVC.Entities
+@using WebMVC.Models.Responses
+@using WebMVC.Ultilities.Enums
+@model BigPackageResponse
+@{
+    ViewData["Title"] = "Chi tiết bao hàng";
+}
+<div class="container-fluid mt-4">
+    <h1 class="mb-4">Chi tiết bao hàng #@Model.Id</h1>
+    <!-- Thông tin bao hàng -->
+    <div class="row mb-4 equal-height">
+        <div class="card col-md-4">
+            <div class="card-header">
+                Thông tin bao hàng
+            </div>
+            <div class="card-body">
+                <div id="bag-info-form">
+                    <div class="row my-2">
+                        <div class="col-md-4">Mã bao: </div>
+                        <div class="col-md-8">
+                            <input value="@Model.Name" type="text" class="form-control" id="bagCode" name="bagCode" placeholder="Nhập mã bao">
+                        </div>
+                    </div>
+                    <div class="row my-2">
+                        <div class="col-md-4">Đối tác: </div>
+                        <div class="col-md-8">
+                            <input value="@Model.Partner" type="text" class="form-control" id="partnerInfo" name="partnerInfo" placeholder="Nhập thông tin đối tác">
+                        </div>
+                    </div>
+                    <div class="row my-2">
+                        <div class="col-md-4">Trạng thái: </div>
+                        <div class="col-md-8">
+                            <select id="status" class="form-select" name="Status">
+                                @foreach (var status in Enum.GetValues(typeof(WebMVC.Ultilities.Enums.EBigPackageStatus)).Cast<WebMVC.Ultilities.Enums.EBigPackageStatus>())
+                                {
+                                    var statusValue = (int)status;
+                                    var statusName = EBigPackageStatusName.GetStatusName(statusValue);
+                                    if (statusValue == Model.Status)
+                                    {
+                                        <option value="@statusValue" selected>
+                                            @statusName
+                                        </option>
+                                    }
+                                    else
+                                    {
+                                        <option value="@statusValue">
+                                            @statusName
+                                        </option>
+                                    }
+                                }
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row my-2">
+                        <div class="col-md-4">Số kiện: </div>
+                        <div class="col-md-8">
+                            <input value="@Model.Quantity" type="number" class="form-control" id="totalItems">
+                        </div>
+                    </div>
+                    <div class="row my-2">
+                        <div class="col-md-4">Tổng cân: </div>
+                        <div class="col-md-8">
+                            <input value="@Model.Weight" type="number" class="form-control" id="totalWeight">
+                        </div>
+                    </div>
+                    <div class="row my-2">
+                        <div class="col-md-4">Tổng khối: </div>
+                        <div class="col-md-8">
+                            <input value="@Model.Volume" type="number" class="form-control" id="totalVolume">
+                        </div>
+                    </div>
+                    <div class="row my-2">
+                        <div class="col-md-4"></div>
+                        <div class="col-md-8">
+                            <button type="button" class="btn btn-primary w-100" id="updateBigPackageButton">Cập nhật</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="card col-md-8">
+            <div class="card-header">
+                Lịch sử
+            </div>
+            <div class="card-body">
+                <div class="table-content" id="history-table-content">
+                    <table class="table table-hover table-bordered">
+                        <thead>
+                            <tr>
+                                <th class="text-center">Thời gian</th>
+                                <th class="text-center">Nội dung</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @if (Model.BigPackageHistories != null && Model.BigPackageHistories.Any())
+                            {
+                                @for (int i = 0; i < Model.BigPackageHistories.Count; i++)
+                                {
+                                    <tr>
+                                        <td class="text-center">@Model.BigPackageHistories[i].Created.ToString("dd/MM/yyyy HH:mm")</td>
+                                        <td class="td-break-space">@Model.BigPackageHistories[i].Content</td>
+                                    </tr>
+                                }
+                            }
+                            else
+                            {
+                                <tr>
+                                    <td colspan="3" class="text-center">Không có lịch sử</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    @await Html.PartialAsync("~/Views/Transportation/_TransportationTable.cshtml", new List<TransportationResponse>())
+</div>
+<style>
+    /* Đảm bảo cả hai card có cùng chiều cao */
+    .equal-height {
+        display: flex;
+    }
+    /* Đặt chiều cao cố định và thêm thanh cuộn cho lịch sử */
+    #history-table-content {
+        max-height: 300px; /* Thay đổi giá trị này cho phù hợp với chiều cao bạn muốn */
+        overflow-y: auto;
+    }
+</style>
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            loadPage(1);
+        });
+        function loadPage(page) {
+            $.ajax({
+                url: '/Transportation/GetTransportationPaging',
+                data: { PageIndex: page, BigPackageId: @Model.Id },
+                type: 'GET',
+                success: function (data) {
+                    $('#table-container').html(data);
+                },
+                error: function () {
+                    alert('Lỗi khi tải dữ liệu');
+                }
+            });
+        }
+
+
+        $('#updateBigPackageButton').click(function () {
+            const request = {
+                Name: $('#bagCode').val().trim(),
+                Partner: $('#partnerInfo').val().trim(),
+                Quantity: parseInt($('#totalItems').val()) || 0,
+                Weight: parseFloat($('#totalWeight').val()) || 0,
+                Volume: parseFloat($('#totalVolume').val()) || 0,
+                Status: parseInt($('#status').val()) || 0
+            };
+
+            if (!request.Name) {
+                showToast('Vui lòng nhập mã bao', 2, false);
+                return;
+            }
+            if (request.Quantity <= 0 || request.Weight < 0 || request.Volume < 0) {
+                showToast('Vui lòng nhập số kiện, tổng cân, và tổng khối hợp lệ', 2, false);
+                return;
+            }
+            disableButton();
+            $.ajax({
+                url: `/BigPackage/Update?id=${@Model.Id}`,
+                type: 'PUT',
+                contentType: 'application/json',
+                data: JSON.stringify(request),
+                success: function (response) {
+                    showToast(response.Message, response.Type, true);
+                },
+                error: function (response) {
+                    showToast(response.responseJSON.Message, response.responseJSON.Type, false);
+                },
+                complete: function () {
+                    enableButton();
+                }
+            });
+        });
+    </script>
+}

@@ -1,0 +1,392 @@
+﻿@{
+    Layout = null;
+    ViewData["Title"] = "Đăng ký";
+}
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="utf-8" />
+    <title>Đăng ký</title>
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <meta name="robots" content="index, follow">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta property="fb:app_id" content="676758839172144" />
+    <meta name="google-site-verification" content="aZcoR9301-yojJzH9Tv-3BE_WFhhPClH0JCS_wJihU0" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+    <link rel="icon" type="image/png" href="favicon.ico">
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+
+        gtag('config', 'G-P7K2QJ4TQE');
+    </script>
+    <div class="zalo-chat-widget" data-oaid="1299806935331929179" data-welcome-message="Rất vui khi được hỗ trợ bạn!" data-autopopup="0" data-width="" data-height=""></div>
+
+    <script src="https://sp.zalo.me/plugins/sdk.js"></script>
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        .auth-wrapper {
+            display: flex;
+            height: 100vh;
+        }
+
+        /* LEFT */
+        .auth-left {
+            flex: 7;
+            background: url('/tpkexpress/images/auth-background.jpg') ;
+            position: relative;
+        }
+
+            
+
+        /* RIGHT */
+        .auth-right {
+            flex: 3;
+            background: #fff;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            padding-top: 2.5rem;
+        }
+
+        .auth-box {
+            width: 90%;
+        }
+
+        .auth-header {
+            text-align: center;
+            margin-bottom: 1.8rem;
+        }
+
+            .auth-header img {
+                max-width: 160px;
+                margin-bottom: 0.6rem;
+            }
+
+            .auth-header h3 {
+                margin: 0;
+                font-size: 1.4rem;
+            }
+
+        /* INPUT */
+        .form-row {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .form-group {
+            flex: 1;
+            margin-bottom: 1.3rem;
+        }
+
+        .icon-input {
+            position: relative;
+        }
+
+            .icon-input i {
+                position: absolute;
+                left: 4px;
+                top: 50%;
+                transform: translateY(-50%);
+                color: #999;
+                font-size: 14px;
+            }
+
+            .icon-input input {
+                width: 100%;
+                padding: 0.6rem 0.4rem 0.6rem 26px;
+                border: none;
+                border-bottom: 1px solid #ccc;
+                font-size: 0.95rem;
+            }
+
+                .icon-input input:focus {
+                    outline: none;
+                    border-bottom-color: #ff6600;
+                }
+
+            .icon-input:focus-within i {
+                color: #ff6600;
+            }
+
+        /* BUTTON */
+        .btn-submit {
+            width: 100%;
+            background: #f45b1e;
+            color: #fff;
+            border: none;
+            padding: 0.65rem;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 0.95rem;
+            margin-top: 0.5rem;
+        }
+
+            .btn-submit:hover {
+                background: #e04f18;
+            }
+
+        /* LINKS */
+        .auth-links {
+            text-align: right;
+            margin-top: 1rem;
+            font-size: 0.85rem;
+        }
+
+            .auth-links a {
+                color: #f45b1e;
+                text-decoration: none;
+            }
+
+        /* RESPONSIVE */
+        @@media (max-width: 768px) {
+            .auth-left {
+                display: none;
+            }
+
+            .auth-right {
+                flex: 1;
+                padding: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="auth-wrapper">
+
+        <!-- LEFT -->
+        <div class="auth-left">
+            <div class="overlay"></div>
+        </div>
+
+        <!-- RIGHT -->
+        <div class="auth-right">
+            <div class="auth-box">
+
+                <div class="auth-header">
+                    <a href="/">
+                        <img src="/images/logo.png" alt="Logo">
+                    </a>
+                    <h3>Đăng ký</h3>
+                </div>
+
+                <form onsubmit="signUp(); return false;">
+
+                    <div class="form-row">
+                        <div class="form-group icon-input">
+                            <i class="fa fa-user"></i>
+                            <input type="text" id="fullName" placeholder="Họ và tên" required>
+                        </div>
+
+                        <div class="form-group icon-input">
+                            <i class="fa fa-envelope"></i>
+                            <input type="email" id="email" placeholder="Email" required>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group icon-input">
+                            <i class="fa fa-phone"></i>
+                            <input type="text" id="phone" placeholder="Số điện thoại" required>
+                        </div>
+
+                        <div class="form-group icon-input">
+                            <i class="fa fa-location-dot"></i>
+                            <input type="text" id="address" placeholder="Địa chỉ" required>
+                        </div>
+                    </div>
+
+                    <div class="form-group icon-input">
+                        <i class="fa fa-user-circle"></i>
+                        <input type="text" id="username" placeholder="Tên đăng nhập" required>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group icon-input">
+                            <i class="fa fa-lock"></i>
+                            <input type="password" id="password" placeholder="Mật khẩu" required>
+                        </div>
+
+                        <div class="form-group icon-input">
+                            <i class="fa fa-lock"></i>
+                            <input type="password" id="confirmPassword" placeholder="Nhập lại mật khẩu" required>
+                        </div>
+                    </div>
+
+                    <button class="btn-submit" type="submit">
+                        Đăng ký
+                    </button>
+
+                </form>
+
+                <div class="auth-links">
+                    <a href="/dang-nhap">Đăng nhập</a>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+
+</body>
+</html>
+<script src="/tpkexpress/assets/library/jquery/jquery.js"></script>
+<script src="/tpkexpress/assets/library/swiper/swiper-bundle.min.js"></script>
+<script src="/tpkexpress/assets/library/aos/aos.js"></script>
+<script src="/tpkexpress/assets/library/select2/select2.min.js"></script>
+<script src="/tpkexpress/assets/library/gallery/lightgallery-all.min.js"></script>
+<script src="/tpkexpress/assets/library/jquery/jquery-migrate.js"></script>
+<script src="/tpkexpress/assets/library/smoothscroll/SmoothScroll.min.js"></script>
+<script src="/tpkexpress/assets/library/splitting/splitting.min.js"></script>
+<script src="/tpkexpress/assets/library/fancybox/fancybox.umd.js"></script>
+<script src="/tpkexpress/assets/library/gsap/gsap.min.js"></script>
+<script src="/tpkexpress/assets/library/gsap/ScrollTrigger.min.js"></script>
+<script src="/tpkexpress/js/main.js" type="module"></script>
+<script>
+    function signUp() {
+        let username = $('#username').val().trim();
+        let email = $('#email').val().trim();
+        let phone = $('#phone').val().trim();
+        let address = $('#address').val().trim();
+        let fullName = $('#fullName').val().trim();
+        let password = $('#password').val().trim();
+        let confirmPassword = $('#confirmPassword').val().trim();
+
+        if (username === "" || email === "" || phone === "" || address === "" || fullName === "" || password === "" || confirmPassword === "") {
+            showToast("Vui lòng điền thông tin còn thiếu", 2, false);
+            return;
+        }
+        if (password !== confirmPassword) {
+            showToast("Mật khẩu nhập lại không khớp", 2, false);
+            return;
+        }
+
+        const createData = {
+            Username: username,
+            Password: password,
+            Email: email,
+            Phone: phone,
+            Address: address,
+            FullName: fullName
+        }
+        disableButton();
+        $.ajax({
+            url: '/Home/SignUp',
+            type: 'POST',
+            data: { Request: createData },
+            success: function (response) {
+                window.location.href = "/dang-nhap";
+            },
+            error: function (response) {
+                showToast(response.responseJSON.Message, response.responseJSON.Type, false);
+            },
+            complete: function () {
+                enableButton();
+            }
+        });
+    }
+
+    function togglePassword(id, icon) {
+        let input = document.getElementById(id);
+        let iconElement = icon.querySelector("i");
+
+        if (input.type === "password") {
+            input.type = "text";
+            iconElement.classList.remove("bi-eye");
+            iconElement.classList.add("bi-eye-slash");
+        } else {
+            input.type = "password";
+            iconElement.classList.remove("bi-eye-slash");
+            iconElement.classList.add("bi-eye");
+        }
+    }
+</script>
+<script>
+    function showToast(message, type, isReload) {
+        let bgColor = "green";
+        switch (type) {
+            case 1:
+                bgColor = "red"
+                break;
+            case 2:
+                bgColor = "#ffc107"
+                break;
+            case 3:
+                bgColor = "blue"
+                break;
+            default:
+                bgColor = "green";
+                break;
+        }
+        Toastify({
+            text: message,
+            duration: 3000,
+            gravity: "top", // Vị trí top
+            position: "right", // Hiển thị bên phải
+            backgroundColor: bgColor,
+        }).showToast();
+        if (isReload) {
+            setTimeout(
+                function () {
+                    window.location.reload();
+                },
+                1000
+            );
+        }
+    }
+
+    function disableButton() {
+        // Chọn tất cả các button và link (a) trên trang
+        const elements = document.querySelectorAll('button, a');
+
+        elements.forEach(el => {
+            // Thêm lớp 'disabled' để hiển thị trạng thái không hoạt động
+            el.classList.add('disabled');
+
+            // Disable nút nếu là button
+            if (el.tagName.toLowerCase() === 'button') {
+                el.disabled = true;
+            }
+
+            // Ngăn chặn hành động mặc định nếu là link (a)
+            if (el.tagName.toLowerCase() === 'a') {
+                el.addEventListener('click', function (event) {
+                    event.preventDefault();
+                });
+            }
+        });
+    }
+
+    function enableButton() {
+        // Chọn tất cả các button và link (a) có lớp 'disabled'
+        const elements = document.querySelectorAll('button, a');
+
+        elements.forEach(el => {
+            // Xóa lớp 'disabled' để khôi phục trạng thái hoạt động
+            el.classList.remove('disabled');
+
+            // Bật lại nút nếu là button
+            if (el.tagName.toLowerCase() === 'button') {
+                el.disabled = false;
+            }
+
+            // Loại bỏ sự kiện 'click' ngăn hành động mặc định nếu là link (a)
+            if (el.tagName.toLowerCase() === 'a') {
+                const newElement = el.cloneNode(true); // Tạo bản sao không có sự kiện
+                el.replaceWith(newElement); // Thay thế thẻ hiện tại bằng bản sao
+            }
+        });
+    }
+</script>

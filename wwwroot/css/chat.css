@@ -1,0 +1,232 @@
+﻿/* Cửa sổ chat nằm ở góc dưới cùng bên phải */
+.chat-window {
+    position: fixed;
+    bottom: 0px;
+    right: 0px;
+    width: 900px;
+    height: 700px;
+    background-color: white;
+    border: 1px solid #ccc;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    display: none; /* Mặc định ẩn */
+    z-index: 1000;
+}
+
+.chat-header {
+    background-color: #4CAF50;
+    color: white;
+    padding: 10px;
+}
+
+#closeChat {
+    cursor: pointer;
+}
+
+.chat-item {
+    padding: 10px;
+    cursor: pointer;
+    border-bottom: 1px solid #ccc;
+}
+
+    .chat-item:hover {
+        background-color: #f0f0f0;
+    }
+
+.chat-messages {
+    height: 50%;
+    overflow-y: scroll;
+    padding: 10px;
+}
+
+.chat-input-container {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: #fff;
+}
+
+.actionMessageBtn {
+    background: #007bff;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+    .actionMessageBtn:hover {
+        background: #0056b3;
+    }
+
+#chatInput {
+    flex: 1; /* Chiếm tối đa không gian có thể */
+    height: 45px;
+    min-height: 45px; /* Đặt chiều cao tối thiểu */
+    max-height: 200px; /* Chiều cao tối đa nếu cần */
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    padding: 10px;
+    font-size: 16px;
+    resize: none; /* Ngừng cho phép người dùng thay đổi kích thước */
+    overflow: hidden;
+}
+
+
+/* Nút đóng cửa sổ chat */
+.close-chat-btn {
+    background: none;
+    border: none;
+    color: white;
+    font-size: 20px;
+    cursor: pointer;
+}
+
+.chat-messages {
+    display: flex;
+    flex-direction: column;
+    padding: 10px;
+    height: 300px;
+    overflow-y: auto;
+}
+
+.message {
+    max-width: 60%;
+    padding: 10px;
+    border-radius: 8px;
+    margin: 5px 0;
+    word-wrap: break-word;
+}
+
+    /* Tin nhắn người dùng gửi (bên phải) */
+    .message.sent {
+        align-self: flex-end;
+        background-color: #dcf8c6;
+        text-align: right;
+    }
+
+    /* Tin nhắn nhận từ đối phương (bên trái) */
+    .message.received {
+        align-self: flex-start;
+        background-color: #f1f1f1;
+        text-align: left;
+    }
+
+#backButton {
+    background: none;
+    border: none;
+    cursor: pointer;
+    margin-right: 10px;
+    align-items: center;
+    color: white;
+}
+
+#chatList {
+    display: flex;
+    flex-wrap: nowrap; /* Không cho các phần tử xuống dòng */
+    overflow-x: auto; /* Cho phép cuộn ngang khi nội dung quá dài */
+    white-space: nowrap; /* Ngăn chặn xuống dòng */
+    gap: 10px; /* Khoảng cách giữa các tài khoản */
+    padding: 4px;
+    scrollbar-width: thin; /* Tùy chỉnh thanh cuộn trên Firefox */
+}
+
+    #chatList::-webkit-scrollbar {
+        height: 8px; /* Độ cao của thanh cuộn */
+    }
+
+    #chatList::-webkit-scrollbar-thumb {
+        background: #ccc; /* Màu của thanh cuộn */
+        border-radius: 4px;
+    }
+
+    #chatList::-webkit-scrollbar-track {
+        background: #f1f1f1; /* Màu nền của thanh cuộn */
+    }
+
+.user-item {
+    display: inline-block;
+    padding: 5px;
+    background: #eee;
+    border-radius: 5px;
+    text-align: center;
+    cursor: pointer;
+}
+
+
+#conversationList {
+    max-height: 300px; /* Giới hạn chiều cao */
+    overflow-y: auto; /* Cho phép cuộn dọc */
+    border-top: 1px solid #ddd;
+}
+
+.conversation-item {
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
+    cursor: pointer;
+    overflow: hidden;
+}
+
+.conversation-info {
+    flex: 1;
+    min-width: 0; /* Quan trọng để tránh tràn chữ */
+}
+
+.conversation-name {
+    font-weight: bold;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 200px; /* Giới hạn chiều rộng tối đa */
+}
+
+.conversation-last-message {
+    color: #888;
+    font-size: 14px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.notification-dot {
+    width: 10px;
+    height: 10px;
+    background-color: red;
+    border-radius: 50%;
+    display: inline-block;
+    position: relative;
+    top: -10px;
+    left: 5px;
+}
+
+
+
+#imagePreviewContainer {
+    position: absolute;
+    bottom: 50px;
+}
+
+#imagePreview {
+    max-width: 100px;
+    max-height: 100px;
+    border: solid 1px red;
+    border-radius: 8px;
+}
+
+#removeImageBtn {
+    position: absolute;
+    padding: unset !important;
+}
+
+@media only screen and (max-width: 900px) {
+    #chatWindow {
+        width: 400px !important;
+    }
+}
+@media only screen and (max-width: 400px) {
+    #chatWindow {
+        width: 100% !important;
+    }
+}

@@ -1,0 +1,780 @@
+﻿@using WebMVC.Entities
+@using WebMVC.Models.Responses
+@using WebMVC.Interfaces
+@using WebMVC.Ultilities.Enums
+@inject IHttpContextService _httpContextService;
+@{
+    var loggedModel = _httpContextService.GetLoggedModel();
+}
+@{
+    ViewData["Title"] = "Chi tiết tài khoản";
+}
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/chartjs-plugin-annotation/1.0.2/chartjs-plugin-annotation.min.js"></script>
+<div class="container-fluid mt-4">
+    <div class="row">
+        <div class="col-md-5">
+            <div class="card mb-6">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <h2>Chi tiết tài khoản</h2>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="text-center">
+                            <a href="@Model.Account.Avatar" target="_blank" class="avatar-wrapper" id="avatarContainer">
+                                <img id="avatar" src="@Model.Account.Avatar" alt="">
+                                <label for="uploadAvatar"><i class="bi bi-eye"></i></label>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <label for="Username" class="form-label">Username</label>
+                            <input value="@Model.Account.Username" readonly type="text" class="form-control" id="username" name="Username" placeholder="">
+                        </div>
+                        <div class="col-md-6">
+                            <label for="fullName" class="form-label">Họ và tên</label>
+                            <input value="@Model.Account.FullName" required type="text" class="form-control" id="fullName" placeholder="Họ và tên">
+                        </div>
+                    </div>
+                    <div class="row pt-2">
+                        <div class="col-md-6">
+                            <label for="email" class="form-label">Email</label>
+                            <input value="@Model.Account.Email" required type="email" class="form-control" id="email" placeholder="Email">
+                        </div>
+                        <div class="col-md-6">
+                            <label for="phone" class="form-label">Số điện thoại</label>
+                            <input value="@Model.Account.Phone" required type="text" class="form-control" id="phone" placeholder="Số điện thoại" pattern="(0[2-9]|84[2-9])[0-9]{8}" title="Số điện thoại phải có 10 số và bắt đầu bằng 0 hoặc 84">
+                        </div>
+                    </div>
+                    <div class="row pt-2">
+                        <div class="col-md-6">
+                            <label for="address" class="form-label">Địa chỉ</label>
+                            <input value="@Model.Account.Address" required type="text" class="form-control" id="address" placeholder="Địa chỉ">
+                        </div>
+                        <div class="col-md-6">
+
+                            <label for="sale" class="form-label">NV Sale</label>
+                            <select id="sale" class="form-select" name="sale">
+                                @if (loggedModel.RoleId == (int)ERoleId.Sale)
+                                {
+                                    @foreach (var sale in Model.ListSale)
+                                    {
+                                        if (sale.Id == loggedModel.RoleId)
+                                        {
+                                            <option value="@sale.Id" selected>
+                                                @sale.Username
+                                            </option>
+                                        }
+                                    }
+                                }
+                                else
+                                {
+                                    <option value="">
+                                    </option>
+                                    @foreach (var sale in Model.ListSale)
+                                    {
+                                        if (sale.Id == Model.Account.SaleId)
+                                        {
+                                            <option value="@sale.Id" selected>
+                                                @sale.Username
+                                            </option>
+                                        }
+                                        else
+                                        {
+                                            <option value="@sale.Id">
+                                                @sale.Username
+                                            </option>
+                                        }
+                                    }
+                                }
+                            </select>
+
+                        </div>
+                    </div>
+                    <div class="row pt-2">
+                        @if (loggedModel.RoleId == (int)ERoleId.Admin || loggedModel.RoleId == (int)ERoleId.Manager)
+                        {
+                            <div class="col-md-6">
+                                <label for="role" class="form-label">Phân quyền</label>
+                                <select id="role" class="form-select" name="role">
+                                    @foreach (var status in Enum.GetValues(typeof(ERoleId)).Cast<ERoleId>())
+                                    {
+                                        var statusValue = (int)status;
+                                        var statusName = ERoleIdName.GetRoleName(statusValue);
+                                        if (statusValue == Model.Account.RoleId)
+                                        {
+                                            <option value="@statusValue" selected>
+                                                @statusName
+                                            </option>
+                                        }
+                                        else
+                                        {
+                                            <option value="@statusValue">
+                                                @statusName
+                                            </option>
+                                        }
+                                    }
+                                </select>
+                            </div>
+                        }
+                        <div class="col-md-6">
+                            <label for="minWeight" class="form-label">Cân nhỏ nhất</label>
+                            <input value="@Model.Account.MinWeight" type="number" class="form-control" id="minWeight" placeholder="">
+                        </div>
+                    </div>
+
+                    <div class="row pt-2">
+                        <div class="col-md-6">
+                            <label for="postOffice" class="form-label">Bưu cục</label>
+                            <select id="postOffice" class="form-select" name="postOffice">
+                                <option value="">
+                                </option>
+                                @foreach (var status in PostOfficeName.GetPostOffice())
+                                {
+                                    if (status == Model.Account.PostOffice)
+                                    {
+                                        <option value="@status" selected>
+                                            @status
+                                        </option>
+                                    }
+                                    else
+                                    {
+                                        <option value="@status">
+                                            @status
+                                        </option>
+                                    }
+                                }
+                            </select>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="deliveryMethod" class="form-label">Hình thức nhận hàng</label>
+                            <select id="deliveryMethod" class="form-select" name="deliveryMethod">
+                                <option value="">
+                                </option>
+                                @foreach (var status in DeliveryMethodName.GetDeliveryMethod())
+                                {
+                                    if (status == Model.Account.DeliveryMethod)
+                                    {
+                                        <option value="@status" selected>
+                                            @status
+                                        </option>
+                                    }
+                                    else
+                                    {
+                                        <option value="@status">
+                                            @status
+                                        </option>
+                                    }
+                                }
+                            </select>
+                        </div>
+                    </div>
+                    @if (loggedModel.RoleId == (int)ERoleId.Admin || loggedModel.RoleId == (int)ERoleId.Manager || loggedModel.RoleId == (int)ERoleId.Sale)
+                    {
+                        <div class="row pt-2">
+                            @if (Model.Account.RoleId == (int)ERoleId.TQWarehouseStaff)
+                            {
+                                <div class="col-md-6">
+                                    <label for="transportationType" class="form-label">Loại kiểm kho TQ</label>
+                                    <select id="transportationType" class="form-select" name="transportationType">
+                                        <option value="0">Tất cả</option>
+                                        @foreach (var status in Enum.GetValues(typeof(ETransportationType)).Cast<ETransportationType>())
+                                        {
+                                            var statusValue = (int)status;
+                                            var statusName = ETransportationTypeName.GetTypeName(statusValue);
+                                            if (statusValue == Model.Account.TransportationType)
+                                            {
+                                                <option value="@statusValue" selected>
+                                                    @statusName
+                                                </option>
+                                            }
+                                            else
+                                            {
+                                                <option value="@statusValue">
+                                                    @statusName
+                                                </option>
+                                            }
+                                        }
+                                    </select>
+                                </div>
+                            }
+                            @if (Model.Account.RoleId == (int)ERoleId.Sale)
+                            {
+                                <div class="col-md-6">
+                                    <label for="vnWarehouseStaff" class="form-label">Nhân viên giám sát</label>
+                                    <select id="vnWarehouseStaffIdSelect" name="vnWarehouseStaff" class="form-select" multiple>
+                                        @foreach (var vnWarehouseStaff in Model.ListVNWarehouseStaff)
+                                        {
+                                            var isSelected = Model.SelectedListVNWarehouseStaffId.Contains(vnWarehouseStaff.Id);
+                                            <option value="@vnWarehouseStaff.Id" selected="@(isSelected ? "selected" : null)">
+                                                @vnWarehouseStaff.Username
+                                            </option>
+                                        }
+                                    </select>
+                                </div>
+                            }
+                            <div class="col-md-6">
+                                <label for="specialShip" class="form-label">PTVC chính ngạch</label>
+                                <input type="checkbox" class="form-check-input" id="specialShip" @((Model.Account.SpecialShipId == "5") ? "checked=\"checked\"" : "")>
+                                @* <select id="specialShipSelect" name="SpecialShipIds" class="form-select" multiple>
+                                    @{
+                                        var account = (Account)Model.Account;
+                                        var selectedIds = (account.SpecialShipId ?? "")
+                                        .Split(',', StringSplitOptions.RemoveEmptyEntries)
+                                        .Select(id => id.Trim())
+                                        .ToList();
+                                    }
+                                    @foreach (var warehouse in Model.SpecialShipping)
+                                    {
+                                        var isSelected = selectedIds.Contains(warehouse.Id.ToString());
+                                        <option value="@warehouse.Id" selected="@(isSelected ? "selected" : null)">
+                                            @warehouse.Name
+                                        </option>
+                                    }
+                                </select> *@
+                            </div>
+                        </div>
+                    }
+                    <div class="row pt-2">
+                        <div class="col-md-6">
+                            <label for="newPassword" class="form-label">Mật khẩu mới</label>
+                            <input type="text" class="form-control" id="newPassword" placeholder="">
+                        </div>
+                        <div class="col-md-6 d-flex align-items-end">
+                            <button type="button" class="btn btn-primary" id="updateItemButton" onclick="updateItem()">Cập nhật</button>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        <div class="col-md-7">
+            <div class="card mb-6">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <h2>Bảng giá riêng</h2>
+                    <div>
+                        <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#addModal">
+                            <i class="bi bi-plus"></i> Thêm mới
+                        </button>
+                    </div>
+                </div>
+                <div class="card-body">
+                    @await Html.PartialAsync("_PricingSeparateTable", new List<PricingResponse>())
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row mt-2">
+        <div class="card mb-4">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <h3>Sản lượng và đơn trong năm</h3>
+            </div>
+            <div class="card-body">
+                @*                 <div class="row ">
+                    <div class="col-md-3">
+                        <label for="yearDate" class="form-label">Năm</label>
+                        <input type="text" class="form-control datepicker" id="yearDate" name="yearDate" placeholder="">
+                    </div>
+                    <div class="col-md-3 d-flex align-items-end">
+                        <button type="button" class="btn btn-success" onclick="showYearChart()">Lọc kết quả</button>
+                    </div>
+                </div> *@
+                <div class="row mt-4">
+                    <div class="col s12">
+                        <div class="card user-statistics-card animate fadeLeft">
+                            <div class="card-content">
+                                <div class="row px-3 pt-3">
+                                    <div class="col s3">
+                                        <a href="javascript:;" onclick="YearChartData(0, 'black')">
+                                            <div class="d-flex gap-3 align-items-center">
+                                                <i class="bi bi-circle-fill fs-1"></i>
+                                                <div>
+                                                    <span class="medium-small">Đơn hàng đã giao</span>
+                                                    <h5 class="mt-0 mb-0 soDon-Year"></h5>
+                                                </div>
+                                            </div>
+                                        </a>
+                                    </div>
+                                    <div class="col s3">
+                                        <a href="javascript:;" onclick="YearChartData(1, 'purple')">
+                                            <div class="d-flex gap-3 align-items-center">
+                                                <i class="bi bi-circle-fill fs-1 text-purple"></i>
+                                                <div>
+                                                    <span class="medium-small">Sản lượng (KG)</span>
+                                                    <h5 class="mt-0 mb-0 soKg-Year"></h5>
+                                                </div>
+                                            </div>
+                                        </a>
+                                    </div>
+                                    <div class="col s3">
+                                        <a href="javascript:;" onclick="YearChartData(2, 'green')">
+                                            <div class="d-flex gap-3 align-items-center">
+                                                <i class="bi bi-circle-fill fs-1 text-success"></i>
+                                                <div>
+                                                    <span class="medium-small">Sản lượng (Khối)</span>
+                                                    <h5 class="mt-0 mb-0 soKhoi-Year"></h5>
+                                                </div>
+                                            </div>
+                                        </a>
+                                    </div>
+                                    <div class="col s3">
+                                        <a href="javascript:;" onclick="YearChartData(3, 'red')">
+                                            <div class="d-flex gap-3 align-items-center">
+                                                <i class="bi bi-circle-fill fs-1 text-danger"></i>
+                                                <div>
+                                                    <span class="medium-small">Doanh số</span>
+                                                    <h5 class="mt-0 mb-0 soTien-Year"></h5>
+                                                </div>
+                                            </div>
+                                        </a>
+                                    </div>
+                                </div>
+                                <div class="row" style="width: 100%; margin: auto;">
+                                    <canvas id="YearChart"></canvas>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<div class="modal fade" id="addModal" tabindex="-1" aria-labelledby="addModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Tạo mới</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Đóng"></button>
+            </div>
+            <div class="modal-body">
+                <form id="addForm">
+                    <table class="table table-bordered text-center align-middle">
+                        <thead>
+                            <tr>
+                                <th rowspan="2">Phương thức vận chuyển</th>
+                                <th rowspan="2">Loại</th>
+                                <th colspan="2">Giá trị</th>
+                                <th rowspan="2">Đơn giá</th>
+                                <th rowspan="2"></th>
+                            </tr>
+                            <tr>
+                                <th>Từ</th>
+                                <th>Đến</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td rowspan="2">
+                                    <select class="form-select" id="addShip" name="addShip" required>
+                                        <option value="">Chọn</option>
+                                        @foreach (var item in Model.Shipping)
+                                        {
+                                            <option value="@item.Id">@item.Name</option>
+                                        }
+                                    </select>
+                                </td>
+                                <td>
+                                    Cân nặng
+                                </td>
+                                <td><input type="number" class="form-control" id="addRangeWeightMin" value="0" name="weightFrom" required></td>
+                                <td><input type="number" class="form-control" id="addRangeWeightMax" value="0" name="weightTo" required></td>
+                                <td><input class="form-control input-money" id="addWeightAmount" value="0" name="weightPrice" required></td>
+                                <td rowspan="2">
+                                    <button type="submit" class="btn btn-success">Lưu</button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    Số khối
+                                </td>
+                                <td><input type="number" class="form-control" id="addRangeVolumeMin" value="0" name="volumeFrom" required></td>
+                                <td><input type="number" class="form-control" id="addRangeVolumeMax" value="0" name="volumeTo" required></td>
+                                <td><input class="form-control input-money" id="addVolumeAmount" value="0" name="volumePrice" required></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@* <div class="modal fade" id="addModal" tabindex="-1" aria-labelledby="addModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Tạo mới</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="addForm">
+                    <div class="row">
+                        <div class="col-6 mb-3">
+                            <label for="addShip" class="form-label">Phương thức vận chuyển</label>
+                            <select id="addShip" class="form-select" required>
+                                <option value="">Chọn Phương thức vận chuyển</option>
+                                @foreach (var item in Model.Shipping)
+                                {
+                                    <option value=@item.Id>@item.Name</option>
+                                }
+                            </select>
+                        </div>
+                        <div class="col-6 mb-3">
+                            <label for="addType" class="form-label">Loại</label>
+                            <select id="addType" class="form-select" name="addType">
+                                @foreach (var type in Enum.GetValues(typeof(EPricingType)).Cast<EPricingType>())
+                                {
+                                    var typeValue = (int)type;
+                                    var typeName = EPricingTypeName.GetPricingTypeName(typeValue);
+                                    <option value="@typeValue">
+                                        @typeName
+                                    </option>
+                                }
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-6 mb-3">
+                            <label for="addRangeMin" class="form-label">Giá trị từ</label>
+                            <input type="number" class="form-control" id="addRangeMin" required>
+                        </div>
+                        <div class="col-6 mb-3">
+                            <label for="addRangeMax" class="form-label">Giá trị đến</label>
+                            <input type="number" class="form-control" id="addRangeMax" required>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-6 mb-3">
+                            <label for="addAmount" class="form-label">Đơn giá</label>
+                            <input class="form-control input-money" id="addAmount" required>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-success">Lưu</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div> *@
+
+<div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editModalLabel">Cập nhật</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="editForm">
+                    <div class="row">
+                        <div class="col-6 mb-3">
+                            <label for="editShip" class="form-label">Phương thức vận chuyển</label>
+                            <select id="editShip" class="form-select" required>
+                                <option value="">Chọn Phương thức vận chuyển</option>
+                                @foreach (var item in Model.Shipping)
+                                {
+                                    <option value=@item.Id>@item.Name</option>
+                                }
+                            </select>
+                        </div>
+                        <div class="col-6 mb-3">
+                            <label for="editType" class="form-label">Loại</label>
+                            <select id="editType" class="form-select" name="editType">
+                                @foreach (var type in Enum.GetValues(typeof(EPricingType)).Cast<EPricingType>())
+                                {
+                                    var typeValue = (int)type;
+                                    var typeName = EPricingTypeName.GetPricingTypeName(typeValue);
+                                    <option value="@typeValue">
+                                        @typeName
+                                    </option>
+                                }
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-6 mb-3">
+                            <label for="editRangeMin" class="form-label">Giá trị từ</label>
+                            <input type="number" class="form-control" id="editRangeMin" required>
+                        </div>
+                        <div class="col-6 mb-3">
+                            <label for="editRangeMax" class="form-label">Giá trị đến</label>
+                            <input type="number" class="form-control" id="editRangeMax" required>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-6 mb-3">
+                            <label for="editAmount" class="form-label">Đơn giá</label>
+                            <input class="form-control input-money" id="editAmount" required>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-success">Lưu</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@section Scripts {
+    <script src="~/js/createLineChart.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            $('#vnWarehouseStaffIdSelect').select2({
+                placeholder: "Chọn nhân viên kho VN",
+                width: '100%'
+            });
+        });
+        $(document).ready(function () {
+            loadPricingSeparateTable();
+            showYearChart();
+        });
+        function loadPricingSeparateTable() {
+            showLoading();
+            $.ajax({
+                url: `/Account/GetPricingSeparate?id=${@Model.Account.Id}`,
+                type: 'GET',
+                success: function (data) {
+                    $('#table-container').html(data);
+                },
+                error: function (response) {
+                    showToast(response.responseJSON?.Message, response.responseJSON?.Type, false);
+                },
+                complete: function () {
+                    hideLoading();
+                }
+            });
+        }
+        function showYearChart() {
+            YearChart();
+            YearChartData(3, 'red');
+        }
+        function YearChart() {
+            // const yearDateInput = $('#yearDate').val();
+            // const yearDate = yearDateInput ? parseDate(yearDateInput) : null;
+            $.ajax({
+                url: '/Statistic/GetYearChartOfAccount'+`?id=${@Model.Account.Id}`,
+                // data: { dataDate: yearDate ? yearDate : '' },
+                type: 'GET',
+                success: function (data) {
+                    $(".soDon-Year").text(Math.floor(data.Order));
+                    $(".soKg-Year").text(data.Weight.toFixed(2));
+                    $(".soKhoi-Year").text(data.Volume.toFixed(2));
+                    $(".soTien-Year").text(data.TotalPriceVND.toLocaleString('en-US'));
+                },
+                error: function () {
+                }
+            });
+        }
+        function YearChartData(index, colorW) {
+            const yearDate = $('#yearDate').val() ? parseDate($('#yearDate').val()) : null;
+            $.ajax({
+                url: '/Statistic/GetYearChartDataOfAccount'+`?id=${@Model.Account.Id}`,
+                data: { type: index },
+                type: 'GET',
+                success: function (response) {
+                    createChart('YearChart', response.Data, colorW, response.Title);
+                },
+                error: function () { }
+            });
+        }
+        $('#updateItemButton').click(function () {
+            const username = $('#username').val().trim();
+            const fullName = $('#fullName').val().trim();
+            const email = $('#email').val().trim();
+            const phone = $('#phone').val().trim();
+            const address = $('#address').val().trim();
+            const roleId = parseInt($('#role').val()) || 2;
+            const saleId = parseInt($('#sale').val()) || null;
+            const minWeight = parseFloat($('#minWeight').val()) || null;
+            const postOffice = $('#postOffice').val().trim();
+            const deliveryMethod = $('#deliveryMethod').val().trim();
+            const newPassword = $('#newPassword').val().trim() || null;
+            const transportationType = parseInt($('#transportationType').val()) || null;
+
+            const selectedIds = $('#vnWarehouseStaffIdSelect').val();
+            // const joinedIds = selectedIds ? selectedIds.join(',') : '';
+            const specialShipId = $('#specialShip').prop('checked') ? '5' : null
+            if (username === "" || email === "" || phone === "" || address === "" || fullName === "" || newPassword === "") {
+                showToast("Vui lòng điền thông tin còn thiếu", 2, false);
+                return;
+            }
+            const request = {
+                Username: username,
+                Email: email,
+                Phone: phone,
+                Address: address,
+                FullName: fullName,
+                RoleId: roleId,
+                SaleId: saleId,
+                MinWeight: minWeight,
+                PostOffice: postOffice,
+                DeliveryMethod: deliveryMethod,
+                NewPassword: newPassword,
+                TransportationType: transportationType,
+                SpecialShipId: specialShipId,
+                VNWarehouseStaffIds : selectedIds
+            };
+            disableButton();
+            $.ajax({
+                url: `/Account/Update?id=${@Model.Account.Id}`,
+                type: 'PUT',
+                contentType: 'application/json',
+                data: JSON.stringify(request),
+                success: function (response) {
+                    showToast(response.Message, response.Type, true);
+                },
+                error: function (response) {
+                    showToast(response.responseJSON?.Message, response.responseJSON?.Type, false);
+                },
+                complete: function () {
+                    enableButton();
+                }
+            });
+        });
+
+        document.getElementById("addForm").addEventListener("submit", async function (event) {
+            event.preventDefault();
+
+            const ship = $("#addShip").val();
+            const rangeWeightMin = $("#addRangeWeightMin").val();
+            const rangeWeightMax = $("#addRangeWeightMax").val();
+            const pricePerWeightUnit = getRawValue($("#addWeightAmount").val());
+            const rangeVolumeMin = $("#addRangeVolumeMin").val();
+            const rangeVolumeMax = $("#addRangeVolumeMax").val();
+            const pricePerVolumeUnit = getRawValue($("#addVolumeAmount").val());
+
+            const createData = {
+                ShipId: ship,
+                RangeWeightMin: rangeWeightMin,
+                RangeWeightMax: rangeWeightMax,
+                PricePerWeightUnit: pricePerWeightUnit,
+                RangeVolumeMin: rangeVolumeMin,
+                RangeVolumeMax: rangeVolumeMax,
+                PricePerVolumeUnit: pricePerVolumeUnit,
+            }
+            disableButton();
+            $.ajax({
+                url: `/Account/CreatePricingSeparate?id=${@Model.Account.Id}`,
+                type: "POST",
+                data: { Request: createData },
+                success: function (response) {
+                    showToast(response.Message, response.Type, false);
+                    loadPricingSeparateTable();
+                    $("#addModal").modal("hide");
+                },
+                error: function (response) {
+                    showToast(response.responseJSON?.Message || "Lỗi không xác định", response.responseJSON?.Type || 2, false);
+                },
+                complete: function () {
+                    enableButton();
+                }
+            });
+        });
+
+        function editItem(item) {
+            $("#editShip").val(item.ShipId);
+            $("#editType").val(item.Type);
+            $("#editRangeMin").val(item.RangeMin);
+            $("#editRangeMax").val(item.RangeMax);
+            $("#editAmount").val(item.PricePerUnit.toLocaleString("en-US"));
+            // Lưu ID item vào form để gửi khi cập nhật
+            $("#editForm").data("item-id", item.Id);
+        }
+
+        $("#editForm").submit(async function (event) {
+            event.preventDefault();
+
+            const itemId = $(this).data("item-id");
+            const ship = $("#editShip").val();
+            const type = $("#editType").val();
+            const rangeMin = $("#editRangeMin").val();
+            const rangeMax = $("#editRangeMax").val();
+            const pricePerUnit = getRawValue($("#editAmount").val());
+
+            const updateData = {
+                ShipId: ship,
+                RangeMin: rangeMin,
+                RangeMax: rangeMax,
+                PricePerUnit: pricePerUnit,
+                Type: type,
+                Id : itemId
+            }
+
+            disableButton();
+            $.ajax({
+                url: `/Account/UpdatePricingSeparate?id=${@Model.Account.Id}`,
+                type: "PUT",
+                data: { Request: updateData },
+                success: function (response) {
+                    showToast(response.Message, response.Type, false);
+                    loadPricingSeparateTable();
+                    $("#editModal").modal("hide");
+                },
+                error: function (response) {
+                    showToast(response.responseJSON?.Message || "Lỗi không xác định", response.responseJSON?.Type || 2, false);
+                },
+                complete: function () {
+                    enableButton();
+                }
+            });
+        });
+
+        function deletePricing(id) {
+            showConfirmModal('Bạn chắc chắn muốn xóa bảng giá riêng này?', function () {
+                disableButton();
+                $.ajax({
+                url: `/Account/DeletePricingSeparate?accountId=${@Model.Account.Id}&id=${id}`,
+                    type: 'DELETE',
+                    success: function (response) {
+                        showToast(response.Message, response.Type, false);
+                        loadPricingSeparateTable();
+                    },
+                    error: function (response) {
+                        showToast(response.responseJSON?.Message, response.responseJSON?.Type, false);
+                    },
+                    complete: function () {
+                        enableButton();
+                    }
+                });
+            });
+        }
+    </script>
+}
+<style>
+    .avatar-wrapper {
+        position: relative;
+        display: inline-block;
+        cursor: pointer;
+    }
+
+        .avatar-wrapper img {
+            display: block;
+            width: 100%;
+            height: auto;
+            border: 4px solid #fff;
+            box-shadow: 0 0 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .avatar-wrapper label {
+            width: 18rem;
+            height: 18rem;
+            position: absolute;
+            bottom: -40%;
+            left: 50%;
+            transform: translateX(-50%);
+            color: black;
+            border-radius: 50%;
+            padding: 8px;
+            cursor: pointer;
+        }
+
+            .avatar-wrapper label i {
+                font-size: 18px;
+            }
+
+</style>

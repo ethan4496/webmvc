@@ -1,0 +1,264 @@
+﻿@using WebMVC.Entities
+@using WebMVC.Ultilities.Enums
+@model LoggedModel
+@{
+    ViewData["Title"] = "NavigationMenu";
+}
+@if (Model.IsStaff == 0)
+{
+    <header>
+        <nav class="navbar navbar-expand-lg">
+            <div class="container-fluid">
+                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">
+                    <img src="~/images/logo.png" alt="Logo" class="d-inline-block align-text-top">
+                </a>
+                @if (Model.Id > 0)
+                {
+                    <div class="d-flex">
+                        <div class="d-flex gap-3 justify-content-end ">
+                            <a class="menu-icon position-relative" href="#" id="notificationBell">
+                                <i class="bi bi-bell fs-4"></i>
+                                <span class="notification-badge" id="notificationBadge" style="display:none"></span>
+                            </a>
+                            <div class="notification-dropdown p-3" id="notificationDropdown">
+                                <ul class="nav nav-tabs noti-ul">
+                                    <li class=""><a href="#" class="active-tab noti-tab" data-tab="0">Tất cả</a></li>
+                                    <li class=""><a href="#" class="noti-tab" data-tab="1">Đơn hàng</a></li>
+                                    <li class=""><a href="#" class="noti-tab" data-tab="3">Voucher</a></li>
+                                </ul>
+                                <div class="notification-content mt-2" id="notificationContent">
+                                    <p>Danh sách thông báo hiển thị ở đây...</p>
+                                </div>
+                                <a href="/notification" class="btn btn-primary w-100 mt-2">Xem tất cả</a>
+                            </div>
+                        </div>
+                        <ul class="menu-icon ms-auto">
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    Tài khoản
+                                </a>
+                                <ul class="dropdown-menu">
+                                    <li><a class="dropdown-item" href="/profile">Thông tin</a></li>
+                                    @if (Model.RoleId != (int)ERoleId.User && Model.IsStaff == 0)
+                                    {
+                                        <li><a class="dropdown-item" asp-controller="Home" asp-action="Staff">Quản trị</a></li>
+                                    }
+                                    <li><a class="dropdown-item" asp-controller="Home" asp-action="SignOff">Đăng xuất</a></li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </div>
+                }
+
+            </div>
+        </nav>
+    </header>
+    <div class="d-flex flex-wrap " style=" background: linear-gradient(180deg, #FCBC5D 0%, #F27243 100%); ">
+        <a class=" nav-menu " href="home">
+            <i class="bi bi-speedometer2 fs-4"></i>
+            Dashboard
+        </a>
+        <a class=" nav-menu " href="transportation">
+            <i class="bi bi-box-seam fs-4"></i>
+            Đơn hàng
+        </a>
+        <a class=" nav-menu " href="out-of-stock">
+            <i class="bi bi-cash-coin fs-4"></i>
+            Thanh toán cước
+        </a>
+        @* <a class=" nav-menu " href="tracking">
+            <i class="bi bi-truck fs-4"></i>
+            Tracking
+        </a> *@
+        <a class=" nav-menu " href="/price-import">
+            <i class="bi bi-search fs-4"></i>
+            Tra HS
+        </a>
+        <a class=" nav-menu " href="create-transportation">
+            <i class="bi bi-plus-circle fs-4"></i>
+            Tạo đơn ký gửi
+        </a>
+        @if (Model.Id == 27){
+            @* <a class=" nav-menu " href="/price-import">
+                <i class="bi bi-search"></i>
+                Tra HS
+            </a> *@
+        }
+           
+        
+        
+        @if (Model.SpecialShipId == "5")
+        {
+            <a class=" nav-menu " href="create-transportation-special-ship">
+                <i class="bi-file-earmark-plus fs-4"></i>
+                Tạo đơn chính ngạch
+            </a>
+        }
+    </div>
+
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            $.ajax({
+                url: '/Notification/GetUnRead',
+                type: 'GET',
+                success: function (response) {
+                    const data = response.Data;
+                    if (data > 0) {
+                        document.getElementById("notificationBadge").style.display = "block";
+                    }
+                },
+                error: function () {
+                }
+            });
+        });
+        document.getElementById("notificationBell").addEventListener("click", function (event) {
+            event.preventDefault();
+            let dropdown = document.getElementById("notificationDropdown");
+
+            // Lấy tab đang active
+            let activeTab = document.querySelector(".noti-tab.active-tab");
+            let type = activeTab ? activeTab.dataset.tab : "0"; // Mặc định lấy tất cả nếu không có active tab
+
+            if (dropdown.style.display !== "block") {
+                fetchNotifications(type);
+            }
+
+            // Toggle dropdown hiển thị/ẩn
+            dropdown.style.display = dropdown.style.display === "block" ? "none" : "block";
+        });
+
+
+        // Bắt sự kiện khi bấm vào các tab
+        document.querySelectorAll(".noti-tab").forEach(tab => {
+            tab.addEventListener("click", function (event) {
+                event.preventDefault();
+                let type = this.dataset.tab;
+
+                // Xóa class active-tab cũ, thêm class active-tab cho tab mới
+                document.querySelectorAll(".noti-tab").forEach(el => el.classList.remove("active-tab"));
+                this.classList.add("active-tab");
+
+                // Gọi API lấy danh sách thông báo theo loại
+                fetchNotifications(type);
+            });
+        });
+
+        // Hàm gọi API lấy thông báo
+        function fetchNotifications(type) {
+            const request = {
+                PageIndex: 1,
+                Type: type,
+                IsRead: false
+            };
+            $.ajax({
+                url: '/Notification/Paging',
+                data: request,
+                type: 'GET',
+                success: function (response) {
+                    const data = response.Data;
+                    let content = document.getElementById("notificationContent");
+                    if (data.length > 0) {
+                        content.innerHTML = data.map(noti => `
+                                                                                    <a href="${noti.WebUrl}" onclick="readNotiInLayout(${noti.Id})">
+                                                                            <div class="notification-item p-2 border-bottom">
+                                                                                <strong>${noti.Title}</strong>
+                                                                                <p class="text-muted m-0">${noti.Content}</p>
+                                                                            </div>
+                                                                            </a>
+                                                                        `).join("");
+                    } else {
+                        content.innerHTML = "<p>Không có thông báo nào.</p>";
+                    }
+                },
+                error: function () {
+                }
+            });
+        }
+    </script>
+
+    <style>
+        .dropdown-menu[data-bs-popper] {
+            left: -40px !important;
+            top: 3rem;
+        }
+
+        .notification-badge {
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            width: 10px;
+            height: 10px;
+            background-color: red;
+            border-radius: 50%;
+        }
+
+        .notification-dropdown {
+            position: absolute;
+            right: 0;
+            top: 4rem;
+            width: 400px;
+            background: white;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            display: none;
+            z-index: 1000;
+        }
+
+        .notification-content {
+            max-height: 300px;
+            overflow-y: auto;
+        }
+
+        .noti-tab {
+            color: white;
+            border-radius: 0.5rem;
+            padding: 5px 1rem;
+            text-decoration: none;
+            background-color: grey;
+        }
+
+        .noti-ul {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+        }
+
+        .active-tab {
+            font-weight: bold;
+            background: linear-gradient(180deg, #FCBC5D 0%, #F27243 100%);
+        }
+
+        .menu-icon {
+            color: white;
+            border-radius: 0.5rem;
+            margin: 0 1rem;
+            font-weight: 600;
+            font-size: 16px;
+            display: flex;
+            align-items: center;
+            background: linear-gradient(180deg, #FCBC5D 0%, #F27243 100%);
+            padding: 0 1rem;
+        }
+
+        .nav-menu {
+            padding-top: 5px;
+            padding-bottom: 5px;
+            width: 150px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            font-size: unset;
+            margin: unset;
+            color: white;
+            font-weight: 600;
+        }
+
+            .nav-menu:hover {
+                background: rgba(0,0,0,0.1);
+            }
+    </style>
+
+}

@@ -1,0 +1,20 @@
+﻿@using WebMVC.Entities
+@using WebMVC.Interfaces
+@using WebMVC.Models.Responses
+@using WebMVC.Ultilities.Enums
+@model List<AccountSalesResponse>
+<div id="table-container">
+    <div class="table-content">
+        <table class="table table-bordered">
+            <tbody>
+                @for (int i = 0; i < Model.Count; i++)
+                {
+                    <tr>
+                        <td class="text-start align-content-center">@Model[i].ShipName</td>
+                        <td class="text-end align-content-center">@string.Format("{0:N0}", Model[i].Amount) đ</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

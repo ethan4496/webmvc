@@ -1,0 +1,169 @@
+﻿@using WebMVC.Entities
+@using WebMVC.Models.Responses
+@{
+    ViewData["Title"] = "Danh sách thông báo";
+}
+
+<div class="container-fluid mt-4">
+    <div class="card mb-4">
+        <div class="card-header d-flex justify-content-between align-items-center">
+            <h2>Danh sách thông báo</h2>
+            <button id="toggleFilterButton" class="btn btn-primary">Ẩn bộ lọc</button>
+        </div>
+        <div class="card-body" id="filterContainer">
+            <div class="row">
+                <div class="col-md-3">
+                    <label for="fromDate" class="form-label">Từ ngày</label>
+                    <input type="text" class="form-control datepicker" id="fromDate" name="fromDate" placeholder="">
+                </div>
+                <div class="col-md-3">
+                    <label for="toDate" class="form-label">Đến ngày</label>
+                    <input type="text" class="form-control datepicker" id="toDate" name="toDate" placeholder="">
+                </div>
+                <div class="col-md-2">
+                    <label for="isRead" class="form-label">Trạng thái</label>
+                    <select id="isRead" class="form-select" name="IsRead">
+                        <option value="">
+                            Tất cả
+                        </option>
+                        <option value="true">
+                            Đã đọc
+                        </option>
+                        <option value="false">
+                            Chưa đọc
+                        </option>
+                    </select>
+                </div>
+                <div class="col-md-2">
+                    <label for="type" class="form-label">Loại</label>
+                    <select id="type" class="form-select" name="Type">
+                        <option value="0">
+                            Tất cả
+                        </option>
+                        <option value="1">
+                            Đơn hàng
+                        </option>
+                        <option value="2">
+                            Khách hàng
+                        </option>
+                        <option value="3">
+                            Voucher
+                        </option>
+                        <option value="4">
+                            Tài chính
+                        </option>
+                    </select>
+                </div>
+                <div class="col-md-2 d-flex align-items-end">
+                    <button type="button" class="btn btn-primary btn-search" onclick="loadPage(1)">Tìm kiếm</button>
+                </div>
+                <div class="col-md-2 d-flex align-items-end">
+                    <button type="button" class="btn btn-success " onclick="readAll()">Đọc tất cả</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    @await Html.PartialAsync("_NotificationTable", new List<Notification>())
+</div>
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            restoreFilters();
+            loadPage(1);
+        });
+
+        // Hàm lấy giá trị từ URL và gán lại vào input
+        function restoreFilters() {
+            const urlParams = new URLSearchParams(window.location.search);
+            $('#isRead').val(urlParams.get('IsRead') || '');
+            $('#type').val(urlParams.get('Type') || '');
+
+            const fromDate = urlParams.get('FromDate');
+            const toDate = urlParams.get('ToDate');
+
+            if (fromDate) $('#fromDate').val(formatDateForInput(new Date(fromDate)));
+            if (toDate) $('#toDate').val(formatDateForInput(new Date(toDate)));
+        }
+
+        function loadPage(page) {
+            const fromDateInput = $('#fromDate').val();
+            const toDateInput = $('#toDate').val();
+            const fromDate = fromDateInput ? parseDate(fromDateInput) : null;
+            const toDate = toDateInput ? parseDate(toDateInput) : null;
+
+            const params = new URLSearchParams();
+
+            // Danh sách các input cần kiểm tra
+            const filters = {
+                'PageIndex': page > 1 ? page : null,
+                'IsRead': $('#isRead').val(),  // Giữ giá trị 0 nếu có
+                'Type': $('#type').val(),  // Giữ giá trị 0 nếu có
+                'FromDate': fromDate ? fromDate : '',
+                'ToDate': toDate ? toDate : '',
+            };
+
+            // Chỉ thêm vào query string nếu giá trị không phải null hoặc chuỗi rỗng
+            Object.keys(filters).forEach(key => {
+                if (filters[key] !== null && filters[key] !== '') {
+                    params.set(key, filters[key]);
+                }
+            });
+
+            const queryString = params.toString();
+            const newUrl = queryString ? '?' + queryString : '/notification';
+
+            history.pushState({}, '', newUrl);
+
+            $.ajax({
+                    url: '/Notification/GetNotificationPaging?' + queryString,
+                type: 'GET',
+                success: function (data) {
+                    $('#table-container').html(data);
+                },
+                error: function () {
+                    console.log('Lỗi khi tải dữ liệu');
+                }
+            });
+        }
+
+        function readAll() {
+            disableButton();
+            $.ajax({
+                url: '/Notification/ReadAll',
+                type: 'PUT',
+                success: function (response) {
+                    showToast(response.Message, response.Type, true);
+                },
+                error: function (response) {
+                    showToast(response.responseJSON.Message, response.responseJSON.Type, false);
+                },
+                complete: function () {
+                    enableButton();
+                }
+            });
+        }
+
+        function readNotification(id){
+            disableButton();
+            $.ajax({
+                url: `/Notification/Read?id=${id}`,
+                type: 'PUT',
+                success: function (response) {
+                    showToast(response.Message, response.Type, true);
+                },
+                error: function (response) {
+                    showToast(response.responseJSON.Message, response.responseJSON.Type, false);
+                },
+                complete: function () {
+                    enableButton();
+                }
+            });
+        }
+        $('#toggleFilterButton').on('click', function () {
+            $('#filterContainer').toggle();
+            let isVisible = $('#filterContainer').is(':visible');
+            $(this).text(isVisible ? 'Ẩn bộ lọc' : 'Hiện bộ lọc');
+        });
+
+    </script>
+}

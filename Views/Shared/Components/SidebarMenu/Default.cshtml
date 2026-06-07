@@ -1,0 +1,648 @@
+﻿@using WebMVC.Ultilities.Enums
+@model LoggedModel
+
+@if (Model.IsStaff == 1)
+{
+    <aside class="sidebar collapsed-sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <a id="sidebar-header-img" class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">
+                <img src="~/images/logo.png" alt="Logo" class="d-inline-block align-text-top">
+            </a>
+            <button class="toggle-btn">☰</button>
+        </div>
+        <a href="/dashboard">
+            <div class="d-flex gap-3">
+                <i class="bi bi-house"></i> <span>Bảng điều khiển</span>
+            </div>
+        </a>
+        @switch (Model.RoleId)
+        {
+            case (int)ERoleId.Admin:
+            case (int)ERoleId.Manager:
+                <a href="#" onclick="toggleDropdown('webconfigDropdown')">
+                    <div class="d-flex gap-3">
+                        <i class="bi bi-gear"></i>
+                        <span>Cấu hình</span>
+                    </div>
+                    <i class="bi bi-chevron-down dropdown-icon"></i>
+                </a>
+                <div id="webconfigDropdown" class="dropdown-content">
+                    @if (Model.RoleId == (int)ERoleId.Admin)
+                    {
+                        <a href="/webconfig"><i class="bi bi-dot"></i> Hệ thống</a>
+                    }
+                    <a href="/pricing"><i class="bi bi-dot"></i> Bảng giá</a>
+                    <a href="/voucher"><i class="bi bi-dot"></i> Voucher</a>
+                </div>
+
+                <a href="#" onclick="toggleDropdown('accountDropdown')">
+                    <div class="d-flex gap-3">
+                        <i class="bi bi-person"></i> <span>Tài khoản</span>
+                    </div>
+                    <i class="bi bi-chevron-down dropdown-icon"></i>
+                </a>
+                <div id="accountDropdown" class="dropdown-content">
+                    <a href="/customer"><i class="bi bi-dot"></i>Danh sách khách hàng</a>
+                    <a href="/staff"><i class="bi bi-dot"></i>Danh sách nhân viên</a>
+                    <a href="/staff-target"><i class="bi bi-dot"></i>Bảng target tháng</a>
+                </div>
+                <a href="/transportation">
+                    <div class="d-flex gap-3">
+                        <i class="bi bi-truck"></i> <span>Đơn ký gửi</span>
+                    </div>
+                </a>
+                <a href="/big-package">
+                    <div class="d-flex gap-3">
+                        <i class="bi bi-truck"></i> <span>Bao hàng</span>
+                    </div>
+                </a>
+                <a href="#" onclick="toggleDropdown('fromWarehouseDropdown')">
+                    <div class="d-flex gap-3">
+                        <i class="bi bi-box-seam"></i> <span>Kiểm hàng Kho TQ</span>
+                    </div>
+                    <i class="bi bi-chevron-down dropdown-icon"></i>
+                </a>
+                <div id="fromWarehouseDropdown" class="dropdown-content">
+                    <a href="/receive-warehouse/@((int)ETransportationType.HangLe1)"><i class="bi bi-dot"></i>@ETransportationTypeName.GetTypeName((int)ETransportationType.HangLe1)</a>
+                    <a href="/receive-warehouse/@((int)ETransportationType.HangLe2)"><i class="bi bi-dot"></i>@ETransportationTypeName.GetTypeName((int)ETransportationType.HangLe2)</a>
+                    <a href="/receive-warehouse/@((int)ETransportationType.HangLo)"><i class="bi bi-dot"></i>@ETransportationTypeName.GetTypeName((int)ETransportationType.HangLo)</a>
+                    <a href="/receive-warehouse/@((int)ETransportationType.ChinhNgach)"><i class="bi bi-dot"></i>@ETransportationTypeName.GetTypeName((int)ETransportationType.ChinhNgach)</a>
+                    <a href="/receive-warehouse/@((int)ETransportationType.Khac)"><i class="bi bi-dot"></i>@ETransportationTypeName.GetTypeName((int)ETransportationType.Khac)</a>
+                </div>
+                <a href="#" onclick="toggleDropdown('importExcelDropdown')">
+                    <div class="d-flex gap-3">
+                        <i class="bi bi-box-seam"></i> <span>Import Excel</span>
+                    </div>
+                    <i class="bi bi-chevron-down dropdown-icon"></i>
+                </a>
+                <div id="importExcelDropdown" class="dropdown-content">
+                    <a href="/import-excel/@((int)ETransportationStatus.ArrivedAtTQWarehouse)"><i class="bi bi-dot"></i>Excel Kho TQ</a>
+                    <a href="/import-excel/@((int)ETransportationStatus.ExitedFromTQWarehouse)"><i class="bi bi-dot"></i>Excel xuất kho TQ</a>
+                    <a href="/import-excel/@((int)ETransportationStatus.CustomsInspectedGoods)"><i class="bi bi-dot"></i>Excel Kiểm hóa</a>
+                    <a href="/import-excel/@((int)ETransportationStatus.ReturningToVNWarehouse)"><i class="bi bi-dot"></i>Excel đang về VN</a>
+                    <a href="/import-excel/@((int)ETransportationStatus.ArrivedAtVNWarehouse)"><i class="bi bi-dot"></i>Excel kho VN</a>
+                </div>
+                <a href="/destination-warehouse">
+                    <div class="d-flex gap-3">
+                        <i class="bi bi-truck"></i> <span>Kiểm hàng Kho VN</span>
+                    </div>
+                </a>
+                <a href="/create-out-of-stock">
+                    <div class="d-flex gap-3">
+                        <i class="bi bi-truck"></i> <span>Xuất kho</span>
+                    </div>
+                </a>
+                <a href="/out-of-stock-manage">
+                    <div class="d-flex gap-3">
+                        <i class="bi bi-truck"></i> <span>Phiên xuất kho</span>
+                    </div>
+                </a>
+                <a href="#" onclick="toggleDropdown('statisticDropdown')">
+                    <div class="d-flex gap-3">
+                        <i class="bi bi-bar-chart-line"></i> <span>Thống kê</span>
+                    </div>
+                    <i class="bi bi-chevron-down dropdown-icon"></i>
+                </a>
+                <div id="statisticDropdown" class="dropdown-content">
+                    <div>
+                        <a class="d-flex gap-3" href="#" onclick="toggleDropdown('statisticAllDropdown')">
+                            <div class="d-flex gap-3">
+                                <i class="bi bi-bar-chart-line"></i> <span>Tất cả bưu cục</span>
+                            </div>
+                            <i class="bi bi-chevron-down dropdown-icon"></i>
+                        </a>
+                        <div id="statisticAllDropdown" class="dropdown-content">
+                            <a href="/report-chart"><i class="bi bi-dot"></i>Biểu đồ</a>
+                            <a href="/report-revenue"><i class="bi bi-dot"></i>Doanh số</a>
+                            <a href="/report-fixed-fee"><i class="bi bi-dot"></i>Phí cố định</a>
+                            <a href="/report-partner-fee"><i class="bi bi-dot"></i>Chi phí đối tác</a>
+                            <a href="/report-other-fee"><i class="bi bi-dot"></i>Chi phí khác</a>
+                        </div>
+                    </div>
+                    <div>
+                        <a class="d-flex gap-3" href="#" onclick="toggleDropdown('statistic1Dropdown')">
+                            <div class="d-flex gap-3">
+                                <i class="bi bi-bar-chart-line"></i> <span>Bắc Từ Liêm</span>
+                            </div>
+                            <i class="bi bi-chevron-down dropdown-icon"></i>
+                        </a>
+                        <div id="statistic1Dropdown" class="dropdown-content">
+                            <a href="/report-revenue?type=1"><i class="bi bi-dot"></i>Doanh số</a>
+                            <a href="/report-fixed-fee?type=1"><i class="bi bi-dot"></i>Phí cố định</a>
+                            <a href="/report-partner-fee?type=1"><i class="bi bi-dot"></i>Chi phí đối tác</a>
+                            <a href="/report-other-fee?type=1"><i class="bi bi-dot"></i>Chi phí khác</a>
+                        </div>
+                    </div>
+                    <div>
+                        <a class="d-flex gap-3" href="#" onclick="toggleDropdown('statistic2Dropdown')">
+                            <div class="d-flex gap-3">
+                                <i class="bi bi-bar-chart-line"></i> <span>Thanh Trì</span>
+                            </div>
+                            <i class="bi bi-chevron-down dropdown-icon"></i>
+                        </a>
+                        <div id="statistic2Dropdown" class="dropdown-content">
+                            <a href="/report-revenue?type=2"><i class="bi bi-dot"></i>Doanh số</a>
+                            <a href="/report-fixed-fee?type=2"><i class="bi bi-dot"></i>Phí cố định</a>
+                            <a href="/report-partner-fee?type=2"><i class="bi bi-dot"></i>Chi phí đối tác</a>
+                            <a href="/report-other-fee?type=2"><i class="bi bi-dot"></i>Chi phí khác</a>
+                        </div>
+                    </div>
+                    <div>
+                        <a class="d-flex gap-3" href="#" onclick="toggleDropdown('statistic3Dropdown')">
+                            <div class="d-flex gap-3">
+                                <i class="bi bi-bar-chart-line"></i> <span>Cầu Giấy</span>
+                            </div>
+                            <i class="bi bi-chevron-down dropdown-icon"></i>
+                        </a>
+                        <div id="statistic3Dropdown" class="dropdown-content">
+                            <a href="/report-revenue?type=3"><i class="bi bi-dot"></i>Doanh số</a>
+                            <a href="/report-fixed-fee?type=3"><i class="bi bi-dot"></i>Phí cố định</a>
+                            <a href="/report-partner-fee?type=3"><i class="bi bi-dot"></i>Chi phí đối tác</a>
+                            <a href="/report-other-fee?type=3"><i class="bi bi-dot"></i>Chi phí khác</a>
+                        </div>
+                    </div>
+                    <div>
+                        <a class="d-flex gap-3" href="#" onclick="toggleDropdown('statistic4Dropdown')">
+                            <div class="d-flex gap-3">
+                                <i class="bi bi-bar-chart-line"></i> <span>Hà Đông</span>
+                            </div>
+                            <i class="bi bi-chevron-down dropdown-icon"></i>
+                        </a>
+                        <div id="statistic4Dropdown" class="dropdown-content">
+                            <a href="/report-revenue?type=4"><i class="bi bi-dot"></i>Doanh số</a>
+                            <a href="/report-fixed-fee?type=4"><i class="bi bi-dot"></i>Phí cố định</a>
+                            <a href="/report-partner-fee?type=4"><i class="bi bi-dot"></i>Chi phí đối tác</a>
+                            <a href="/report-other-fee?type=4"><i class="bi bi-dot"></i>Chi phí khác</a>
+                        </div>
+                    </div>
+                </div>
+                break;
+            case (int)ERoleId.Sale:
+                <a href="/staff-target-detail/@Model.Id">
+                    <div class="d-flex gap-3">
+                        <i class="bi bi-house"></i> <span>Bảng target tháng</span>
+                    </div>
+                </a>
+                <a href="/customer">
+                    <div class="d-flex gap-3">
+                        <i class="bi bi-truck"></i> <span>Danh sách khách hàng</span>
+                    </div>
+                </a>
+                <a href="/transportation">
+                    <div class="d-flex gap-3">
+                        <i class="bi bi-truck"></i> <span>Đơn ký gửi</span>
+                    </div>
+                </a>
+                <a href="/out-of-stock-manage">
+                    <div class="d-flex gap-3">
+                        <i class="bi bi-truck"></i> <span>Phiên xuất kho</span>
+                    </div>
+                </a>
+                break;
+            case (int)ERoleId.TQWarehouseStaff:
+                <a href="/transportation">
+                    <div class="d-flex gap-3">
+                        <i class="bi bi-truck"></i> <span>Đơn ký gửi</span>
+                    </div>
+                </a>
+                <a href="/big-package">
+                    <div class="d-flex gap-3">
+                        <i class="bi bi-truck"></i> <span>Bao hàng</span>
+                    </div>
+                </a>
+                <a href="#" onclick="toggleDropdown('fromWarehouseDropdown')">
+                    <div class="d-flex gap-3">
+                        <i class="bi bi-box-seam"></i> <span>Kiểm hàng Kho TQ</span>
+                    </div>
+                    <i class="bi bi-chevron-down dropdown-icon"></i>
+                </a>
+                <div id="fromWarehouseDropdown" class="dropdown-content">
+                    @switch (Model.TransportationType)
+                    {
+                        case ((int)ETransportationType.HangLe1):
+                            <a href="/receive-warehouse/@((int)ETransportationType.HangLe1)"><i class="bi bi-dot"></i>@ETransportationTypeName.GetTypeName((int)ETransportationType.HangLe1)</a>
+                            break;
+                        case ((int)ETransportationType.HangLe2):
+                            <a href="/receive-warehouse/@((int)ETransportationType.HangLe2)"><i class="bi bi-dot"></i>@ETransportationTypeName.GetTypeName((int)ETransportationType.HangLe2)</a>
+                            break;
+                        case ((int)ETransportationType.HangLo):
+                            <a href="/receive-warehouse/@((int)ETransportationType.HangLo)"><i class="bi bi-dot"></i>@ETransportationTypeName.GetTypeName((int)ETransportationType.HangLo)</a>
+                            break;
+                        case ((int)ETransportationType.ChinhNgach):
+                            <a href="/receive-warehouse/@((int)ETransportationType.ChinhNgach)"><i class="bi bi-dot"></i>@ETransportationTypeName.GetTypeName((int)ETransportationType.ChinhNgach)</a>
+                            break;
+                        case ((int)ETransportationType.Khac):
+                            <a href="/receive-warehouse/@((int)ETransportationType.Khac)"><i class="bi bi-dot"></i>@ETransportationTypeName.GetTypeName((int)ETransportationType.Khac)</a>
+                            break;
+                        default:
+                            <a href="/receive-warehouse/@((int)ETransportationType.HangLe1)"><i class="bi bi-dot"></i>@ETransportationTypeName.GetTypeName((int)ETransportationType.HangLe1)</a>
+                            <a href="/receive-warehouse/@((int)ETransportationType.HangLe2)"><i class="bi bi-dot"></i>@ETransportationTypeName.GetTypeName((int)ETransportationType.HangLe2)</a>
+                            <a href="/receive-warehouse/@((int)ETransportationType.HangLo)"><i class="bi bi-dot"></i>@ETransportationTypeName.GetTypeName((int)ETransportationType.HangLo)</a>
+                            <a href="/receive-warehouse/@((int)ETransportationType.ChinhNgach)"><i class="bi bi-dot"></i>@ETransportationTypeName.GetTypeName((int)ETransportationType.ChinhNgach)</a>
+                            <a href="/receive-warehouse/@((int)ETransportationType.Khac)"><i class="bi bi-dot"></i>@ETransportationTypeName.GetTypeName((int)ETransportationType.Khac)</a>
+                            break;
+                    }
+
+                </div>
+                <a href="#" onclick="toggleDropdown('importExcelDropdown')">
+                    <div class="d-flex gap-3">
+                        <i class="bi bi-box-seam"></i> <span>Import Excel</span>
+                    </div>
+                    <i class="bi bi-chevron-down dropdown-icon"></i>
+                </a>
+                <div id="importExcelDropdown" class="dropdown-content">
+                    <a href="/import-excel/@((int)ETransportationStatus.ArrivedAtTQWarehouse)"><i class="bi bi-dot"></i>Excel Kho TQ</a>
+                    <a href="/import-excel/@((int)ETransportationStatus.ExitedFromTQWarehouse)"><i class="bi bi-dot"></i>Excel xuất kho TQ</a>
+                    <a href="/import-excel/@((int)ETransportationStatus.CustomsInspectedGoods)"><i class="bi bi-dot"></i>Excel Kiểm hóa</a>
+                    <a href="/import-excel/@((int)ETransportationStatus.ReturningToVNWarehouse)"><i class="bi bi-dot"></i>Excel đang về VN</a>
+                    <a href="/import-excel/@((int)ETransportationStatus.ArrivedAtVNWarehouse)"><i class="bi bi-dot"></i>Excel kho VN</a>
+                </div>
+                break;
+            case (int)ERoleId.VNWarehouseStaff:
+                <a href="/transportation">
+                    <div class="d-flex gap-3">
+                        <i class="bi bi-truck"></i> <span>Đơn ký gửi</span>
+                    </div>
+                </a>
+                <a href="/big-package">
+                    <div class="d-flex gap-3">
+                        <i class="bi bi-truck"></i> <span>Bao hàng</span>
+                    </div>
+                </a>
+                <a href="/destination-warehouse">
+                    <div class="d-flex gap-3">
+                        <i class="bi bi-truck"></i> <span>Kiểm hàng Kho VN</span>
+                    </div>
+                </a>
+                <a href="/create-out-of-stock">
+                    <div class="d-flex gap-3">
+                        <i class="bi bi-truck"></i> <span>Xuất kho</span>
+                    </div>
+                </a>
+                <a href="/out-of-stock-manage">
+                    <div class="d-flex gap-3">
+                        <i class="bi bi-truck"></i> <span>Phiên xuất kho</span>
+                    </div>
+                </a>
+                break;
+
+        }
+        <a href="/chat">
+            <div class="d-flex gap-3"><i class="bi bi-chat-dots-fill"></i> <span>Tin nhắn</span></div>
+        </a>
+        @if(Model.Id == 1){
+            <a href="/price-import">
+                <div class="d-flex gap-3"><i class="bi bi-search"></i> <span>Tra HS</span></div>
+            </a>
+        }
+        
+        <a href="/tracking">
+            <div class="d-flex gap-3"><i class="bi bi-search"></i> <span>Tracking</span></div>
+        </a>
+        
+    </aside>
+    <div class="d-flex gap-3 justify-content-end align-items-center" style="height: 3rem;background-color: white;width: 100%; ">
+        <a class="menu-icon position-relative" href="#" id="notificationBell">
+            <i class="bi bi-bell fs-4"></i>
+            <span class="notification-badge" id="notificationBadge" style="display:none"></span>
+        </a>
+        <div class="notification-dropdown p-3" id="notificationDropdown">
+            <ul class="nav nav-tabs noti-ul">
+                <li class=""><a href="#" class="active-tab noti-tab" data-tab="0">Tất cả</a></li>
+                <li class=""><a href="#" class="noti-tab" data-tab="1">Đơn hàng</a></li>
+                <li class=""><a href="#" class="noti-tab" data-tab="2">Khách hàng</a></li>
+                <li class=""><a href="#" class="noti-tab" data-tab="3">Voucher</a></li>
+                <li class=""><a href="#" class="noti-tab" data-tab="4">Tài chính</a></li>
+            </ul>
+            <div class="notification-content mt-2" id="notificationContent">
+                <p>Danh sách thông báo hiển thị ở đây...</p>
+            </div>
+            <a href="/notification" class="btn btn-primary w-100 mt-2">Xem tất cả</a>
+        </div>
+        <ul class="menu-icon ">
+            <li class="nav-item dropdown">
+                <a style=" padding: 5px 0px; " class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    Tài khoản
+                </a>
+                <ul class="dropdown-menu" style="left: -40px !important">
+                    <li><a class="dropdown-item" href="/profile">Thông tin</a></li>
+                    <li><a class="dropdown-item" asp-controller="Home" asp-action="Customer">Khách hàng</a></li>
+                    <li><a class="dropdown-item" asp-controller="Home" asp-action="SignOff">Đăng xuất</a></li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+
+
+    <script>
+        document.getElementById("notificationBell").addEventListener("click", function (event) {
+            event.preventDefault();
+            let dropdown = document.getElementById("notificationDropdown");
+
+            // Lấy tab đang active
+            let activeTab = document.querySelector(".noti-tab.active-tab");
+            let type = activeTab ? activeTab.dataset.tab : "0"; // Mặc định lấy tất cả nếu không có active tab
+
+            if (dropdown.style.display !== "block") {
+                fetchNotifications(type);
+            }
+
+            // Toggle dropdown hiển thị/ẩn
+            dropdown.style.display = dropdown.style.display === "block" ? "none" : "block";
+        });
+
+
+        // Bắt sự kiện khi bấm vào các tab
+        document.querySelectorAll(".noti-tab").forEach(tab => {
+            tab.addEventListener("click", function (event) {
+                event.preventDefault();
+                let type = this.dataset.tab;
+
+                // Xóa class active-tab cũ, thêm class active-tab cho tab mới
+                document.querySelectorAll(".noti-tab").forEach(el => el.classList.remove("active-tab"));
+                this.classList.add("active-tab");
+
+                // Gọi API lấy danh sách thông báo theo loại
+                fetchNotifications(type);
+            });
+        });
+
+        // Hàm gọi API lấy thông báo
+        function fetchNotifications(type) {
+            const request = {
+                PageIndex: 1,
+                Type: type,
+                IsRead: false
+            };
+            $.ajax({
+                url: '/Notification/Paging',
+                data: request,
+                type: 'GET',
+                success: function (response) {
+                    const data = response.Data;
+                    let content = document.getElementById("notificationContent");
+                    if (data.length > 0) {
+                        content.innerHTML = data.map(noti => `
+                                                                                            <a href="${noti.WebUrl}" onclick="readNotiInLayout(${noti.Id})">
+                                                                                            <div class="notification-item p-2 border-bottom">
+                                                                                                <strong>${noti.Title}</strong>
+                                                                                                <p class="text-muted m-0">${noti.Content}</p>
+                                                                                            </div>
+                                                                                            </a>
+                                                                                        `).join("");
+                    } else {
+                        content.innerHTML = "<p>Không có thông báo nào.</p>";
+                    }
+                },
+                error: function () {
+                }
+            });
+        }
+        document.addEventListener("DOMContentLoaded", function () {
+@*             const sidebar = document.getElementById("sidebar");
+            const imageLogo = document.getElementById("sidebar-header-img");
+            const mainTag = document.getElementById("mainTag");
+            mainTag.style.paddingBottom = "2rem";
+
+            // Kiểm tra trạng thái đã lưu
+            const isCollapsed = localStorage.getItem("sidebar-collapsed") === "true";
+
+            // Cập nhật trạng thái sidebar khi tải lại trang
+            if (isCollapsed) {
+                sidebar.classList.add("collapsed-sidebar");
+                if (imageLogo) imageLogo.style.display = "none";
+                mainTag.style.paddingLeft = "80px";
+            } else {
+                if (imageLogo) imageLogo.style.display = "flex";
+                mainTag.style.paddingLeft = "260px";
+            } *@
+            $.ajax({
+                url: '/Notification/GetUnRead',
+                type: 'GET',
+                success: function (response) {
+                    const data = response.Data;
+                    if(data > 0){
+                        document.getElementById("notificationBadge").style.display = "block";
+                    }
+                },
+                error: function () {
+                }
+            });
+        });
+@*         let sidebarExpanded = false;
+
+        function toggleSidebar() {
+            const sidebar = document.getElementById("sidebar");
+            const imageLogo = document.getElementById("sidebar-header-img");
+            const mainTag = document.getElementById("mainTag");
+            sidebarExpanded = !sidebarExpanded;
+            sidebar.classList.toggle("collapsed-sidebar");
+            const isCollapsed = sidebar.classList.contains("collapsed-sidebar");
+
+            // Lưu trạng thái vào localStorage
+            localStorage.setItem("sidebar-collapsed", true);
+
+            if (imageLogo) {
+                if (isCollapsed) {
+                    imageLogo.style.display = "none";
+                    mainTag.style.paddingLeft = "80px";
+                } else {
+                    imageLogo.style.display = "flex";
+                    mainTag.style.paddingLeft = "260px";
+                }
+            }
+        }
+
+        document.addEventListener("DOMContentLoaded", function () {
+            const sidebar = document.getElementById("sidebar");
+
+            sidebar.addEventListener("mouseover", function (e) {
+                if (e.target.tagName === "A" && !sidebarExpanded) {
+                    toggleSidebar();
+                }
+            });
+        });  *@
+        function toggleDropdown(id) {
+            var dropdown = document.getElementById(id);
+            dropdown.style.display = dropdown.style.display === "block" ? "none" : "block";
+        }
+    </script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const sidebar = document.getElementById("sidebar");
+            const imageLogo = document.getElementById("sidebar-header-img");
+            const mainTag = document.getElementById("mainTag");
+
+            sidebar.classList.add("collapsed-sidebar"); // luôn bắt đầu ở trạng thái ẩn
+            if (imageLogo) imageLogo.style.display = "none";
+            if (mainTag) mainTag.style.paddingLeft = "80px";
+            sidebar.addEventListener("mouseenter", function () {
+                sidebar.classList.remove("collapsed-sidebar");
+
+                if (imageLogo) imageLogo.style.display = "flex";
+@*                 if (mainTag) mainTag.style.paddingLeft = "260px";
+ *@            });
+
+            sidebar.addEventListener("mouseleave", function () {
+                sidebar.classList.add("collapsed-sidebar");
+
+                if (imageLogo) imageLogo.style.display = "none";
+                if (mainTag) mainTag.style.paddingLeft = "80px";
+            });
+        });
+    </script>
+
+    <style>
+
+        .notification-badge {
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            width: 10px;
+            height: 10px;
+            background-color: red;
+            border-radius: 50%;
+        }
+
+        .notification-dropdown {
+            position: absolute;
+            right: 0;
+            top: 3rem;
+            width: 500px;
+            background: white;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            display: none;
+            z-index: 1000;
+        }
+
+        .notification-content {
+            max-height: 300px;
+            overflow-y: auto;
+        }
+
+        .noti-tab {
+            color: white;
+            border-radius: 0.5rem;
+            padding: 5px 1rem;
+            text-decoration: none;
+            background-color: grey;
+        }
+
+        .noti-ul {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+        }
+
+        .active-tab {
+            font-weight: bold;
+            background: linear-gradient(180deg, #FCBC5D 0%, #F27243 100%);
+        }
+
+        .menu-icon {
+            color: white;
+            border-radius: 0.5rem;
+            margin: 0 1rem;
+            font-weight: 600;
+            font-size: 16px;
+            display: flex;
+            align-items: center;
+            background: linear-gradient(180deg, #FCBC5D 0%, #F27243 100%);
+            padding: 0 1rem;
+        }
+
+        .sidebar {
+            width: 250px;
+            height: 100vh;
+            background: #343a40;
+            color: white;
+            position: fixed;
+            transition: all 0.3s;
+            overflow-y: auto;
+            z-index: 100;
+        }
+
+            .sidebar a {
+                color: white;
+                text-decoration: none;
+                padding: 10px 20px;
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+            }
+
+                .sidebar a:hover {
+                    background: #495057;
+                }
+
+            .sidebar .sidebar-header {
+                font-size: 1.2rem;
+                text-align: center;
+                display: flex;
+                justify-content: space-between;
+                padding: 10px;
+            }
+
+        .toggle-btn {
+            cursor: pointer;
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.5rem;
+        }
+
+        .dropdown-content {
+            display: none;
+            padding-left: 20px;
+        }
+
+            .dropdown-content a {
+                padding: 8px 20px;
+                display: block;
+            }
+
+        .sidebar-footer {
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+            background: #212529;
+            padding: 10px 0;
+        }
+
+            .collapsed-sidebar a span, .collapsed-sidebar .dropdown-icon {
+                display: none;
+            }
+
+            .collapsed-sidebar .dropdown-content {
+                display: none !important;
+            }
+
+            .collapsed-sidebar a i {
+                text-align: center;
+                width: 100%;
+            }
+
+        main {
+            padding-left: 260px;
+            transition: padding-left 0.3s;
+        }
+
+        .wrapper > .main {
+            padding: unset !important;
+        }
+
+        #sidebar {
+            width: 260px;
+            transition: width 0.3s ease;
+            overflow: hidden;
+        }
+
+            #sidebar.collapsed-sidebar {
+                width: 70px;
+            }
+
+    </style>
+
+}

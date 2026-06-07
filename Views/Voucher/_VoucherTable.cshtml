@@ -1,0 +1,85 @@
+﻿@using WebMVC.Entities
+@using WebMVC.Interfaces
+@using WebMVC.Models.Responses
+@using WebMVC.Ultilities.Enums
+@model List<VoucherResponse>
+<div id="table-container">
+    <div class="table-content">
+        <table class="table table-hover table-bordered">
+            <thead class="table">
+                <tr>
+                    <th class="text-center">#</th>
+                    <th class="text-center" style=" width: 100px; "></th>
+                    <th class="text-center">Tên</th>
+                    <th class="text-center">Số tiền</th>
+                    <th class="text-center">Bắt đầu</th>
+                    <th class="text-center">Kết thúc</th>
+                    <th class="text-center">Mô tả</th>
+                    <th class="text-center">Số lượng</th>
+                    <th class="text-center">Trạng thái</th>
+                    <th class="text-center"></th>
+                </tr>
+            </thead>
+            <tbody>
+                @for (int i = 0; i < Model.Count; i++)
+                {
+                    <tr>
+                        <td class="text-center align-content-center">@((ViewBag.CurrentPage - 1) * (ViewBag.PageSize) + i + 1)</td>
+                        <td class="text-center align-content-center">
+                            <div class="d-flex justify-content-center align-content-center">
+                                <img src="@Model[i].Image" class="img-fluid rounded border" style="max-width: 100px; max-height: 100px;" alt="Voucher Image">
+                            </div>
+                        </td>
+
+                        <td class="text-center align-content-center">@Model[i].Name</td>
+                        <td class="text-center align-content-center">@string.Format("{0:N0}", Model[i].Amount) đ</td>
+                        <td class="text-center align-content-center">@Model[i].StartDate.ToString("dd/MM/yyyy")</td>
+                        <td class="text-center align-content-center">@Model[i].EndDate.ToString("dd/MM/yyyy")</td>
+                        <td class="text-center align-content-center">@Model[i].Description</td>
+                        <td class="text-center align-content-center">@Model[i].Quantity</td>
+                        <td class="text-center align-content-center">@Model[i].StatusName</td>
+                        <td class="text-center align-content-center">
+                            <p>
+                                <button class="btn btn-sm btn-primary" onclick="window.location.href='@Url.RouteUrl("voucher-detail", new { id = Model[i].Id })'">
+                                    Chi tiết
+                                </button>
+                            </p>
+                            <p>
+                                <button class="btn btn-sm btn-warning" onclick='editItem(@Html.Raw(Json.Serialize(Model[i])))' data-bs-toggle="modal" data-bs-target="#editModal">Cập nhật</button>
+                            </p>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+    @if (Model.Count > 0)
+    {
+        <nav aria-label="Page navigation">
+            <ul class="pagination justify-content-end">
+                @if (ViewBag.CurrentPage > 2)
+                {
+                    <li class="page-item">
+                        <a class="page-link" href="javascript:void(0);" onclick="loadPage(1)">Đầu</a>
+                    </li>
+                }
+                @{
+                    int startPage = Math.Max(1, ViewBag.CurrentPage - 1); // Bắt đầu từ trang gần trước
+                    int endPage = Math.Min(ViewBag.TotalPages, ViewBag.CurrentPage + 1); // Kết thúc ở trang gần sau
+                }
+                @for (int i = startPage; i <= endPage; i++)
+                {
+                    <li class="page-item @(i == ViewBag.CurrentPage ? "active" : "")">
+                        <a class="page-link" href="javascript:void(0);" onclick="loadPage(@i)">@i</a>
+                    </li>
+                }
+                @if (ViewBag.CurrentPage < ViewBag.TotalPages - 1)
+                {
+                    <li class="page-item">
+                        <a class="page-link" href="javascript:void(0);" onclick="loadPage(@ViewBag.TotalPages)">Cuối</a>
+                    </li>
+                }
+            </ul>
+        </nav>
+    }
+</div>

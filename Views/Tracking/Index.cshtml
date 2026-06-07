@@ -1,0 +1,619 @@
+﻿@using WebMVC.Models.Responses;
+@using WebMVC.Ultilities.Enums
+@model TrackingResponse;
+@{
+    var barcode = Context.Request.Query["barcode"];
+    var imageExt = new[] { ".jpg", ".jpeg", ".png", ".gif", ".webp" };
+}
+
+@{
+    ViewData["Title"] = "Tracking";
+}<!-- HTML and Razor markup remain unchanged -->
+<div class="container-fluid mt-4">
+    <h1 class="mb-4 d-flex justify-content-center">Tracking mã vận đơn</h1>
+    <div class="row">
+        <div class="col-md-2">
+        </div>
+        <div class="col-md-2">
+            <select class="form-select" id="toSelect" style="width:100%"></select>
+        </div>
+
+        <div class="col-md-6">
+            <div class="input-group mb-4">
+                <input type="text" class="form-control" id="barcode" placeholder="Nhập mã vận đơn" value="@barcode">
+                <button class="btn btn-primary" onclick="searchTracking()">Tra cứu</button>
+            </div>
+        </div>
+        <div class="col-md-2"></div>
+
+    </div>
+    <!-- Form tra cứu -->
+    @if (Model != null)
+    {
+        <!-- Timeline trạng thái -->
+        <div class="timeline d-flex flex-wrap justify-content-between align-items-center position-relative">
+            @foreach (var status in Enum.GetValues(typeof(ETransportationStatus)).Cast<ETransportationStatus>())
+            {
+                if (status == ETransportationStatus.Cancel)
+                    continue;
+                var isActive = (int)status <= Model.Status ? "active" : "";
+                <div class="step @isActive text-center flex-fill">
+                    @switch (status)
+                    {
+                        case ETransportationStatus.New:
+                            <div class="icon rounded-circle mx-auto">
+                                <i class="bi bi-clipboard-check"></i>
+                            </div>
+                            <p class="mt-2">@ETransportationStatusName.GetStatusName((int)ETransportationStatus.New)</p>
+                            <p class="mt-2">@Model.Created.ToString("dd/MM/yyyy HH:mm")</p>
+                            break;
+                        case ETransportationStatus.ArrivedAtTQWarehouse:
+                            <div class="icon rounded-circle mx-auto">
+                                <i class="bi bi-box-arrow-in-down"></i>
+                            </div>
+                            <p class="mt-2">@ETransportationStatusName.GetStatusName((int)ETransportationStatus.ArrivedAtTQWarehouse)</p>
+                            <p class="mt-2">@(!string.IsNullOrEmpty(Model.DateArrivedAtTQWarehouse?.ToString()) ? Model.DateArrivedAtTQWarehouse?.ToString("dd/MM/yyyy HH:mm") : "---")</p>
+                            break;
+                        case ETransportationStatus.ExitedFromTQWarehouse:
+                            <div class="icon rounded-circle mx-auto">
+                                <i class="bi bi-truck"></i>
+                            </div>
+                            <p class="mt-2">@ETransportationStatusName.GetStatusName((int)ETransportationStatus.ExitedFromTQWarehouse)</p>
+                            <p class="mt-2">@(!string.IsNullOrEmpty(Model.DateExitedFromTQWarehouse?.ToString()) ? Model.DateExitedFromTQWarehouse?.ToString("dd/MM/yyyy HH:mm") : "---")</p>
+                            break;
+                        case ETransportationStatus.CustomsInspectedGoods:
+                            <div class="icon rounded-circle mx-auto">
+                                <i class="bi bi-truck"></i>
+                            </div>
+                            <p class="mt-2">@ETransportationStatusName.GetStatusName((int)ETransportationStatus.CustomsInspectedGoods)</p>
+                            <p class="mt-2">@(!string.IsNullOrEmpty(Model.DateCustomsInspectedGoods?.ToString()) ? Model.DateCustomsInspectedGoods?.ToString("dd/MM/yyyy HH:mm") : "---")</p>
+                            break;
+                        case ETransportationStatus.ReturningToVNWarehouse:
+                            <div class="icon rounded-circle mx-auto">
+                                <i class="bi bi-box-arrow-in-right"></i>
+                            </div>
+                            <p class="mt-2">@ETransportationStatusName.GetStatusName((int)ETransportationStatus.ReturningToVNWarehouse)</p>
+                            <p class="mt-2">@(!string.IsNullOrEmpty(Model.DateReturningToVNWarehouse?.ToString()) ? Model.DateReturningToVNWarehouse?.ToString("dd/MM/yyyy HH:mm") : "---")</p>
+                            break;
+                        case ETransportationStatus.ArrivedAtVNWarehouse:
+                            <div class="icon rounded-circle mx-auto">
+                                <i class="bi bi-box-arrow-in-right"></i>
+                            </div>
+                            <p class="mt-2">@ETransportationStatusName.GetStatusName((int)ETransportationStatus.ArrivedAtVNWarehouse)</p>
+                            <p class="mt-2">@(!string.IsNullOrEmpty(Model.DateArrivedAtVNWarehouse?.ToString()) ? Model.DateArrivedAtVNWarehouse?.ToString("dd/MM/yyyy HH:mm") : "---")</p>
+                            break;
+                        case ETransportationStatus.Completed:
+                            <div class="icon rounded-circle mx-auto">
+                                <i class="bi bi-check-circle"></i>
+                            </div>
+                            <p class="mt-2">@ETransportationStatusName.GetStatusName((int)ETransportationStatus.Completed)</p>
+                            <p class="mt-2">@(!string.IsNullOrEmpty(Model.DateCompleted?.ToString()) ? Model.DateCompleted?.ToString("dd/MM/yyyy HH:mm") : "---")</p>
+                            break;
+                    }
+                </div>
+            }
+        </div>
+
+        <!-- Thông tin vận chuyển -->
+        <div class="mb-4 row">
+            <div class="col-6">
+                <p><strong>Kho gửi:</strong> @Model.WarehouseFrom</p>
+                <p><strong>Kho TQ:</strong> @Model.WarehouseTo</p>
+                <p class="d-flex gap-3 align-items-center">
+                    <strong>Hình thức vận chuyển:</strong>
+                    @if(Model?.ShipId == 5)
+                    {
+                        @Model.ShipName
+                    }
+                    else
+                    {
+                        <select class="form-select" id="shipIdSelect" style="width:50%"></select>
+                        @if (Model?.Status == (int)ETransportationStatus.New)
+                        {
+                            <button class="btn btn-sm btn-primary w-20 update-shipId-button">Cập nhật</button>
+                        }
+                    }
+                </p>
+                <p><strong>Thông tin hàng:</strong> @Model.Weight (kg) - @Model.Volume (m3) - @Model.Quantity (kiện)</p>
+                <p>
+                    @if (Model.Status == (int)ETransportationStatus.New)
+                    {
+                        <button class="btn btn-sm btn-danger" onclick="deleteTransportation(@Model.Id)">Hủy đơn hàng</button>
+                    }
+                </p>
+            </div>
+            <div class="col-6">
+                @if(Model?.ShipId != 5)
+                {
+                    <p>
+                        <strong>File SP:</strong>
+                        @if (!string.IsNullOrEmpty(Model.UserUploadImage))
+                        {
+                            var files = Model.UserUploadImage.Split("|");
+                            foreach (var file in files)
+                            {
+                                var ext = System.IO.Path.GetExtension(file).ToLower();
+                                var isImage = imageExt.Contains(ext);
+
+                                if (isImage)
+                                {
+                                    <img src="@file" alt=""
+                                         style="max-width: 10rem; border-radius: 8px; cursor: pointer;"
+                                         onclick="window.open(this.src)">
+                                }
+                                else
+                                {
+                                    var fileName = System.IO.Path.GetFileName(file);
+                                    <a href="@file" download="@fileName" style="display:block; margin-top:5px;">
+                                        @fileName
+                                    </a>
+                                }
+                            }
+                        }
+                    </p>
+                    @if (Model?.Status == (int)ETransportationStatus.New)
+                    {
+                        <p class="d-flex gap-3">
+                            <input type="file" class="form-control w-50" id="image" multiple required>
+                            <button class="btn btn-sm btn-primary w-20 update-image-button">Cập nhật file</button>
+                        </p>
+                    }
+                }
+                <p><strong>Ghi chú:</strong></p>
+                <p  class="d-flex gap-3">
+                    <input type="text" class="form-control w-50 note" value="@Model.Note">
+                    @if (Model?.Status == (int)ETransportationStatus.New)
+                    {
+                        <button class="btn btn-sm btn-primary w-20 update-note-button">Cập nhật</button>
+                    }
+                </p>
+                
+            </div>
+        </div>
+    }
+    else
+    {
+        <p class="d-flex justify-content-center">Vui lòng nhập mã vận đơn để tra cứu thông tin.</p>
+    }
+    
+    @if (Model?.ShipId == 5)
+    {
+        <div class="col-12 mt-4 table-content">
+            <table class="table table-bordered">
+                <thead class="table-light">
+                    <tr>
+                        <th><span class="required-mark">* </span>Tên hàng</th>
+                        <th><span class="required-mark">* </span>Số lượng</th>
+                        <th><span class="required-mark">* </span>Kích thước</th>
+                        <th><span class="required-mark">* </span>Công suất điện áp, chất liệu</th>
+                        <th colspan="2"><span class="required-mark">* </span>File SP</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.Products)
+                    {
+                        <tr>
+                            <td>
+                                <input type="text" class="form-control productName" value="@item.Name" required>
+                            </td>
+                            <td>
+                                <input type="number" class="form-control productQuantity" value="@item.Quantity" min="1" required>
+                            </td>
+                            <td>
+                                <input type="text" class="form-control productDimensions" value="@item.Dimensions" required>
+                            </td>
+                            <td>
+                                <input type="text" class="form-control productOtherInfor" value="@item.OtherInfor" required>
+                            </td>
+                            <td>
+                                @{
+                                    var ext = System.IO.Path.GetExtension(@item.Image).ToLower();
+                                    var isImage = imageExt.Contains(ext);
+                                    if (isImage)
+                                    {
+                                            <img src="@item.Image" alt="" style="max-width: 5rem; border-radius: 8px;cursor: pointer;" onclick="window.open(this.src)">
+                                    }
+                                    else
+                                    {
+                                        var fileName = System.IO.Path.GetFileName(@item.Image);
+                                            <a href="@item.Image" download="@fileName" class="btn btn-sm btn-secondary">
+                                                @fileName
+                                            </a>
+                                    }
+                                }
+                            </td>
+                            <td>
+                                @if (Model?.Status == (int)ETransportationStatus.New || Model?.Status == (int)ETransportationStatus.ArrivedAtTQWarehouse)
+                                {
+                                    <input type="file" class="form-control productImage" required accept=".xlsx,.xls">
+                                }
+                            </td>
+                            <td>
+                                <button class="btn btn-sm btn-warning w-100 update-button" data-id="@item.Id">Cập nhật</button>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    } else {
+    <div class="col-12 mt-4 table-content">
+        <table class="table table-bordered">
+            <thead class="table-light">
+                <tr>
+                    <th>Tên hàng</th>
+                    <th>Tổng tiền + <br> ship nội địa TQ (Tệ)</th>
+                    <th>Cân nặng (Kg)</th>
+                    <th>Số khối (m3)</th>
+                    <th>Phí ship quốc tế <br>(KG/VNĐ)</th>
+                    <th>Phí ship quốc tế <br>(m3/VNĐ)</th>
+                    <th>Số lượng <br>(chiếc)</th>
+                    <th>Ship nội địa VN <br>(nếu có)</th>
+                    <th>Đơn giá <br>(Tệ)</th>
+                    <th>Đơn giá <br>về tay (VNĐ)</th>
+                    <th>Ghi chú</th>
+                    <th>Thao tác</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><input id="ProductName" class="form-control" /></td>
+                    <td><input id="TotalShip" type="number" class="form-control" value="0" /></td>
+                    <td><input id="Weight" type="number" class="form-control" value="0" /></td>
+                    <td><input id="Volume" type="number" class="form-control" value="0" /></td>
+                    <td><input id="ShipVN" type="number" class="form-control" value="0" /></td>
+                    <td><input id="ShipVNVolume" type="number" class="form-control" value="0" /></td>
+                    <td><input id="Number" type="number" class="form-control" value="1" /></td>
+                    <td><input id="ShipInVN" type="number" class="form-control" value="0" /></td>
+                    <td><input id="UnitPrice" type="number" class="form-control" readonly /></td>
+                    <td><input id="TotalPrice" type="number" class="form-control" readonly /></td>
+                    <td><input id="Note" class="form-control" /></td>
+                    <td>
+                        <button type="button" class="btn btn-primary" onclick="calculateTracking()">Tính</button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    }
+</div>
+<!-- Script remains unchanged -->
+
+@section Scripts {
+    <script>
+        function searchTracking() {
+            const barcode = document.getElementById('barcode').value.trim();
+            if (barcode) {
+                window.location.href = `?barcode=${barcode}`;
+            }
+        }
+        $(document).ready(function () {
+            const barcode = document.getElementById('barcode').value.trim();
+            if (barcode) {
+                getTracking(barcode);
+            }
+            const selectedShipId = '@Model?.ShipId';
+            $.ajax({
+                url: '@Url.Action("GetActive", "Warehouse")',
+                type: 'GET',
+                dataType: 'json',
+                success: function (data) {
+                    var toSelect = $('#toSelect');
+                    toSelect.empty();
+                    var shipIdSelect = $('#shipIdSelect');
+                    shipIdSelect.empty();
+                    $.each(data, function (index, item) {
+                        switch (item.Type) {
+                            case 2:
+                                toSelect.append($('<option>', {
+                                    value: item.Id,
+                                    text: item.Name
+                                }));
+                                break;
+                            case 3:
+                                if (item.Id != 5) { 
+                                    shipIdSelect.append($('<option>', {
+                                        value: item.Id,
+                                        text: item.Name,
+                                        selected: selectedShipId && item.Id == selectedShipId
+                                    }));
+                                }
+                                break;
+                            default:
+                                break;
+                        }
+                    });
+                },
+                error: function (xhr, status, error) {
+                    console.log("Lỗi gọi API:", xhr.responseText);
+                }
+            });
+        });
+
+        function calculateTracking() {
+            const data = {
+                ProductName: $('#ProductName').val(),
+                TotalShip: parseFloat($('#TotalShip').val()),
+                TotalWeight: parseFloat($('#Weight').val()),
+                TotalVolume: parseFloat($('#Volume').val()),
+                ShipInVn: parseFloat($('#ShipInVN').val()),
+                Number: parseInt($('#Number').val()),
+                Note: $('#Note').val(),
+                Warehouse: $('#toSelect').val(),
+                Barcode: document.getElementById('barcode').value.trim()
+            };
+
+            $.ajax({
+                url: '@Url.Action("CalculateTracking", "Tracking")',
+                type: 'POST',
+                data: JSON.stringify(data),
+                contentType: 'application/json',
+                success: function (res) {
+                    $('#ShipVN').val(res.ShipVn);
+                    $('#ShipVNVolume').val(res.ShipVnVolume);
+                    $('#UnitPrice').val(res.UnitPrice);
+                    $('#TotalPrice').val(res.TotalPrice);
+                },
+                error: function (xhr, status, error) {
+                    console.log("Lỗi gọi API:", xhr.responseText);
+                }
+            });
+        }
+
+        function getTracking(barcode) {
+            $.ajax({
+                url: '@Url.Action("GetTracking", "Tracking")',
+                type: 'GET',
+                data: { Barcode: barcode },
+                success: function (res) {
+                    $('#ProductName').val(res.ProductName);
+                    $('#TotalShip').val(res.TotalShip);
+                    $('#Weight').val(res.Weight);
+                    $('#Volume').val(res.Volume);
+                    $('#ShipVN').val(res.ShipVn);
+                    $('#ShipVNVolume').val(res.ShipVnVolume);
+                    $('#Number').val(res.Number);
+                    $('#ShipInVN').val(res.ShipInVn);
+                    $('#UnitPrice').val(res.UnitPrice);
+                    $('#TotalPrice').val(res.TotalPrice);
+                    $('#Note').val(res.Note);
+                },
+                error: function (xhr, status, error) {
+                    console.log("Lỗi gọi API:", xhr.responseText);
+                }
+            });
+        }
+
+        $(document).on("click", ".update-button", function () {
+            const id = $(this).data("id");
+            const current = $(this).closest("tr");
+
+            const name = current.find(".productName").val()?.trim();
+            const quantity = parseInt(current.find(".productQuantity").val()) || 0;
+            const dimensions = current.find(".productDimensions").val()?.trim();
+            const otherInfor = current.find(".productOtherInfor").val()?.trim();
+            const imageInput = current.find(".productImage")[0];
+
+            const formData = new FormData();
+            formData.append("Id", id);
+            formData.append("Name", name);
+            formData.append("Quantity", quantity);
+            formData.append("Dimensions", dimensions);
+            formData.append("OtherInfor", otherInfor);
+
+            if (imageInput?.files?.length > 0) {
+                formData.append("ImageFile", imageInput.files[0]);
+            }
+
+            $.ajax({
+                url: `/Tracking/UpdateProduct`,
+                type: 'POST', // Đổi từ PUT → POST
+                data: formData,
+                processData: false,
+                contentType: false,
+                success: function (response) {
+                    showToast(response.Message, response.Type, true);
+                },
+                error: function (response) {
+                    showToast(response.responseJSON?.Message || "Lỗi không xác định", response.responseJSON?.Type || 2, false);
+                    console.error(response);
+                }
+            });
+        });
+
+        $(document).on("click", ".update-image-button", function () {
+
+            const formData = new FormData();
+            formData.append("Barcode", "@Model?.Barcode");
+            const imageInput = $("#image")[0];
+            if (imageInput?.files?.length > 0) {
+                for (let i = 0; i < imageInput.files.length; i++) {
+                    formData.append("Images", imageInput.files[i]);
+                }
+            }
+
+            $.ajax({
+                url: `/Transportation/UpdateUserUploadImage`,
+                type: 'PUT', // Đổi từ PUT → POST
+                data: formData,
+                processData: false,
+                contentType: false,
+                success: function (response) {
+                    showToast(response.Message, response.Type, true);
+                },
+                error: function (response) {
+                    showToast(response.responseJSON?.Message || "Lỗi không xác định", response.responseJSON?.Type || 2, false);
+                    console.error(response);
+                }
+            });
+        });
+
+        $(document).on("click", ".update-note-button", function () {
+
+            const note = $(".note").val()?.trim();
+            const barcode = "@Model?.Barcode";
+            $.ajax({
+                url: `/Transportation/UpdateUserNote?barcode=${barcode}&note=${note}`,
+                type: 'PUT',
+                success: function (response) {
+                    showToast(response.Message, response.Type, true);
+                },
+                error: function (response) {
+                    showToast(
+                        response.responseJSON?.Message || "Lỗi không xác định",
+                        response.responseJSON?.Type || 2,
+                        false
+                    );
+                    console.error(response);
+                }
+            });
+        });
+
+        $(document).on("click", ".update-shipId-button", function () {
+
+            const shipId = $('#shipIdSelect').val();
+            const barcode = "@Model?.Barcode";
+            $.ajax({
+                url: `/Transportation/UpdateShipId?barcode=${barcode}&shipId=${shipId}`,
+                type: 'PUT',
+                success: function (response) {
+                    showToast(response.Message, response.Type, true);
+                },
+                error: function (response) {
+                    showToast(
+                        response.responseJSON?.Message || "Lỗi không xác định",
+                        response.responseJSON?.Type || 2,
+                        false
+                    );
+                    console.error(response);
+                }
+            });
+        });
+
+        function deleteTransportation(transportationId) {
+            showConfirmModal('Bạn chắc chắn muốn hủy đơn ký gửi này?', function () {
+                disableButton();
+                $.ajax({
+                    url: '/Transportation/Cancel',
+                    data: { Id: transportationId },
+                    type: 'PUT',
+                    success: function (response) {
+                        showToast(response.Message, response.Type, true);
+                    },
+                    error: function (response) {
+                        showToast(response.responseJSON.Message, response.responseJSON.Type, false);
+                    },
+                    complete: function () {
+                        enableButton();
+                    }
+                });
+            });
+        }
+    </script>
+}
+<style>
+    .timeline {
+        display: flex;
+        justify-content: space-between;
+        position: relative;
+        flex-wrap: wrap;
+    }
+
+    .step {
+        flex: 1;
+        text-align: center;
+        position: relative;
+        z-index: 2;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 20px; /* Add some space for mobile view */
+    }
+
+        .step .icon {
+            width: 50px;
+            height: 50px;
+            line-height: 50px;
+            background-color: #ddd;
+            color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 24px;
+            margin: 0 auto;
+            border: 2px solid #ddd;
+            transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+            position: relative;
+        }
+
+        .step.active .icon {
+            background-color: #ff5722;
+            color: white;
+            border-color: #ff5722;
+        }
+
+        .step p {
+            margin-top: 8px;
+            font-size: 14px;
+            color: #333;
+        }
+
+        /* Đoạn đường nối */
+        .step:not(:last-child)::after {
+            content: '';
+            position: absolute;
+            top: 20%;
+            right: -50%;
+            width: 100%;
+            height: 2px;
+            background-color: #ddd;
+            z-index: -1;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+        }
+
+        .step.active::after {
+            background-color: #ff5722;
+        }
+
+
+
+        .step.active::before {
+            background-color: #ff5722;
+        }
+
+    /* Responsive styling for smaller screens */
+    @@media (max-width: 768px) {
+        .step {
+            flex: 0 0 48%; /* Two items per row */
+            margin-bottom: 20px;
+        }
+
+        .timeline {
+            flex-direction: column;
+        }
+        /* Xoay đường nối xuống dưới khi màn hình nhỏ */
+        .step:not(:last-child)::after {
+            transform: rotate(90deg);
+            transform-origin: center center;
+            position: unset;
+        }
+    }
+
+    @@media (max-width: 480px) {
+        .step {
+            flex: 0 0 100%; /* One item per row */
+        }
+
+        .timeline {
+            flex-direction: column;
+        }
+
+        .step:not(:last-child)::after {
+            transform: rotate(90deg);
+            transform-origin: center center;
+            position: unset;
+        }
+    }
+</style>

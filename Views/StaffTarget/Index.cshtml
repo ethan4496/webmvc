@@ -1,0 +1,273 @@
+﻿@using WebMVC.Models.Responses
+@model List<StaffTargetResponse>
+@using WebMVC.Interfaces
+@using WebMVC.Ultilities.Enums
+@{
+    ViewData["Title"] = "Bảng target tháng";
+}
+
+<div class="container-fluid mt-4">
+    <div class="card mb-4">
+        <div class="card-header d-flex justify-content-between align-items-center">
+            <h2>Bảng target tháng</h2>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-3">
+                    <label for="dataDate" class="form-label">Tháng báo cáo</label>
+                    <input type="text" class="form-control datepicker" id="dataDate" name="dataDate" placeholder="">
+                </div>
+                <div class="col-md-3 d-flex align-items-end">
+                    <button type="button" class="btn btn-primary btn-search" onclick="loadPage()">Tìm kiếm</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="table-container">
+        <div class="table-content">
+            <table class="table table-bordered">
+                <thead class="table">
+                    <tr>
+                        <th class="text-center">STT</th>
+                        <th class="text-center">Ảnh</th>
+                        <th class="text-center">SaleName</th>
+                        <th class="text-center"></th>
+                        <th class="text-center" style=" width: 50px; ">Số đơn hàng</th>
+                        <th class="text-center" style=" width: 50px; ">Tổng số KG</th>
+                        <th class="text-center" style=" width: 50px; ">Tổng số khối</th>
+                        <th class="text-center" style=" width: 50px; ">Tổng khách</th>
+                        <th class="text-center" style=" width: 50px; ">Số Khách</th>
+                        <th class="text-center">Doanh Số KH mới</th>
+                        <th class="text-center" style=" width: 50px; ">Khách mới</th>
+                        <th class="text-center" style=" min-width: 150px;">CN</th>
+                        <th class="text-center" style=" min-width: 150px;">HT</th>
+                        <th class="text-center" style=" min-width: 150px;">DT</th>
+                        <th class="text-center" style=" min-width: 150px; ">Tổng DS</th>
+                        <th class="text-center">Thưởng doanh số</th>
+                        <th class="text-center">Trạng thái</th>
+                        <th class="text-center">Thao tác</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @for (int i = 0; i < Model.Count; i++)
+                    {
+                        <tr item-id="@Model[i].Id">
+                            <td rowspan="2" class="text-center align-content-center">@(i + 1)</td>
+                            <td rowspan="2" class="text-center align-content-center">
+                                @if (!string.IsNullOrEmpty(Model[i].StaffAvatar))
+                                {
+                                    <div class="d-flex justify-content-center align-content-center">
+                                        <img src="@Model[i].StaffAvatar" class="img-fluid rounded border" style="max-width: 100px; max-height: 100px;" alt=" Image">
+                                    </div>
+                                }
+                            </td>
+
+                            <td rowspan="2" class="text-center align-content-center">@Model[i].Username</td>
+                            <td class="text-center align-content-center">Target</td>
+                            <td rowspan="2" class="text-center align-content-center">@Model[i].OrderReal</td>
+                            <td rowspan="2" class="text-center align-content-center">@Model[i].WeightReal</td>
+                            <td rowspan="2" class="text-center align-content-center">@Model[i].VolumeReal</td>
+                            <td class="text-center align-content-center d-none"><input class="form-control order" type="number" value="@Model[i].Order" step="1" min="0" /></td>
+                            <td class="text-center align-content-center d-none"><input class="form-control weight" type="number" value="@Model[i].Weight" min="0" /></td>
+                            <td class="text-center align-content-center d-none"><input class="form-control volume" type="number" value="@Model[i].Volume" min="0" /></td>
+                            <td rowspan="2" class="text-center align-content-center">@Model[i].TotalAccount</td>
+                            <td rowspan="2" class="text-center align-content-center">@Model[i].TotalNewAccountHasOrder</td>
+                            <td rowspan="2" class="text-center align-content-center">@Model[i].TotalPriceVNDNewAccountHasOrder</td>
+                            <td class="text-center align-content-center"><input class="form-control newAccount" type="number" value="@Model[i].NewAccount" min="0" /></td>
+                            <td class="text-center align-content-center"><input type="text" class="form-control input-money totalPriceVNDCN" value="@string.Format("{0:N0}", Model[i].TotalPriceVNDCN)" min="0" /></td>
+                            <td class="text-center align-content-center"><input type="text" class="form-control input-money totalPriceVNDHT" value="@string.Format("{0:N0}", Model[i].TotalPriceVNDHT)" min="0" /></td>
+                            <td class="text-center align-content-center"><input type="text" class="form-control input-money totalPriceVNDDT" value="@string.Format("{0:N0}", Model[i].TotalPriceVNDDT)" min="0" /></td>
+                            <td class="text-center align-content-center"><input type="text" class="form-control input-money totalPriceVND" value="@Model[i].TotalPriceVND" min="0" /></td>
+                            <td rowspan="2" class="text-center align-content-center">@string.Format("{0:N0}", Model[i].Profit) đ</td>
+                            <td rowspan="2" class="text-center align-content-center">@Html.Raw(Model[i].Status)</td>
+                            <td rowspan="2" class="text-center align-content-center">
+                                <p>
+                                    <button class="btn btn-sm btn-primary w-100" onclick="window.location.href='@Url.RouteUrl("staff-target-detail", new { id = Model[i].AccountId })'">
+                                        Chi tiết
+                                    </button>
+                                </p>
+                                <p>
+                                    <button class="btn btn-sm btn-warning w-100" onclick="updateItem(@Model[i].Id)">Cập nhật</button>
+                                </p>
+                                <p>
+                                    <button class="btn btn-sm btn-secondary w-100" onclick='editItem(@Html.Raw(Json.Serialize(Model[i])))' data-bs-toggle="modal" data-bs-target="#editModal">Sửa ảnh</button>
+                                </p>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="text-center align-content-center">Thực tế</td>
+@*                             <td class="text-center align-content-center"><input class="form-control " type="number" value="@Model[i].OrderReal" step="1" min="0" readonly /></td>
+                            <td class="text-center align-content-center"><input class="form-control " type="number" value="@Model[i].WeightReal" min="0" readonly /></td>
+                            <td class="text-center align-content-center"><input class="form-control " type="number" value="@Model[i].VolumeReal" min="0" readonly /></td> *@
+                            <td class="text-center align-content-center"><input class="form-control " type="number" value="@Model[i].NewAccountReal" min="0" readonly /></td>
+                            <td class="text-center align-content-center"><input class="form-control input-money" type="text" value="@string.Format("{0:N0}", Model[i].TotalPriceVNDRealCN)" min="0" readonly /></td>
+                            <td class="text-center align-content-center"><input class="form-control input-money" type="text" value="@string.Format("{0:N0}", Model[i].TotalPriceVNDRealHT)" min="0" readonly /></td>
+                            <td class="text-center align-content-center"><input class="form-control input-money" type="text" value="@string.Format("{0:N0}", Model[i].TotalPriceVNDRealDT)" min="0" readonly /></td>
+@*                             <td class="text-center align-content-center"><input class="form-control input-money" type="text" value="@string.Format("{0:N0}", Model[i].TotalPriceVNDReal)" min="0" readonly /></td>
+ *@
+                            @{
+                                var isNotCompleted = Model[i].Status.Contains("bg-danger");
+                            }
+
+                            <td class="text-center align-content-center">
+                                <input class="form-control input-money @(isNotCompleted ? "text-danger border-danger" : "text-success border-success")"
+                                       type="text"
+                                       value="@string.Format("{0:N0}", Model[i].TotalPriceVNDReal)"
+                                       min="0"
+                                       readonly />
+                            </td>
+                        </tr>
+
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editModalLabel">Cập nhật</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="editForm">
+                    <div class="row">
+                        <div class="col-6 mb-3">
+                            <label for="editName" class="form-label">Tên</label>
+                            <input type="text" class="form-control" id="editName" readonly>
+                        </div>
+                        <div class="col-6 mb-3">
+                            <label for="editImage" class="form-label">Hình ảnh</label>
+                            <input type="file" class="form-control" id="editImage" accept="image/png, image/jpeg, image/jpg, image/gif">
+                            <img id="editImagePreview" class="img-fluid mt-2 border rounded" style="max-width: 100px; display: none;" />
+                        </div>
+                    </div>
+                    <div class="text-end">
+                        <button type="submit" class="btn btn-success">Lưu</button>
+
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+
+    <script>
+        $(document).ready(function () {
+            formatAllInputs();
+            restoreFilters();
+        });
+        function restoreFilters() {
+            const urlParams = new URLSearchParams(window.location.search);
+
+            const dataDate = urlParams.get('DataDate');
+
+            if (dataDate) $('#dataDate').val(formatDateForInput(new Date(dataDate)));
+        }
+        function loadPage(){
+            const dataDateInput = $('#dataDate').val();
+            const dataDate = dataDateInput ? parseDate(dataDateInput) : null;
+
+            const params = new URLSearchParams();
+
+            const filters = {
+                'DataDate': dataDate ? dataDate : ''
+            };
+
+            // Chỉ thêm vào query string nếu giá trị không phải null hoặc chuỗi rỗng
+            Object.keys(filters).forEach(key => {
+                if (filters[key] !== null && filters[key] !== '') {
+                    params.set(key, filters[key]);
+                }
+            });
+
+            const queryString = params.toString();
+            const newUrl = queryString ? '?' + queryString : 'staff-target';
+
+            history.pushState({}, '', newUrl);
+            window.location.reload();
+        }
+        function updateItem(id) {
+            var row = document.querySelector(`tr[item-id='${id}']`);
+            var order = row.querySelector(".order").value;
+            var newAccount = row.querySelector(".newAccount").value;
+            var weight = row.querySelector(".weight").value;
+            var volume = row.querySelector(".volume").value;
+            var totalPriceVND = row.querySelector(".totalPriceVND").value;
+            var totalPriceVNDCN = row.querySelector(".totalPriceVNDCN").value;
+            var totalPriceVNDHT = row.querySelector(".totalPriceVNDHT").value;
+            var totalPriceVNDDT = row.querySelector(".totalPriceVNDDT").value;
+            const updateData = {
+                Id: id,
+                Order : order,
+                NewAccount : newAccount,
+                Weight: weight,
+                Volume: volume,
+                TotalPriceVND: totalPriceVND,
+                TotalPriceVNDCN: totalPriceVNDCN,
+                TotalPriceVNDHT: totalPriceVNDHT,
+                TotalPriceVNDDT: totalPriceVNDDT,
+            };
+            disableButton();
+            $.ajax({
+                url: `/StaffTarget/Update?id=${id}`,
+                data: { Request: updateData },
+                type: 'PUT',
+                success: function (response) {
+                    showToast(response.Message, response.Type, true);
+                },
+                error: function (response) {
+                    showToast(response.responseJSON.Message, response.responseJSON.Type, false);
+                },
+                complete: function () {
+                    enableButton();
+                }
+            });
+        }
+
+        function editItem(item) {
+            $("#editName").val(item.Username);
+            if (item.StaffAvatar) {
+                $("#editImagePreview").attr("src", item.StaffAvatar).show();
+            } else {
+                $("#editImagePreview").hide();
+            }
+            $("#editForm").data("item-id", item.AccountId);
+        }
+
+        $("#editForm").submit(async function (event) {
+            event.preventDefault();
+
+            const itemId = $(this).data("item-id");
+
+            let formData = new FormData();
+            const imageFile = $("#editImage")[0].files[0];
+            if (imageFile) {
+                formData.append("Image", imageFile);
+            }
+
+            disableButton();
+            $.ajax({
+                url: `/StaffTarget/StaffImage?id=${itemId}`,
+                type: "PUT",
+                data: formData,
+                contentType: false,
+                processData: false,
+                success: function (response) {
+                    showToast(response.Message, response.Type, true);
+                },
+                error: function (response) {
+                    showToast(response.responseJSON?.Message || "Lỗi không xác định", response.responseJSON?.Type || 2, false);
+                },
+                complete: function () {
+                    enableButton();
+                }
+            });
+        });
+    </script>
+}

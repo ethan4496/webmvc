@@ -1,0 +1,303 @@
+﻿@using WebMVC.Models.Responses
+@model int
+@{
+    ViewData["Title"] = "Báo cáo phí khác";
+}
+<div class="container-fluid mt-4">
+    <div class="card mb-2">
+        <div class="card-header d-flex justify-content-between align-items-center">
+            <h3>Báo cáo phí khác</h3>
+            <div>
+                <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#addModal">
+                    Thêm mới
+                </button>
+                <button id="toggleFilterButton" class="btn btn-primary">Ẩn bộ lọc</button>
+            </div>
+        </div>
+        <div class="card-body" id="filterContainer">
+            <div class="row">
+                <div class="col-md-3">
+                    <label for="fromDate" class="form-label">Ngày trong tháng</label>
+                    <input type="text" class="form-control datepicker" id="fromDate" name="fromDate" placeholder="">
+                </div>
+                <div class="col-md-3 d-flex align-items-end">
+                    <button type="button" class="btn btn-primary btn-search" onclick="loadPage(1)">Tìm kiếm</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    @await Html.PartialAsync("_ReportOtherFeeTable", new List<ReportOtherFeeResponse>())
+
+    <div class="card mb-4 mt-2">
+        <div class="card-header d-flex justify-content-between align-items-center">
+            <h5>Biểu đồ báo cáo phí cố định trong năm</h5>
+        </div>
+        <div class="card-body">
+            <div class="row mt-4">
+                <div class="col s12">
+                    <div class="card user-statistics-card animate fadeLeft">
+                        <div class="card-content">
+                            <div class="row px-3 pt-3">
+                                <div class="col s3">
+                                    <a href="javascript:;">
+                                        <div class="d-flex gap-3 align-items-center">
+                                            <i class="bi bi-circle-fill fs-1"></i>
+                                            <div>
+                                                <span class="medium-small">Tổng chi phí</span>
+                                                <h5 class="mt-0 mb-0 soTien-Year"></h5>
+                                            </div>
+                                        </div>
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="row" style="width: 100%; margin: auto;">
+                                <canvas id="YearChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="addModal" tabindex="-1" aria-labelledby="addModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Tạo mới</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="addForm">
+                    <div class="row">
+                        <div class="col-6 mb-3">
+                            <label for="addName" class="form-label">Tên</label>
+                            <input type="text" class="form-control" id="addName" required>
+                        </div>
+                        <div class="col-6 mb-3">
+                            <label for="addAmount" class="form-label">Số tiền</label>
+                            <input class="form-control input-money" id="addAmount" required>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-6 mb-3">
+                            <label for="addDataDate" class="form-label">Thời gian</label>
+                            <input type="text" class="form-control datepicker" id="addDataDate" required>
+                        </div>
+                        <div class="col-6 mb-3">
+                            <label for="addDetailFile" class="form-label">File chi tiết</label>
+                            <input type="file" class="form-control" id="addDetailFile">
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-success">Lưu</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editModalLabel">Cập nhật</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="editForm">
+                    <div class="row">
+                        <div class="col-6 mb-3">
+                            <label for="editName" class="form-label">Tên</label>
+                            <input type="text" class="form-control" id="editName" required>
+                        </div>
+                        <div class="col-6 mb-3">
+                            <label for="editAmount" class="form-label">Số tiền</label>
+                            <input class="form-control input-money" id="editAmount" required>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-6 mb-3">
+                            <label for="editDataDate" class="form-label">Thời gian</label>
+                            <input type="text" class="form-control datepicker" id="editDataDate" required>
+                        </div>
+                        <div class="col-6 mb-3">
+                            <label for="editDetailFile" class="form-label">File chi tiết</label>
+                            <input type="file" class="form-control" id="editDetailFile">
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn btn-success">Lưu</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/chartjs-plugin-annotation/1.0.2/chartjs-plugin-annotation.min.js"></script>
+<script src="~/js/createLineChart.js"></script>
+<script>
+    $(document).ready(function () {
+        restoreFilters();
+        loadPage(1);
+    });
+
+    function restoreFilters() {
+        const urlParams = new URLSearchParams(window.location.search);
+        const fromDate = urlParams.get('FromDate');
+
+        if (fromDate) $('#fromDate').val(formatDateForInput(new Date(fromDate)));
+    }
+
+    function loadPage(page) {
+        const fromDateInput = $('#fromDate').val();
+        const fromDate = fromDateInput ? parseDate(fromDateInput) : null;
+        const params = new URLSearchParams();
+
+        const filters = {
+            'PageIndex': page > 1 ? page : null,
+            'Type': @Model || null,
+            'FromDate': fromDate ? fromDate : '',
+        };
+
+        Object.keys(filters).forEach(key => {
+            if (filters[key] !== null && filters[key] !== '') {
+                params.set(key, filters[key]);
+            }
+        });
+
+        const queryString = params.toString();
+        const newUrl = queryString ? '?' + queryString : '/report-other-fee';
+        history.pushState({}, '', newUrl);
+        showLoading();
+        $.ajax({
+            url: '/Statistic/GetReportOtherFee?' + queryString,
+            type: 'GET',
+            success: function (data) {
+                $('#table-container').html(data);
+            },
+            error: function (response) {
+                showToast(response.responseJSON.Message, response.responseJSON.Type, false);
+            },
+            complete: function () {
+                hideLoading();
+            }
+        });
+        $.ajax({
+            url: '/Statistic/GetReportOtherFeeYearStatisticData?' + queryString,
+            type: 'GET',
+            success: function (response) {
+                const totalAmount = response.reduce((sum, value) => sum + value, 0);
+                $(".soTien-Year").text(totalAmount.toLocaleString('en-US'));
+
+                createChart('YearChart', response, 'black', ["Tháng 1", "Tháng 2", "Tháng 3", "Tháng 4", "Tháng 5", "Tháng 6", "Tháng 7", "Tháng 8", "Tháng 9", "Tháng 10", "Tháng 11", "Tháng 12"]);
+            },
+            error: function () { }
+        });
+    }
+
+
+    document.getElementById("addForm").addEventListener("submit", async function (event) {
+        event.preventDefault();
+
+        const addDataDateInput = $('#addDataDate').val();
+
+        const addDataDate = addDataDateInput ? parseDate(addDataDateInput) : null;
+
+        let formData = new FormData();
+        formData.append("Name", document.getElementById("addName").value);
+        formData.append("Amount", getRawValue(document.getElementById("addAmount").value));
+        formData.append("DataDate", addDataDate);
+        formData.append("PostOffice", @Model);
+
+        let fileInput = document.getElementById("addDetailFile");
+        if (fileInput.files.length > 0) {
+            formData.append("DetailFile", fileInput.files[0]);
+        }
+
+        disableButton();
+        $.ajax({
+            url: "/Statistic/CreateOtherFee",
+            type: "POST",
+            data: formData,
+            contentType: false,
+            processData: false,
+            success: function (response) {
+                showToast(response.Message, response.Type, true);
+            },
+            error: function (response) {
+                showToast(response.responseJSON?.Message || "Lỗi không xác định", response.responseJSON?.Type || 2, false);
+            },
+            complete: function () {
+                enableButton();
+            }
+        });
+    });
+
+    function editItem(item) {
+        $("#editName").val(item.Name);
+        $("#editAmount").val(item.Amount.toLocaleString("en-US"));
+        $("#editDataDate").val(formatDateForInput(item.DataDate));
+        $("#editForm").data("item-id", item.Id);
+    }
+
+    $("#editForm").submit(async function (event) {
+        event.preventDefault();
+
+        const itemId = $(this).data("item-id");
+        const editDataDate = parseDate($("#editDataDate").val());
+
+        let formData = new FormData();
+        formData.append("Name", $("#editName").val());
+        formData.append("Amount", getRawValue($("#editAmount").val()));
+        formData.append("DataDate", editDataDate); // Chuyển về YYYY-MM-DD
+        let fileInput = document.getElementById("editDetailFile");
+        if (fileInput.files.length > 0) {
+            formData.append("DetailFile", fileInput.files[0]);
+        }
+        disableButton();
+        $.ajax({
+            url: `/Statistic/UpdateOtherFee?id=${itemId}`,
+            type: "PUT",
+            data: formData,
+            contentType: false,
+            processData: false,
+            success: function (response) {
+                showToast(response.Message, response.Type, true);
+            },
+            error: function (response) {
+                showToast(response.responseJSON?.Message || "Lỗi không xác định", response.responseJSON?.Type || 2, false);
+            },
+            complete: function () {
+                enableButton();
+            }
+        });
+    });
+
+    function acceptItem(itemId) {
+        showConfirmModal('Bạn chắc chắn muốn duyệt phí này?', function () {
+            disableButton();
+            $.ajax({
+                url: `/Statistic/AcceptOtherFee?id=${itemId}`,
+                type: 'PUT',
+                success: function (response) {
+                    showToast(response.Message, response.Type, true);
+                },
+                error: function (response) {
+                    showToast(response.responseJSON.Message, response.responseJSON.Type, false);
+                },
+                complete: function () {
+                    enableButton();
+                }
+            });
+        });
+    }
+
+    $('#toggleFilterButton').on('click', function () {
+        $('#filterContainer').toggle();
+        let isVisible = $('#filterContainer').is(':visible');
+        $(this).text(isVisible ? 'Ẩn bộ lọc' : 'Hiện bộ lọc');
+    });
+
+</script>

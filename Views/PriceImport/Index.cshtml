@@ -1,0 +1,448 @@
+@using WebMVC.Models.Responses
+@using WebMVC.Interfaces
+@using WebMVC.Ultilities.Enums
+@inject IHttpContextService _httpContextService;
+@{
+    ViewData["Title"] = "Price";
+}
+@{
+    var loggedModel = _httpContextService.GetLoggedModel();
+}
+
+<div class="container-fluid mt-4">
+    <div class="card mb-4">
+        <div class="card-body" id="filterContainer">
+            <div class="row">
+                <div class="col-md-3">
+                    <label for="id" class="form-label">Tên hàng</label>
+                    <input type="text" class="form-control" id="name" name="name" placeholder="Tên hàng">
+                </div>
+                <div class="col-md-3">
+                    <label for="barCode" class="form-label">Mã HS</label>
+                    <input type="text" class="form-control" id="hscode" name="hscode" placeholder="Mã HS">
+                </div>
+                <div class="col-md-3">
+
+                </div>
+                <div class="col-md-3">
+                    <div class="btn-group btn-group gap-2 mt-3" role="group" aria-label="Group button">
+                        @if(loggedModel.IsStaff == 1) {
+                            <div class="mr-2">
+                                <input type="file" id="import-price" style="display: none;">
+                                <button type="button" class="btn btn-secondary" id="btn-upload">
+                                    <i class="bi bi-upload"></i>
+                                    <span>Upload</span>
+                                </button>
+                            </div>
+                        }
+                        
+                        <div>
+                            <button type="button" id="search" class="btn btn-primary">
+                                <i class="bi bi-search"></i>
+                                <span>Tìm kiếm</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="table-container">
+        <div class="table-content">
+            <table class="table table-hover table-bordered" id="table-price">
+                <thead class="table">
+                    <tr>
+                        <th class="text-center">STT</th>
+                        <th class="text-center">Tên hàng</th>
+                        <th class="text-center">Mã HS</th>
+                        <th class="text-center">Thuế VAT</th>
+                        <th class="text-center">Thuế NK có FE</th>
+                        <th class="text-center">Giá khai tham khảo</th>
+                        <th class="text-center">Xuất xứ</th>
+                        <th class="text-center">Chính sách</th>
+                        @if(loggedModel.IsStaff == 1) {
+                            <th class="text-center">
+                                
+                            </th>
+                        }
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
+        <nav aria-label="Page navigation example">
+            <ul class="pagination">
+                <li class="page-item"><a class="page-link" href="#">Previous</a></li>
+                <li class="page-item"><a class="page-link" href="#">Next</a></li>
+            </ul>
+        </nav>
+        <p>
+            Quý khách nhập <b>Tên Hàng</b> hoặc mã <b>HS code</b> để kiểm tra:  thông tin thuế , chính sách nhập khẩu và giá khai báo  . Lưu ý dữ liệu chỉ mang tính chất tham khảo, các mặt hàng quý khách muốn nhập khẩu mà chưa có trong danh mục trên thì xin vui lòng liên hệ với bộ phận hỗ trợ của TPK để được giải đáp.
+        </p>
+    </div>
+</div>
+<style>
+    .input-form{
+        display: none;
+    }
+    .isEdit .input-form{
+        display: block;
+    }
+    td p{
+        margin: 0;
+    }
+    .isEdit td p, .isEdit td a{
+        display: none;
+    }
+    .text-content.truncate {
+        display: inline-block;
+        max-width: 200px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        vertical-align: bottom;
+    }
+
+    .text-content.expanded {
+        max-width: none;
+        white-space: normal;
+    }
+    .toggle-text{
+        display: none;
+        cursor: pointer;
+        color: #2f0cdc;
+        text-decoration: underline;
+    }
+</style>
+@section Scripts {
+    <script>
+        const edit = (t, id) => {
+            var parent = $(t).parents('tr');
+            parent.addClass('isEdit');
+            parent.find('.save').show();
+            $(t).hide();
+        }
+        
+        const save = (t, id) => {
+            var parent = $(t).parents('tr');
+
+            const request = {
+                Id: id,
+                Name: parent.find('.name').val(),
+                Hscode: parent.find('.hscode').val(),
+                TaxVAT: parent.find('.taxVAT').val(),
+                TaxNK: parent.find('.taxNK').val(),
+                Price: parent.find('.price').val(),
+                Origin: parent.find('.origin').val(),
+                Policy: parent.find('.policy').prop('checked') ? 1 : 0,
+            }
+            $.ajax({
+                url: '/PriceImport/Update',
+                type: 'POST',
+                data: request,
+                success: function (response) {
+                    showToast(response.Message, response.Type, false);
+                    $(t).hide();
+                    parent.find('.edit').show();
+                    parent.removeClass('isEdit');
+                    const index = parent.index();
+                    parent.html(`
+                        <td>${index + 1}</td>
+                        <td>
+                            <p class="text-content">${request.Name}</p>
+                            <a class="toggle-text">Xem thêm</a>
+                            <input class="name input-form" value="${request.Name}" type="text" />
+                        </td>
+                        <td>
+                            <p>${request.Hscode}</p>
+                            <input class="hscode input-form" value="${request.Hscode}" type="text" />
+                        </td>
+                        <td>
+                            <p class="text-center">${taxVAT}</p>
+                            <input class="taxVAT input-form" value="${TaxVAT}" type="number" step="0.1" />
+                        </td>
+                        <td>
+                            <p class="text-center">${request.TaxNK}</p>
+                            <input class="taxNK input-form" value="${request.TaxNK}" type="number" step="0.1" />
+                        </td>
+                        <td>
+                            <p class="text-center">$${request.Price}</p>
+                            <input class="price input-form" value="${request.Price}" type="text" />
+                        </td>
+                        <td>
+                            <p class="text-center">${request.Origin}</p>
+                            <input class="origin input-form" value="${request.Origin}" type="text" />
+                        </td>
+                        <td>
+                            <p class="text-center">${item.Policy == 1 ? `Cần kiểm tra chuyên ngành`: ``}</p>
+                            <input class="origin input-form" value="${request.Policy}" type="checkbox" ${request.Policy == 1 ? 'checked' : 0} />
+                        </td>
+                        @if(loggedModel.IsStaff == 1) {
+                            <td>
+                                <div class="btn-group gap-2">
+                                    <button style="display: none;" onclick="save(this, ${id})" type="button" class="btn btn-primary save">
+                                        Save
+                                    </button>
+                                    <button onclick="edit(this, ${id})" type="button" class="btn btn-primary edit">
+                                        <i class="bi bi-pencil-square"></i>
+                                    </button>
+                                    <button onclick="deleteItem(this, ${id})" type="button" class="btn btn-danger">
+                                        <i class="bi bi-trash3"></i>
+                                    </button>
+                                </div>
+                            </td>
+                        }
+                    `)
+                    refactorText();
+                },
+                error: function (response) {
+                    showToast(response.responseJSON.Message, response.responseJSON.Type, false);
+                },
+                complete: function () {
+                    hideLoading();
+                }
+            });
+        }
+        const deleteItem = (t, id) => {
+            var parent = $(t).parents('tr');
+            const isConfirm = confirm(`Bạn có chắc chắn muốn xóa dòng này`);
+            if(isConfirm){
+                $.ajax({
+                    url: '/PriceImport/Delete',
+                    type: 'POST',
+                    data: {Id: id},
+                    success: function (response) {
+                        showToast(response.Message, response.Type, false);
+                        parent.fadeOut(300);
+                    },
+                    error: function (response) {
+                        showToast(response.responseJSON.Message, response.responseJSON.Type, false);
+                    },
+                    complete: function () {
+                        hideLoading();
+                    }
+                });
+            }
+        }
+        function renderPagination(currentPage, totalPages) {
+            let html = '';
+
+            html += `
+                <li class="page-item ${currentPage === 1 ? 'disabled' : ''}">
+                    <a class="page-link" href="#" data-page="${currentPage - 1}">
+                        Previous
+                    </a>
+                </li>
+            `;
+
+            const start = Math.max(1, currentPage - 2);
+            const end = Math.min(totalPages, currentPage + 2);
+
+            if (start > 1) {
+                html += `
+                    <li class="page-item">
+                        <a class="page-link" href="#" data-page="1">1</a>
+                    </li>
+                `;
+
+                if (start > 2) {
+                    html += `
+                        <li class="page-item disabled">
+                            <span class="page-link">...</span>
+                        </li>
+                    `;
+                }
+            }
+
+            for (let i = start; i <= end; i++) {
+                html += `
+                    <li class="page-item ${i === currentPage ? 'active' : ''}">
+                        <a class="page-link" href="#" data-page="${i}">
+                            ${i}
+                        </a>
+                    </li>
+                `;
+            }
+
+            if (end < totalPages) {
+                if (end < totalPages - 1) {
+                    html += `
+                        <li class="page-item disabled">
+                            <span class="page-link">...</span>
+                        </li>
+                    `;
+                }
+
+                html += `
+                    <li class="page-item">
+                        <a class="page-link" href="#" data-page="${totalPages}">
+                            ${totalPages}
+                        </a>
+                    </li>
+                `;
+            }
+
+            html += `
+                <li class="page-item ${currentPage === totalPages ? 'disabled' : ''}">
+                    <a class="page-link" href="#" data-page="${currentPage + 1}">
+                        Next
+                    </a>
+                </li>
+            `;
+
+            $('.pagination').html(html);
+        }
+        const refactorText = () => {
+            $('#table-price tbody tr').each(function () {
+                const textElement = $(this).find('.text-content');
+                const toggleButton = $(this).find('.toggle-text');
+
+                if (textElement[0].scrollWidth > 200) {
+                    textElement.addClass('truncate');
+                    toggleButton.show();
+                }
+
+                toggleButton.on('click', function (e) {
+                    e.preventDefault();
+
+                    if (textElement.hasClass('truncate')) {
+                        textElement.removeClass('truncate')
+                                .addClass('expanded');
+
+                        $(this).text('Thu gọn');
+                    } else {
+                        textElement.removeClass('expanded')
+                                .addClass('truncate');
+
+                        $(this).text('Xem thêm');
+                    }
+                });
+            });
+        }
+        const loadPage = (page) => {
+            const name = $('#name').val();
+            const hscode = $('#hscode').val();
+
+            const params = new URLSearchParams();
+
+            const filters = {
+                'Page': page,
+                'PageSize': 20,
+                'Name': name,
+                'Hscode': hscode,
+            };
+
+            $.ajax({
+                url: '/PriceImport/GetList',
+                data: filters,
+                type: 'GET',
+                success: function (res) {
+                    console.log(res);
+                    renderPagination(res.CurrentPage, Math.ceil(res.TotalItems / res.PageSize))
+                    let html = ``;
+                    res.Items.forEach((item, index) => {
+                        html += `
+                        <tr>
+                            <td>${index + 1}</td>
+                            <td>
+                                <p class="text-content">${item.Name}</p>
+                                <a class="toggle-text">Xem thêm</a
+                                <input class="name input-form" value="${item.Name}" type="text" />
+                            </td>
+                            <td>
+                                <p>${item.Hscode}</p>
+                                <input class="hscode input-form" value="${item.Hscode}" type="text" />
+                            </td>
+                            <td>
+                                <p class="text-center">${item.TaxVAT}</p>
+                                <input class="taxVAT input-form" value="${item.TaxVAT}" type="number" step="0.1" />
+                            </td>
+                            <td>
+                                <p class="text-center">${item.TaxNK}</p>
+                                <input class="taxNK input-form" value="${item.TaxNK}" type="number" step="0.1" />
+                            </td>
+                            <td>
+                                <p class="text-center">$${item.Price}</p>
+                                <input class="price input-form" value="${item.Price}" type="number" step="0.1" />
+                            </td>
+                            <td>
+                                <p class="text-center">${item.Origin}</p>
+                                <input class="origin input-form" value="${item.Origin}" type="text" />
+                            </td>
+                            <td>
+                                <p class="text-center">${item.Policy == 1 ? `Cần kiểm tra chuyên ngành`: ``}</p>
+                                <input class="origin input-form" value="${item.Policy}" type="checkbox" ${item.Policy == 1 ? 'checked' : ''} />
+                            </td>
+                            @if(loggedModel.IsStaff == 1) {
+                                <td>
+                                    <div class="btn-group gap-2">
+                                        <button style="display: none;" onclick="save(this, ${item.Id})" type="button" class="btn btn-primary save">
+                                            Save
+                                        </button>
+                                        <button onclick="edit(this, ${item.Id})" type="button" class="btn btn-primary edit">
+                                            <i class="bi bi-pencil-square"></i>
+                                        </button>
+                                        <button onclick="deleteItem(this, ${item.Id})" type="button" class="btn btn-danger">
+                                            <i class="bi bi-trash3"></i>
+                                        </button>
+                                    </div>
+                                </td>
+                            }
+                        </tr>`
+                    })
+                    $('#table-price tbody').html(html);
+                    refactorText();
+                },
+                error: function () {
+                    alert('Lỗi khi tải dữ liệu');
+                }
+            });
+        }
+        $(document).ready(function () {
+            @if(loggedModel.IsStaff == 1) {
+                @:loadPage(1);
+            }
+            $(document).on('click', '.page-link', function(e){
+                e.preventDefault();
+                const page = parseInt($(this).attr('data-page'));
+                loadPage(page);
+            })
+            
+            $('#search').on('click', function(){
+                loadPage(1);
+            })
+            $('#btn-upload').on('click', function() {
+                $('#import-price').click();
+            });
+            $('#import-price').on('change', function(){
+                const file = $('#import-price')[0].files[0];
+                if (!file) {
+                    alert('Vui lòng chọn file Excel');
+                    return;
+                }
+                const formData = new FormData();
+                formData.append('file', file);
+                $.ajax({
+                    url: '/PriceImport/Create',
+                    type: 'POST',
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+                    success: function (response) {
+                        showToast(response.Message, response.Type, false);
+                        setTimeout(function(){
+                            location.reload();
+                        },1000)
+                    },
+                    error: function (response) {
+                        showToast(response.responseJSON.Message, response.responseJSON.Type, true);
+                    },
+                    complete: function () {
+                        hideLoading();
+                    }
+                });
+            })
+
+        });
+    </script>
+}

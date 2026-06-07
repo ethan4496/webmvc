@@ -1,0 +1,145 @@
+﻿@using WebMVC.Models.Responses
+@model VoucherAccountDetail
+@using WebMVC.Interfaces
+@using WebMVC.Ultilities.Enums
+@{
+    ViewData["Title"] = "Chi tiết voucher";
+}
+
+<div class="container-fluid mt-4">
+    <div class="card mb-4">
+        <div class="card-header d-flex justify-content-between align-items-center">
+            <h2>Chi tiết voucher</h2>
+            <div>
+                <button id="toggleFilterButton" class="btn btn-primary">Ẩn bộ lọc</button>
+            </div>
+        </div>
+        <div class="card-body" id="filterContainer">
+            <div class="row">
+                <div class="col-md-3">
+                    <label for="name" class="form-label">Username</label>
+                    <select class="form-select" id="usernameSelect" style="width:100%" name="Username"></select>
+                </div>
+                <div class="col-md-3">
+                    <label for="status" class="form-label">Trạng thái</label>
+                    <select id="status" class="form-select" name="Status">
+                        <option value="">
+                            Tất cả
+                        </option>
+                        @foreach (var status in Enum.GetValues(typeof(EVoucherAccountStatus)).Cast<EVoucherAccountStatus>())
+                        {
+                            var statusValue = (int)status;
+                            var statusName = EVoucherAccountStatusName.GetStatusName(statusValue);
+                            <option value="@statusValue">
+                                @statusName
+                            </option>
+                        }
+                    </select>
+                </div>
+                <div class="col-md-3 d-flex align-items-end">
+                    <button type="button" class="btn btn-primary btn-search" onclick="loadPage(1)">Tìm kiếm</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card mb-4">
+        <div class="card-body">
+            <div class="row">
+                <p>
+                    Số lượng: <span>@Model.Quantity</span>
+                </p>
+                <p class="mb-0">
+                    Đã sử dụng <span>@Model.UsedQuantity</span>
+                </p>
+            </div>
+        </div>
+    </div>
+    @await Html.PartialAsync("_VoucherAccountTable", new List<VoucherAccountResponse>())
+</div>
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            loadPage(1);
+        });
+        function loadPage(page) {
+            const request = {
+                PageIndex: page,
+                Id: @Model.Id,
+                Status: $('#status').val() ? parseInt($('#status').val()) : null,
+                AccountId: $('#usernameSelect').val() ? parseInt($('#usernameSelect').val()) : null,
+            };
+            showLoading();
+            $.ajax({
+                url: '/Voucher/GetVoucherAccountPaging',
+                data: request,
+                type: 'GET',
+                success: function (data) {
+                    $('#table-container').html(data);
+                },
+                error: function (response) {
+                    showToast(response.responseJSON.Message, response.responseJSON.Type, false);
+                },
+                complete: function () {
+                    hideLoading();
+                }
+            });
+        }
+
+        $('#toggleFilterButton').on('click', function () {
+            $('#filterContainer').toggle();
+            let isVisible = $('#filterContainer').is(':visible');
+            $(this).text(isVisible ? 'Ẩn bộ lọc' : 'Hiện bộ lọc');
+        });
+
+        function recallVoucher(id) {
+            showConfirmModal('Bạn chắc chắn muốn thu hồi voucher này?', function () {
+                disableButton();
+                $.ajax({
+                    url: '/Voucher/Recall',
+                    data: { Id: id },
+                    type: 'PUT',
+                    success: function (response) {
+                        showToast(response.Message, response.Type, true);
+                    },
+                    error: function (response) {
+                        showToast(response.responseJSON.Message, response.responseJSON.Type, false);
+                    },
+                    complete: function () {
+                        enableButton();
+                    }
+                });
+            });
+        }
+        $("#usernameSelect").select2({
+            placeholder: "Chọn username",
+            allowClear: true,
+            theme: "bootstrap-5",
+            ajax: {
+                url: "/Account/Paging",
+                dataType: 'json',
+                delay: 250,
+                data: function (params) {
+                    return {
+                        Username: params.term || '',
+                        PageIndex: params.page || 1,
+                        PageSize: 10
+                    };
+                },
+                processResults: function (data, params) {
+                    return {
+                        results: data.Items.map(item => ({
+                            id: item.Id,
+                            text: item.Username
+                        })),
+                        pagination: {
+                            more: data.PageIndex < data.TotalPage && params.term
+                        }
+                    };
+                },
+                cache: true
+            }
+        });
+    </script>
+}

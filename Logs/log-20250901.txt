@@ -1,0 +1,15 @@
+2025-09-01 15:58:35.222 +07:00 [INF] Application Starting
+2025-09-01 16:14:48.297 +07:00 [INF] Application Starting
+2025-09-01 16:47:30.963 +07:00 [INF] Application Starting
+2025-09-01 16:55:02.088 +07:00 [INF] Application Starting
+2025-09-01 16:55:05.340 +07:00 [ERR] The view 'http://hethong.yiy-transvn.com/uploads/images/4bf35083-3af8-46cc-84af-3c5d0cc1acdc.png' was not found. Searched locations: ["/Views/Home/http:/hethong.yiy-transvn.com/uploads/images/4bf35083-3af8-46cc-84af-3c5d0cc1acdc.png.cshtml","/Views/Shared/http:/hethong.yiy-transvn.com/uploads/images/4bf35083-3af8-46cc-84af-3c5d0cc1acdc.png.cshtml"]
+2025-09-01 16:55:09.601 +07:00 [ERR] The view 'http://hethong.yiy-transvn.com/uploads/images/4bf35083-3af8-46cc-84af-3c5d0cc1acdc.png' was not found. Searched locations: ["/Views/Home/http:/hethong.yiy-transvn.com/uploads/images/4bf35083-3af8-46cc-84af-3c5d0cc1acdc.png.cshtml","/Views/Shared/http:/hethong.yiy-transvn.com/uploads/images/4bf35083-3af8-46cc-84af-3c5d0cc1acdc.png.cshtml"]
+2025-09-01 16:58:06.997 +07:00 [INF] Application Starting
+2025-09-01 17:22:06.215 +07:00 [INF] Application Starting
+2025-09-01 17:23:19.833 +07:00 [INF] Application Starting
+2025-09-01 17:25:17.014 +07:00 [INF] Application Starting
+2025-09-01 17:25:39.395 +07:00 [INF] Sign Up: admin; 11111111;
+2025-09-01 17:38:34.374 +07:00 [WRN] Unable to configure Browser Link script injection on the response. 
+2025-09-01 17:38:34.379 +07:00 [WRN] Unable to configure browser refresh script injection on the response. Consider manually adding '<script src="/_framework/aspnetcore-browser-refresh.js"></script>' to the body of the page.
+2025-09-01 17:40:12.751 +07:00 [INF] Application Starting
+2025-09-01 17:43:45.593 +07:00 [INF] Application Starting

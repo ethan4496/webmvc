@@ -1,0 +1,211 @@
+﻿@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap');
+
+body {
+    font-family: 'Roboto', sans-serif;
+    font-weight: 400;
+}
+html {
+    font-size: 14px;
+}
+
+a {
+    color: black;
+    text-decoration: unset;
+}
+
+li {
+    list-style: none
+}
+
+main {
+/*    overflow-y: auto;
+*/    max-height: 90vh;
+}
+
+.main {
+    background: linear-gradient(120deg, #fcbc5d21 0%, #f77705 150%);
+}
+
+.navbar-brand img {
+    width: 11rem;
+    height: auto;
+}
+
+.nav-link i {
+    margin-right: 5px;
+}
+
+.nav-link {
+    color: white !important;
+}
+
+.navbar-nav .nav-item {
+    border-radius: 0.5rem;
+    margin: 0 1rem;
+    font-weight: 600;
+    font-size: 16px;
+    display: flex;
+    align-items: center;
+    background: linear-gradient(180deg, #FCBC5D 0%, #F27243 100%);
+}
+
+.dropdown-menu {
+    background: linear-gradient(180deg, #FCBC5D 0%, #F27243 100%);
+}
+
+.dropdown-item {
+    color: white !important;
+}
+
+    .dropdown-item:focus, .dropdown-item:hover {
+        color: black !important;
+    }
+
+html, body {
+    height: 100%;
+    margin: 0;
+}
+
+.wrapper {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    min-width: 25rem;
+}
+
+    .wrapper > .main {
+        flex: 1;
+    }
+
+.table {
+    width: 100%;
+    table-layout: auto; /* Cho phép bảng tự động điều chỉnh độ rộng của cột */
+}
+
+    .table td, .table th {
+        white-space: nowrap; /* Ngăn không cho văn bản bị cắt ngắn */
+        text-overflow: ellipsis; /* Thêm dấu "..." nếu nội dung quá dài */
+        overflow: hidden;
+        vertical-align: middle;
+    }
+
+/* Thêm thanh cuộn ngang nếu nội dung quá dài */
+.table-content {
+    overflow-x: auto; /* Hiển thị thanh cuộn ngang khi nội dung quá dài */
+}
+
+.table-success {
+    transition: background-color 0.5s ease;
+}
+
+.btn-warning {
+    color: #fff !important;
+}
+
+/* Đảm bảo select2 có kiểu dáng như input trong Bootstrap 5 */
+.select2-container--bootstrap-5 .select2-selection {
+    border: 1px solid #ced4da;
+    border-radius: 0.375rem;
+    height: calc(2.25rem + 2px) !important;
+    padding: 0.375rem 0.75rem;
+    font-size: 1rem;
+    line-height: 1.5;
+    background: #fff;
+}
+
+.select2-container--bootstrap-5 .select2-selection__rendered {
+    color: #495057;
+    padding: 0.375rem 0.75rem;
+}
+
+.select2-container .select2-selection--single .select2-selection__rendered {
+    display: unset !important;
+}
+
+.select2-dropdown {
+    position: absolute !important;
+    z-index: 99999 !important;
+}
+
+.td-break-space {
+    white-space: break-spaces !important;
+}
+
+.btn-purple {
+    background-color: #6f42c1; /* Màu tím */
+    border-color: #6f42c1;
+    color: white; /* Màu chữ */
+}
+
+
+.text-orange {
+    color: orange !important;
+}
+
+.text-purple {
+    color: purple !important;
+}
+
+.bg-purple {
+    background-color: #6f42c1; /* Màu tím */
+}
+.bg-pink {
+    background-color: deeppink; /* Màu tím */
+}
+.btn-purple:hover {
+    background-color: #5a32a3; /* Màu tím đậm hơn khi hover */
+    border-color: #502b92;
+    color: white; /* Màu chữ */
+}
+
+.btn-purple:focus,
+.btn-purple:active {
+    background-color: #5a32a3;
+    border-color: #502b92;
+    box-shadow: 0 0 0 0.25rem rgba(111, 66, 193, 0.5); /* Hiệu ứng focus */
+}
+
+.btn-purple:disabled {
+    background-color: #a385d7;
+    border-color: #a385d7;
+    color: #e2d9f3;
+}
+
+.modal-content {
+    z-index: 1000;
+}
+
+label.required::after {
+    content: " *";
+    color: red;
+}
+input.is-invalid,
+select.is-invalid,
+textarea.is-invalid {
+    border-color: red;
+}
+
+#mainTag .container-fluid {
+    margin-bottom: 3.5rem;
+}
+
+.required-mark {
+    color: red;
+    font-weight: bold;
+    font-size: 12px;
+    line-height: 1;
+}
+
+.select2-container--bootstrap-5
+.select2-results__option--selectable:hover,
+.select2-container--bootstrap-5
+.select2-results__option--highlighted {
+    background-color: #e9ecef;
+    color: #212529;
+}
+
+.select2-container--bootstrap-5
+.select2-results__option--selected {
+    background-color: #ced4da;
+    color: #212529;
+}

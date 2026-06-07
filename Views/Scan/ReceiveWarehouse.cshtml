@@ -1,0 +1,523 @@
+﻿@using WebMVC.Models.Responses
+@using WebMVC.Ultilities.Enums
+@model int
+@{
+    ViewData["Title"] = "Kiểm hàng Kho TQ";
+}
+<div class="container-fluid mt-4">
+    <h1 class="mb-4">@(ETransportationTypeName.GetTypeName(Model))</h1>
+
+    <!-- Thông tin bao hàng -->
+    <div class="card mb-4">
+        <div class="card-header">
+            详细
+        </div>
+        <div class="card-body">
+            <form id="bag-info-form">
+                <div class="row">
+                    <div class="col-md-2">
+                        <label for="bagCode" class="form-label">
+                            编码
+                        </label>
+                        <input type="text" class="form-control" id="bagCode" name="bagCode" placeholder="进入">
+                    </div>
+                    <div class="col-md-2">
+                        <label for="partnerInfo" class="form-label">
+                            伙伴
+                        </label>
+                        <input type="text" class="form-control" id="partnerInfo" name="partnerInfo" placeholder="进入">
+                    </div>
+                    <div class="col-md-2">
+                        <label class="form-label">
+                            件数
+                        </label>
+                        <input type="number" class="form-control" id="totalItems">
+                    </div>
+                    <div class="col-md-2">
+                        <label class="form-label">
+                            重量(KG)
+                        </label>
+                        <input type="number" class="form-control" id="totalWeight">
+                    </div>
+                    <div class="col-md-2">
+                        <label class="form-label">
+                            体积（m3)
+                        </label>
+                        <input type="number" class="form-control" id="totalVolume">
+                    </div>
+                    <div class="col-md-2 d-flex align-items-end">
+                        <button type="button" class="btn btn-primary " id="createBigPackageButton" disabled>
+                            打包
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Nhập mã vận đơn -->
+    <div class="row mb-2">
+        <div class="col col-6">
+            <input type="text" class="form-control " id="waybillInput" placeholder="入运单号">
+        </div>
+        <div class="col col-6">
+            <button type="submit" id="updateAllBarcodeButton" class="btn btn-primary" disabled>
+                全部更新
+            </button>
+        </div>
+    </div>
+
+    <!-- Danh sách mã vận đơn -->
+    <div id="waybillList" class="table-responsive">
+        <table class="table table-hover table-bordered">
+            <thead>
+                <tr>
+                    <th class="text-center">
+                        <input type="checkbox" id="selectAll" />
+                    </th>
+                    <th class="text-center">
+                        运单
+                    </th>
+                    <th class="text-center" style=" min-width: 200px; ">
+                        顾客
+                    </th>
+                    <th class="text-center">
+                        件数
+                    </th>
+                    <th class="text-center">
+                        重量(KG)
+                    </th>
+                    <th class="text-center">
+                        体积（m3)
+                    </th>
+                    <th class="text-center">
+                        附费(元）
+                    </th>
+                    <th class="text-center">
+                        图片
+                    </th>
+                    <th class="text-center">
+                        状态
+                    </th>
+                    <th class="text-center"></th>
+                </tr>
+            </thead>
+            <tbody id="waybillTableBody">
+                <!-- Dữ liệu sẽ được thêm vào đây bằng Ajax -->
+            </tbody>
+        </table>
+    </div>
+
+</div>
+@await Html.PartialAsync("~/Views/Shared/Components/AssignTransporationModel.cshtml")
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            getBarcodeInTQ();
+        });
+        const bagInfo = {
+            totalItems: 0,
+            totalWeight: 0,
+            totalVolume: 0
+        };
+
+        function updateBagInfo() {
+            $('#totalItems').val(bagInfo.totalItems);
+            $('#totalWeight').val(bagInfo.totalWeight.toFixed(2));
+            $('#totalVolume').val(bagInfo.totalVolume.toFixed(2));
+            $('#createBigPackageButton').prop('disabled', bagInfo.totalItems === 0);
+        }
+
+        $('#waybillInput').on('keypress', function (e) {
+            if (e.key === 'Enter') {
+
+                e.preventDefault();
+                const waybillCode = $(this).val().trim();
+
+                if (waybillCode) {
+                    scanBarcode(waybillCode);
+                    $(this).val('');
+                }
+            }
+        });
+
+        function scanBarcode(barcode) {
+            const existingRow = $(`#waybillTableBody tr td:contains(${barcode})`).closest('tr');
+            if (existingRow.length > 0) {
+                showToast('Mã vận đơn đã tồn tại trong danh sách', 2, false);
+                return;
+            }
+            showLoading();
+            $.ajax({
+                url: '/Scan/ScanAtReceiveWarehouse',
+                type: 'GET',
+                data: { barcode: barcode, type: @Model },
+                success: function (response) {
+                    var data = response.Data;
+                    if (data != null) {
+                        const newRow = `<tr data-barcode-id="${data.Id}">
+                                            <td class="text-center">
+                                                <input type="checkbox" class="waybillCheckbox" />
+                                            </td>
+                                            <td>${data.Barcode}</td>
+                                            <td>${data.AccountName || ''}</td>
+                                            <td><input type="number" min="1" class="form-control form-control-sm quantity" value="${data.Quantity}"></td>
+                                            <td><input type="number" min="0" class="form-control form-control-sm weight" value="${data.Weight}"></td>
+                                            <td><input type="number" min="0" class="form-control form-control-sm volume" value="${data.Volume}"></td>
+                                            <td><input min="0" class="form-control input-money form-control-sm surcharge" value="${data.Surcharge}"></td>
+                                            <td>${data.Image ? `<a href="${data.Image}" target="_blank"> <img src="${data.Image}" class="img-fluid rounded border" style="max-width: 100px; max-height: 100px;" alt="Image"> </a>` : ''}
+                                                                                <label class="btn btn-sm btn-secondary mt-1">
+            Chọn ảnh <input type="file" class="d-none uploadImageInput" accept="image/*">
+        </label>
+
+                                            </td>
+                                                    <td class="status">${data.StatusName}</td>
+                                            <td class="text-center">
+                                                <button class="btn btn-sm btn-primary updateRowButton">更新</button>
+                                                <button class="btn btn-sm btn-danger deleteRowButton">删除</button>
+                                                ${data.AccountName == null ? '<button class="btn btn-sm btn-warning assignRowButton">选顾客</button>' : ''}
+                                            </td>
+                                        </tr>`;
+
+                        $('#waybillTableBody').prepend(newRow);
+                        $('#updateAllBarcodeButton').prop('disabled', false);
+                        $(this).val('');
+                    } else {
+                        createFloatingTransportation(barcode);
+                        return;
+                    }
+
+                },
+                error: function (response) {
+                    showToast(response.responseJSON.Message, response.responseJSON.Type, false);
+                }, complete: function () {
+                    hideLoading();
+                }
+            });
+        }
+
+        function getBarcodeInTQ() {
+            showLoading();
+            $.ajax({
+                url: '/Scan/GetBarcodeInTQ',
+                type: 'GET',
+                data: { type: @Model },
+                success: function (response) {
+                    var datas = response.Data;
+                    if (datas != null) {
+                        datas.forEach(data => {
+                            const newRow = `<tr data-barcode-id="${data.Id}">
+                                                        <td class="text-center">
+                                                            <input type="checkbox" class="waybillCheckbox" />
+                                                        </td>
+                                                        <td>${data.Barcode}</td>
+                                                        <td>${data.AccountName || ''}</td>
+                                                        <td><input type="number" min="1" class="form-control form-control-sm quantity" value="${data.Quantity}"></td>
+                                                        <td><input type="number" min="0" class="form-control form-control-sm weight" value="${data.Weight}"></td>
+                                                        <td><input type="number" min="0" class="form-control form-control-sm volume" value="${data.Volume}"></td>
+                                                        <td><input min="0" class="form-control input-money form-control-sm surcharge" value="${data.Surcharge}"></td>
+                                                        <td>${data.Image ? `<a href="${data.Image}" target="_blank"> <img src="${data.Image}" class="img-fluid rounded border" style="max-width: 100px; max-height: 100px;" alt="Image"> </a>` : ''}
+                                                        <label class="btn btn-sm btn-secondary mt-1">
+                                                            Chọn ảnh <input type="file" class="d-none uploadImageInput" accept="image/*">
+                                                        </label>
+
+                                                        </td>
+                                                        <td class="status">${data.StatusName}</td>
+                                                        <td class="text-center">
+                                                            <button class="btn btn-sm btn-primary updateRowButton">更新</button>
+                                                            <button class="btn btn-sm btn-danger deleteRowButton">删除</button>
+                                                            ${data.AccountName == null ? '<button class="btn btn-sm btn-warning assignRowButton">选顾客</button>' : ''}
+                                                        </td>
+                                                    </tr>`;
+
+                            $('#waybillTableBody').prepend(newRow);
+                            $('#updateAllBarcodeButton').prop('disabled', false);
+                            $(this).val('');
+                        });
+                    }
+                },
+                error: function (response) {
+                    showToast(response.responseJSON.Message, response.responseJSON.Type, false);
+                }, complete: function () {
+                    hideLoading();
+                }
+            });
+        }
+
+        function createFloatingTransportation(barcode) {
+            $.ajax({
+                url: '/Scan/CreateFloatingTransportation',
+                type: 'POST',
+                data: { barcode: barcode, type: @Model },
+                success: function (response) {
+                    scanBarcode(barcode);
+                },
+                error: function (response) {
+                    showToast(response.responseJSON.Message, response.responseJSON.Type, false);
+                }
+            });
+        }
+
+        $('#waybillTableBody').on('change', '.uploadImageInput', function () {
+            const file = this.files[0];
+            if (!file) return;
+
+            const row = $(this).closest('tr');
+            const barcodeId = row.data('barcode-id');
+
+            const formData = new FormData();
+            formData.append('file', file); // tên 'file' phải trùng với [FromForm] IFormFile file trong API
+
+            $.ajax({
+                url: '/api/UploadFile', // Đúng route API của bạn
+                type: 'POST',
+                data: formData,
+                processData: false,
+                contentType: false,
+                success: function (res) {
+                    if (res.Status === "Success") {
+
+                        const fileUrl = res.Message; // API trả về URL ảnh
+                        if (row.find('img').length) {
+                            row.find('img').attr('src', fileUrl);
+                        } else {
+                            row.find('td').eq(7).prepend(
+                                `<img src="${fileUrl}" class="img-fluid rounded border" style="max-width: 100px; max-height: 100px;" alt="Image">`
+                            );
+                        }
+                    } else {
+                        showToast('Tải ảnh thất bại', 2, false);
+                    }
+                },
+                error: function () {
+                    showToast('Có lỗi khi tải ảnh', 2, false);
+                }
+            });
+        });
+
+
+        $(document).on('change', '.waybillCheckbox', function () {
+            const row = $(this).closest('tr');
+            const weight = parseFloat(row.find('.weight').val()) || 0;
+            const volume = parseFloat(row.find('.volume').val()) || 0;
+            const quantity = parseFloat(row.find('.quantity').val()) || 0;
+
+            if (this.checked) {
+                bagInfo.totalItems += quantity;
+                bagInfo.totalWeight += weight;
+                bagInfo.totalVolume += volume;
+            } else {
+                bagInfo.totalItems -= quantity;
+                bagInfo.totalWeight -= weight;
+                bagInfo.totalVolume -= volume;
+            }
+
+            updateBagInfo();
+        });
+
+        $('#selectAll').on('change', function () {
+            const isChecked = $(this).is(':checked');
+
+            let totalItems = 0, totalWeight = 0, totalVolume = 0;
+
+            $('.waybillCheckbox').each(function () {
+                $(this).prop('checked', isChecked);
+                const row = $(this).closest('tr');
+                const weight = parseFloat(row.find('.weight').val()) || 0;
+                const volume = parseFloat(row.find('.volume').val()) || 0;
+                const quantity = parseFloat(row.find('.quantity').val()) || 0;
+
+                if (isChecked) {
+                    totalItems += quantity;
+                    totalWeight += weight;
+                    totalVolume += volume;
+                }
+            });
+
+            // Cập nhật thông tin bao khi chọn tất cả hoặc bỏ chọn tất cả
+            bagInfo.totalItems = isChecked ? totalItems : 0;
+            bagInfo.totalWeight = isChecked ? totalWeight : 0;
+            bagInfo.totalVolume = isChecked ? totalVolume : 0;
+
+            updateBagInfo();
+        });
+
+        $(document).on('click', '.deleteRowButton', function () {
+            const barcode = $(this).closest('tr').find('td:nth-child(2)').text().trim();
+            deleteRowByBarcode(barcode);
+        });
+
+        function deleteRowByBarcode(barcode) {
+            const row = $(`#waybillTableBody tr td:contains(${barcode})`).closest('tr');
+            if (row.length === 0) {
+                showToast('Không tìm thấy mã vận đơn để xóa', 'warning', false);
+                return;
+            }
+            const checkbox = row.find('.waybillCheckbox');
+            const weight = parseFloat(row.find('.weight').val()) || 0;
+            const volume = parseFloat(row.find('.volume').val()) || 0;
+            const quantity = parseFloat(row.find('.quantity').val()) || 0;
+
+            row.remove();  // Xóa hàng khỏi bảng
+
+            // Cập nhật thông tin tổng nếu checkbox được chọn
+            if (checkbox.is(':checked')) {
+                bagInfo.totalItems -= quantity;
+                bagInfo.totalWeight -= weight;
+                bagInfo.totalVolume -= volume;
+                updateBagInfo();
+            }
+        }
+
+        $(document).on('click', '.updateRowButton', function () {
+            const row = $(this).closest('tr');
+            const barCode = row.find('td:nth-child(2)').text();
+            const accountName = row.find('td:nth-child(3)').text();
+            const weight = parseFloat(row.find('.weight').val()) || 0;
+            const volume = parseFloat(row.find('.volume').val()) || 0;
+            const quantity = parseFloat(row.find('.quantity').val()) || 0;
+            const surcharge = parseFloat(getRawValue(row.find('.surcharge').val())) || 0;
+            const image = row.find('.img-fluid').attr('src') || '';
+            const updatedData = {
+                BarCode: barCode,
+                AccountName: accountName,
+                Quantity: quantity,
+                Weight: weight,
+                Volume: volume,
+                Surcharge: surcharge,
+                Image : image.length > 0 ? image : null
+            };
+
+            $.ajax({
+                url: `/Scan/UpdateBarcodeAtReceiveWarehouse?type=${@Model}`,
+                type: 'PUT',
+                contentType: 'application/json',
+                data: JSON.stringify(updatedData),
+                success: function (response) {
+                    row.addClass('table-success');
+                    row.find('td.status').text(response.Data.StatusNameNotColor);
+                    showToast('Cập nhật thành công', response.Type, false);
+                },
+                error: function (response) {
+                    showToast(response.responseJSON.Message, response.responseJSON.Type, false);
+                }
+            });
+        });
+
+        $('#updateAllBarcodeButton').on('click', function () {
+            const requestData = [];
+            $('#waybillTableBody tr').each(function () {
+                const barcode = $(this).find('td:nth-child(2)').text().trim();
+                const accountName = $(this).find('td:nth-child(3)').text().trim();
+                const quantity = parseFloat($(this).find('.quantity').val()) || 0;
+                const weight = parseFloat($(this).find('.weight').val()) || 0;
+                const volume = parseFloat($(this).find('.volume').val()) || 0;
+                const surcharge = parseFloat($(this).find('.surcharge').val()) || 0;
+
+                requestData.push({
+                    BarCode: barcode,
+                    AccountName: accountName,
+                    Quantity: quantity,
+                    Weight: weight,
+                    Volume: volume,
+                    Surcharge: surcharge,
+                });
+            });
+            disableButton();
+            $.ajax({
+                url: `/Scan/UpdateBarcodeMultipleAtReceiveWarehouse?type=${@Model}`,
+                type: 'PUT',
+                contentType: 'application/json',
+                data: JSON.stringify(requestData),
+                success: function (response) {
+                    showToast(response.Message, response.Type, false);
+                    $('#waybillTableBody tr').addClass('table-success');
+                },
+                error: function (response) {
+                    showToast(response.responseJSON.Message, response.responseJSON.Type, false);
+                },
+                complete: function () {
+                    enableButton();
+                }
+            });
+        });
+
+        $(document).on('click', '.assignRowButton', function () {
+            const row = $(this).closest('tr');
+            const barcode = row.find('td:nth-child(2)').text();
+            showAssignModal(barcode);
+        });
+        function handleAfterAssign() {
+            const barcode = $('#assignBarcode').val();
+            deleteRowByBarcode(barcode);
+            scanBarcode(barcode);
+        }
+
+        $('#createBigPackageButton').click(function () {
+            const transporationIds = [];
+            $('#waybillTableBody tr').each(function () {
+                const checkbox = $(this).find('.waybillCheckbox');
+                if (checkbox.is(':checked')) {
+                    const id = $(this).data('barcode-id');
+                    transporationIds.push(id);
+                }
+            });
+
+            const request = {
+                Name: $('#bagCode').val().trim(),
+                Partner: $('#partnerInfo').val().trim(),
+                Quantity: parseInt($('#totalItems').val()) || 0,
+                Weight: parseFloat($('#totalWeight').val()) || 0,
+                Volume: parseFloat($('#totalVolume').val()) || 0,
+                TransporationIds: transporationIds
+            };
+
+            if (!request.Name) {
+                showToast('Vui lòng nhập mã bao', 2, false);
+                return;
+            }
+            if (request.Quantity <= 0 || request.Weight < 0 || request.Volume < 0) {
+                showToast('Vui lòng nhập số kiện, tổng cân, và tổng khối hợp lệ', 2, false);
+                return;
+            }
+
+            $.ajax({
+                url: '/Scan/CreateBigPackage',
+                type: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify(request),
+                success: function (response) {
+                    showToast(response.Message, response.Type, true);
+                },
+                error: function (response) {
+                    showToast(response.responseJSON.Message, response.responseJSON.Type, false);
+                }
+            });
+        });
+
+        connection.on("ReceiveScanMobile", (message) => {
+            const data = JSON.parse(message);
+            const newRow = `<tr data-barcode-id="${data.Id}">
+                    <td class="text-center">
+                        <input type="checkbox" class="waybillCheckbox" />
+                    </td>
+                    <td>${data.Barcode}</td>
+                    <td>${data.AccountName || ''}</td>
+                    <td><input type="number" min="1" class="form-control form-control-sm quantity" value="${data.Quantity}"></td>
+                    <td><input type="number" min="0" class="form-control form-control-sm weight" value="${data.Weight}"></td>
+                    <td><input type="number" min="0" class="form-control form-control-sm volume" value="${data.Volume}"></td>
+                    <td><input min="0" class="form-control input-money form-control-sm surcharge" value="${data.Surcharge}"></td>
+                    <td>${ddata.Image ? `<a href="${data.Image}" target="_blank"> <img src="${data.Image}" class="img-fluid rounded border" style="max-width: 100px; max-height: 100px;" alt="Image"> </a>` : ''}</td>
+                    <td>${data.StatusName}</td>
+                    <td class="text-center">
+                        <button class="btn btn-sm btn-primary updateRowButton">更新</button>
+                        <button class="btn btn-sm btn-danger deleteRowButton">删除</button>
+                        ${data.AccountName == null ? '<button class="btn btn-sm btn-warning assignRowButton">选顾客</button>' : ''}
+                    </td>
+                </tr>`;
+
+            $('#waybillTableBody').prepend(newRow);
+            $('#updateAllBarcodeButton').prop('disabled', false);
+        });
+    </script>
+}
