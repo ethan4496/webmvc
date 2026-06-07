@@ -8,6 +8,8 @@ x86/
 bin/
 obj/
 
+wwwroot/uploads/
+
 # Visual Studio
 .vs/
 *.user
