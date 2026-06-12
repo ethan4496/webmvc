@@ -93,7 +93,10 @@ builder.Services.AddCors(options =>
                   .AllowAnyHeader();
         });
 });
-
+builder.WebHost.ConfigureKestrel(options =>
+{
+    options.Limits.MaxRequestBodySize = 100 * 1024 * 1024;
+});
 
 var app = builder.Build();
 Log.Information("Application Starting");

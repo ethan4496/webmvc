@@ -1,0 +1,22 @@
+2026-06-10 21:56:19.657 +07:00 [INF] Application Starting
+2026-06-10 21:56:28.804 +07:00 [WRN] Failed to determine the https port for redirect.
+2026-06-10 21:58:08.575 +07:00 [INF] Application Starting
+2026-06-10 21:59:16.934 +07:00 [WRN] Failed to determine the https port for redirect.
+2026-06-10 22:01:58.106 +07:00 [INF] Application Starting
+2026-06-10 22:02:23.972 +07:00 [WRN] Failed to determine the https port for redirect.
+2026-06-10 22:09:42.605 +07:00 [INF] Application Starting
+2026-06-10 22:09:54.583 +07:00 [WRN] Failed to determine the https port for redirect.
+2026-06-10 22:10:48.912 +07:00 [INF] Application Starting
+2026-06-10 22:11:04.058 +07:00 [INF] Application Starting
+2026-06-10 22:11:43.558 +07:00 [WRN] Failed to determine the https port for redirect.
+2026-06-10 22:12:15.040 +07:00 [INF] Application Starting
+2026-06-10 22:12:29.342 +07:00 [WRN] Failed to determine the https port for redirect.
+2026-06-10 22:14:37.306 +07:00 [INF] Application Starting
+2026-06-10 22:16:16.904 +07:00 [WRN] Failed to determine the https port for redirect.
+2026-06-10 22:16:17.712 +07:00 [WRN] No store type was specified for the decimal property 'TaxNK' on entity type 'PriceImport'. This will cause values to be silently truncated if they do not fit in the default precision and scale. Explicitly specify the SQL server column type that can accommodate all the values in 'OnModelCreating' using 'HasColumnType', specify precision and scale using 'HasPrecision', or configure a value converter using 'HasConversion'.
+2026-06-10 22:16:17.713 +07:00 [WRN] No store type was specified for the decimal property 'TaxVAT' on entity type 'PriceImport'. This will cause values to be silently truncated if they do not fit in the default precision and scale. Explicitly specify the SQL server column type that can accommodate all the values in 'OnModelCreating' using 'HasColumnType', specify precision and scale using 'HasPrecision', or configure a value converter using 'HasConversion'.
+2026-06-10 22:16:28.579 +07:00 [INF] Sign Up: admin; 11111111;
+2026-06-10 22:41:36.214 +07:00 [INF] Application Starting
+2026-06-10 22:41:36.539 +07:00 [WRN] Failed to determine the https port for redirect.
+2026-06-10 22:43:10.337 +07:00 [WRN] No store type was specified for the decimal property 'TaxNK' on entity type 'PriceImport'. This will cause values to be silently truncated if they do not fit in the default precision and scale. Explicitly specify the SQL server column type that can accommodate all the values in 'OnModelCreating' using 'HasColumnType', specify precision and scale using 'HasPrecision', or configure a value converter using 'HasConversion'.
+2026-06-10 22:43:10.338 +07:00 [WRN] No store type was specified for the decimal property 'TaxVAT' on entity type 'PriceImport'. This will cause values to be silently truncated if they do not fit in the default precision and scale. Explicitly specify the SQL server column type that can accommodate all the values in 'OnModelCreating' using 'HasColumnType', specify precision and scale using 'HasPrecision', or configure a value converter using 'HasConversion'.

@@ -409,6 +409,11 @@
             })
             
             $('#search').on('click', function(){
+                const name = $('#name').val();
+                const hscode = $('#hscode').val();
+                if(name.trim() == '' && hscode.trim() == ''){
+                    return;
+                }
                 loadPage(1);
             })
             $('#btn-upload').on('click', function() {

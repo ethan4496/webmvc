@@ -216,6 +216,7 @@ namespace WebMVC.Controllers
                 worksheet.Cell(1, 16).Value = "Ngày yêu cầu xuất kho";
                 worksheet.Cell(1, 17).Value = "Ngày xuất kho";
                 worksheet.Cell(1, 18).Value = "Trạng thái";
+                worksheet.Cell(1, 19).Value = "Số kiện";
 
                 // **Định dạng tiêu đề in đậm**
                 //var headerRange = worksheet.Range("A1:F1");
@@ -251,6 +252,7 @@ namespace WebMVC.Controllers
                     worksheet.Cell(row, 16).Value = "";
                     worksheet.Cell(row, 17).Value = FormatDate.FormatNullDate(item.DateCompleted);
                     worksheet.Cell(row, 18).Value = ETransportationStatusName.GetStatusName(item.Status);
+                    worksheet.Cell(row, 19).Value = item.Quantity;
                     row++;
                 }
 

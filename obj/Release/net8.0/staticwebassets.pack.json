@@ -1,1443 +1,1447 @@
 {
   "Files": [
     {
-      "Id": "C:\\Learning\\TPKSource-2\\WebMVC\\WebMVC\\wwwroot\\css\\chat.css",
+      "Id": "D:\\git2\\webmvc\\wwwroot\\css\\chat.css",
       "PackagePath": "staticwebassets\\css\\chat.css"
     },
     {
-      "Id": "C:\\Learning\\TPKSource-2\\WebMVC\\WebMVC\\wwwroot\\css\\home.css",
+      "Id": "D:\\git2\\webmvc\\wwwroot\\css\\home.css",
       "PackagePath": "staticwebassets\\css\\home.css"
     },
     {
-      "Id": "C:\\Learning\\TPKSource-2\\WebMVC\\WebMVC\\wwwroot\\css\\site.css",
+      "Id": "D:\\git2\\webmvc\\wwwroot\\css\\site.css",
       "PackagePath": "staticwebassets\\css\\site.css"
     },
     {
-      "Id": "C:\\Learning\\TPKSource-2\\WebMVC\\WebMVC\\wwwroot\\favicon.ico",
+      "Id": "D:\\git2\\webmvc\\wwwroot\\favicon.ico",
       "PackagePath": "staticwebassets\\favicon.ico"
     },
     {
-      "Id": "C:\\Learning\\TPKSource-2\\WebMVC\\WebMVC\\wwwroot\\images\\auth-background.jpg",
+      "Id": "D:\\git2\\webmvc\\wwwroot\\images\\auth-background.jpg",
       "PackagePath": "staticwebassets\\images\\auth-background.jpg"
     },
     {
-      "Id": "C:\\Learning\\TPKSource-2\\WebMVC\\WebMVC\\wwwroot\\images\\home\\banner-ship.jpg",
+      "Id": "D:\\git2\\webmvc\\wwwroot\\images\\home\\banner-ship.jpg",
       "PackagePath": "staticwebassets\\images\\home\\banner-ship.jpg"
     },
     {
-      "Id": "C:\\Learning\\TPKSource-2\\WebMVC\\WebMVC\\wwwroot\\images\\home\\service-air.jpg",
+      "Id": "D:\\git2\\webmvc\\wwwroot\\images\\home\\service-air.jpg",
       "PackagePath": "staticwebassets\\images\\home\\service-air.jpg"
     },
     {
-      "Id": "C:\\Learning\\TPKSource-2\\WebMVC\\WebMVC\\wwwroot\\images\\home\\service-custom.jpg",
+      "Id": "D:\\git2\\webmvc\\wwwroot\\images\\home\\service-custom.jpg",
       "PackagePath": "staticwebassets\\images\\home\\service-custom.jpg"
     },
     {
-      "Id": "C:\\Learning\\TPKSource-2\\WebMVC\\WebMVC\\wwwroot\\images\\home\\service-express.jpg",
+      "Id": "D:\\git2\\webmvc\\wwwroot\\images\\home\\service-express.jpg",
       "PackagePath": "staticwebassets\\images\\home\\service-express.jpg"
     },
     {
-      "Id": "C:\\Learning\\TPKSource-2\\WebMVC\\WebMVC\\wwwroot\\images\\home\\service-sea.jpg",
+      "Id": "D:\\git2\\webmvc\\wwwroot\\images\\home\\service-sea.jpg",
       "PackagePath": "staticwebassets\\images\\home\\service-sea.jpg"
     },
     {
-      "Id": "C:\\Learning\\TPKSource-2\\WebMVC\\WebMVC\\wwwroot\\images\\logo.png",
+      "Id": "D:\\git2\\webmvc\\wwwroot\\images\\logo.png",
       "PackagePath": "staticwebassets\\images\\logo.png"
     },
     {
-      "Id": "C:\\Learning\\TPKSource-2\\WebMVC\\WebMVC\\wwwroot\\images\\logo.svg",
+      "Id": "D:\\git2\\webmvc\\wwwroot\\images\\logo.svg",
       "PackagePath": "staticwebassets\\images\\logo.svg"
     },
     {
-      "Id": "C:\\Learning\\TPKSource-2\\WebMVC\\WebMVC\\wwwroot\\images\\voucher.jpg",
+      "Id": "D:\\git2\\webmvc\\wwwroot\\images\\voucher.jpg",
       "PackagePath": "staticwebassets\\images\\voucher.jpg"
     },
     {
-      "Id": "C:\\Learning\\TPKSource-2\\WebMVC\\WebMVC\\wwwroot\\js\\chat.js",
+      "Id": "D:\\git2\\webmvc\\wwwroot\\js\\chat.js",
       "PackagePath": "staticwebassets\\js\\chat.js"
     },
     {
-      "Id": "C:\\Learning\\TPKSource-2\\WebMVC\\WebMVC\\wwwroot\\js\\createLineChart.js",
+      "Id": "D:\\git2\\webmvc\\wwwroot\\js\\createLineChart.js",
       "PackagePath": "staticwebassets\\js\\createLineChart.js"
     },
     {
-      "Id": "C:\\Learning\\TPKSource-2\\WebMVC\\WebMVC\\wwwroot\\js\\printOutStock.js",
+      "Id": "D:\\git2\\webmvc\\wwwroot\\js\\printOutStock.js",
       "PackagePath": "staticwebassets\\js\\printOutStock.js"
     },
     {
-      "Id": "C:\\Learning\\TPKSource-2\\WebMVC\\WebMVC\\wwwroot\\templates\\EmailPXKTemplate.html",
+      "Id": "D:\\git2\\webmvc\\wwwroot\\templates\\EmailPXKTemplate.html",
       "PackagePath": "staticwebassets\\templates\\EmailPXKTemplate.html"
     },
     {
-      "Id": "C:\\Learning\\TPKSource-2\\WebMVC\\WebMVC\\wwwroot\\templates\\OutStockTemplate.html",
+      "Id": "D:\\git2\\webmvc\\wwwroot\\templates\\OutStockTemplate.html",
       "PackagePath": "staticwebassets\\templates\\OutStockTemplate.html"
     },
     {
-      "Id": "C:\\Learning\\TPKSource-2\\WebMVC\\WebMVC\\wwwroot\\templates\\template.xlsx",
+      "Id": "D:\\git2\\webmvc\\wwwroot\\templates\\template.xlsx",
       "PackagePath": "staticwebassets\\templates\\template.xlsx"
     },
     {
-      "Id": "C:\\Learning\\TPKSource-2\\WebMVC\\WebMVC\\wwwroot\\tpkexpress\\assets\\font\\Inter\\Inter-Black.eot",
+      "Id": "D:\\git2\\webmvc\\wwwroot\\tpkexpress\\assets\\font\\Inter\\Inter-Black.eot",
       "PackagePath": "staticwebassets\\tpkexpress\\assets\\font\\Inter\\Inter-Black.eot"
     },
     {
-      "Id": "C:\\Learning\\TPKSource-2\\WebMVC\\WebMVC\\wwwroot\\tpkexpress\\assets\\font\\Inter\\Inter-Black.ttf",
+      "Id": "D:\\git2\\webmvc\\wwwroot\\tpkexpress\\assets\\font\\Inter\\Inter-Black.ttf",
       "PackagePath": "staticwebassets\\tpkexpress\\assets\\font\\Inter\\Inter-Black.ttf"
     },
     {
-      "Id": "C:\\Learning\\TPKSource-2\\WebMVC\\WebMVC\\wwwroot\\tpkexpress\\assets\\font\\Inter\\Inter-Black.woff",
+      "Id": "D:\\git2\\webmvc\\wwwroot\\tpkexpress\\assets\\font\\Inter\\Inter-Black.woff",
       "PackagePath": "staticwebassets\\tpkexpress\\assets\\font\\Inter\\Inter-Black.woff"
     },
     {
-      "Id": "C:\\Learning\\TPKSource-2\\WebMVC\\WebMVC\\wwwroot\\tpkexpress\\assets\\font\\Inter\\Inter-Black.woff2",
+      "Id": "D:\\git2\\webmvc\\wwwroot\\tpkexpress\\assets\\font\\Inter\\Inter-Black.woff2",
       "PackagePath": "staticwebassets\\tpkexpress\\assets\\font\\Inter\\Inter-Black.woff2"
     },
     {
-      "Id": "C:\\Learning\\TPKSource-2\\WebMVC\\WebMVC\\wwwroot\\tpkexpress\\assets\\font\\Inter\\Inter-Bold.eot",
+      "Id": "D:\\git2\\webmvc\\wwwroot\\tpkexpress\\assets\\font\\Inter\\Inter-Bold.eot",
       "PackagePath": "staticwebassets\\tpkexpress\\assets\\font\\Inter\\Inter-Bold.eot"
     },
     {
-      "Id": "C:\\Learning\\TPKSource-2\\WebMVC\\WebMVC\\wwwroot\\tpkexpress\\assets\\font\\Inter\\Inter-Bold.ttf",
+      "Id": "D:\\git2\\webmvc\\wwwroot\\tpkexpress\\assets\\font\\Inter\\Inter-Bold.ttf",
       "PackagePath": "staticwebassets\\tpkexpress\\assets\\font\\Inter\\Inter-Bold.ttf"
     },
     {
-      "Id": "C:\\Learning\\TPKSource-2\\WebMVC\\WebMVC\\wwwroot\\tpkexpress\\assets\\font\\Inter\\Inter-Bold.woff",
+      "Id": "D:\\git2\\webmvc\\wwwroot\\tpkexpress\\assets\\font\\Inter\\Inter-Bold.woff",
       "PackagePath": "staticwebassets\\tpkexpress\\assets\\font\\Inter\\Inter-Bold.woff"
     },
     {
-      "Id": "C:\\Learning\\TPKSource-2\\WebMVC\\WebMVC\\wwwroot\\tpkexpress\\assets\\font\\Inter\\Inter-Bold.woff2",
+      "Id": "D:\\git2\\webmvc\\wwwroot\\tpkexpress\\assets\\font\\Inter\\Inter-Bold.woff2",
       "PackagePath": "staticwebassets\\tpkexpress\\assets\\font\\Inter\\Inter-Bold.woff2"
     },
     {
-      "Id": "C:\\Learning\\TPKSource-2\\WebMVC\\WebMVC\\wwwroot\\tpkexpress\\assets\\font\\Inter\\Inter-ExtraBold.eot",
+      "Id": "D:\\git2\\webmvc\\wwwroot\\tpkexpress\\assets\\font\\Inter\\Inter-ExtraBold.eot",
       "PackagePath": "staticwebassets\\tpkexpress\\assets\\font\\Inter\\Inter-ExtraBold.eot"
     },
     {
-      "Id": "C:\\Learning\\TPKSource-2\\WebMVC\\WebMVC\\wwwroot\\tpkexpress\\assets\\font\\Inter\\Inter-ExtraBold.ttf",
+      "Id": "D:\\git2\\webmvc\\wwwroot\\tpkexpress\\assets\\font\\Inter\\Inter-ExtraBold.ttf",
       "PackagePath": "staticwebassets\\tpkexpress\\assets\\font\\Inter\\Inter-ExtraBold.ttf"
     },
     {
-      "Id": "C:\\Learning\\TPKSource-2\\WebMVC\\WebMVC\\wwwroot\\tpkexpress\\assets\\font\\Inter\\Inter-ExtraBold.woff",
+      "Id": "D:\\git2\\webmvc\\wwwroot\\tpkexpress\\assets\\font\\Inter\\Inter-ExtraBold.woff",
       "PackagePath": "staticwebassets\\tpkexpress\\assets\\font\\Inter\\Inter-ExtraBold.woff"
     },
     {
-      "Id": "C:\\Learning\\TPKSource-2\\WebMVC\\WebMVC\\wwwroot\\tpkexpress\\assets\\font\\Inter\\Inter-ExtraBold.woff2",
+      "Id": "D:\\git2\\webmvc\\wwwroot\\tpkexpress\\assets\\font\\Inter\\Inter-ExtraBold.woff2",
       "PackagePath": "staticwebassets\\tpkexpress\\assets\\font\\Inter\\Inter-ExtraBold.woff2"
     },
     {
-      "Id": "C:\\Learning\\TPKSource-2\\WebMVC\\WebMVC\\wwwroot\\tpkexpress\\assets\\font\\Inter\\Inter-ExtraLight.eot",
+      "Id": "D:\\git2\\webmvc\\wwwroot\\tpkexpress\\assets\\font\\Inter\\Inter-ExtraLight.eot",
       "PackagePath": "staticwebassets\\tpkexpress\\assets\\font\\Inter\\Inter-ExtraLight.eot"
     },
     {
-      "Id": "C:\\Learning\\TPKSource-2\\WebMVC\\WebMVC\\wwwroot\\tpkexpress\\assets\\font\\Inter\\Inter-ExtraLight.ttf",
+      "Id": "D:\\git2\\webmvc\\wwwroot\\tpkexpress\\assets\\font\\Inter\\Inter-ExtraLight.ttf",
       "PackagePath": "staticwebassets\\tpkexpress\\assets\\font\\Inter\\Inter-ExtraLight.ttf"
     },
     {
-      "Id": "C:\\Learning\\TPKSource-2\\WebMVC\\WebMVC\\wwwroot\\tpkexpress\\assets\\font\\Inter\\Inter-ExtraLight.woff",
+      "Id": "D:\\git2\\webmvc\\wwwroot\\tpkexpress\\assets\\font\\Inter\\Inter-ExtraLight.woff",
       "PackagePath": "staticwebassets\\tpkexpress\\assets\\font\\Inter\\Inter-ExtraLight.woff"
     },
     {
-      "Id": "C:\\Learning\\TPKSource-2\\WebMVC\\WebMVC\\wwwroot\\tpkexpress\\assets\\font\\Inter\\Inter-ExtraLight.woff2",
+      "Id": "D:\\git2\\webmvc\\wwwroot\\tpkexpress\\assets\\font\\Inter\\Inter-ExtraLight.woff2",
       "PackagePath": "staticwebassets\\tpkexpress\\assets\\font\\Inter\\Inter-ExtraLight.woff2"
     },
     {
-      "Id": "C:\\Learning\\TPKSource-2\\WebMVC\\WebMVC\\wwwroot\\tpkexpress\\assets\\font\\Inter\\Inter-Light.eot",
+      "Id": "D:\\git2\\webmvc\\wwwroot\\tpkexpress\\assets\\font\\Inter\\Inter-Light.eot",
       "PackagePath": "staticwebassets\\tpkexpress\\assets\\font\\Inter\\Inter-Light.eot"
     },
     {
-      "Id": "C:\\Learning\\TPKSource-2\\WebMVC\\WebMVC\\wwwroot\\tpkexpress\\assets\\font\\Inter\\Inter-Light.ttf",
+      "Id": "D:\\git2\\webmvc\\wwwroot\\tpkexpress\\assets\\font\\Inter\\Inter-Light.ttf",
       "PackagePath": "staticwebassets\\tpkexpress\\assets\\font\\Inter\\Inter-Light.ttf"
     },
     {
-      "Id": "C:\\Learning\\TPKSource-2\\WebMVC\\WebMVC\\wwwroot\\tpkexpress\\assets\\font\\Inter\\Inter-Light.woff",
+      "Id": "D:\\git2\\webmvc\\wwwroot\\tpkexpress\\assets\\font\\Inter\\Inter-Light.woff",
       "PackagePath": "staticwebassets\\tpkexpress\\assets\\font\\Inter\\Inter-Light.woff"
     },
     {
-      "Id": "C:\\Learning\\TPKSource-2\\WebMVC\\WebMVC\\wwwroot\\tpkexpress\\assets\\font\\Inter\\Inter-Light.woff2",
+      "Id": "D:\\git2\\webmvc\\wwwroot\\tpkexpress\\assets\\font\\Inter\\Inter-Light.woff2",
       "PackagePath": "staticwebassets\\tpkexpress\\assets\\font\\Inter\\Inter-Light.woff2"
     },
     {
-      "Id": "C:\\Learning\\TPKSource-2\\WebMVC\\WebMVC\\wwwroot\\tpkexpress\\assets\\font\\Inter\\Inter-Medium.eot",
+      "Id": "D:\\git2\\webmvc\\wwwroot\\tpkexpress\\assets\\font\\Inter\\Inter-Medium.eot",
       "PackagePath": "staticwebassets\\tpkexpress\\assets\\font\\Inter\\Inter-Medium.eot"
     },
     {
-      "Id": "C:\\Learning\\TPKSource-2\\WebMVC\\WebMVC\\wwwroot\\tpkexpress\\assets\\font\\Inter\\Inter-Medium.ttf",
+      "Id": "D:\\git2\\webmvc\\wwwroot\\tpkexpress\\assets\\font\\Inter\\Inter-Medium.ttf",
       "PackagePath": "staticwebassets\\tpkexpress\\assets\\font\\Inter\\Inter-Medium.ttf"
     },
     {
-      "Id": "C:\\Learning\\TPKSource-2\\WebMVC\\WebMVC\\wwwroot\\tpkexpress\\assets\\font\\Inter\\Inter-Medium.woff",
+      "Id": "D:\\git2\\webmvc\\wwwroot\\tpkexpress\\assets\\font\\Inter\\Inter-Medium.woff",
       "PackagePath": "staticwebassets\\tpkexpress\\assets\\font\\Inter\\Inter-Medium.woff"
     },
     {
-      "Id": "C:\\Learning\\TPKSource-2\\WebMVC\\WebMVC\\wwwroot\\tpkexpress\\assets\\font\\Inter\\Inter-Medium.woff2",
+      "Id": "D:\\git2\\webmvc\\wwwroot\\tpkexpress\\assets\\font\\Inter\\Inter-Medium.woff2",
       "PackagePath": "staticwebassets\\tpkexpress\\assets\\font\\Inter\\Inter-Medium.woff2"
     },
     {
-      "Id": "C:\\Learning\\TPKSource-2\\WebMVC\\WebMVC\\wwwroot\\tpkexpress\\assets\\font\\Inter\\Inter-Regular.eot",
+      "Id": "D:\\git2\\webmvc\\wwwroot\\tpkexpress\\assets\\font\\Inter\\Inter-Regular.eot",
       "PackagePath": "staticwebassets\\tpkexpress\\assets\\font\\Inter\\Inter-Regular.eot"
     },
     {
-      "Id": "C:\\Learning\\TPKSource-2\\WebMVC\\WebMVC\\wwwroot\\tpkexpress\\assets\\font\\Inter\\Inter-Regular.ttf",
+      "Id": "D:\\git2\\webmvc\\wwwroot\\tpkexpress\\assets\\font\\Inter\\Inter-Regular.ttf",
       "PackagePath": "staticwebassets\\tpkexpress\\assets\\font\\Inter\\Inter-Regular.ttf"
     },
     {
-      "Id": "C:\\Learning\\TPKSource-2\\WebMVC\\WebMVC\\wwwroot\\tpkexpress\\assets\\font\\Inter\\Inter-Regular.woff",
+      "Id": "D:\\git2\\webmvc\\wwwroot\\tpkexpress\\assets\\font\\Inter\\Inter-Regular.woff",
       "PackagePath": "staticwebassets\\tpkexpress\\assets\\font\\Inter\\Inter-Regular.woff"
     },
     {
-      "Id": "C:\\Learning\\TPKSource-2\\WebMVC\\WebMVC\\wwwroot\\tpkexpress\\assets\\font\\Inter\\Inter-Regular.woff2",
+      "Id": "D:\\git2\\webmvc\\wwwroot\\tpkexpress\\assets\\font\\Inter\\Inter-Regular.woff2",
       "PackagePath": "staticwebassets\\tpkexpress\\assets\\font\\Inter\\Inter-Regular.woff2"
     },
     {
-      "Id": "C:\\Learning\\TPKSource-2\\WebMVC\\WebMVC\\wwwroot\\tpkexpress\\assets\\font\\Inter\\Inter-SemiBold.eot",
+      "Id": "D:\\git2\\webmvc\\wwwroot\\tpkexpress\\assets\\font\\Inter\\Inter-SemiBold.eot",
       "PackagePath": "staticwebassets\\tpkexpress\\assets\\font\\Inter\\Inter-SemiBold.eot"
     },
     {
-      "Id": "C:\\Learning\\TPKSource-2\\WebMVC\\WebMVC\\wwwroot\\tpkexpress\\assets\\font\\Inter\\Inter-SemiBold.ttf",
+      "Id": "D:\\git2\\webmvc\\wwwroot\\tpkexpress\\assets\\font\\Inter\\Inter-SemiBold.ttf",
       "PackagePath": "staticwebassets\\tpkexpress\\assets\\font\\Inter\\Inter-SemiBold.ttf"
     },
     {
-      "Id": "C:\\Learning\\TPKSource-2\\WebMVC\\WebMVC\\wwwroot\\tpkexpress\\assets\\font\\Inter\\Inter-SemiBold.woff",
+      "Id": "D:\\git2\\webmvc\\wwwroot\\tpkexpress\\assets\\font\\Inter\\Inter-SemiBold.woff",
       "PackagePath": "staticwebassets\\tpkexpress\\assets\\font\\Inter\\Inter-SemiBold.woff"
     },
     {
-      "Id": "C:\\Learning\\TPKSource-2\\WebMVC\\WebMVC\\wwwroot\\tpkexpress\\assets\\font\\Inter\\Inter-SemiBold.woff2",
+      "Id": "D:\\git2\\webmvc\\wwwroot\\tpkexpress\\assets\\font\\Inter\\Inter-SemiBold.woff2",
       "PackagePath": "staticwebassets\\tpkexpress\\assets\\font\\Inter\\Inter-SemiBold.woff2"
     },
     {
-      "Id": "C:\\Learning\\TPKSource-2\\WebMVC\\WebMVC\\wwwroot\\tpkexpress\\assets\\font\\Inter\\Inter-Thin.eot",
+      "Id": "D:\\git2\\webmvc\\wwwroot\\tpkexpress\\assets\\font\\Inter\\Inter-Thin.eot",
       "PackagePath": "staticwebassets\\tpkexpress\\assets\\font\\Inter\\Inter-Thin.eot"
     },
     {
-      "Id": "C:\\Learning\\TPKSource-2\\WebMVC\\WebMVC\\wwwroot\\tpkexpress\\assets\\font\\Inter\\Inter-Thin.ttf",
+      "Id": "D:\\git2\\webmvc\\wwwroot\\tpkexpress\\assets\\font\\Inter\\Inter-Thin.ttf",
       "PackagePath": "staticwebassets\\tpkexpress\\assets\\font\\Inter\\Inter-Thin.ttf"
     },
     {
-      "Id": "C:\\Learning\\TPKSource-2\\WebMVC\\WebMVC\\wwwroot\\tpkexpress\\assets\\font\\Inter\\Inter-Thin.woff",
+      "Id": "D:\\git2\\webmvc\\wwwroot\\tpkexpress\\assets\\font\\Inter\\Inter-Thin.woff",
       "PackagePath": "staticwebassets\\tpkexpress\\assets\\font\\Inter\\Inter-Thin.woff"
     },
     {
-      "Id": "C:\\Learning\\TPKSource-2\\WebMVC\\WebMVC\\wwwroot\\tpkexpress\\assets\\font\\Inter\\Inter-Thin.woff2",
+      "Id": "D:\\git2\\webmvc\\wwwroot\\tpkexpress\\assets\\font\\Inter\\Inter-Thin.woff2",
       "PackagePath": "staticwebassets\\tpkexpress\\assets\\font\\Inter\\Inter-Thin.woff2"
     },
     {
-      "Id": "C:\\Learning\\TPKSource-2\\WebMVC\\WebMVC\\wwwroot\\tpkexpress\\assets\\font\\Inter\\demo.html",
+      "Id": "D:\\git2\\webmvc\\wwwroot\\tpkexpress\\assets\\font\\Inter\\demo.html",
       "PackagePath": "staticwebassets\\tpkexpress\\assets\\font\\Inter\\demo.html"
     },
     {
-      "Id": "C:\\Learning\\TPKSource-2\\WebMVC\\WebMVC\\wwwroot\\tpkexpress\\assets\\font\\Inter\\stylesheet.css",
+      "Id": "D:\\git2\\webmvc\\wwwroot\\tpkexpress\\assets\\font\\Inter\\stylesheet.css",
       "PackagePath": "staticwebassets\\tpkexpress\\assets\\font\\Inter\\stylesheet.css"
     },
     {
-      "Id": "C:\\Learning\\TPKSource-2\\WebMVC\\WebMVC\\wwwroot\\tpkexpress\\assets\\font\\Rowdies\\Rowdies-Bold.woff",
+      "Id": "D:\\git2\\webmvc\\wwwroot\\tpkexpress\\assets\\font\\Rowdies\\Rowdies-Bold.woff",
       "PackagePath": "staticwebassets\\tpkexpress\\assets\\font\\Rowdies\\Rowdies-Bold.woff"
     },
     {
-      "Id": "C:\\Learning\\TPKSource-2\\WebMVC\\WebMVC\\wwwroot\\tpkexpress\\assets\\font\\Rowdies\\Rowdies-Bold.woff2",
+      "Id": "D:\\git2\\webmvc\\wwwroot\\tpkexpress\\assets\\font\\Rowdies\\Rowdies-Bold.woff2",
       "PackagePath": "staticwebassets\\tpkexpress\\assets\\font\\Rowdies\\Rowdies-Bold.woff2"
     },
     {
-      "Id": "C:\\Learning\\TPKSource-2\\WebMVC\\WebMVC\\wwwroot\\tpkexpress\\assets\\font\\Rowdies\\Rowdies-Light.woff",
+      "Id": "D:\\git2\\webmvc\\wwwroot\\tpkexpress\\assets\\font\\Rowdies\\Rowdies-Light.woff",
       "PackagePath": "staticwebassets\\tpkexpress\\assets\\font\\Rowdies\\Rowdies-Light.woff"
     },
     {
-      "Id": "C:\\Learning\\TPKSource-2\\WebMVC\\WebMVC\\wwwroot\\tpkexpress\\assets\\font\\Rowdies\\Rowdies-Light.woff2",
+      "Id": "D:\\git2\\webmvc\\wwwroot\\tpkexpress\\assets\\font\\Rowdies\\Rowdies-Light.woff2",
       "PackagePath": "staticwebassets\\tpkexpress\\assets\\font\\Rowdies\\Rowdies-Light.woff2"
     },
     {
-      "Id": "C:\\Learning\\TPKSource-2\\WebMVC\\WebMVC\\wwwroot\\tpkexpress\\assets\\font\\Rowdies\\Rowdies-Regular.woff",
+      "Id": "D:\\git2\\webmvc\\wwwroot\\tpkexpress\\assets\\font\\Rowdies\\Rowdies-Regular.woff",
       "PackagePath": "staticwebassets\\tpkexpress\\assets\\font\\Rowdies\\Rowdies-Regular.woff"
     },
     {
-      "Id": "C:\\Learning\\TPKSource-2\\WebMVC\\WebMVC\\wwwroot\\tpkexpress\\assets\\font\\Rowdies\\Rowdies-Regular.woff2",
+      "Id": "D:\\git2\\webmvc\\wwwroot\\tpkexpress\\assets\\font\\Rowdies\\Rowdies-Regular.woff2",
       "PackagePath": "staticwebassets\\tpkexpress\\assets\\font\\Rowdies\\Rowdies-Regular.woff2"
     },
     {
-      "Id": "C:\\Learning\\TPKSource-2\\WebMVC\\WebMVC\\wwwroot\\tpkexpress\\assets\\font\\Rowdies\\demo.html",
+      "Id": "D:\\git2\\webmvc\\wwwroot\\tpkexpress\\assets\\font\\Rowdies\\demo.html",
       "PackagePath": "staticwebassets\\tpkexpress\\assets\\font\\Rowdies\\demo.html"
     },
     {
-      "Id": "C:\\Learning\\TPKSource-2\\WebMVC\\WebMVC\\wwwroot\\tpkexpress\\assets\\font\\Rowdies\\stylesheet.css",
+      "Id": "D:\\git2\\webmvc\\wwwroot\\tpkexpress\\assets\\font\\Rowdies\\stylesheet.css",
       "PackagePath": "staticwebassets\\tpkexpress\\assets\\font\\Rowdies\\stylesheet.css"
     },
     {
-      "Id": "C:\\Learning\\TPKSource-2\\WebMVC\\WebMVC\\wwwroot\\tpkexpress\\assets\\images\\Cotmoc.png",
+      "Id": "D:\\git2\\webmvc\\wwwroot\\tpkexpress\\assets\\images\\Cotmoc.png",
       "PackagePath": "staticwebassets\\tpkexpress\\assets\\images\\Cotmoc.png"
     },
     {
-      "Id": "C:\\Learning\\TPKSource-2\\WebMVC\\WebMVC\\wwwroot\\tpkexpress\\assets\\images\\Cotmoc2.png",
+      "Id": "D:\\git2\\webmvc\\wwwroot\\tpkexpress\\assets\\images\\Cotmoc2.png",
       "PackagePath": "staticwebassets\\tpkexpress\\assets\\images\\Cotmoc2.png"
     },
     {
-      "Id": "C:\\Learning\\TPKSource-2\\WebMVC\\WebMVC\\wwwroot\\tpkexpress\\assets\\images\\Cotmoc3.png",
+      "Id": "D:\\git2\\webmvc\\wwwroot\\tpkexpress\\assets\\images\\Cotmoc3.png",
       "PackagePath": "staticwebassets\\tpkexpress\\assets\\images\\Cotmoc3.png"
     },
     {
-      "Id": "C:\\Learning\\TPKSource-2\\WebMVC\\WebMVC\\wwwroot\\tpkexpress\\assets\\images\\Dịch vụ (1).png",
+      "Id": "D:\\git2\\webmvc\\wwwroot\\tpkexpress\\assets\\images\\Dịch vụ (1).png",
       "PackagePath": "staticwebassets\\tpkexpress\\assets\\images\\Dịch vụ (1).png"
     },
     {
-      "Id": "C:\\Learning\\TPKSource-2\\WebMVC\\WebMVC\\wwwroot\\tpkexpress\\assets\\images\\Dịch vụ (2).png",
+      "Id": "D:\\git2\\webmvc\\wwwroot\\tpkexpress\\assets\\images\\Dịch vụ (2).png",
       "PackagePath": "staticwebassets\\tpkexpress\\assets\\images\\Dịch vụ (2).png"
     },
     {
-      "Id": "C:\\Learning\\TPKSource-2\\WebMVC\\WebMVC\\wwwroot\\tpkexpress\\assets\\images\\Dịch vụ (3).png",
+      "Id": "D:\\git2\\webmvc\\wwwroot\\tpkexpress\\assets\\images\\Dịch vụ (3).png",
       "PackagePath": "staticwebassets\\tpkexpress\\assets\\images\\Dịch vụ (3).png"
     },
     {
-      "Id": "C:\\Learning\\TPKSource-2\\WebMVC\\WebMVC\\wwwroot\\tpkexpress\\assets\\images\\Dịch vụ (4).png",
+      "Id": "D:\\git2\\webmvc\\wwwroot\\tpkexpress\\assets\\images\\Dịch vụ (4).png",
       "PackagePath": "staticwebassets\\tpkexpress\\assets\\images\\Dịch vụ (4).png"
     },
     {
-      "Id": "C:\\Learning\\TPKSource-2\\WebMVC\\WebMVC\\wwwroot\\tpkexpress\\assets\\images\\Hình ảnh công ty 1.jpg",
+      "Id": "D:\\git2\\webmvc\\wwwroot\\tpkexpress\\assets\\images\\Hình ảnh công ty 1.jpg",
       "PackagePath": "staticwebassets\\tpkexpress\\assets\\images\\Hình ảnh công ty 1.jpg"
     },
     {
-      "Id": "C:\\Learning\\TPKSource-2\\WebMVC\\WebMVC\\wwwroot\\tpkexpress\\assets\\images\\Hình ảnh công ty 2.jpg",
+      "Id": "D:\\git2\\webmvc\\wwwroot\\tpkexpress\\assets\\images\\Hình ảnh công ty 2.jpg",
       "PackagePath": "staticwebassets\\tpkexpress\\assets\\images\\Hình ảnh công ty 2.jpg"
     },
     {
-      "Id": "C:\\Learning\\TPKSource-2\\WebMVC\\WebMVC\\wwwroot\\tpkexpress\\assets\\images\\Hình ảnh công ty 3.jpg",
+      "Id": "D:\\git2\\webmvc\\wwwroot\\tpkexpress\\assets\\images\\Hình ảnh công ty 3.jpg",
       "PackagePath": "staticwebassets\\tpkexpress\\assets\\images\\Hình ảnh công ty 3.jpg"
     },
     {
-      "Id": "C:\\Learning\\TPKSource-2\\WebMVC\\WebMVC\\wwwroot\\tpkexpress\\assets\\images\\Hình ảnh công ty 4.jpg",
+      "Id": "D:\\git2\\webmvc\\wwwroot\\tpkexpress\\assets\\images\\Hình ảnh công ty 4.jpg",
       "PackagePath": "staticwebassets\\tpkexpress\\assets\\images\\Hình ảnh công ty 4.jpg"
     },
     {
-      "Id": "C:\\Learning\\TPKSource-2\\WebMVC\\WebMVC\\wwwroot\\tpkexpress\\assets\\images\\bn-box.png",
+      "Id": "D:\\git2\\webmvc\\wwwroot\\tpkexpress\\assets\\images\\bn-box.png",
       "PackagePath": "staticwebassets\\tpkexpress\\assets\\images\\bn-box.png"
     },
     {
-      "Id": "C:\\Learning\\TPKSource-2\\WebMVC\\WebMVC\\wwwroot\\tpkexpress\\assets\\images\\bn-br-light-orange.jpg",
+      "Id": "D:\\git2\\webmvc\\wwwroot\\tpkexpress\\assets\\images\\bn-br-light-orange.jpg",
       "PackagePath": "staticwebassets\\tpkexpress\\assets\\images\\bn-br-light-orange.jpg"
     },
     {
-      "Id": "C:\\Learning\\TPKSource-2\\WebMVC\\WebMVC\\wwwroot\\tpkexpress\\assets\\images\\bn-br.jpg",
+      "Id": "D:\\git2\\webmvc\\wwwroot\\tpkexpress\\assets\\images\\bn-br.jpg",
       "PackagePath": "staticwebassets\\tpkexpress\\assets\\images\\bn-br.jpg"
     },
     {
-      "Id": "C:\\Learning\\TPKSource-2\\WebMVC\\WebMVC\\wwwroot\\tpkexpress\\assets\\images\\bn-cloud.png",
+      "Id": "D:\\git2\\webmvc\\wwwroot\\tpkexpress\\assets\\images\\bn-cloud.png",
       "PackagePath": "staticwebassets\\tpkexpress\\assets\\images\\bn-cloud.png"
     },
     {
-      "Id": "C:\\Learning\\TPKSource-2\\WebMVC\\WebMVC\\wwwroot\\tpkexpress\\assets\\images\\bn-cloud2.png",
+      "Id": "D:\\git2\\webmvc\\wwwroot\\tpkexpress\\assets\\images\\bn-cloud2.png",
       "PackagePath": "staticwebassets\\tpkexpress\\assets\\images\\bn-cloud2.png"
     },
     {
-      "Id": "C:\\Learning\\TPKSource-2\\WebMVC\\WebMVC\\wwwroot\\tpkexpress\\assets\\images\\bn-foot-dc.png",
+      "Id": "D:\\git2\\webmvc\\wwwroot\\tpkexpress\\assets\\images\\bn-foot-dc.png",
       "PackagePath": "staticwebassets\\tpkexpress\\assets\\images\\bn-foot-dc.png"
     },
     {
-      "Id": "C:\\Learning\\TPKSource-2\\WebMVC\\WebMVC\\wwwroot\\tpkexpress\\assets\\images\\bn-map-pin.png",
+      "Id": "D:\\git2\\webmvc\\wwwroot\\tpkexpress\\assets\\images\\bn-map-pin.png",
       "PackagePath": "staticwebassets\\tpkexpress\\assets\\images\\bn-map-pin.png"
     },
     {
-      "Id": "C:\\Learning\\TPKSource-2\\WebMVC\\WebMVC\\wwwroot\\tpkexpress\\assets\\images\\bn-map-pin2.png",
+      "Id": "D:\\git2\\webmvc\\wwwroot\\tpkexpress\\assets\\images\\bn-map-pin2.png",
       "PackagePath": "staticwebassets\\tpkexpress\\assets\\images\\bn-map-pin2.png"
     },
     {
-      "Id": "C:\\Learning\\TPKSource-2\\WebMVC\\WebMVC\\wwwroot\\tpkexpress\\assets\\images\\bn-map.png",
+      "Id": "D:\\git2\\webmvc\\wwwroot\\tpkexpress\\assets\\images\\bn-map.png",
       "PackagePath": "staticwebassets\\tpkexpress\\assets\\images\\bn-map.png"
     },
     {
-      "Id": "C:\\Learning\\TPKSource-2\\WebMVC\\WebMVC\\wwwroot\\tpkexpress\\assets\\images\\bn-may.png",
+      "Id": "D:\\git2\\webmvc\\wwwroot\\tpkexpress\\assets\\images\\bn-may.png",
       "PackagePath": "staticwebassets\\tpkexpress\\assets\\images\\bn-may.png"
     },
     {
-      "Id": "C:\\Learning\\TPKSource-2\\WebMVC\\WebMVC\\wwwroot\\tpkexpress\\assets\\images\\bn-pp.png",
+      "Id": "D:\\git2\\webmvc\\wwwroot\\tpkexpress\\assets\\images\\bn-pp.png",
       "PackagePath": "staticwebassets\\tpkexpress\\assets\\images\\bn-pp.png"
     },
     {
-      "Id": "C:\\Learning\\TPKSource-2\\WebMVC\\WebMVC\\wwwroot\\tpkexpress\\assets\\images\\bn-wo.png",
+      "Id": "D:\\git2\\webmvc\\wwwroot\\tpkexpress\\assets\\images\\bn-wo.png",
       "PackagePath": "staticwebassets\\tpkexpress\\assets\\images\\bn-wo.png"
     },
     {
-      "Id": "C:\\Learning\\TPKSource-2\\WebMVC\\WebMVC\\wwwroot\\tpkexpress\\assets\\images\\bn-wo2.png",
+      "Id": "D:\\git2\\webmvc\\wwwroot\\tpkexpress\\assets\\images\\bn-wo2.png",
       "PackagePath": "staticwebassets\\tpkexpress\\assets\\images\\bn-wo2.png"
     },
     {
-      "Id": "C:\\Learning\\TPKSource-2\\WebMVC\\WebMVC\\wwwroot\\tpkexpress\\assets\\images\\chique.jpg",
+      "Id": "D:\\git2\\webmvc\\wwwroot\\tpkexpress\\assets\\images\\chique.jpg",
       "PackagePath": "staticwebassets\\tpkexpress\\assets\\images\\chique.jpg"
     },
     {
-      "Id": "C:\\Learning\\TPKSource-2\\WebMVC\\WebMVC\\wwwroot\\tpkexpress\\assets\\images\\cre-1.jpg",
+      "Id": "D:\\git2\\webmvc\\wwwroot\\tpkexpress\\assets\\images\\cre-1.jpg",
       "PackagePath": "staticwebassets\\tpkexpress\\assets\\images\\cre-1.jpg"
     },
     {
-      "Id": "C:\\Learning\\TPKSource-2\\WebMVC\\WebMVC\\wwwroot\\tpkexpress\\assets\\images\\cre-2.jpg",
+      "Id": "D:\\git2\\webmvc\\wwwroot\\tpkexpress\\assets\\images\\cre-2.jpg",
       "PackagePath": "staticwebassets\\tpkexpress\\assets\\images\\cre-2.jpg"
     },
     {
-      "Id": "C:\\Learning\\TPKSource-2\\WebMVC\\WebMVC\\wwwroot\\tpkexpress\\assets\\images\\cusc-1.jpg",
+      "Id": "D:\\git2\\webmvc\\wwwroot\\tpkexpress\\assets\\images\\cusc-1.jpg",
       "PackagePath": "staticwebassets\\tpkexpress\\assets\\images\\cusc-1.jpg"
     },
     {
-      "Id": "C:\\Learning\\TPKSource-2\\WebMVC\\WebMVC\\wwwroot\\tpkexpress\\assets\\images\\cusc-2.jpg",
+      "Id": "D:\\git2\\webmvc\\wwwroot\\tpkexpress\\assets\\images\\cusc-2.jpg",
       "PackagePath": "staticwebassets\\tpkexpress\\assets\\images\\cusc-2.jpg"
     },
     {
-      "Id": "C:\\Learning\\TPKSource-2\\WebMVC\\WebMVC\\wwwroot\\tpkexpress\\assets\\images\\cusc-cuved.svg",
+      "Id": "D:\\git2\\webmvc\\wwwroot\\tpkexpress\\assets\\images\\cusc-cuved.svg",
       "PackagePath": "staticwebassets\\tpkexpress\\assets\\images\\cusc-cuved.svg"
     },
     {
-      "Id": "C:\\Learning\\TPKSource-2\\WebMVC\\WebMVC\\wwwroot\\tpkexpress\\assets\\images\\cusc-dc.png",
+      "Id": "D:\\git2\\webmvc\\wwwroot\\tpkexpress\\assets\\images\\cusc-dc.png",
       "PackagePath": "staticwebassets\\tpkexpress\\assets\\images\\cusc-dc.png"
     },
     {
-      "Id": "C:\\Learning\\TPKSource-2\\WebMVC\\WebMVC\\wwwroot\\tpkexpress\\assets\\images\\cusc-mess.svg",
+      "Id": "D:\\git2\\webmvc\\wwwroot\\tpkexpress\\assets\\images\\cusc-mess.svg",
       "PackagePath": "staticwebassets\\tpkexpress\\assets\\images\\cusc-mess.svg"
     },
     {
-      "Id": "C:\\Learning\\TPKSource-2\\WebMVC\\WebMVC\\wwwroot\\tpkexpress\\assets\\images\\dki-img.png",
+      "Id": "D:\\git2\\webmvc\\wwwroot\\tpkexpress\\assets\\images\\dki-img.png",
       "PackagePath": "staticwebassets\\tpkexpress\\assets\\images\\dki-img.png"
     },
     {
-      "Id": "C:\\Learning\\TPKSource-2\\WebMVC\\WebMVC\\wwwroot\\tpkexpress\\assets\\images\\dl-1.svg",
+      "Id": "D:\\git2\\webmvc\\wwwroot\\tpkexpress\\assets\\images\\dl-1.svg",
       "PackagePath": "staticwebassets\\tpkexpress\\assets\\images\\dl-1.svg"
     },
     {
-      "Id": "C:\\Learning\\TPKSource-2\\WebMVC\\WebMVC\\wwwroot\\tpkexpress\\assets\\images\\dl-2.svg",
+      "Id": "D:\\git2\\webmvc\\wwwroot\\tpkexpress\\assets\\images\\dl-2.svg",
       "PackagePath": "staticwebassets\\tpkexpress\\assets\\images\\dl-2.svg"
     },
     {
-      "Id": "C:\\Learning\\TPKSource-2\\WebMVC\\WebMVC\\wwwroot\\tpkexpress\\assets\\images\\download-appstore.png",
+      "Id": "D:\\git2\\webmvc\\wwwroot\\tpkexpress\\assets\\images\\download-appstore.png",
       "PackagePath": "staticwebassets\\tpkexpress\\assets\\images\\download-appstore.png"
     },
     {
-      "Id": "C:\\Learning\\TPKSource-2\\WebMVC\\WebMVC\\wwwroot\\tpkexpress\\assets\\images\\download-gg.png",
+      "Id": "D:\\git2\\webmvc\\wwwroot\\tpkexpress\\assets\\images\\download-gg.png",
       "PackagePath": "staticwebassets\\tpkexpress\\assets\\images\\download-gg.png"
     },
     {
-      "Id": "C:\\Learning\\TPKSource-2\\WebMVC\\WebMVC\\wwwroot\\tpkexpress\\assets\\images\\dt-img-1.jpg",
+      "Id": "D:\\git2\\webmvc\\wwwroot\\tpkexpress\\assets\\images\\dt-img-1.jpg",
       "PackagePath": "staticwebassets\\tpkexpress\\assets\\images\\dt-img-1.jpg"
     },
     {
-      "Id": "C:\\Learning\\TPKSource-2\\WebMVC\\WebMVC\\wwwroot\\tpkexpress\\assets\\images\\dt-img-2.jpg",
+      "Id": "D:\\git2\\webmvc\\wwwroot\\tpkexpress\\assets\\images\\dt-img-2.jpg",
       "PackagePath": "staticwebassets\\tpkexpress\\assets\\images\\dt-img-2.jpg"
     },
     {
-      "Id": "C:\\Learning\\TPKSource-2\\WebMVC\\WebMVC\\wwwroot\\tpkexpress\\assets\\images\\favicon.png",
+      "Id": "D:\\git2\\webmvc\\wwwroot\\tpkexpress\\assets\\images\\favicon.png",
       "PackagePath": "staticwebassets\\tpkexpress\\assets\\images\\favicon.png"
     },
     {
-      "Id": "C:\\Learning\\TPKSource-2\\WebMVC\\WebMVC\\wwwroot\\tpkexpress\\assets\\images\\fil-icon-1.svg",
+      "Id": "D:\\git2\\webmvc\\wwwroot\\tpkexpress\\assets\\images\\fil-icon-1.svg",
       "PackagePath": "staticwebassets\\tpkexpress\\assets\\images\\fil-icon-1.svg"
     },
     {
-      "Id": "C:\\Learning\\TPKSource-2\\WebMVC\\WebMVC\\wwwroot\\tpkexpress\\assets\\images\\fil-icon-2.svg",
+      "Id": "D:\\git2\\webmvc\\wwwroot\\tpkexpress\\assets\\images\\fil-icon-2.svg",
       "PackagePath": "staticwebassets\\tpkexpress\\assets\\images\\fil-icon-2.svg"
     },
     {
-      "Id": "C:\\Learning\\TPKSource-2\\WebMVC\\WebMVC\\wwwroot\\tpkexpress\\assets\\images\\fil-icon-3.svg",
+      "Id": "D:\\git2\\webmvc\\wwwroot\\tpkexpress\\assets\\images\\fil-icon-3.svg",
       "PackagePath": "staticwebassets\\tpkexpress\\assets\\images\\fil-icon-3.svg"
     },
     {
-      "Id": "C:\\Learning\\TPKSource-2\\WebMVC\\WebMVC\\wwwroot\\tpkexpress\\assets\\images\\ft-author.png",
+      "Id": "D:\\git2\\webmvc\\wwwroot\\tpkexpress\\assets\\images\\ft-author.png",
       "PackagePath": "staticwebassets\\tpkexpress\\assets\\images\\ft-author.png"
     },
     {
-      "Id": "C:\\Learning\\TPKSource-2\\WebMVC\\WebMVC\\wwwroot\\tpkexpress\\assets\\images\\hero-cuved.svg",
+      "Id": "D:\\git2\\webmvc\\wwwroot\\tpkexpress\\assets\\images\\hero-cuved.svg",
       "PackagePath": "staticwebassets\\tpkexpress\\assets\\images\\hero-cuved.svg"
     },
     {
-      "Id": "C:\\Learning\\TPKSource-2\\WebMVC\\WebMVC\\wwwroot\\tpkexpress\\assets\\images\\icon-phone-white.svg",
+      "Id": "D:\\git2\\webmvc\\wwwroot\\tpkexpress\\assets\\images\\icon-phone-white.svg",
       "PackagePath": "staticwebassets\\tpkexpress\\assets\\images\\icon-phone-white.svg"
     },
     {
-      "Id": "C:\\Learning\\TPKSource-2\\WebMVC\\WebMVC\\wwwroot\\tpkexpress\\assets\\images\\inter-map.png",
+      "Id": "D:\\git2\\webmvc\\wwwroot\\tpkexpress\\assets\\images\\inter-map.png",
       "PackagePath": "staticwebassets\\tpkexpress\\assets\\images\\inter-map.png"
     },
     {
-      "Id": "C:\\Learning\\TPKSource-2\\WebMVC\\WebMVC\\wwwroot\\tpkexpress\\assets\\images\\inter-map.svg",
+      "Id": "D:\\git2\\webmvc\\wwwroot\\tpkexpress\\assets\\images\\inter-map.svg",
       "PackagePath": "staticwebassets\\tpkexpress\\assets\\images\\inter-map.svg"
     },
     {
-      "Id": "C:\\Learning\\TPKSource-2\\WebMVC\\WebMVC\\wwwroot\\tpkexpress\\assets\\images\\inter-mess.svg",
+      "Id": "D:\\git2\\webmvc\\wwwroot\\tpkexpress\\assets\\images\\inter-mess.svg",
       "PackagePath": "staticwebassets\\tpkexpress\\assets\\images\\inter-mess.svg"
     },
     {
-      "Id": "C:\\Learning\\TPKSource-2\\WebMVC\\WebMVC\\wwwroot\\tpkexpress\\assets\\images\\inter-mess2.svg",
+      "Id": "D:\\git2\\webmvc\\wwwroot\\tpkexpress\\assets\\images\\inter-mess2.svg",
       "PackagePath": "staticwebassets\\tpkexpress\\assets\\images\\inter-mess2.svg"
     },
     {
-      "Id": "C:\\Learning\\TPKSource-2\\WebMVC\\WebMVC\\wwwroot\\tpkexpress\\assets\\images\\inter-mess3.svg",
+      "Id": "D:\\git2\\webmvc\\wwwroot\\tpkexpress\\assets\\images\\inter-mess3.svg",
       "PackagePath": "staticwebassets\\tpkexpress\\assets\\images\\inter-mess3.svg"
     },
     {
-      "Id": "C:\\Learning\\TPKSource-2\\WebMVC\\WebMVC\\wwwroot\\tpkexpress\\assets\\images\\inter-midle.png",
+      "Id": "D:\\git2\\webmvc\\wwwroot\\tpkexpress\\assets\\images\\inter-midle.png",
       "PackagePath": "staticwebassets\\tpkexpress\\assets\\images\\inter-midle.png"
     },
     {
-      "Id": "C:\\Learning\\TPKSource-2\\WebMVC\\WebMVC\\wwwroot\\tpkexpress\\assets\\images\\logo-cuved.svg",
+      "Id": "D:\\git2\\webmvc\\wwwroot\\tpkexpress\\assets\\images\\logo-cuved.svg",
       "PackagePath": "staticwebassets\\tpkexpress\\assets\\images\\logo-cuved.svg"
     },
     {
-      "Id": "C:\\Learning\\TPKSource-2\\WebMVC\\WebMVC\\wwwroot\\tpkexpress\\assets\\images\\logo.png",
+      "Id": "D:\\git2\\webmvc\\wwwroot\\tpkexpress\\assets\\images\\logo.png",
       "PackagePath": "staticwebassets\\tpkexpress\\assets\\images\\logo.png"
     },
     {
-      "Id": "C:\\Learning\\TPKSource-2\\WebMVC\\WebMVC\\wwwroot\\tpkexpress\\assets\\images\\logo.svg",
+      "Id": "D:\\git2\\webmvc\\wwwroot\\tpkexpress\\assets\\images\\logo.svg",
       "PackagePath": "staticwebassets\\tpkexpress\\assets\\images\\logo.svg"
     },
     {
-      "Id": "C:\\Learning\\TPKSource-2\\WebMVC\\WebMVC\\wwwroot\\tpkexpress\\assets\\images\\mask.png",
+      "Id": "D:\\git2\\webmvc\\wwwroot\\tpkexpress\\assets\\images\\mask.png",
       "PackagePath": "staticwebassets\\tpkexpress\\assets\\images\\mask.png"
     },
     {
-      "Id": "C:\\Learning\\TPKSource-2\\WebMVC\\WebMVC\\wwwroot\\tpkexpress\\assets\\images\\media-1.jpg",
+      "Id": "D:\\git2\\webmvc\\wwwroot\\tpkexpress\\assets\\images\\media-1.jpg",
       "PackagePath": "staticwebassets\\tpkexpress\\assets\\images\\media-1.jpg"
     },
     {
-      "Id": "C:\\Learning\\TPKSource-2\\WebMVC\\WebMVC\\wwwroot\\tpkexpress\\assets\\images\\media-2.jpg",
+      "Id": "D:\\git2\\webmvc\\wwwroot\\tpkexpress\\assets\\images\\media-2.jpg",
       "PackagePath": "staticwebassets\\tpkexpress\\assets\\images\\media-2.jpg"
     },
     {
-      "Id": "C:\\Learning\\TPKSource-2\\WebMVC\\WebMVC\\wwwroot\\tpkexpress\\assets\\images\\media-3.jpg",
+      "Id": "D:\\git2\\webmvc\\wwwroot\\tpkexpress\\assets\\images\\media-3.jpg",
       "PackagePath": "staticwebassets\\tpkexpress\\assets\\images\\media-3.jpg"
     },
     {
-      "Id": "C:\\Learning\\TPKSource-2\\WebMVC\\WebMVC\\wwwroot\\tpkexpress\\assets\\images\\media-4.jpg",
+      "Id": "D:\\git2\\webmvc\\wwwroot\\tpkexpress\\assets\\images\\media-4.jpg",
       "PackagePath": "staticwebassets\\tpkexpress\\assets\\images\\media-4.jpg"
     },
     {
-      "Id": "C:\\Learning\\TPKSource-2\\WebMVC\\WebMVC\\wwwroot\\tpkexpress\\assets\\images\\media-5.jpg",
+      "Id": "D:\\git2\\webmvc\\wwwroot\\tpkexpress\\assets\\images\\media-5.jpg",
       "PackagePath": "staticwebassets\\tpkexpress\\assets\\images\\media-5.jpg"
     },
     {
-      "Id": "C:\\Learning\\TPKSource-2\\WebMVC\\WebMVC\\wwwroot\\tpkexpress\\assets\\images\\menu-1.svg",
+      "Id": "D:\\git2\\webmvc\\wwwroot\\tpkexpress\\assets\\images\\menu-1.svg",
       "PackagePath": "staticwebassets\\tpkexpress\\assets\\images\\menu-1.svg"
     },
     {
-      "Id": "C:\\Learning\\TPKSource-2\\WebMVC\\WebMVC\\wwwroot\\tpkexpress\\assets\\images\\menu-2.svg",
+      "Id": "D:\\git2\\webmvc\\wwwroot\\tpkexpress\\assets\\images\\menu-2.svg",
       "PackagePath": "staticwebassets\\tpkexpress\\assets\\images\\menu-2.svg"
     },
     {
-      "Id": "C:\\Learning\\TPKSource-2\\WebMVC\\WebMVC\\wwwroot\\tpkexpress\\assets\\images\\menu-3.svg",
+      "Id": "D:\\git2\\webmvc\\wwwroot\\tpkexpress\\assets\\images\\menu-3.svg",
       "PackagePath": "staticwebassets\\tpkexpress\\assets\\images\\menu-3.svg"
     },
     {
-      "Id": "C:\\Learning\\TPKSource-2\\WebMVC\\WebMVC\\wwwroot\\tpkexpress\\assets\\images\\menu-4.svg",
+      "Id": "D:\\git2\\webmvc\\wwwroot\\tpkexpress\\assets\\images\\menu-4.svg",
       "PackagePath": "staticwebassets\\tpkexpress\\assets\\images\\menu-4.svg"
     },
     {
-      "Id": "C:\\Learning\\TPKSource-2\\WebMVC\\WebMVC\\wwwroot\\tpkexpress\\assets\\images\\menu-5.svg",
+      "Id": "D:\\git2\\webmvc\\wwwroot\\tpkexpress\\assets\\images\\menu-5.svg",
       "PackagePath": "staticwebassets\\tpkexpress\\assets\\images\\menu-5.svg"
     },
     {
-      "Id": "C:\\Learning\\TPKSource-2\\WebMVC\\WebMVC\\wwwroot\\tpkexpress\\assets\\images\\menu-6.svg",
+      "Id": "D:\\git2\\webmvc\\wwwroot\\tpkexpress\\assets\\images\\menu-6.svg",
       "PackagePath": "staticwebassets\\tpkexpress\\assets\\images\\menu-6.svg"
     },
     {
-      "Id": "C:\\Learning\\TPKSource-2\\WebMVC\\WebMVC\\wwwroot\\tpkexpress\\assets\\images\\menu-7.svg",
+      "Id": "D:\\git2\\webmvc\\wwwroot\\tpkexpress\\assets\\images\\menu-7.svg",
       "PackagePath": "staticwebassets\\tpkexpress\\assets\\images\\menu-7.svg"
     },
     {
-      "Id": "C:\\Learning\\TPKSource-2\\WebMVC\\WebMVC\\wwwroot\\tpkexpress\\assets\\images\\mess.png",
+      "Id": "D:\\git2\\webmvc\\wwwroot\\tpkexpress\\assets\\images\\mess.png",
       "PackagePath": "staticwebassets\\tpkexpress\\assets\\images\\mess.png"
     },
     {
-      "Id": "C:\\Learning\\TPKSource-2\\WebMVC\\WebMVC\\wwwroot\\tpkexpress\\assets\\images\\messenger-ic.png",
+      "Id": "D:\\git2\\webmvc\\wwwroot\\tpkexpress\\assets\\images\\messenger-ic.png",
       "PackagePath": "staticwebassets\\tpkexpress\\assets\\images\\messenger-ic.png"
     },
     {
-      "Id": "C:\\Learning\\TPKSource-2\\WebMVC\\WebMVC\\wwwroot\\tpkexpress\\assets\\images\\news-br.jpg",
+      "Id": "D:\\git2\\webmvc\\wwwroot\\tpkexpress\\assets\\images\\news-br.jpg",
       "PackagePath": "staticwebassets\\tpkexpress\\assets\\images\\news-br.jpg"
     },
     {
-      "Id": "C:\\Learning\\TPKSource-2\\WebMVC\\WebMVC\\wwwroot\\tpkexpress\\assets\\images\\news-sidebar-img.jpg",
+      "Id": "D:\\git2\\webmvc\\wwwroot\\tpkexpress\\assets\\images\\news-sidebar-img.jpg",
       "PackagePath": "staticwebassets\\tpkexpress\\assets\\images\\news-sidebar-img.jpg"
     },
     {
-      "Id": "C:\\Learning\\TPKSource-2\\WebMVC\\WebMVC\\wwwroot\\tpkexpress\\assets\\images\\nhanvien.png",
+      "Id": "D:\\git2\\webmvc\\wwwroot\\tpkexpress\\assets\\images\\nhanvien.png",
       "PackagePath": "staticwebassets\\tpkexpress\\assets\\images\\nhanvien.png"
     },
     {
-      "Id": "C:\\Learning\\TPKSource-2\\WebMVC\\WebMVC\\wwwroot\\tpkexpress\\assets\\images\\nums-br.png",
+      "Id": "D:\\git2\\webmvc\\wwwroot\\tpkexpress\\assets\\images\\nums-br.png",
       "PackagePath": "staticwebassets\\tpkexpress\\assets\\images\\nums-br.png"
     },
     {
-      "Id": "C:\\Learning\\TPKSource-2\\WebMVC\\WebMVC\\wwwroot\\tpkexpress\\assets\\images\\nums-cloud.png",
+      "Id": "D:\\git2\\webmvc\\wwwroot\\tpkexpress\\assets\\images\\nums-cloud.png",
       "PackagePath": "staticwebassets\\tpkexpress\\assets\\images\\nums-cloud.png"
     },
     {
-      "Id": "C:\\Learning\\TPKSource-2\\WebMVC\\WebMVC\\wwwroot\\tpkexpress\\assets\\images\\nums-img.png",
+      "Id": "D:\\git2\\webmvc\\wwwroot\\tpkexpress\\assets\\images\\nums-img.png",
       "PackagePath": "staticwebassets\\tpkexpress\\assets\\images\\nums-img.png"
     },
     {
-      "Id": "C:\\Learning\\TPKSource-2\\WebMVC\\WebMVC\\wwwroot\\tpkexpress\\assets\\images\\nums-plane.svg",
+      "Id": "D:\\git2\\webmvc\\wwwroot\\tpkexpress\\assets\\images\\nums-plane.svg",
       "PackagePath": "staticwebassets\\tpkexpress\\assets\\images\\nums-plane.svg"
     },
     {
-      "Id": "C:\\Learning\\TPKSource-2\\WebMVC\\WebMVC\\wwwroot\\tpkexpress\\assets\\images\\pro-1.jpg",
+      "Id": "D:\\git2\\webmvc\\wwwroot\\tpkexpress\\assets\\images\\pro-1.jpg",
       "PackagePath": "staticwebassets\\tpkexpress\\assets\\images\\pro-1.jpg"
     },
     {
-      "Id": "C:\\Learning\\TPKSource-2\\WebMVC\\WebMVC\\wwwroot\\tpkexpress\\assets\\images\\pro-2.jpg",
+      "Id": "D:\\git2\\webmvc\\wwwroot\\tpkexpress\\assets\\images\\pro-2.jpg",
       "PackagePath": "staticwebassets\\tpkexpress\\assets\\images\\pro-2.jpg"
     },
     {
-      "Id": "C:\\Learning\\TPKSource-2\\WebMVC\\WebMVC\\wwwroot\\tpkexpress\\assets\\images\\pro-3.jpg",
+      "Id": "D:\\git2\\webmvc\\wwwroot\\tpkexpress\\assets\\images\\pro-3.jpg",
       "PackagePath": "staticwebassets\\tpkexpress\\assets\\images\\pro-3.jpg"
     },
     {
-      "Id": "C:\\Learning\\TPKSource-2\\WebMVC\\WebMVC\\wwwroot\\tpkexpress\\assets\\images\\pro-dc.svg",
+      "Id": "D:\\git2\\webmvc\\wwwroot\\tpkexpress\\assets\\images\\pro-dc.svg",
       "PackagePath": "staticwebassets\\tpkexpress\\assets\\images\\pro-dc.svg"
     },
     {
-      "Id": "C:\\Learning\\TPKSource-2\\WebMVC\\WebMVC\\wwwroot\\tpkexpress\\assets\\images\\pro-icon-1.svg",
+      "Id": "D:\\git2\\webmvc\\wwwroot\\tpkexpress\\assets\\images\\pro-icon-1.svg",
       "PackagePath": "staticwebassets\\tpkexpress\\assets\\images\\pro-icon-1.svg"
     },
     {
-      "Id": "C:\\Learning\\TPKSource-2\\WebMVC\\WebMVC\\wwwroot\\tpkexpress\\assets\\images\\pro-icon-2.svg",
+      "Id": "D:\\git2\\webmvc\\wwwroot\\tpkexpress\\assets\\images\\pro-icon-2.svg",
       "PackagePath": "staticwebassets\\tpkexpress\\assets\\images\\pro-icon-2.svg"
     },
     {
-      "Id": "C:\\Learning\\TPKSource-2\\WebMVC\\WebMVC\\wwwroot\\tpkexpress\\assets\\images\\prose-1.jpg",
+      "Id": "D:\\git2\\webmvc\\wwwroot\\tpkexpress\\assets\\images\\prose-1.jpg",
       "PackagePath": "staticwebassets\\tpkexpress\\assets\\images\\prose-1.jpg"
     },
     {
-      "Id": "C:\\Learning\\TPKSource-2\\WebMVC\\WebMVC\\wwwroot\\tpkexpress\\assets\\images\\prose-2.jpg",
+      "Id": "D:\\git2\\webmvc\\wwwroot\\tpkexpress\\assets\\images\\prose-2.jpg",
       "PackagePath": "staticwebassets\\tpkexpress\\assets\\images\\prose-2.jpg"
     },
     {
-      "Id": "C:\\Learning\\TPKSource-2\\WebMVC\\WebMVC\\wwwroot\\tpkexpress\\assets\\images\\prose-3.jpg",
+      "Id": "D:\\git2\\webmvc\\wwwroot\\tpkexpress\\assets\\images\\prose-3.jpg",
       "PackagePath": "staticwebassets\\tpkexpress\\assets\\images\\prose-3.jpg"
     },
     {
-      "Id": "C:\\Learning\\TPKSource-2\\WebMVC\\WebMVC\\wwwroot\\tpkexpress\\assets\\images\\prose-4.jpg",
+      "Id": "D:\\git2\\webmvc\\wwwroot\\tpkexpress\\assets\\images\\prose-4.jpg",
       "PackagePath": "staticwebassets\\tpkexpress\\assets\\images\\prose-4.jpg"
     },
     {
-      "Id": "C:\\Learning\\TPKSource-2\\WebMVC\\WebMVC\\wwwroot\\tpkexpress\\assets\\images\\prose-5.jpg",
+      "Id": "D:\\git2\\webmvc\\wwwroot\\tpkexpress\\assets\\images\\prose-5.jpg",
       "PackagePath": "staticwebassets\\tpkexpress\\assets\\images\\prose-5.jpg"
     },
     {
-      "Id": "C:\\Learning\\TPKSource-2\\WebMVC\\WebMVC\\wwwroot\\tpkexpress\\assets\\images\\prose-6.jpg",
+      "Id": "D:\\git2\\webmvc\\wwwroot\\tpkexpress\\assets\\images\\prose-6.jpg",
       "PackagePath": "staticwebassets\\tpkexpress\\assets\\images\\prose-6.jpg"
     },
     {
-      "Id": "C:\\Learning\\TPKSource-2\\WebMVC\\WebMVC\\wwwroot\\tpkexpress\\assets\\images\\prose-7.jpg",
+      "Id": "D:\\git2\\webmvc\\wwwroot\\tpkexpress\\assets\\images\\prose-7.jpg",
       "PackagePath": "staticwebassets\\tpkexpress\\assets\\images\\prose-7.jpg"
     },
     {
-      "Id": "C:\\Learning\\TPKSource-2\\WebMVC\\WebMVC\\wwwroot\\tpkexpress\\assets\\images\\prose-8.jpg",
+      "Id": "D:\\git2\\webmvc\\wwwroot\\tpkexpress\\assets\\images\\prose-8.jpg",
       "PackagePath": "staticwebassets\\tpkexpress\\assets\\images\\prose-8.jpg"
     },
     {
-      "Id": "C:\\Learning\\TPKSource-2\\WebMVC\\WebMVC\\wwwroot\\tpkexpress\\assets\\images\\prose-9.jpg",
+      "Id": "D:\\git2\\webmvc\\wwwroot\\tpkexpress\\assets\\images\\prose-9.jpg",
       "PackagePath": "staticwebassets\\tpkexpress\\assets\\images\\prose-9.jpg"
     },
     {
-      "Id": "C:\\Learning\\TPKSource-2\\WebMVC\\WebMVC\\wwwroot\\tpkexpress\\assets\\images\\prose-icon.svg",
+      "Id": "D:\\git2\\webmvc\\wwwroot\\tpkexpress\\assets\\images\\prose-icon.svg",
       "PackagePath": "staticwebassets\\tpkexpress\\assets\\images\\prose-icon.svg"
     },
     {
-      "Id": "C:\\Learning\\TPKSource-2\\WebMVC\\WebMVC\\wwwroot\\tpkexpress\\assets\\images\\quyenloi.png",
+      "Id": "D:\\git2\\webmvc\\wwwroot\\tpkexpress\\assets\\images\\quyenloi.png",
       "PackagePath": "staticwebassets\\tpkexpress\\assets\\images\\quyenloi.png"
     },
     {
-      "Id": "C:\\Learning\\TPKSource-2\\WebMVC\\WebMVC\\wwwroot\\tpkexpress\\assets\\images\\quytrinh.png",
+      "Id": "D:\\git2\\webmvc\\wwwroot\\tpkexpress\\assets\\images\\quytrinh.png",
       "PackagePath": "staticwebassets\\tpkexpress\\assets\\images\\quytrinh.png"
     },
     {
-      "Id": "C:\\Learning\\TPKSource-2\\WebMVC\\WebMVC\\wwwroot\\tpkexpress\\assets\\images\\road-br.png",
+      "Id": "D:\\git2\\webmvc\\wwwroot\\tpkexpress\\assets\\images\\road-br.png",
       "PackagePath": "staticwebassets\\tpkexpress\\assets\\images\\road-br.png"
     },
     {
-      "Id": "C:\\Learning\\TPKSource-2\\WebMVC\\WebMVC\\wwwroot\\tpkexpress\\assets\\images\\road-buicay.svg",
+      "Id": "D:\\git2\\webmvc\\wwwroot\\tpkexpress\\assets\\images\\road-buicay.svg",
       "PackagePath": "staticwebassets\\tpkexpress\\assets\\images\\road-buicay.svg"
     },
     {
-      "Id": "C:\\Learning\\TPKSource-2\\WebMVC\\WebMVC\\wwwroot\\tpkexpress\\assets\\images\\road-car.png",
+      "Id": "D:\\git2\\webmvc\\wwwroot\\tpkexpress\\assets\\images\\road-car.png",
       "PackagePath": "staticwebassets\\tpkexpress\\assets\\images\\road-car.png"
     },
     {
-      "Id": "C:\\Learning\\TPKSource-2\\WebMVC\\WebMVC\\wwwroot\\tpkexpress\\assets\\images\\road-happy.png",
+      "Id": "D:\\git2\\webmvc\\wwwroot\\tpkexpress\\assets\\images\\road-happy.png",
       "PackagePath": "staticwebassets\\tpkexpress\\assets\\images\\road-happy.png"
     },
     {
-      "Id": "C:\\Learning\\TPKSource-2\\WebMVC\\WebMVC\\wwwroot\\tpkexpress\\assets\\images\\road-icon-1.svg",
+      "Id": "D:\\git2\\webmvc\\wwwroot\\tpkexpress\\assets\\images\\road-icon-1.svg",
       "PackagePath": "staticwebassets\\tpkexpress\\assets\\images\\road-icon-1.svg"
     },
     {
-      "Id": "C:\\Learning\\TPKSource-2\\WebMVC\\WebMVC\\wwwroot\\tpkexpress\\assets\\images\\road-icon-2.svg",
+      "Id": "D:\\git2\\webmvc\\wwwroot\\tpkexpress\\assets\\images\\road-icon-2.svg",
       "PackagePath": "staticwebassets\\tpkexpress\\assets\\images\\road-icon-2.svg"
     },
     {
-      "Id": "C:\\Learning\\TPKSource-2\\WebMVC\\WebMVC\\wwwroot\\tpkexpress\\assets\\images\\road-icon-3.svg",
+      "Id": "D:\\git2\\webmvc\\wwwroot\\tpkexpress\\assets\\images\\road-icon-3.svg",
       "PackagePath": "staticwebassets\\tpkexpress\\assets\\images\\road-icon-3.svg"
     },
     {
-      "Id": "C:\\Learning\\TPKSource-2\\WebMVC\\WebMVC\\wwwroot\\tpkexpress\\assets\\images\\road-icon-4.svg",
+      "Id": "D:\\git2\\webmvc\\wwwroot\\tpkexpress\\assets\\images\\road-icon-4.svg",
       "PackagePath": "staticwebassets\\tpkexpress\\assets\\images\\road-icon-4.svg"
     },
     {
-      "Id": "C:\\Learning\\TPKSource-2\\WebMVC\\WebMVC\\wwwroot\\tpkexpress\\assets\\images\\road-icon-5.svg",
+      "Id": "D:\\git2\\webmvc\\wwwroot\\tpkexpress\\assets\\images\\road-icon-5.svg",
       "PackagePath": "staticwebassets\\tpkexpress\\assets\\images\\road-icon-5.svg"
     },
     {
-      "Id": "C:\\Learning\\TPKSource-2\\WebMVC\\WebMVC\\wwwroot\\tpkexpress\\assets\\images\\road-icon-6.svg",
+      "Id": "D:\\git2\\webmvc\\wwwroot\\tpkexpress\\assets\\images\\road-icon-6.svg",
       "PackagePath": "staticwebassets\\tpkexpress\\assets\\images\\road-icon-6.svg"
     },
     {
-      "Id": "C:\\Learning\\TPKSource-2\\WebMVC\\WebMVC\\wwwroot\\tpkexpress\\assets\\images\\road-img.svg",
+      "Id": "D:\\git2\\webmvc\\wwwroot\\tpkexpress\\assets\\images\\road-img.svg",
       "PackagePath": "staticwebassets\\tpkexpress\\assets\\images\\road-img.svg"
     },
     {
-      "Id": "C:\\Learning\\TPKSource-2\\WebMVC\\WebMVC\\wwwroot\\tpkexpress\\assets\\images\\ser-1.jpg",
+      "Id": "D:\\git2\\webmvc\\wwwroot\\tpkexpress\\assets\\images\\ser-1.jpg",
       "PackagePath": "staticwebassets\\tpkexpress\\assets\\images\\ser-1.jpg"
     },
     {
-      "Id": "C:\\Learning\\TPKSource-2\\WebMVC\\WebMVC\\wwwroot\\tpkexpress\\assets\\images\\ser-2.jpg",
+      "Id": "D:\\git2\\webmvc\\wwwroot\\tpkexpress\\assets\\images\\ser-2.jpg",
       "PackagePath": "staticwebassets\\tpkexpress\\assets\\images\\ser-2.jpg"
     },
     {
-      "Id": "C:\\Learning\\TPKSource-2\\WebMVC\\WebMVC\\wwwroot\\tpkexpress\\assets\\images\\ser-3.jpg",
+      "Id": "D:\\git2\\webmvc\\wwwroot\\tpkexpress\\assets\\images\\ser-3.jpg",
       "PackagePath": "staticwebassets\\tpkexpress\\assets\\images\\ser-3.jpg"
     },
     {
-      "Id": "C:\\Learning\\TPKSource-2\\WebMVC\\WebMVC\\wwwroot\\tpkexpress\\assets\\images\\ser-4.jpg",
+      "Id": "D:\\git2\\webmvc\\wwwroot\\tpkexpress\\assets\\images\\ser-4.jpg",
       "PackagePath": "staticwebassets\\tpkexpress\\assets\\images\\ser-4.jpg"
     },
     {
-      "Id": "C:\\Learning\\TPKSource-2\\WebMVC\\WebMVC\\wwwroot\\tpkexpress\\assets\\images\\ser-5.jpg",
+      "Id": "D:\\git2\\webmvc\\wwwroot\\tpkexpress\\assets\\images\\ser-5.jpg",
       "PackagePath": "staticwebassets\\tpkexpress\\assets\\images\\ser-5.jpg"
     },
     {
-      "Id": "C:\\Learning\\TPKSource-2\\WebMVC\\WebMVC\\wwwroot\\tpkexpress\\assets\\images\\ser-6.jpg",
+      "Id": "D:\\git2\\webmvc\\wwwroot\\tpkexpress\\assets\\images\\ser-6.jpg",
       "PackagePath": "staticwebassets\\tpkexpress\\assets\\images\\ser-6.jpg"
     },
     {
-      "Id": "C:\\Learning\\TPKSource-2\\WebMVC\\WebMVC\\wwwroot\\tpkexpress\\assets\\images\\ser-cloud-1.png",
+      "Id": "D:\\git2\\webmvc\\wwwroot\\tpkexpress\\assets\\images\\ser-cloud-1.png",
       "PackagePath": "staticwebassets\\tpkexpress\\assets\\images\\ser-cloud-1.png"
     },
     {
-      "Id": "C:\\Learning\\TPKSource-2\\WebMVC\\WebMVC\\wwwroot\\tpkexpress\\assets\\images\\ser-cloud-2.png",
+      "Id": "D:\\git2\\webmvc\\wwwroot\\tpkexpress\\assets\\images\\ser-cloud-2.png",
       "PackagePath": "staticwebassets\\tpkexpress\\assets\\images\\ser-cloud-2.png"
     },
     {
-      "Id": "C:\\Learning\\TPKSource-2\\WebMVC\\WebMVC\\wwwroot\\tpkexpress\\assets\\images\\ser-cuved.svg",
+      "Id": "D:\\git2\\webmvc\\wwwroot\\tpkexpress\\assets\\images\\ser-cuved.svg",
       "PackagePath": "staticwebassets\\tpkexpress\\assets\\images\\ser-cuved.svg"
     },
     {
-      "Id": "C:\\Learning\\TPKSource-2\\WebMVC\\WebMVC\\wwwroot\\tpkexpress\\assets\\images\\ser-dc.svg",
+      "Id": "D:\\git2\\webmvc\\wwwroot\\tpkexpress\\assets\\images\\ser-dc.svg",
       "PackagePath": "staticwebassets\\tpkexpress\\assets\\images\\ser-dc.svg"
     },
     {
-      "Id": "C:\\Learning\\TPKSource-2\\WebMVC\\WebMVC\\wwwroot\\tpkexpress\\assets\\images\\set-cuved.png",
+      "Id": "D:\\git2\\webmvc\\wwwroot\\tpkexpress\\assets\\images\\set-cuved.png",
       "PackagePath": "staticwebassets\\tpkexpress\\assets\\images\\set-cuved.png"
     },
     {
-      "Id": "C:\\Learning\\TPKSource-2\\WebMVC\\WebMVC\\wwwroot\\tpkexpress\\assets\\images\\set-mess.png",
+      "Id": "D:\\git2\\webmvc\\wwwroot\\tpkexpress\\assets\\images\\set-mess.png",
       "PackagePath": "staticwebassets\\tpkexpress\\assets\\images\\set-mess.png"
     },
     {
-      "Id": "C:\\Learning\\TPKSource-2\\WebMVC\\WebMVC\\wwwroot\\tpkexpress\\assets\\images\\set-person.png",
+      "Id": "D:\\git2\\webmvc\\wwwroot\\tpkexpress\\assets\\images\\set-person.png",
       "PackagePath": "staticwebassets\\tpkexpress\\assets\\images\\set-person.png"
     },
     {
-      "Id": "C:\\Learning\\TPKSource-2\\WebMVC\\WebMVC\\wwwroot\\tpkexpress\\assets\\images\\set-person1.png",
+      "Id": "D:\\git2\\webmvc\\wwwroot\\tpkexpress\\assets\\images\\set-person1.png",
       "PackagePath": "staticwebassets\\tpkexpress\\assets\\images\\set-person1.png"
     },
     {
-      "Id": "C:\\Learning\\TPKSource-2\\WebMVC\\WebMVC\\wwwroot\\tpkexpress\\assets\\images\\set-phone.svg",
+      "Id": "D:\\git2\\webmvc\\wwwroot\\tpkexpress\\assets\\images\\set-phone.svg",
       "PackagePath": "staticwebassets\\tpkexpress\\assets\\images\\set-phone.svg"
     },
     {
-      "Id": "C:\\Learning\\TPKSource-2\\WebMVC\\WebMVC\\wwwroot\\tpkexpress\\assets\\images\\set-plane.png",
+      "Id": "D:\\git2\\webmvc\\wwwroot\\tpkexpress\\assets\\images\\set-plane.png",
       "PackagePath": "staticwebassets\\tpkexpress\\assets\\images\\set-plane.png"
     },
     {
-      "Id": "C:\\Learning\\TPKSource-2\\WebMVC\\WebMVC\\wwwroot\\tpkexpress\\assets\\images\\slide (1).png",
+      "Id": "D:\\git2\\webmvc\\wwwroot\\tpkexpress\\assets\\images\\slide (1).png",
       "PackagePath": "staticwebassets\\tpkexpress\\assets\\images\\slide (1).png"
     },
     {
-      "Id": "C:\\Learning\\TPKSource-2\\WebMVC\\WebMVC\\wwwroot\\tpkexpress\\assets\\images\\slide (2).png",
+      "Id": "D:\\git2\\webmvc\\wwwroot\\tpkexpress\\assets\\images\\slide (2).png",
       "PackagePath": "staticwebassets\\tpkexpress\\assets\\images\\slide (2).png"
     },
     {
-      "Id": "C:\\Learning\\TPKSource-2\\WebMVC\\WebMVC\\wwwroot\\tpkexpress\\assets\\images\\slide (3).png",
+      "Id": "D:\\git2\\webmvc\\wwwroot\\tpkexpress\\assets\\images\\slide (3).png",
       "PackagePath": "staticwebassets\\tpkexpress\\assets\\images\\slide (3).png"
     },
     {
-      "Id": "C:\\Learning\\TPKSource-2\\WebMVC\\WebMVC\\wwwroot\\tpkexpress\\assets\\images\\social-1.svg",
+      "Id": "D:\\git2\\webmvc\\wwwroot\\tpkexpress\\assets\\images\\social-1.svg",
       "PackagePath": "staticwebassets\\tpkexpress\\assets\\images\\social-1.svg"
     },
     {
-      "Id": "C:\\Learning\\TPKSource-2\\WebMVC\\WebMVC\\wwwroot\\tpkexpress\\assets\\images\\social-10.svg",
+      "Id": "D:\\git2\\webmvc\\wwwroot\\tpkexpress\\assets\\images\\social-10.svg",
       "PackagePath": "staticwebassets\\tpkexpress\\assets\\images\\social-10.svg"
     },
     {
-      "Id": "C:\\Learning\\TPKSource-2\\WebMVC\\WebMVC\\wwwroot\\tpkexpress\\assets\\images\\social-11.svg",
+      "Id": "D:\\git2\\webmvc\\wwwroot\\tpkexpress\\assets\\images\\social-11.svg",
       "PackagePath": "staticwebassets\\tpkexpress\\assets\\images\\social-11.svg"
     },
     {
-      "Id": "C:\\Learning\\TPKSource-2\\WebMVC\\WebMVC\\wwwroot\\tpkexpress\\assets\\images\\social-12.svg",
+      "Id": "D:\\git2\\webmvc\\wwwroot\\tpkexpress\\assets\\images\\social-12.svg",
       "PackagePath": "staticwebassets\\tpkexpress\\assets\\images\\social-12.svg"
     },
     {
-      "Id": "C:\\Learning\\TPKSource-2\\WebMVC\\WebMVC\\wwwroot\\tpkexpress\\assets\\images\\social-13.svg",
+      "Id": "D:\\git2\\webmvc\\wwwroot\\tpkexpress\\assets\\images\\social-13.svg",
       "PackagePath": "staticwebassets\\tpkexpress\\assets\\images\\social-13.svg"
     },
     {
-      "Id": "C:\\Learning\\TPKSource-2\\WebMVC\\WebMVC\\wwwroot\\tpkexpress\\assets\\images\\social-14.svg",
+      "Id": "D:\\git2\\webmvc\\wwwroot\\tpkexpress\\assets\\images\\social-14.svg",
       "PackagePath": "staticwebassets\\tpkexpress\\assets\\images\\social-14.svg"
     },
     {
-      "Id": "C:\\Learning\\TPKSource-2\\WebMVC\\WebMVC\\wwwroot\\tpkexpress\\assets\\images\\social-15.svg",
+      "Id": "D:\\git2\\webmvc\\wwwroot\\tpkexpress\\assets\\images\\social-15.svg",
       "PackagePath": "staticwebassets\\tpkexpress\\assets\\images\\social-15.svg"
     },
     {
-      "Id": "C:\\Learning\\TPKSource-2\\WebMVC\\WebMVC\\wwwroot\\tpkexpress\\assets\\images\\social-16.svg",
+      "Id": "D:\\git2\\webmvc\\wwwroot\\tpkexpress\\assets\\images\\social-16.svg",
       "PackagePath": "staticwebassets\\tpkexpress\\assets\\images\\social-16.svg"
     },
     {
-      "Id": "C:\\Learning\\TPKSource-2\\WebMVC\\WebMVC\\wwwroot\\tpkexpress\\assets\\images\\social-17.svg",
+      "Id": "D:\\git2\\webmvc\\wwwroot\\tpkexpress\\assets\\images\\social-17.svg",
       "PackagePath": "staticwebassets\\tpkexpress\\assets\\images\\social-17.svg"
     },
     {
-      "Id": "C:\\Learning\\TPKSource-2\\WebMVC\\WebMVC\\wwwroot\\tpkexpress\\assets\\images\\social-2.svg",
+      "Id": "D:\\git2\\webmvc\\wwwroot\\tpkexpress\\assets\\images\\social-2.svg",
       "PackagePath": "staticwebassets\\tpkexpress\\assets\\images\\social-2.svg"
     },
     {
-      "Id": "C:\\Learning\\TPKSource-2\\WebMVC\\WebMVC\\wwwroot\\tpkexpress\\assets\\images\\social-3.svg",
+      "Id": "D:\\git2\\webmvc\\wwwroot\\tpkexpress\\assets\\images\\social-3.svg",
       "PackagePath": "staticwebassets\\tpkexpress\\assets\\images\\social-3.svg"
     },
     {
-      "Id": "C:\\Learning\\TPKSource-2\\WebMVC\\WebMVC\\wwwroot\\tpkexpress\\assets\\images\\social-4.svg",
+      "Id": "D:\\git2\\webmvc\\wwwroot\\tpkexpress\\assets\\images\\social-4.svg",
       "PackagePath": "staticwebassets\\tpkexpress\\assets\\images\\social-4.svg"
     },
     {
-      "Id": "C:\\Learning\\TPKSource-2\\WebMVC\\WebMVC\\wwwroot\\tpkexpress\\assets\\images\\social-5.svg",
+      "Id": "D:\\git2\\webmvc\\wwwroot\\tpkexpress\\assets\\images\\social-5.svg",
       "PackagePath": "staticwebassets\\tpkexpress\\assets\\images\\social-5.svg"
     },
     {
-      "Id": "C:\\Learning\\TPKSource-2\\WebMVC\\WebMVC\\wwwroot\\tpkexpress\\assets\\images\\social-6.svg",
+      "Id": "D:\\git2\\webmvc\\wwwroot\\tpkexpress\\assets\\images\\social-6.svg",
       "PackagePath": "staticwebassets\\tpkexpress\\assets\\images\\social-6.svg"
     },
     {
-      "Id": "C:\\Learning\\TPKSource-2\\WebMVC\\WebMVC\\wwwroot\\tpkexpress\\assets\\images\\social-7.svg",
+      "Id": "D:\\git2\\webmvc\\wwwroot\\tpkexpress\\assets\\images\\social-7.svg",
       "PackagePath": "staticwebassets\\tpkexpress\\assets\\images\\social-7.svg"
     },
     {
-      "Id": "C:\\Learning\\TPKSource-2\\WebMVC\\WebMVC\\wwwroot\\tpkexpress\\assets\\images\\social-8.svg",
+      "Id": "D:\\git2\\webmvc\\wwwroot\\tpkexpress\\assets\\images\\social-8.svg",
       "PackagePath": "staticwebassets\\tpkexpress\\assets\\images\\social-8.svg"
     },
     {
-      "Id": "C:\\Learning\\TPKSource-2\\WebMVC\\WebMVC\\wwwroot\\tpkexpress\\assets\\images\\social-9.svg",
+      "Id": "D:\\git2\\webmvc\\wwwroot\\tpkexpress\\assets\\images\\social-9.svg",
       "PackagePath": "staticwebassets\\tpkexpress\\assets\\images\\social-9.svg"
     },
     {
-      "Id": "C:\\Learning\\TPKSource-2\\WebMVC\\WebMVC\\wwwroot\\tpkexpress\\assets\\images\\star-opa.svg",
+      "Id": "D:\\git2\\webmvc\\wwwroot\\tpkexpress\\assets\\images\\star-opa.svg",
       "PackagePath": "staticwebassets\\tpkexpress\\assets\\images\\star-opa.svg"
     },
     {
-      "Id": "C:\\Learning\\TPKSource-2\\WebMVC\\WebMVC\\wwwroot\\tpkexpress\\assets\\images\\star-yellow.svg",
+      "Id": "D:\\git2\\webmvc\\wwwroot\\tpkexpress\\assets\\images\\star-yellow.svg",
       "PackagePath": "staticwebassets\\tpkexpress\\assets\\images\\star-yellow.svg"
     },
     {
-      "Id": "C:\\Learning\\TPKSource-2\\WebMVC\\WebMVC\\wwwroot\\tpkexpress\\assets\\images\\Đăng nhập.png",
+      "Id": "D:\\git2\\webmvc\\wwwroot\\tpkexpress\\assets\\images\\Đăng nhập.png",
       "PackagePath": "staticwebassets\\tpkexpress\\assets\\images\\Đăng nhập.png"
     },
     {
-      "Id": "C:\\Learning\\TPKSource-2\\WebMVC\\WebMVC\\wwwroot\\tpkexpress\\assets\\images\\Đối tác 1.jpg",
+      "Id": "D:\\git2\\webmvc\\wwwroot\\tpkexpress\\assets\\images\\Đối tác 1.jpg",
       "PackagePath": "staticwebassets\\tpkexpress\\assets\\images\\Đối tác 1.jpg"
     },
     {
-      "Id": "C:\\Learning\\TPKSource-2\\WebMVC\\WebMVC\\wwwroot\\tpkexpress\\assets\\images\\Đối tác 2.jpg",
+      "Id": "D:\\git2\\webmvc\\wwwroot\\tpkexpress\\assets\\images\\Đối tác 2.jpg",
       "PackagePath": "staticwebassets\\tpkexpress\\assets\\images\\Đối tác 2.jpg"
     },
     {
-      "Id": "C:\\Learning\\TPKSource-2\\WebMVC\\WebMVC\\wwwroot\\tpkexpress\\assets\\images\\Đối tác 3.jpg",
+      "Id": "D:\\git2\\webmvc\\wwwroot\\tpkexpress\\assets\\images\\Đối tác 3.jpg",
       "PackagePath": "staticwebassets\\tpkexpress\\assets\\images\\Đối tác 3.jpg"
     },
     {
-      "Id": "C:\\Learning\\TPKSource-2\\WebMVC\\WebMVC\\wwwroot\\tpkexpress\\assets\\library\\aos\\aos.css",
+      "Id": "D:\\git2\\webmvc\\wwwroot\\tpkexpress\\assets\\library\\aos\\aos.css",
       "PackagePath": "staticwebassets\\tpkexpress\\assets\\library\\aos\\aos.css"
     },
     {
-      "Id": "C:\\Learning\\TPKSource-2\\WebMVC\\WebMVC\\wwwroot\\tpkexpress\\assets\\library\\aos\\aos.js",
+      "Id": "D:\\git2\\webmvc\\wwwroot\\tpkexpress\\assets\\library\\aos\\aos.js",
       "PackagePath": "staticwebassets\\tpkexpress\\assets\\library\\aos\\aos.js"
     },
     {
-      "Id": "C:\\Learning\\TPKSource-2\\WebMVC\\WebMVC\\wwwroot\\tpkexpress\\assets\\library\\countUp\\countUp.min.js",
+      "Id": "D:\\git2\\webmvc\\wwwroot\\tpkexpress\\assets\\library\\countUp\\countUp.min.js",
       "PackagePath": "staticwebassets\\tpkexpress\\assets\\library\\countUp\\countUp.min.js"
     },
     {
-      "Id": "C:\\Learning\\TPKSource-2\\WebMVC\\WebMVC\\wwwroot\\tpkexpress\\assets\\library\\datetime\\daterangepicker.css",
+      "Id": "D:\\git2\\webmvc\\wwwroot\\tpkexpress\\assets\\library\\datetime\\daterangepicker.css",
       "PackagePath": "staticwebassets\\tpkexpress\\assets\\library\\datetime\\daterangepicker.css"
     },
     {
-      "Id": "C:\\Learning\\TPKSource-2\\WebMVC\\WebMVC\\wwwroot\\tpkexpress\\assets\\library\\datetime\\daterangepicker.min.js",
+      "Id": "D:\\git2\\webmvc\\wwwroot\\tpkexpress\\assets\\library\\datetime\\daterangepicker.min.js",
       "PackagePath": "staticwebassets\\tpkexpress\\assets\\library\\datetime\\daterangepicker.min.js"
     },
     {
-      "Id": "C:\\Learning\\TPKSource-2\\WebMVC\\WebMVC\\wwwroot\\tpkexpress\\assets\\library\\datetime\\moment.min.js",
+      "Id": "D:\\git2\\webmvc\\wwwroot\\tpkexpress\\assets\\library\\datetime\\moment.min.js",
       "PackagePath": "staticwebassets\\tpkexpress\\assets\\library\\datetime\\moment.min.js"
     },
     {
-      "Id": "C:\\Learning\\TPKSource-2\\WebMVC\\WebMVC\\wwwroot\\tpkexpress\\assets\\library\\fancybox\\fancybox.css",
+      "Id": "D:\\git2\\webmvc\\wwwroot\\tpkexpress\\assets\\library\\fancybox\\fancybox.css",
       "PackagePath": "staticwebassets\\tpkexpress\\assets\\library\\fancybox\\fancybox.css"
     },
     {
-      "Id": "C:\\Learning\\TPKSource-2\\WebMVC\\WebMVC\\wwwroot\\tpkexpress\\assets\\library\\fancybox\\fancybox.umd.js",
+      "Id": "D:\\git2\\webmvc\\wwwroot\\tpkexpress\\assets\\library\\fancybox\\fancybox.umd.js",
       "PackagePath": "staticwebassets\\tpkexpress\\assets\\library\\fancybox\\fancybox.umd.js"
     },
     {
-      "Id": "C:\\Learning\\TPKSource-2\\WebMVC\\WebMVC\\wwwroot\\tpkexpress\\assets\\library\\fontawesome\\css\\all.css",
+      "Id": "D:\\git2\\webmvc\\wwwroot\\tpkexpress\\assets\\library\\fontawesome\\css\\all.css",
       "PackagePath": "staticwebassets\\tpkexpress\\assets\\library\\fontawesome\\css\\all.css"
     },
     {
-      "Id": "C:\\Learning\\TPKSource-2\\WebMVC\\WebMVC\\wwwroot\\tpkexpress\\assets\\library\\fontawesome\\fontawesome\\fa-brands-400.ttf",
+      "Id": "D:\\git2\\webmvc\\wwwroot\\tpkexpress\\assets\\library\\fontawesome\\fontawesome\\fa-brands-400.ttf",
       "PackagePath": "staticwebassets\\tpkexpress\\assets\\library\\fontawesome\\fontawesome\\fa-brands-400.ttf"
     },
     {
-      "Id": "C:\\Learning\\TPKSource-2\\WebMVC\\WebMVC\\wwwroot\\tpkexpress\\assets\\library\\fontawesome\\fontawesome\\fa-brands-400.woff2",
+      "Id": "D:\\git2\\webmvc\\wwwroot\\tpkexpress\\assets\\library\\fontawesome\\fontawesome\\fa-brands-400.woff2",
       "PackagePath": "staticwebassets\\tpkexpress\\assets\\library\\fontawesome\\fontawesome\\fa-brands-400.woff2"
     },
     {
-      "Id": "C:\\Learning\\TPKSource-2\\WebMVC\\WebMVC\\wwwroot\\tpkexpress\\assets\\library\\fontawesome\\fontawesome\\fa-duotone-900.ttf",
+      "Id": "D:\\git2\\webmvc\\wwwroot\\tpkexpress\\assets\\library\\fontawesome\\fontawesome\\fa-duotone-900.ttf",
       "PackagePath": "staticwebassets\\tpkexpress\\assets\\library\\fontawesome\\fontawesome\\fa-duotone-900.ttf"
     },
     {
-      "Id": "C:\\Learning\\TPKSource-2\\WebMVC\\WebMVC\\wwwroot\\tpkexpress\\assets\\library\\fontawesome\\fontawesome\\fa-duotone-900.woff2",
+      "Id": "D:\\git2\\webmvc\\wwwroot\\tpkexpress\\assets\\library\\fontawesome\\fontawesome\\fa-duotone-900.woff2",
       "PackagePath": "staticwebassets\\tpkexpress\\assets\\library\\fontawesome\\fontawesome\\fa-duotone-900.woff2"
     },
     {
-      "Id": "C:\\Learning\\TPKSource-2\\WebMVC\\WebMVC\\wwwroot\\tpkexpress\\assets\\library\\fontawesome\\fontawesome\\fa-light-300.ttf",
+      "Id": "D:\\git2\\webmvc\\wwwroot\\tpkexpress\\assets\\library\\fontawesome\\fontawesome\\fa-light-300.ttf",
       "PackagePath": "staticwebassets\\tpkexpress\\assets\\library\\fontawesome\\fontawesome\\fa-light-300.ttf"
     },
     {
-      "Id": "C:\\Learning\\TPKSource-2\\WebMVC\\WebMVC\\wwwroot\\tpkexpress\\assets\\library\\fontawesome\\fontawesome\\fa-light-300.woff2",
+      "Id": "D:\\git2\\webmvc\\wwwroot\\tpkexpress\\assets\\library\\fontawesome\\fontawesome\\fa-light-300.woff2",
       "PackagePath": "staticwebassets\\tpkexpress\\assets\\library\\fontawesome\\fontawesome\\fa-light-300.woff2"
     },
     {
-      "Id": "C:\\Learning\\TPKSource-2\\WebMVC\\WebMVC\\wwwroot\\tpkexpress\\assets\\library\\fontawesome\\fontawesome\\fa-regular-400.ttf",
+      "Id": "D:\\git2\\webmvc\\wwwroot\\tpkexpress\\assets\\library\\fontawesome\\fontawesome\\fa-regular-400.ttf",
       "PackagePath": "staticwebassets\\tpkexpress\\assets\\library\\fontawesome\\fontawesome\\fa-regular-400.ttf"
     },
     {
-      "Id": "C:\\Learning\\TPKSource-2\\WebMVC\\WebMVC\\wwwroot\\tpkexpress\\assets\\library\\fontawesome\\fontawesome\\fa-regular-400.woff2",
+      "Id": "D:\\git2\\webmvc\\wwwroot\\tpkexpress\\assets\\library\\fontawesome\\fontawesome\\fa-regular-400.woff2",
       "PackagePath": "staticwebassets\\tpkexpress\\assets\\library\\fontawesome\\fontawesome\\fa-regular-400.woff2"
     },
     {
-      "Id": "C:\\Learning\\TPKSource-2\\WebMVC\\WebMVC\\wwwroot\\tpkexpress\\assets\\library\\fontawesome\\fontawesome\\fa-solid-900.ttf",
+      "Id": "D:\\git2\\webmvc\\wwwroot\\tpkexpress\\assets\\library\\fontawesome\\fontawesome\\fa-solid-900.ttf",
       "PackagePath": "staticwebassets\\tpkexpress\\assets\\library\\fontawesome\\fontawesome\\fa-solid-900.ttf"
     },
     {
-      "Id": "C:\\Learning\\TPKSource-2\\WebMVC\\WebMVC\\wwwroot\\tpkexpress\\assets\\library\\fontawesome\\fontawesome\\fa-solid-900.woff2",
+      "Id": "D:\\git2\\webmvc\\wwwroot\\tpkexpress\\assets\\library\\fontawesome\\fontawesome\\fa-solid-900.woff2",
       "PackagePath": "staticwebassets\\tpkexpress\\assets\\library\\fontawesome\\fontawesome\\fa-solid-900.woff2"
     },
     {
-      "Id": "C:\\Learning\\TPKSource-2\\WebMVC\\WebMVC\\wwwroot\\tpkexpress\\assets\\library\\fontawesome\\fontawesome\\fa-thin-100.ttf",
+      "Id": "D:\\git2\\webmvc\\wwwroot\\tpkexpress\\assets\\library\\fontawesome\\fontawesome\\fa-thin-100.ttf",
       "PackagePath": "staticwebassets\\tpkexpress\\assets\\library\\fontawesome\\fontawesome\\fa-thin-100.ttf"
     },
     {
-      "Id": "C:\\Learning\\TPKSource-2\\WebMVC\\WebMVC\\wwwroot\\tpkexpress\\assets\\library\\fontawesome\\fontawesome\\fa-thin-100.woff2",
+      "Id": "D:\\git2\\webmvc\\wwwroot\\tpkexpress\\assets\\library\\fontawesome\\fontawesome\\fa-thin-100.woff2",
       "PackagePath": "staticwebassets\\tpkexpress\\assets\\library\\fontawesome\\fontawesome\\fa-thin-100.woff2"
     },
     {
-      "Id": "C:\\Learning\\TPKSource-2\\WebMVC\\WebMVC\\wwwroot\\tpkexpress\\assets\\library\\fontawesome\\fontawesome\\fa-v4compatibility.ttf",
+      "Id": "D:\\git2\\webmvc\\wwwroot\\tpkexpress\\assets\\library\\fontawesome\\fontawesome\\fa-v4compatibility.ttf",
       "PackagePath": "staticwebassets\\tpkexpress\\assets\\library\\fontawesome\\fontawesome\\fa-v4compatibility.ttf"
     },
     {
-      "Id": "C:\\Learning\\TPKSource-2\\WebMVC\\WebMVC\\wwwroot\\tpkexpress\\assets\\library\\fontawesome\\fontawesome\\fa-v4compatibility.woff2",
+      "Id": "D:\\git2\\webmvc\\wwwroot\\tpkexpress\\assets\\library\\fontawesome\\fontawesome\\fa-v4compatibility.woff2",
       "PackagePath": "staticwebassets\\tpkexpress\\assets\\library\\fontawesome\\fontawesome\\fa-v4compatibility.woff2"
     },
     {
-      "Id": "C:\\Learning\\TPKSource-2\\WebMVC\\WebMVC\\wwwroot\\tpkexpress\\assets\\library\\fontawesome\\fontawesome\\fontawesome.css",
+      "Id": "D:\\git2\\webmvc\\wwwroot\\tpkexpress\\assets\\library\\fontawesome\\fontawesome\\fontawesome.css",
       "PackagePath": "staticwebassets\\tpkexpress\\assets\\library\\fontawesome\\fontawesome\\fontawesome.css"
     },
     {
-      "Id": "C:\\Learning\\TPKSource-2\\WebMVC\\WebMVC\\wwwroot\\tpkexpress\\assets\\library\\fontawesome\\webfonts\\fa-brands-400.eot",
+      "Id": "D:\\git2\\webmvc\\wwwroot\\tpkexpress\\assets\\library\\fontawesome\\webfonts\\fa-brands-400.eot",
       "PackagePath": "staticwebassets\\tpkexpress\\assets\\library\\fontawesome\\webfonts\\fa-brands-400.eot"
     },
     {
-      "Id": "C:\\Learning\\TPKSource-2\\WebMVC\\WebMVC\\wwwroot\\tpkexpress\\assets\\library\\fontawesome\\webfonts\\fa-brands-400.svg",
+      "Id": "D:\\git2\\webmvc\\wwwroot\\tpkexpress\\assets\\library\\fontawesome\\webfonts\\fa-brands-400.svg",
       "PackagePath": "staticwebassets\\tpkexpress\\assets\\library\\fontawesome\\webfonts\\fa-brands-400.svg"
     },
     {
-      "Id": "C:\\Learning\\TPKSource-2\\WebMVC\\WebMVC\\wwwroot\\tpkexpress\\assets\\library\\fontawesome\\webfonts\\fa-brands-400.ttf",
+      "Id": "D:\\git2\\webmvc\\wwwroot\\tpkexpress\\assets\\library\\fontawesome\\webfonts\\fa-brands-400.ttf",
       "PackagePath": "staticwebassets\\tpkexpress\\assets\\library\\fontawesome\\webfonts\\fa-brands-400.ttf"
     },
     {
-      "Id": "C:\\Learning\\TPKSource-2\\WebMVC\\WebMVC\\wwwroot\\tpkexpress\\assets\\library\\fontawesome\\webfonts\\fa-brands-400.woff",
+      "Id": "D:\\git2\\webmvc\\wwwroot\\tpkexpress\\assets\\library\\fontawesome\\webfonts\\fa-brands-400.woff",
       "PackagePath": "staticwebassets\\tpkexpress\\assets\\library\\fontawesome\\webfonts\\fa-brands-400.woff"
     },
     {
-      "Id": "C:\\Learning\\TPKSource-2\\WebMVC\\WebMVC\\wwwroot\\tpkexpress\\assets\\library\\fontawesome\\webfonts\\fa-brands-400.woff2",
+      "Id": "D:\\git2\\webmvc\\wwwroot\\tpkexpress\\assets\\library\\fontawesome\\webfonts\\fa-brands-400.woff2",
       "PackagePath": "staticwebassets\\tpkexpress\\assets\\library\\fontawesome\\webfonts\\fa-brands-400.woff2"
     },
     {
-      "Id": "C:\\Learning\\TPKSource-2\\WebMVC\\WebMVC\\wwwroot\\tpkexpress\\assets\\library\\fontawesome\\webfonts\\fa-light-300.eot",
+      "Id": "D:\\git2\\webmvc\\wwwroot\\tpkexpress\\assets\\library\\fontawesome\\webfonts\\fa-light-300.eot",
       "PackagePath": "staticwebassets\\tpkexpress\\assets\\library\\fontawesome\\webfonts\\fa-light-300.eot"
     },
     {
-      "Id": "C:\\Learning\\TPKSource-2\\WebMVC\\WebMVC\\wwwroot\\tpkexpress\\assets\\library\\fontawesome\\webfonts\\fa-light-300.svg",
+      "Id": "D:\\git2\\webmvc\\wwwroot\\tpkexpress\\assets\\library\\fontawesome\\webfonts\\fa-light-300.svg",
       "PackagePath": "staticwebassets\\tpkexpress\\assets\\library\\fontawesome\\webfonts\\fa-light-300.svg"
     },
     {
-      "Id": "C:\\Learning\\TPKSource-2\\WebMVC\\WebMVC\\wwwroot\\tpkexpress\\assets\\library\\fontawesome\\webfonts\\fa-light-300.ttf",
+      "Id": "D:\\git2\\webmvc\\wwwroot\\tpkexpress\\assets\\library\\fontawesome\\webfonts\\fa-light-300.ttf",
       "PackagePath": "staticwebassets\\tpkexpress\\assets\\library\\fontawesome\\webfonts\\fa-light-300.ttf"
     },
     {
-      "Id": "C:\\Learning\\TPKSource-2\\WebMVC\\WebMVC\\wwwroot\\tpkexpress\\assets\\library\\fontawesome\\webfonts\\fa-light-300.woff",
+      "Id": "D:\\git2\\webmvc\\wwwroot\\tpkexpress\\assets\\library\\fontawesome\\webfonts\\fa-light-300.woff",
       "PackagePath": "staticwebassets\\tpkexpress\\assets\\library\\fontawesome\\webfonts\\fa-light-300.woff"
     },
     {
-      "Id": "C:\\Learning\\TPKSource-2\\WebMVC\\WebMVC\\wwwroot\\tpkexpress\\assets\\library\\fontawesome\\webfonts\\fa-light-300.woff2",
+      "Id": "D:\\git2\\webmvc\\wwwroot\\tpkexpress\\assets\\library\\fontawesome\\webfonts\\fa-light-300.woff2",
       "PackagePath": "staticwebassets\\tpkexpress\\assets\\library\\fontawesome\\webfonts\\fa-light-300.woff2"
     },
     {
-      "Id": "C:\\Learning\\TPKSource-2\\WebMVC\\WebMVC\\wwwroot\\tpkexpress\\assets\\library\\fontawesome\\webfonts\\fa-regular-400.eot",
+      "Id": "D:\\git2\\webmvc\\wwwroot\\tpkexpress\\assets\\library\\fontawesome\\webfonts\\fa-regular-400.eot",
       "PackagePath": "staticwebassets\\tpkexpress\\assets\\library\\fontawesome\\webfonts\\fa-regular-400.eot"
     },
     {
-      "Id": "C:\\Learning\\TPKSource-2\\WebMVC\\WebMVC\\wwwroot\\tpkexpress\\assets\\library\\fontawesome\\webfonts\\fa-regular-400.svg",
+      "Id": "D:\\git2\\webmvc\\wwwroot\\tpkexpress\\assets\\library\\fontawesome\\webfonts\\fa-regular-400.svg",
       "PackagePath": "staticwebassets\\tpkexpress\\assets\\library\\fontawesome\\webfonts\\fa-regular-400.svg"
     },
     {
-      "Id": "C:\\Learning\\TPKSource-2\\WebMVC\\WebMVC\\wwwroot\\tpkexpress\\assets\\library\\fontawesome\\webfonts\\fa-regular-400.ttf",
+      "Id": "D:\\git2\\webmvc\\wwwroot\\tpkexpress\\assets\\library\\fontawesome\\webfonts\\fa-regular-400.ttf",
       "PackagePath": "staticwebassets\\tpkexpress\\assets\\library\\fontawesome\\webfonts\\fa-regular-400.ttf"
     },
     {
-      "Id": "C:\\Learning\\TPKSource-2\\WebMVC\\WebMVC\\wwwroot\\tpkexpress\\assets\\library\\fontawesome\\webfonts\\fa-regular-400.woff",
+      "Id": "D:\\git2\\webmvc\\wwwroot\\tpkexpress\\assets\\library\\fontawesome\\webfonts\\fa-regular-400.woff",
       "PackagePath": "staticwebassets\\tpkexpress\\assets\\library\\fontawesome\\webfonts\\fa-regular-400.woff"
     },
     {
-      "Id": "C:\\Learning\\TPKSource-2\\WebMVC\\WebMVC\\wwwroot\\tpkexpress\\assets\\library\\fontawesome\\webfonts\\fa-regular-400.woff2",
+      "Id": "D:\\git2\\webmvc\\wwwroot\\tpkexpress\\assets\\library\\fontawesome\\webfonts\\fa-regular-400.woff2",
       "PackagePath": "staticwebassets\\tpkexpress\\assets\\library\\fontawesome\\webfonts\\fa-regular-400.woff2"
     },
     {
-      "Id": "C:\\Learning\\TPKSource-2\\WebMVC\\WebMVC\\wwwroot\\tpkexpress\\assets\\library\\fontawesome\\webfonts\\fa-solid-900.eot",
+      "Id": "D:\\git2\\webmvc\\wwwroot\\tpkexpress\\assets\\library\\fontawesome\\webfonts\\fa-solid-900.eot",
       "PackagePath": "staticwebassets\\tpkexpress\\assets\\library\\fontawesome\\webfonts\\fa-solid-900.eot"
     },
     {
-      "Id": "C:\\Learning\\TPKSource-2\\WebMVC\\WebMVC\\wwwroot\\tpkexpress\\assets\\library\\fontawesome\\webfonts\\fa-solid-900.svg",
+      "Id": "D:\\git2\\webmvc\\wwwroot\\tpkexpress\\assets\\library\\fontawesome\\webfonts\\fa-solid-900.svg",
       "PackagePath": "staticwebassets\\tpkexpress\\assets\\library\\fontawesome\\webfonts\\fa-solid-900.svg"
     },
     {
-      "Id": "C:\\Learning\\TPKSource-2\\WebMVC\\WebMVC\\wwwroot\\tpkexpress\\assets\\library\\fontawesome\\webfonts\\fa-solid-900.ttf",
+      "Id": "D:\\git2\\webmvc\\wwwroot\\tpkexpress\\assets\\library\\fontawesome\\webfonts\\fa-solid-900.ttf",
       "PackagePath": "staticwebassets\\tpkexpress\\assets\\library\\fontawesome\\webfonts\\fa-solid-900.ttf"
     },
     {
-      "Id": "C:\\Learning\\TPKSource-2\\WebMVC\\WebMVC\\wwwroot\\tpkexpress\\assets\\library\\fontawesome\\webfonts\\fa-solid-900.woff",
+      "Id": "D:\\git2\\webmvc\\wwwroot\\tpkexpress\\assets\\library\\fontawesome\\webfonts\\fa-solid-900.woff",
       "PackagePath": "staticwebassets\\tpkexpress\\assets\\library\\fontawesome\\webfonts\\fa-solid-900.woff"
     },
     {
-      "Id": "C:\\Learning\\TPKSource-2\\WebMVC\\WebMVC\\wwwroot\\tpkexpress\\assets\\library\\fontawesome\\webfonts\\fa-solid-900.woff2",
+      "Id": "D:\\git2\\webmvc\\wwwroot\\tpkexpress\\assets\\library\\fontawesome\\webfonts\\fa-solid-900.woff2",
       "PackagePath": "staticwebassets\\tpkexpress\\assets\\library\\fontawesome\\webfonts\\fa-solid-900.woff2"
     },
     {
-      "Id": "C:\\Learning\\TPKSource-2\\WebMVC\\WebMVC\\wwwroot\\tpkexpress\\assets\\library\\gallery\\fonts\\lg.svg",
+      "Id": "D:\\git2\\webmvc\\wwwroot\\tpkexpress\\assets\\library\\gallery\\fonts\\lg.svg",
       "PackagePath": "staticwebassets\\tpkexpress\\assets\\library\\gallery\\fonts\\lg.svg"
     },
     {
-      "Id": "C:\\Learning\\TPKSource-2\\WebMVC\\WebMVC\\wwwroot\\tpkexpress\\assets\\library\\gallery\\fonts\\lg.ttf",
+      "Id": "D:\\git2\\webmvc\\wwwroot\\tpkexpress\\assets\\library\\gallery\\fonts\\lg.ttf",
       "PackagePath": "staticwebassets\\tpkexpress\\assets\\library\\gallery\\fonts\\lg.ttf"
     },
     {
-      "Id": "C:\\Learning\\TPKSource-2\\WebMVC\\WebMVC\\wwwroot\\tpkexpress\\assets\\library\\gallery\\fonts\\lg.woff",
+      "Id": "D:\\git2\\webmvc\\wwwroot\\tpkexpress\\assets\\library\\gallery\\fonts\\lg.woff",
       "PackagePath": "staticwebassets\\tpkexpress\\assets\\library\\gallery\\fonts\\lg.woff"
     },
     {
-      "Id": "C:\\Learning\\TPKSource-2\\WebMVC\\WebMVC\\wwwroot\\tpkexpress\\assets\\library\\gallery\\lightgallery-all.min.js",
+      "Id": "D:\\git2\\webmvc\\wwwroot\\tpkexpress\\assets\\library\\gallery\\lightgallery-all.min.js",
       "PackagePath": "staticwebassets\\tpkexpress\\assets\\library\\gallery\\lightgallery-all.min.js"
     },
     {
-      "Id": "C:\\Learning\\TPKSource-2\\WebMVC\\WebMVC\\wwwroot\\tpkexpress\\assets\\library\\gallery\\lightgallery.min.css",
+      "Id": "D:\\git2\\webmvc\\wwwroot\\tpkexpress\\assets\\library\\gallery\\lightgallery.min.css",
       "PackagePath": "staticwebassets\\tpkexpress\\assets\\library\\gallery\\lightgallery.min.css"
     },
     {
-      "Id": "C:\\Learning\\TPKSource-2\\WebMVC\\WebMVC\\wwwroot\\tpkexpress\\assets\\library\\gallery\\lightgallery.min.js",
+      "Id": "D:\\git2\\webmvc\\wwwroot\\tpkexpress\\assets\\library\\gallery\\lightgallery.min.js",
       "PackagePath": "staticwebassets\\tpkexpress\\assets\\library\\gallery\\lightgallery.min.js"
     },
     {
-      "Id": "C:\\Learning\\TPKSource-2\\WebMVC\\WebMVC\\wwwroot\\tpkexpress\\assets\\library\\gsap\\ScrollTrigger.min.js",
+      "Id": "D:\\git2\\webmvc\\wwwroot\\tpkexpress\\assets\\library\\gsap\\ScrollTrigger.min.js",
       "PackagePath": "staticwebassets\\tpkexpress\\assets\\library\\gsap\\ScrollTrigger.min.js"
     },
     {
-      "Id": "C:\\Learning\\TPKSource-2\\WebMVC\\WebMVC\\wwwroot\\tpkexpress\\assets\\library\\gsap\\gsap.min.js",
+      "Id": "D:\\git2\\webmvc\\wwwroot\\tpkexpress\\assets\\library\\gsap\\gsap.min.js",
       "PackagePath": "staticwebassets\\tpkexpress\\assets\\library\\gsap\\gsap.min.js"
     },
     {
-      "Id": "C:\\Learning\\TPKSource-2\\WebMVC\\WebMVC\\wwwroot\\tpkexpress\\assets\\library\\isotope\\isotope.pkgd.js",
+      "Id": "D:\\git2\\webmvc\\wwwroot\\tpkexpress\\assets\\library\\isotope\\isotope.pkgd.js",
       "PackagePath": "staticwebassets\\tpkexpress\\assets\\library\\isotope\\isotope.pkgd.js"
     },
     {
-      "Id": "C:\\Learning\\TPKSource-2\\WebMVC\\WebMVC\\wwwroot\\tpkexpress\\assets\\library\\isotope\\isotope.pkgd.min.js",
+      "Id": "D:\\git2\\webmvc\\wwwroot\\tpkexpress\\assets\\library\\isotope\\isotope.pkgd.min.js",
       "PackagePath": "staticwebassets\\tpkexpress\\assets\\library\\isotope\\isotope.pkgd.min.js"
     },
     {
-      "Id": "C:\\Learning\\TPKSource-2\\WebMVC\\WebMVC\\wwwroot\\tpkexpress\\assets\\library\\jquery\\jquery-migrate.js",
+      "Id": "D:\\git2\\webmvc\\wwwroot\\tpkexpress\\assets\\library\\jquery\\jquery-migrate.js",
       "PackagePath": "staticwebassets\\tpkexpress\\assets\\library\\jquery\\jquery-migrate.js"
     },
     {
-      "Id": "C:\\Learning\\TPKSource-2\\WebMVC\\WebMVC\\wwwroot\\tpkexpress\\assets\\library\\jquery\\jquery.js",
+      "Id": "D:\\git2\\webmvc\\wwwroot\\tpkexpress\\assets\\library\\jquery\\jquery.js",
       "PackagePath": "staticwebassets\\tpkexpress\\assets\\library\\jquery\\jquery.js"
     },
     {
-      "Id": "C:\\Learning\\TPKSource-2\\WebMVC\\WebMVC\\wwwroot\\tpkexpress\\assets\\library\\popper\\popper.min.js",
+      "Id": "D:\\git2\\webmvc\\wwwroot\\tpkexpress\\assets\\library\\popper\\popper.min.js",
       "PackagePath": "staticwebassets\\tpkexpress\\assets\\library\\popper\\popper.min.js"
     },
     {
-      "Id": "C:\\Learning\\TPKSource-2\\WebMVC\\WebMVC\\wwwroot\\tpkexpress\\assets\\library\\select2\\select2.min.css",
+      "Id": "D:\\git2\\webmvc\\wwwroot\\tpkexpress\\assets\\library\\select2\\select2.min.css",
       "PackagePath": "staticwebassets\\tpkexpress\\assets\\library\\select2\\select2.min.css"
     },
     {
-      "Id": "C:\\Learning\\TPKSource-2\\WebMVC\\WebMVC\\wwwroot\\tpkexpress\\assets\\library\\select2\\select2.min.js",
+      "Id": "D:\\git2\\webmvc\\wwwroot\\tpkexpress\\assets\\library\\select2\\select2.min.js",
       "PackagePath": "staticwebassets\\tpkexpress\\assets\\library\\select2\\select2.min.js"
     },
     {
-      "Id": "C:\\Learning\\TPKSource-2\\WebMVC\\WebMVC\\wwwroot\\tpkexpress\\assets\\library\\smoothscroll\\SmoothScroll.min.js",
+      "Id": "D:\\git2\\webmvc\\wwwroot\\tpkexpress\\assets\\library\\smoothscroll\\SmoothScroll.min.js",
       "PackagePath": "staticwebassets\\tpkexpress\\assets\\library\\smoothscroll\\SmoothScroll.min.js"
     },
     {
-      "Id": "C:\\Learning\\TPKSource-2\\WebMVC\\WebMVC\\wwwroot\\tpkexpress\\assets\\library\\splitting\\splitting.css",
+      "Id": "D:\\git2\\webmvc\\wwwroot\\tpkexpress\\assets\\library\\splitting\\splitting.css",
       "PackagePath": "staticwebassets\\tpkexpress\\assets\\library\\splitting\\splitting.css"
     },
     {
-      "Id": "C:\\Learning\\TPKSource-2\\WebMVC\\WebMVC\\wwwroot\\tpkexpress\\assets\\library\\splitting\\splitting.min.js",
+      "Id": "D:\\git2\\webmvc\\wwwroot\\tpkexpress\\assets\\library\\splitting\\splitting.min.js",
       "PackagePath": "staticwebassets\\tpkexpress\\assets\\library\\splitting\\splitting.min.js"
     },
     {
-      "Id": "C:\\Learning\\TPKSource-2\\WebMVC\\WebMVC\\wwwroot\\tpkexpress\\assets\\library\\swiper\\swiper-bundle.min.css",
+      "Id": "D:\\git2\\webmvc\\wwwroot\\tpkexpress\\assets\\library\\swiper\\swiper-bundle.min.css",
       "PackagePath": "staticwebassets\\tpkexpress\\assets\\library\\swiper\\swiper-bundle.min.css"
     },
     {
-      "Id": "C:\\Learning\\TPKSource-2\\WebMVC\\WebMVC\\wwwroot\\tpkexpress\\assets\\library\\swiper\\swiper-bundle.min.js",
+      "Id": "D:\\git2\\webmvc\\wwwroot\\tpkexpress\\assets\\library\\swiper\\swiper-bundle.min.js",
       "PackagePath": "staticwebassets\\tpkexpress\\assets\\library\\swiper\\swiper-bundle.min.js"
     },
     {
-      "Id": "C:\\Learning\\TPKSource-2\\WebMVC\\WebMVC\\wwwroot\\tpkexpress\\assets\\library\\trimline\\jquery.trimLines.js",
+      "Id": "D:\\git2\\webmvc\\wwwroot\\tpkexpress\\assets\\library\\trimline\\jquery.trimLines.js",
       "PackagePath": "staticwebassets\\tpkexpress\\assets\\library\\trimline\\jquery.trimLines.js"
     },
     {
-      "Id": "C:\\Learning\\TPKSource-2\\WebMVC\\WebMVC\\wwwroot\\tpkexpress\\assets\\library\\ukiyo\\ukiyo.min.js",
+      "Id": "D:\\git2\\webmvc\\wwwroot\\tpkexpress\\assets\\library\\ukiyo\\ukiyo.min.js",
       "PackagePath": "staticwebassets\\tpkexpress\\assets\\library\\ukiyo\\ukiyo.min.js"
     },
     {
-      "Id": "C:\\Learning\\TPKSource-2\\WebMVC\\WebMVC\\wwwroot\\tpkexpress\\assets\\menu\\bieu-phi-1.png",
+      "Id": "D:\\git2\\webmvc\\wwwroot\\tpkexpress\\assets\\menu\\bieu-phi-1.png",
       "PackagePath": "staticwebassets\\tpkexpress\\assets\\menu\\bieu-phi-1.png"
     },
     {
-      "Id": "C:\\Learning\\TPKSource-2\\WebMVC\\WebMVC\\wwwroot\\tpkexpress\\assets\\menu\\bieu-phi-2.png",
+      "Id": "D:\\git2\\webmvc\\wwwroot\\tpkexpress\\assets\\menu\\bieu-phi-2.png",
       "PackagePath": "staticwebassets\\tpkexpress\\assets\\menu\\bieu-phi-2.png"
     },
     {
-      "Id": "C:\\Learning\\TPKSource-2\\WebMVC\\WebMVC\\wwwroot\\tpkexpress\\assets\\menu\\bieu-phi-3.png",
+      "Id": "D:\\git2\\webmvc\\wwwroot\\tpkexpress\\assets\\menu\\bieu-phi-3.png",
       "PackagePath": "staticwebassets\\tpkexpress\\assets\\menu\\bieu-phi-3.png"
     },
     {
-      "Id": "C:\\Learning\\TPKSource-2\\WebMVC\\WebMVC\\wwwroot\\tpkexpress\\assets\\menu\\chinhg-sach-1.png",
+      "Id": "D:\\git2\\webmvc\\wwwroot\\tpkexpress\\assets\\menu\\chinhg-sach-1.png",
       "PackagePath": "staticwebassets\\tpkexpress\\assets\\menu\\chinhg-sach-1.png"
     },
     {
-      "Id": "C:\\Learning\\TPKSource-2\\WebMVC\\WebMVC\\wwwroot\\tpkexpress\\assets\\menu\\chinhg-sach-2.png",
+      "Id": "D:\\git2\\webmvc\\wwwroot\\tpkexpress\\assets\\menu\\chinhg-sach-2.png",
       "PackagePath": "staticwebassets\\tpkexpress\\assets\\menu\\chinhg-sach-2.png"
     },
     {
-      "Id": "C:\\Learning\\TPKSource-2\\WebMVC\\WebMVC\\wwwroot\\tpkexpress\\assets\\menu\\chinhg-sach-3.png",
+      "Id": "D:\\git2\\webmvc\\wwwroot\\tpkexpress\\assets\\menu\\chinhg-sach-3.png",
       "PackagePath": "staticwebassets\\tpkexpress\\assets\\menu\\chinhg-sach-3.png"
     },
     {
-      "Id": "C:\\Learning\\TPKSource-2\\WebMVC\\WebMVC\\wwwroot\\tpkexpress\\assets\\menu\\dich-vu-1.png",
+      "Id": "D:\\git2\\webmvc\\wwwroot\\tpkexpress\\assets\\menu\\dich-vu-1.png",
       "PackagePath": "staticwebassets\\tpkexpress\\assets\\menu\\dich-vu-1.png"
     },
     {
-      "Id": "C:\\Learning\\TPKSource-2\\WebMVC\\WebMVC\\wwwroot\\tpkexpress\\assets\\menu\\dich-vu-2.png",
+      "Id": "D:\\git2\\webmvc\\wwwroot\\tpkexpress\\assets\\menu\\dich-vu-2.png",
       "PackagePath": "staticwebassets\\tpkexpress\\assets\\menu\\dich-vu-2.png"
     },
     {
-      "Id": "C:\\Learning\\TPKSource-2\\WebMVC\\WebMVC\\wwwroot\\tpkexpress\\assets\\menu\\dich-vu-3.png",
+      "Id": "D:\\git2\\webmvc\\wwwroot\\tpkexpress\\assets\\menu\\dich-vu-3.png",
       "PackagePath": "staticwebassets\\tpkexpress\\assets\\menu\\dich-vu-3.png"
     },
     {
-      "Id": "C:\\Learning\\TPKSource-2\\WebMVC\\WebMVC\\wwwroot\\tpkexpress\\assets\\menu\\dich-vu-4.png",
+      "Id": "D:\\git2\\webmvc\\wwwroot\\tpkexpress\\assets\\menu\\dich-vu-4.png",
       "PackagePath": "staticwebassets\\tpkexpress\\assets\\menu\\dich-vu-4.png"
     },
     {
-      "Id": "C:\\Learning\\TPKSource-2\\WebMVC\\WebMVC\\wwwroot\\tpkexpress\\assets\\menu\\gioi-thieu-1.png",
+      "Id": "D:\\git2\\webmvc\\wwwroot\\tpkexpress\\assets\\menu\\gioi-thieu-1.png",
       "PackagePath": "staticwebassets\\tpkexpress\\assets\\menu\\gioi-thieu-1.png"
     },
     {
-      "Id": "C:\\Learning\\TPKSource-2\\WebMVC\\WebMVC\\wwwroot\\tpkexpress\\assets\\menu\\gioi-thieu-2.png",
+      "Id": "D:\\git2\\webmvc\\wwwroot\\tpkexpress\\assets\\menu\\gioi-thieu-2.png",
       "PackagePath": "staticwebassets\\tpkexpress\\assets\\menu\\gioi-thieu-2.png"
     },
     {
-      "Id": "C:\\Learning\\TPKSource-2\\WebMVC\\WebMVC\\wwwroot\\tpkexpress\\assets\\menu\\tin-tuc-1.png",
+      "Id": "D:\\git2\\webmvc\\wwwroot\\tpkexpress\\assets\\menu\\tin-tuc-1.png",
       "PackagePath": "staticwebassets\\tpkexpress\\assets\\menu\\tin-tuc-1.png"
     },
     {
-      "Id": "C:\\Learning\\TPKSource-2\\WebMVC\\WebMVC\\wwwroot\\tpkexpress\\css\\backdoor.css",
+      "Id": "D:\\git2\\webmvc\\wwwroot\\tpkexpress\\css\\backdoor.css",
       "PackagePath": "staticwebassets\\tpkexpress\\css\\backdoor.css"
     },
     {
-      "Id": "C:\\Learning\\TPKSource-2\\WebMVC\\WebMVC\\wwwroot\\tpkexpress\\css\\style.css",
+      "Id": "D:\\git2\\webmvc\\wwwroot\\tpkexpress\\css\\style.css",
       "PackagePath": "staticwebassets\\tpkexpress\\css\\style.css"
     },
     {
-      "Id": "C:\\Learning\\TPKSource-2\\WebMVC\\WebMVC\\wwwroot\\tpkexpress\\images\\auth-background.jpg",
+      "Id": "D:\\git2\\webmvc\\wwwroot\\tpkexpress\\images\\auth-background.jpg",
       "PackagePath": "staticwebassets\\tpkexpress\\images\\auth-background.jpg"
     },
     {
-      "Id": "C:\\Learning\\TPKSource-2\\WebMVC\\WebMVC\\wwwroot\\tpkexpress\\images\\logo.png",
+      "Id": "D:\\git2\\webmvc\\wwwroot\\tpkexpress\\images\\logo.png",
       "PackagePath": "staticwebassets\\tpkexpress\\images\\logo.png"
     },
     {
-      "Id": "C:\\Learning\\TPKSource-2\\WebMVC\\WebMVC\\wwwroot\\tpkexpress\\images\\status-header-bg.png",
+      "Id": "D:\\git2\\webmvc\\wwwroot\\tpkexpress\\images\\status-header-bg.png",
       "PackagePath": "staticwebassets\\tpkexpress\\images\\status-header-bg.png"
     },
     {
-      "Id": "C:\\Learning\\TPKSource-2\\WebMVC\\WebMVC\\wwwroot\\tpkexpress\\js\\main.js",
+      "Id": "D:\\git2\\webmvc\\wwwroot\\tpkexpress\\js\\main.js",
       "PackagePath": "staticwebassets\\tpkexpress\\js\\main.js"
     },
     {
-      "Id": "C:\\Learning\\TPKSource-2\\WebMVC\\WebMVC\\wwwroot\\tpkexpress\\js\\module\\AnimatedModule.js",
+      "Id": "D:\\git2\\webmvc\\wwwroot\\tpkexpress\\js\\module\\AnimatedModule.js",
       "PackagePath": "staticwebassets\\tpkexpress\\js\\module\\AnimatedModule.js"
     },
     {
-      "Id": "C:\\Learning\\TPKSource-2\\WebMVC\\WebMVC\\wwwroot\\tpkexpress\\js\\module\\AosModule.js",
+      "Id": "D:\\git2\\webmvc\\wwwroot\\tpkexpress\\js\\module\\AosModule.js",
       "PackagePath": "staticwebassets\\tpkexpress\\js\\module\\AosModule.js"
     },
     {
-      "Id": "C:\\Learning\\TPKSource-2\\WebMVC\\WebMVC\\wwwroot\\tpkexpress\\js\\module\\BtnToTopModule.js",
+      "Id": "D:\\git2\\webmvc\\wwwroot\\tpkexpress\\js\\module\\BtnToTopModule.js",
       "PackagePath": "staticwebassets\\tpkexpress\\js\\module\\BtnToTopModule.js"
     },
     {
-      "Id": "C:\\Learning\\TPKSource-2\\WebMVC\\WebMVC\\wwwroot\\tpkexpress\\js\\module\\CheckModule.js",
+      "Id": "D:\\git2\\webmvc\\wwwroot\\tpkexpress\\js\\module\\CheckModule.js",
       "PackagePath": "staticwebassets\\tpkexpress\\js\\module\\CheckModule.js"
     },
     {
-      "Id": "C:\\Learning\\TPKSource-2\\WebMVC\\WebMVC\\wwwroot\\tpkexpress\\js\\module\\CollapseModule.js",
+      "Id": "D:\\git2\\webmvc\\wwwroot\\tpkexpress\\js\\module\\CollapseModule.js",
       "PackagePath": "staticwebassets\\tpkexpress\\js\\module\\CollapseModule.js"
     },
     {
-      "Id": "C:\\Learning\\TPKSource-2\\WebMVC\\WebMVC\\wwwroot\\tpkexpress\\js\\module\\CommonModule.js",
+      "Id": "D:\\git2\\webmvc\\wwwroot\\tpkexpress\\js\\module\\CommonModule.js",
       "PackagePath": "staticwebassets\\tpkexpress\\js\\module\\CommonModule.js"
     },
     {
-      "Id": "C:\\Learning\\TPKSource-2\\WebMVC\\WebMVC\\wwwroot\\tpkexpress\\js\\module\\ComponentModule.js",
+      "Id": "D:\\git2\\webmvc\\wwwroot\\tpkexpress\\js\\module\\ComponentModule.js",
       "PackagePath": "staticwebassets\\tpkexpress\\js\\module\\ComponentModule.js"
     },
     {
-      "Id": "C:\\Learning\\TPKSource-2\\WebMVC\\WebMVC\\wwwroot\\tpkexpress\\js\\module\\CountDownModule.js",
+      "Id": "D:\\git2\\webmvc\\wwwroot\\tpkexpress\\js\\module\\CountDownModule.js",
       "PackagePath": "staticwebassets\\tpkexpress\\js\\module\\CountDownModule.js"
     },
     {
-      "Id": "C:\\Learning\\TPKSource-2\\WebMVC\\WebMVC\\wwwroot\\tpkexpress\\js\\module\\CountUpModule.js",
+      "Id": "D:\\git2\\webmvc\\wwwroot\\tpkexpress\\js\\module\\CountUpModule.js",
       "PackagePath": "staticwebassets\\tpkexpress\\js\\module\\CountUpModule.js"
     },
     {
-      "Id": "C:\\Learning\\TPKSource-2\\WebMVC\\WebMVC\\wwwroot\\tpkexpress\\js\\module\\DatePickerModule.js",
+      "Id": "D:\\git2\\webmvc\\wwwroot\\tpkexpress\\js\\module\\DatePickerModule.js",
       "PackagePath": "staticwebassets\\tpkexpress\\js\\module\\DatePickerModule.js"
     },
     {
-      "Id": "C:\\Learning\\TPKSource-2\\WebMVC\\WebMVC\\wwwroot\\tpkexpress\\js\\module\\FileModule.js",
+      "Id": "D:\\git2\\webmvc\\wwwroot\\tpkexpress\\js\\module\\FileModule.js",
       "PackagePath": "staticwebassets\\tpkexpress\\js\\module\\FileModule.js"
     },
     {
-      "Id": "C:\\Learning\\TPKSource-2\\WebMVC\\WebMVC\\wwwroot\\tpkexpress\\js\\module\\GalleryModule.js",
+      "Id": "D:\\git2\\webmvc\\wwwroot\\tpkexpress\\js\\module\\GalleryModule.js",
       "PackagePath": "staticwebassets\\tpkexpress\\js\\module\\GalleryModule.js"
     },
     {
-      "Id": "C:\\Learning\\TPKSource-2\\WebMVC\\WebMVC\\wwwroot\\tpkexpress\\js\\module\\HeaderModule.js",
+      "Id": "D:\\git2\\webmvc\\wwwroot\\tpkexpress\\js\\module\\HeaderModule.js",
       "PackagePath": "staticwebassets\\tpkexpress\\js\\module\\HeaderModule.js"
     },
     {
-      "Id": "C:\\Learning\\TPKSource-2\\WebMVC\\WebMVC\\wwwroot\\tpkexpress\\js\\module\\IsotopeModule.js",
+      "Id": "D:\\git2\\webmvc\\wwwroot\\tpkexpress\\js\\module\\IsotopeModule.js",
       "PackagePath": "staticwebassets\\tpkexpress\\js\\module\\IsotopeModule.js"
     },
     {
-      "Id": "C:\\Learning\\TPKSource-2\\WebMVC\\WebMVC\\wwwroot\\tpkexpress\\js\\module\\LoadModule.js",
+      "Id": "D:\\git2\\webmvc\\wwwroot\\tpkexpress\\js\\module\\LoadModule.js",
       "PackagePath": "staticwebassets\\tpkexpress\\js\\module\\LoadModule.js"
     },
     {
-      "Id": "C:\\Learning\\TPKSource-2\\WebMVC\\WebMVC\\wwwroot\\tpkexpress\\js\\module\\LoadMoreModule.js",
+      "Id": "D:\\git2\\webmvc\\wwwroot\\tpkexpress\\js\\module\\LoadMoreModule.js",
       "PackagePath": "staticwebassets\\tpkexpress\\js\\module\\LoadMoreModule.js"
     },
     {
-      "Id": "C:\\Learning\\TPKSource-2\\WebMVC\\WebMVC\\wwwroot\\tpkexpress\\js\\module\\MobileModule.js",
+      "Id": "D:\\git2\\webmvc\\wwwroot\\tpkexpress\\js\\module\\MobileModule.js",
       "PackagePath": "staticwebassets\\tpkexpress\\js\\module\\MobileModule.js"
     },
     {
-      "Id": "C:\\Learning\\TPKSource-2\\WebMVC\\WebMVC\\wwwroot\\tpkexpress\\js\\module\\PlusMinusModule.js",
+      "Id": "D:\\git2\\webmvc\\wwwroot\\tpkexpress\\js\\module\\PlusMinusModule.js",
       "PackagePath": "staticwebassets\\tpkexpress\\js\\module\\PlusMinusModule.js"
     },
     {
-      "Id": "C:\\Learning\\TPKSource-2\\WebMVC\\WebMVC\\wwwroot\\tpkexpress\\js\\module\\PopupModule.js",
+      "Id": "D:\\git2\\webmvc\\wwwroot\\tpkexpress\\js\\module\\PopupModule.js",
       "PackagePath": "staticwebassets\\tpkexpress\\js\\module\\PopupModule.js"
     },
     {
-      "Id": "C:\\Learning\\TPKSource-2\\WebMVC\\WebMVC\\wwwroot\\tpkexpress\\js\\module\\RangeModule.js",
+      "Id": "D:\\git2\\webmvc\\wwwroot\\tpkexpress\\js\\module\\RangeModule.js",
       "PackagePath": "staticwebassets\\tpkexpress\\js\\module\\RangeModule.js"
     },
     {
-      "Id": "C:\\Learning\\TPKSource-2\\WebMVC\\WebMVC\\wwwroot\\tpkexpress\\js\\module\\ScrollTriggerModule.js",
+      "Id": "D:\\git2\\webmvc\\wwwroot\\tpkexpress\\js\\module\\ScrollTriggerModule.js",
       "PackagePath": "staticwebassets\\tpkexpress\\js\\module\\ScrollTriggerModule.js"
     },
     {
-      "Id": "C:\\Learning\\TPKSource-2\\WebMVC\\WebMVC\\wwwroot\\tpkexpress\\js\\module\\SearchModule.js",
+      "Id": "D:\\git2\\webmvc\\wwwroot\\tpkexpress\\js\\module\\SearchModule.js",
       "PackagePath": "staticwebassets\\tpkexpress\\js\\module\\SearchModule.js"
     },
     {
-      "Id": "C:\\Learning\\TPKSource-2\\WebMVC\\WebMVC\\wwwroot\\tpkexpress\\js\\module\\Select2Module.js",
+      "Id": "D:\\git2\\webmvc\\wwwroot\\tpkexpress\\js\\module\\Select2Module.js",
       "PackagePath": "staticwebassets\\tpkexpress\\js\\module\\Select2Module.js"
     },
     {
-      "Id": "C:\\Learning\\TPKSource-2\\WebMVC\\WebMVC\\wwwroot\\tpkexpress\\js\\module\\SelectCusModule.js",
+      "Id": "D:\\git2\\webmvc\\wwwroot\\tpkexpress\\js\\module\\SelectCusModule.js",
       "PackagePath": "staticwebassets\\tpkexpress\\js\\module\\SelectCusModule.js"
     },
     {
-      "Id": "C:\\Learning\\TPKSource-2\\WebMVC\\WebMVC\\wwwroot\\tpkexpress\\js\\module\\ShowHideModule.js",
+      "Id": "D:\\git2\\webmvc\\wwwroot\\tpkexpress\\js\\module\\ShowHideModule.js",
       "PackagePath": "staticwebassets\\tpkexpress\\js\\module\\ShowHideModule.js"
     },
     {
-      "Id": "C:\\Learning\\TPKSource-2\\WebMVC\\WebMVC\\wwwroot\\tpkexpress\\js\\module\\SideModule.js",
+      "Id": "D:\\git2\\webmvc\\wwwroot\\tpkexpress\\js\\module\\SideModule.js",
       "PackagePath": "staticwebassets\\tpkexpress\\js\\module\\SideModule.js"
     },
     {
-      "Id": "C:\\Learning\\TPKSource-2\\WebMVC\\WebMVC\\wwwroot\\tpkexpress\\js\\module\\SmoothScrollModule.js",
+      "Id": "D:\\git2\\webmvc\\wwwroot\\tpkexpress\\js\\module\\SmoothScrollModule.js",
       "PackagePath": "staticwebassets\\tpkexpress\\js\\module\\SmoothScrollModule.js"
     },
     {
-      "Id": "C:\\Learning\\TPKSource-2\\WebMVC\\WebMVC\\wwwroot\\tpkexpress\\js\\module\\SwiperModule.js",
+      "Id": "D:\\git2\\webmvc\\wwwroot\\tpkexpress\\js\\module\\SwiperModule.js",
       "PackagePath": "staticwebassets\\tpkexpress\\js\\module\\SwiperModule.js"
     },
     {
-      "Id": "C:\\Learning\\TPKSource-2\\WebMVC\\WebMVC\\wwwroot\\tpkexpress\\js\\module\\TabModule.js",
+      "Id": "D:\\git2\\webmvc\\wwwroot\\tpkexpress\\js\\module\\TabModule.js",
       "PackagePath": "staticwebassets\\tpkexpress\\js\\module\\TabModule.js"
     },
     {
-      "Id": "C:\\Learning\\TPKSource-2\\WebMVC\\WebMVC\\wwwroot\\tpkexpress\\js\\module\\TextAniModule.js",
+      "Id": "D:\\git2\\webmvc\\wwwroot\\tpkexpress\\js\\module\\TextAniModule.js",
       "PackagePath": "staticwebassets\\tpkexpress\\js\\module\\TextAniModule.js"
     },
     {
-      "Id": "C:\\Learning\\TPKSource-2\\WebMVC\\WebMVC\\wwwroot\\uploads\\files\\16b79b87-25ae-4800-a50c-f42c8d3151e1.png",
+      "Id": "D:\\git2\\webmvc\\wwwroot\\uploads\\files\\167e3c73-69dc-4ade-9cb7-6d48de3b885d.jpg",
+      "PackagePath": "staticwebassets\\uploads\\files\\167e3c73-69dc-4ade-9cb7-6d48de3b885d.jpg"
+    },
+    {
+      "Id": "D:\\git2\\webmvc\\wwwroot\\uploads\\files\\16b79b87-25ae-4800-a50c-f42c8d3151e1.png",
       "PackagePath": "staticwebassets\\uploads\\files\\16b79b87-25ae-4800-a50c-f42c8d3151e1.png"
     },
     {
-      "Id": "C:\\Learning\\TPKSource-2\\WebMVC\\WebMVC\\wwwroot\\uploads\\files\\1b6cbdf7-5902-41e7-bb06-e26ee9edd8d1.png",
+      "Id": "D:\\git2\\webmvc\\wwwroot\\uploads\\files\\1b6cbdf7-5902-41e7-bb06-e26ee9edd8d1.png",
       "PackagePath": "staticwebassets\\uploads\\files\\1b6cbdf7-5902-41e7-bb06-e26ee9edd8d1.png"
     },
     {
-      "Id": "C:\\Learning\\TPKSource-2\\WebMVC\\WebMVC\\wwwroot\\uploads\\files\\259d41a2-415b-45ce-80cc-15d455b2d7e9.png",
+      "Id": "D:\\git2\\webmvc\\wwwroot\\uploads\\files\\259d41a2-415b-45ce-80cc-15d455b2d7e9.png",
       "PackagePath": "staticwebassets\\uploads\\files\\259d41a2-415b-45ce-80cc-15d455b2d7e9.png"
     },
     {
-      "Id": "C:\\Learning\\TPKSource-2\\WebMVC\\WebMVC\\wwwroot\\uploads\\files\\2b5ea43b-6642-4ba7-8086-a049fe04ae9a.png",
+      "Id": "D:\\git2\\webmvc\\wwwroot\\uploads\\files\\2b5ea43b-6642-4ba7-8086-a049fe04ae9a.png",
       "PackagePath": "staticwebassets\\uploads\\files\\2b5ea43b-6642-4ba7-8086-a049fe04ae9a.png"
     },
     {
-      "Id": "C:\\Learning\\TPKSource-2\\WebMVC\\WebMVC\\wwwroot\\uploads\\files\\2d349e7a-2c35-491a-87dc-7565c43bc5f0.xlsx",
+      "Id": "D:\\git2\\webmvc\\wwwroot\\uploads\\files\\2d349e7a-2c35-491a-87dc-7565c43bc5f0.xlsx",
       "PackagePath": "staticwebassets\\uploads\\files\\2d349e7a-2c35-491a-87dc-7565c43bc5f0.xlsx"
     },
     {
-      "Id": "C:\\Learning\\TPKSource-2\\WebMVC\\WebMVC\\wwwroot\\uploads\\files\\2ef9fbc8-0e48-4ff8-a318-49c2b7a9d88a.png",
+      "Id": "D:\\git2\\webmvc\\wwwroot\\uploads\\files\\2ef9fbc8-0e48-4ff8-a318-49c2b7a9d88a.png",
       "PackagePath": "staticwebassets\\uploads\\files\\2ef9fbc8-0e48-4ff8-a318-49c2b7a9d88a.png"
     },
     {
-      "Id": "C:\\Learning\\TPKSource-2\\WebMVC\\WebMVC\\wwwroot\\uploads\\files\\32594e42-8157-4fb4-9370-df164b8f30e4.png",
+      "Id": "D:\\git2\\webmvc\\wwwroot\\uploads\\files\\32594e42-8157-4fb4-9370-df164b8f30e4.png",
       "PackagePath": "staticwebassets\\uploads\\files\\32594e42-8157-4fb4-9370-df164b8f30e4.png"
     },
     {
-      "Id": "C:\\Learning\\TPKSource-2\\WebMVC\\WebMVC\\wwwroot\\uploads\\files\\3de22c95-a2a4-4a76-a693-1c008cfc44a0.png",
+      "Id": "D:\\git2\\webmvc\\wwwroot\\uploads\\files\\3de22c95-a2a4-4a76-a693-1c008cfc44a0.png",
       "PackagePath": "staticwebassets\\uploads\\files\\3de22c95-a2a4-4a76-a693-1c008cfc44a0.png"
     },
     {
-      "Id": "C:\\Learning\\TPKSource-2\\WebMVC\\WebMVC\\wwwroot\\uploads\\files\\505e62e0-c395-40e9-9d26-49de60b5ea7b.png",
+      "Id": "D:\\git2\\webmvc\\wwwroot\\uploads\\files\\505e62e0-c395-40e9-9d26-49de60b5ea7b.png",
       "PackagePath": "staticwebassets\\uploads\\files\\505e62e0-c395-40e9-9d26-49de60b5ea7b.png"
     },
     {
-      "Id": "C:\\Learning\\TPKSource-2\\WebMVC\\WebMVC\\wwwroot\\uploads\\files\\5f22eee9-065f-4364-813a-f71cf94d4420.png",
+      "Id": "D:\\git2\\webmvc\\wwwroot\\uploads\\files\\5f22eee9-065f-4364-813a-f71cf94d4420.png",
       "PackagePath": "staticwebassets\\uploads\\files\\5f22eee9-065f-4364-813a-f71cf94d4420.png"
     },
     {
-      "Id": "C:\\Learning\\TPKSource-2\\WebMVC\\WebMVC\\wwwroot\\uploads\\files\\625ff188-8a7a-4663-be4b-dcc1252559fd.xls",
+      "Id": "D:\\git2\\webmvc\\wwwroot\\uploads\\files\\625ff188-8a7a-4663-be4b-dcc1252559fd.xls",
       "PackagePath": "staticwebassets\\uploads\\files\\625ff188-8a7a-4663-be4b-dcc1252559fd.xls"
     },
     {
-      "Id": "C:\\Learning\\TPKSource-2\\WebMVC\\WebMVC\\wwwroot\\uploads\\files\\6df09d70-bce9-4a16-a0f7-488b45d16e85.xlsx",
+      "Id": "D:\\git2\\webmvc\\wwwroot\\uploads\\files\\6df09d70-bce9-4a16-a0f7-488b45d16e85.xlsx",
       "PackagePath": "staticwebassets\\uploads\\files\\6df09d70-bce9-4a16-a0f7-488b45d16e85.xlsx"
     },
     {
-      "Id": "C:\\Learning\\TPKSource-2\\WebMVC\\WebMVC\\wwwroot\\uploads\\files\\6f0d01f5-7c64-4b15-a4b2-52e52bbab667.png",
+      "Id": "D:\\git2\\webmvc\\wwwroot\\uploads\\files\\6f0d01f5-7c64-4b15-a4b2-52e52bbab667.png",
       "PackagePath": "staticwebassets\\uploads\\files\\6f0d01f5-7c64-4b15-a4b2-52e52bbab667.png"
     },
     {
-      "Id": "C:\\Learning\\TPKSource-2\\WebMVC\\WebMVC\\wwwroot\\uploads\\files\\75ea69d1-579f-4b92-a5a3-0e11fa3ef309.png",
+      "Id": "D:\\git2\\webmvc\\wwwroot\\uploads\\files\\75ea69d1-579f-4b92-a5a3-0e11fa3ef309.png",
       "PackagePath": "staticwebassets\\uploads\\files\\75ea69d1-579f-4b92-a5a3-0e11fa3ef309.png"
     },
     {
-      "Id": "C:\\Learning\\TPKSource-2\\WebMVC\\WebMVC\\wwwroot\\uploads\\files\\86af3c83-19f7-4062-bf87-44c51b239234.png",
+      "Id": "D:\\git2\\webmvc\\wwwroot\\uploads\\files\\86af3c83-19f7-4062-bf87-44c51b239234.png",
       "PackagePath": "staticwebassets\\uploads\\files\\86af3c83-19f7-4062-bf87-44c51b239234.png"
     },
     {
-      "Id": "C:\\Learning\\TPKSource-2\\WebMVC\\WebMVC\\wwwroot\\uploads\\files\\a70936fb-2438-47d5-b8b0-030468fc72b5.png",
+      "Id": "D:\\git2\\webmvc\\wwwroot\\uploads\\files\\a70936fb-2438-47d5-b8b0-030468fc72b5.png",
       "PackagePath": "staticwebassets\\uploads\\files\\a70936fb-2438-47d5-b8b0-030468fc72b5.png"
     },
     {
-      "Id": "C:\\Learning\\TPKSource-2\\WebMVC\\WebMVC\\wwwroot\\uploads\\files\\c0e5d811-24e9-49e0-b2ac-1dbbb081f517.png",
+      "Id": "D:\\git2\\webmvc\\wwwroot\\uploads\\files\\c0e5d811-24e9-49e0-b2ac-1dbbb081f517.png",
       "PackagePath": "staticwebassets\\uploads\\files\\c0e5d811-24e9-49e0-b2ac-1dbbb081f517.png"
     },
     {
-      "Id": "C:\\Learning\\TPKSource-2\\WebMVC\\WebMVC\\wwwroot\\uploads\\files\\c6c8824d-ebb2-48c2-b3ef-dcb1a04ebf01.png",
+      "Id": "D:\\git2\\webmvc\\wwwroot\\uploads\\files\\c6c8824d-ebb2-48c2-b3ef-dcb1a04ebf01.png",
       "PackagePath": "staticwebassets\\uploads\\files\\c6c8824d-ebb2-48c2-b3ef-dcb1a04ebf01.png"
     },
     {
-      "Id": "C:\\Learning\\TPKSource-2\\WebMVC\\WebMVC\\wwwroot\\uploads\\files\\d128b591-76c5-4f12-83a1-46314c15a7f9.png",
+      "Id": "D:\\git2\\webmvc\\wwwroot\\uploads\\files\\d128b591-76c5-4f12-83a1-46314c15a7f9.png",
       "PackagePath": "staticwebassets\\uploads\\files\\d128b591-76c5-4f12-83a1-46314c15a7f9.png"
     },
     {
-      "Id": "C:\\Learning\\TPKSource-2\\WebMVC\\WebMVC\\wwwroot\\uploads\\files\\dc261843-c0bc-4f14-96b6-9fb5c39a5523.png",
+      "Id": "D:\\git2\\webmvc\\wwwroot\\uploads\\files\\dc261843-c0bc-4f14-96b6-9fb5c39a5523.png",
       "PackagePath": "staticwebassets\\uploads\\files\\dc261843-c0bc-4f14-96b6-9fb5c39a5523.png"
     },
     {
-      "Id": "C:\\Learning\\TPKSource-2\\WebMVC\\WebMVC\\wwwroot\\uploads\\files\\e2ee2de6-363b-47f1-8495-e0489b660947.png",
+      "Id": "D:\\git2\\webmvc\\wwwroot\\uploads\\files\\e2ee2de6-363b-47f1-8495-e0489b660947.png",
       "PackagePath": "staticwebassets\\uploads\\files\\e2ee2de6-363b-47f1-8495-e0489b660947.png"
     },
     {
-      "Id": "C:\\Learning\\TPKSource-2\\WebMVC\\WebMVC\\wwwroot\\uploads\\files\\f063dba4-a158-4c09-ad81-db761943813c.png",
+      "Id": "D:\\git2\\webmvc\\wwwroot\\uploads\\files\\f063dba4-a158-4c09-ad81-db761943813c.png",
       "PackagePath": "staticwebassets\\uploads\\files\\f063dba4-a158-4c09-ad81-db761943813c.png"
     },
     {
-      "Id": "C:\\Learning\\TPKSource-2\\WebMVC\\WebMVC\\wwwroot\\uploads\\files\\f42aa2fd-4c31-4650-a9f0-8ab23f33b1a7.png",
+      "Id": "D:\\git2\\webmvc\\wwwroot\\uploads\\files\\f42aa2fd-4c31-4650-a9f0-8ab23f33b1a7.png",
       "PackagePath": "staticwebassets\\uploads\\files\\f42aa2fd-4c31-4650-a9f0-8ab23f33b1a7.png"
     },
     {
-      "Id": "C:\\Learning\\TPKSource-2\\WebMVC\\WebMVC\\wwwroot\\uploads\\images\\29de9a3b-3281-4604-9abf-6a0e236bdb9e.png",
+      "Id": "D:\\git2\\webmvc\\wwwroot\\uploads\\images\\29de9a3b-3281-4604-9abf-6a0e236bdb9e.png",
       "PackagePath": "staticwebassets\\uploads\\images\\29de9a3b-3281-4604-9abf-6a0e236bdb9e.png"
     },
     {
-      "Id": "C:\\Learning\\TPKSource-2\\WebMVC\\WebMVC\\wwwroot\\uploads\\images\\3591cc75-e0af-49c3-9994-cc5dcbdd7a2e.png",
+      "Id": "D:\\git2\\webmvc\\wwwroot\\uploads\\images\\3591cc75-e0af-49c3-9994-cc5dcbdd7a2e.png",
       "PackagePath": "staticwebassets\\uploads\\images\\3591cc75-e0af-49c3-9994-cc5dcbdd7a2e.png"
     },
     {
-      "Id": "C:\\Learning\\TPKSource-2\\WebMVC\\WebMVC\\wwwroot\\uploads\\images\\8efcd36a-9f37-4c65-9188-35f5a4eb5186.png",
+      "Id": "D:\\git2\\webmvc\\wwwroot\\uploads\\images\\8efcd36a-9f37-4c65-9188-35f5a4eb5186.png",
       "PackagePath": "staticwebassets\\uploads\\images\\8efcd36a-9f37-4c65-9188-35f5a4eb5186.png"
     },
     {
-      "Id": "C:\\Learning\\TPKSource-2\\WebMVC\\WebMVC\\wwwroot\\uploads\\images\\971a85a8-d8df-4428-8e92-1a2977d783e8.png",
+      "Id": "D:\\git2\\webmvc\\wwwroot\\uploads\\images\\971a85a8-d8df-4428-8e92-1a2977d783e8.png",
       "PackagePath": "staticwebassets\\uploads\\images\\971a85a8-d8df-4428-8e92-1a2977d783e8.png"
     },
     {
-      "Id": "C:\\Learning\\TPKSource-2\\WebMVC\\WebMVC\\wwwroot\\uploads\\images\\aa202b3e-477e-44ba-81e5-2c09dc763a55.jpg",
+      "Id": "D:\\git2\\webmvc\\wwwroot\\uploads\\images\\aa202b3e-477e-44ba-81e5-2c09dc763a55.jpg",
       "PackagePath": "staticwebassets\\uploads\\images\\aa202b3e-477e-44ba-81e5-2c09dc763a55.jpg"
     },
     {
-      "Id": "C:\\Learning\\TPKSource-2\\WebMVC\\WebMVC\\wwwroot\\uploads\\images\\ac2f058a-c5d5-419c-9d75-7c6a246e10b9.png",
+      "Id": "D:\\git2\\webmvc\\wwwroot\\uploads\\images\\ac2f058a-c5d5-419c-9d75-7c6a246e10b9.png",
       "PackagePath": "staticwebassets\\uploads\\images\\ac2f058a-c5d5-419c-9d75-7c6a246e10b9.png"
     },
     {
-      "Id": "C:\\Learning\\TPKSource-2\\WebMVC\\WebMVC\\wwwroot\\uploads\\images\\c1af4350-6be1-4fc1-8f0c-946b0cd4a449.png",
+      "Id": "D:\\git2\\webmvc\\wwwroot\\uploads\\images\\c1af4350-6be1-4fc1-8f0c-946b0cd4a449.png",
       "PackagePath": "staticwebassets\\uploads\\images\\c1af4350-6be1-4fc1-8f0c-946b0cd4a449.png"
     },
     {
-      "Id": "C:\\Learning\\TPKSource-2\\WebMVC\\WebMVC\\wwwroot\\uploads\\images\\c6c4149d-cb6b-4570-b766-d9fb8d7457c1.png",
+      "Id": "D:\\git2\\webmvc\\wwwroot\\uploads\\images\\c6c4149d-cb6b-4570-b766-d9fb8d7457c1.png",
       "PackagePath": "staticwebassets\\uploads\\images\\c6c4149d-cb6b-4570-b766-d9fb8d7457c1.png"
     },
     {
-      "Id": "C:\\Learning\\TPKSource-2\\WebMVC\\WebMVC\\wwwroot\\uploads\\images\\dc9e9935-5e58-4f22-b3f9-bbf417c2e340.png",
+      "Id": "D:\\git2\\webmvc\\wwwroot\\uploads\\images\\dc9e9935-5e58-4f22-b3f9-bbf417c2e340.png",
       "PackagePath": "staticwebassets\\uploads\\images\\dc9e9935-5e58-4f22-b3f9-bbf417c2e340.png"
     },
     {
