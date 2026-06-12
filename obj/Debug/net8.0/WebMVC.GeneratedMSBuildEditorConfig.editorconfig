@@ -9,339 +9,339 @@ build_property.EnforceExtendedAnalyzerRules =
 build_property._SupportedPlatformList = Linux,macOS,Windows
 build_property.RootNamespace = WebMVC
 build_property.RootNamespace = WebMVC
-build_property.ProjectDir = D:\git2\webmvc\
+build_property.ProjectDir = D:\github\webmvc\
 build_property.EnableComHosting = 
 build_property.EnableGeneratedComInterfaceComImportInterop = 
 build_property.RazorLangVersion = 8.0
 build_property.SupportLocalizedComponentNames = 
 build_property.GenerateRazorMetadataSourceChecksumAttributes = 
-build_property.MSBuildProjectDirectory = D:\git2\webmvc
+build_property.MSBuildProjectDirectory = D:\github\webmvc
 build_property._RazorSourceGeneratorDebug = 
 
-[D:/git2/webmvc/Views/Account/Customer.cshtml]
+[D:/github/webmvc/Views/Account/Customer.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWNjb3VudFxDdXN0b21lci5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/git2/webmvc/Views/Account/Detail.cshtml]
+[D:/github/webmvc/Views/Account/Detail.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWNjb3VudFxEZXRhaWwuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/git2/webmvc/Views/Account/Home.cshtml]
+[D:/github/webmvc/Views/Account/Home.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWNjb3VudFxIb21lLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/git2/webmvc/Views/Account/Index.cshtml]
+[D:/github/webmvc/Views/Account/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWNjb3VudFxJbmRleC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/git2/webmvc/Views/Account/Profile.cshtml]
+[D:/github/webmvc/Views/Account/Profile.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWNjb3VudFxQcm9maWxlLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/git2/webmvc/Views/Account/_AccountTable.cshtml]
+[D:/github/webmvc/Views/Account/_AccountTable.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWNjb3VudFxfQWNjb3VudFRhYmxlLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/git2/webmvc/Views/Account/_CustomerTable.cshtml]
+[D:/github/webmvc/Views/Account/_CustomerTable.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWNjb3VudFxfQ3VzdG9tZXJUYWJsZS5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/git2/webmvc/Views/Account/_PricingSeparateTable.cshtml]
+[D:/github/webmvc/Views/Account/_PricingSeparateTable.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWNjb3VudFxfUHJpY2luZ1NlcGFyYXRlVGFibGUuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/git2/webmvc/Views/Account/_PricingSeparateTableInList.cshtml]
+[D:/github/webmvc/Views/Account/_PricingSeparateTableInList.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWNjb3VudFxfUHJpY2luZ1NlcGFyYXRlVGFibGVJbkxpc3QuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/git2/webmvc/Views/Account/_SalesTableInList.cshtml]
+[D:/github/webmvc/Views/Account/_SalesTableInList.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWNjb3VudFxfU2FsZXNUYWJsZUluTGlzdC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/git2/webmvc/Views/BigPackage/Detail.cshtml]
+[D:/github/webmvc/Views/BigPackage/Detail.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQmlnUGFja2FnZVxEZXRhaWwuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/git2/webmvc/Views/BigPackage/Index.cshtml]
+[D:/github/webmvc/Views/BigPackage/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQmlnUGFja2FnZVxJbmRleC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/git2/webmvc/Views/BigPackage/_BigPackageTable.cshtml]
+[D:/github/webmvc/Views/BigPackage/_BigPackageTable.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQmlnUGFja2FnZVxfQmlnUGFja2FnZVRhYmxlLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/git2/webmvc/Views/Chat/ChatMVC.cshtml]
+[D:/github/webmvc/Views/Chat/ChatMVC.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ2hhdFxDaGF0TVZDLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/git2/webmvc/Views/Chat/Index.cshtml]
+[D:/github/webmvc/Views/Chat/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ2hhdFxJbmRleC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/git2/webmvc/Views/Chat/_ChatConversationTable.cshtml]
+[D:/github/webmvc/Views/Chat/_ChatConversationTable.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ2hhdFxfQ2hhdENvbnZlcnNhdGlvblRhYmxlLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/git2/webmvc/Views/Error/BadRequestPage.cshtml]
+[D:/github/webmvc/Views/Error/BadRequestPage.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRXJyb3JcQmFkUmVxdWVzdFBhZ2UuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/git2/webmvc/Views/Error/UnauthorizedAccess.cshtml]
+[D:/github/webmvc/Views/Error/UnauthorizedAccess.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRXJyb3JcVW5hdXRob3JpemVkQWNjZXNzLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/git2/webmvc/Views/Home/ForgotPassword.cshtml]
+[D:/github/webmvc/Views/Home/ForgotPassword.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxGb3Jnb3RQYXNzd29yZC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/git2/webmvc/Views/Home/Guide.cshtml]
+[D:/github/webmvc/Views/Home/Guide.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxHdWlkZS5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/git2/webmvc/Views/Home/Index.cshtml]
+[D:/github/webmvc/Views/Home/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxJbmRleC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/git2/webmvc/Views/Home/Introduce.cshtml]
+[D:/github/webmvc/Views/Home/Introduce.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxJbnRyb2R1Y2UuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/git2/webmvc/Views/Home/News.cshtml]
+[D:/github/webmvc/Views/Home/News.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxOZXdzLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/git2/webmvc/Views/Home/Policy.cshtml]
+[D:/github/webmvc/Views/Home/Policy.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxQb2xpY3kuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/git2/webmvc/Views/Home/Pricing.cshtml]
+[D:/github/webmvc/Views/Home/Pricing.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxQcmljaW5nLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/git2/webmvc/Views/Home/Privacy.cshtml]
+[D:/github/webmvc/Views/Home/Privacy.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxQcml2YWN5LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/git2/webmvc/Views/Home/Services.cshtml]
+[D:/github/webmvc/Views/Home/Services.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxTZXJ2aWNlcy5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/git2/webmvc/Views/Home/SignIn.cshtml]
+[D:/github/webmvc/Views/Home/SignIn.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxTaWduSW4uY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/git2/webmvc/Views/Home/SignUp.cshtml]
+[D:/github/webmvc/Views/Home/SignUp.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxTaWduVXAuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/git2/webmvc/Views/Notification/Index.cshtml]
+[D:/github/webmvc/Views/Notification/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTm90aWZpY2F0aW9uXEluZGV4LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/git2/webmvc/Views/Notification/_NotificationTable.cshtml]
+[D:/github/webmvc/Views/Notification/_NotificationTable.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTm90aWZpY2F0aW9uXF9Ob3RpZmljYXRpb25UYWJsZS5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/git2/webmvc/Views/OutOfStock/Create.cshtml]
+[D:/github/webmvc/Views/OutOfStock/Create.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcT3V0T2ZTdG9ja1xDcmVhdGUuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/git2/webmvc/Views/OutOfStock/Detail.cshtml]
+[D:/github/webmvc/Views/OutOfStock/Detail.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcT3V0T2ZTdG9ja1xEZXRhaWwuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/git2/webmvc/Views/OutOfStock/Index.cshtml]
+[D:/github/webmvc/Views/OutOfStock/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcT3V0T2ZTdG9ja1xJbmRleC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/git2/webmvc/Views/OutOfStock/Manage.cshtml]
+[D:/github/webmvc/Views/OutOfStock/Manage.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcT3V0T2ZTdG9ja1xNYW5hZ2UuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/git2/webmvc/Views/OutOfStock/_ManageOutOfStockTable.cshtml]
+[D:/github/webmvc/Views/OutOfStock/_ManageOutOfStockTable.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcT3V0T2ZTdG9ja1xfTWFuYWdlT3V0T2ZTdG9ja1RhYmxlLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/git2/webmvc/Views/OutOfStock/_OutOfStockTable.cshtml]
+[D:/github/webmvc/Views/OutOfStock/_OutOfStockTable.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcT3V0T2ZTdG9ja1xfT3V0T2ZTdG9ja1RhYmxlLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/git2/webmvc/Views/PriceImport/Index.cshtml]
+[D:/github/webmvc/Views/PriceImport/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUHJpY2VJbXBvcnRcSW5kZXguY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/git2/webmvc/Views/Pricing/Index.cshtml]
+[D:/github/webmvc/Views/Pricing/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUHJpY2luZ1xJbmRleC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/git2/webmvc/Views/Pricing/_PricingTable.cshtml]
+[D:/github/webmvc/Views/Pricing/_PricingTable.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUHJpY2luZ1xfUHJpY2luZ1RhYmxlLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/git2/webmvc/Views/Scan/DestinationWarehouse.cshtml]
+[D:/github/webmvc/Views/Scan/DestinationWarehouse.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2NhblxEZXN0aW5hdGlvbldhcmVob3VzZS5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/git2/webmvc/Views/Scan/ImportExcel.cshtml]
+[D:/github/webmvc/Views/Scan/ImportExcel.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2NhblxJbXBvcnRFeGNlbC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/git2/webmvc/Views/Scan/ReceiveWarehouse.cshtml]
+[D:/github/webmvc/Views/Scan/ReceiveWarehouse.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2NhblxSZWNlaXZlV2FyZWhvdXNlLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/git2/webmvc/Views/Shared/Components/AssignTransporationModel.cshtml]
+[D:/github/webmvc/Views/Shared/Components/AssignTransporationModel.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXENvbXBvbmVudHNcQXNzaWduVHJhbnNwb3JhdGlvbk1vZGVsLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/git2/webmvc/Views/Shared/Components/AssignTransporationVNModel.cshtml]
+[D:/github/webmvc/Views/Shared/Components/AssignTransporationVNModel.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXENvbXBvbmVudHNcQXNzaWduVHJhbnNwb3JhdGlvblZOTW9kZWwuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/git2/webmvc/Views/Shared/Components/ChatWindow/Default.cshtml]
+[D:/github/webmvc/Views/Shared/Components/ChatWindow/Default.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXENvbXBvbmVudHNcQ2hhdFdpbmRvd1xEZWZhdWx0LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/git2/webmvc/Views/Shared/Components/NavigationMenu/Default.cshtml]
+[D:/github/webmvc/Views/Shared/Components/NavigationMenu/Default.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXENvbXBvbmVudHNcTmF2aWdhdGlvbk1lbnVcRGVmYXVsdC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/git2/webmvc/Views/Shared/Components/PrintOutOfStock.cshtml]
+[D:/github/webmvc/Views/Shared/Components/PrintOutOfStock.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXENvbXBvbmVudHNcUHJpbnRPdXRPZlN0b2NrLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/git2/webmvc/Views/Shared/Components/SidebarMenu/Default.cshtml]
+[D:/github/webmvc/Views/Shared/Components/SidebarMenu/Default.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXENvbXBvbmVudHNcU2lkZWJhck1lbnVcRGVmYXVsdC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/git2/webmvc/Views/Shared/Error.cshtml]
+[D:/github/webmvc/Views/Shared/Error.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXEVycm9yLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/git2/webmvc/Views/Shared/_HomeLayout.cshtml]
+[D:/github/webmvc/Views/Shared/_HomeLayout.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9Ib21lTGF5b3V0LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/git2/webmvc/Views/Shared/_Layout.cshtml]
+[D:/github/webmvc/Views/Shared/_Layout.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9MYXlvdXQuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/git2/webmvc/Views/Shared/_ValidationScriptsPartial.cshtml]
+[D:/github/webmvc/Views/Shared/_ValidationScriptsPartial.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9WYWxpZGF0aW9uU2NyaXB0c1BhcnRpYWwuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/git2/webmvc/Views/StaffTarget/Detail.cshtml]
+[D:/github/webmvc/Views/StaffTarget/Detail.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU3RhZmZUYXJnZXRcRGV0YWlsLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/git2/webmvc/Views/StaffTarget/Index.cshtml]
+[D:/github/webmvc/Views/StaffTarget/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU3RhZmZUYXJnZXRcSW5kZXguY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/git2/webmvc/Views/StaffTarget/_StaffTargetTable.cshtml]
+[D:/github/webmvc/Views/StaffTarget/_StaffTargetTable.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU3RhZmZUYXJnZXRcX1N0YWZmVGFyZ2V0VGFibGUuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/git2/webmvc/Views/Statistic/Dashboard.cshtml]
+[D:/github/webmvc/Views/Statistic/Dashboard.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU3RhdGlzdGljXERhc2hib2FyZC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/git2/webmvc/Views/Statistic/ReportChart.cshtml]
+[D:/github/webmvc/Views/Statistic/ReportChart.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU3RhdGlzdGljXFJlcG9ydENoYXJ0LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/git2/webmvc/Views/Statistic/ReportFixedFee.cshtml]
+[D:/github/webmvc/Views/Statistic/ReportFixedFee.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU3RhdGlzdGljXFJlcG9ydEZpeGVkRmVlLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/git2/webmvc/Views/Statistic/ReportOtherFee.cshtml]
+[D:/github/webmvc/Views/Statistic/ReportOtherFee.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU3RhdGlzdGljXFJlcG9ydE90aGVyRmVlLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/git2/webmvc/Views/Statistic/ReportPartnerFee.cshtml]
+[D:/github/webmvc/Views/Statistic/ReportPartnerFee.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU3RhdGlzdGljXFJlcG9ydFBhcnRuZXJGZWUuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/git2/webmvc/Views/Statistic/ReportRevenue.cshtml]
+[D:/github/webmvc/Views/Statistic/ReportRevenue.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU3RhdGlzdGljXFJlcG9ydFJldmVudWUuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/git2/webmvc/Views/Statistic/_ReportFixedFeeTable.cshtml]
+[D:/github/webmvc/Views/Statistic/_ReportFixedFeeTable.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU3RhdGlzdGljXF9SZXBvcnRGaXhlZEZlZVRhYmxlLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/git2/webmvc/Views/Statistic/_ReportOtherFeeTable.cshtml]
+[D:/github/webmvc/Views/Statistic/_ReportOtherFeeTable.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU3RhdGlzdGljXF9SZXBvcnRPdGhlckZlZVRhYmxlLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/git2/webmvc/Views/Statistic/_ReportPartnerFeeTable.cshtml]
+[D:/github/webmvc/Views/Statistic/_ReportPartnerFeeTable.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU3RhdGlzdGljXF9SZXBvcnRQYXJ0bmVyRmVlVGFibGUuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/git2/webmvc/Views/Statistic/_ReportRevenueTable.cshtml]
+[D:/github/webmvc/Views/Statistic/_ReportRevenueTable.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU3RhdGlzdGljXF9SZXBvcnRSZXZlbnVlVGFibGUuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/git2/webmvc/Views/Tracking/Index.cshtml]
+[D:/github/webmvc/Views/Tracking/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVHJhY2tpbmdcSW5kZXguY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/git2/webmvc/Views/Tracking/IndexContent.cshtml]
+[D:/github/webmvc/Views/Tracking/IndexContent.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVHJhY2tpbmdcSW5kZXhDb250ZW50LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/git2/webmvc/Views/Transportation/Create.cshtml]
+[D:/github/webmvc/Views/Transportation/Create.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVHJhbnNwb3J0YXRpb25cQ3JlYXRlLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/git2/webmvc/Views/Transportation/CreateSpecialShip.cshtml]
+[D:/github/webmvc/Views/Transportation/CreateSpecialShip.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVHJhbnNwb3J0YXRpb25cQ3JlYXRlU3BlY2lhbFNoaXAuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/git2/webmvc/Views/Transportation/Detail.cshtml]
+[D:/github/webmvc/Views/Transportation/Detail.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVHJhbnNwb3J0YXRpb25cRGV0YWlsLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/git2/webmvc/Views/Transportation/FindCode.cshtml]
+[D:/github/webmvc/Views/Transportation/FindCode.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVHJhbnNwb3J0YXRpb25cRmluZENvZGUuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/git2/webmvc/Views/Transportation/Index.cshtml]
+[D:/github/webmvc/Views/Transportation/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVHJhbnNwb3J0YXRpb25cSW5kZXguY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/git2/webmvc/Views/Transportation/_TransportationTable.cshtml]
+[D:/github/webmvc/Views/Transportation/_TransportationTable.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVHJhbnNwb3J0YXRpb25cX1RyYW5zcG9ydGF0aW9uVGFibGUuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/git2/webmvc/Views/Voucher/Detail.cshtml]
+[D:/github/webmvc/Views/Voucher/Detail.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVm91Y2hlclxEZXRhaWwuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/git2/webmvc/Views/Voucher/Index.cshtml]
+[D:/github/webmvc/Views/Voucher/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVm91Y2hlclxJbmRleC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/git2/webmvc/Views/Voucher/_VoucherAccountTable.cshtml]
+[D:/github/webmvc/Views/Voucher/_VoucherAccountTable.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVm91Y2hlclxfVm91Y2hlckFjY291bnRUYWJsZS5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/git2/webmvc/Views/Voucher/_VoucherTable.cshtml]
+[D:/github/webmvc/Views/Voucher/_VoucherTable.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVm91Y2hlclxfVm91Y2hlclRhYmxlLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/git2/webmvc/Views/WebConfiguration/Index.cshtml]
+[D:/github/webmvc/Views/WebConfiguration/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcV2ViQ29uZmlndXJhdGlvblxJbmRleC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/git2/webmvc/Views/ZaloWebhook/Index.cshtml]
+[D:/github/webmvc/Views/ZaloWebhook/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcWmFsb1dlYmhvb2tcSW5kZXguY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/git2/webmvc/Views/_ViewImports.cshtml]
+[D:/github/webmvc/Views/_ViewImports.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcX1ZpZXdJbXBvcnRzLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/git2/webmvc/Views/_ViewStart.cshtml]
+[D:/github/webmvc/Views/_ViewStart.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcX1ZpZXdTdGFydC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 

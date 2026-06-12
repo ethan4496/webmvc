@@ -4897,11 +4897,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\git2\\webmvc\\WebMVC.csproj",
+      "projectUniqueName": "D:\\github\\webmvc\\WebMVC.csproj",
       "projectName": "WebMVC",
-      "projectPath": "D:\\git2\\webmvc\\WebMVC.csproj",
+      "projectPath": "D:\\github\\webmvc\\WebMVC.csproj",
       "packagesPath": "C:\\Users\\Admin\\.nuget\\packages\\",
-      "outputPath": "D:\\git2\\webmvc\\obj\\",
+      "outputPath": "D:\\github\\webmvc\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\Admin\\AppData\\Roaming\\NuGet\\NuGet.Config"
