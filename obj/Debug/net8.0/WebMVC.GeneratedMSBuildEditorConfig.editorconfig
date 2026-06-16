@@ -282,6 +282,18 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU3RhdGlzdGljXF9SZXBvcnRSZXZlbnVlVGFibGUuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
+[D:/github/webmvc/Views/Template/Create.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVGVtcGxhdGVcQ3JlYXRlLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/github/webmvc/Views/Template/Edit.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVGVtcGxhdGVcRWRpdC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/github/webmvc/Views/Template/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVGVtcGxhdGVcSW5kZXguY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
 [D:/github/webmvc/Views/Tracking/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVHJhY2tpbmdcSW5kZXguY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 

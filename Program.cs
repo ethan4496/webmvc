@@ -21,6 +21,7 @@ builder.Services.AddScoped<IAccountService, AccountService>();
 builder.Services.AddScoped<IOutOfStockService, OutOfStockService>();
 builder.Services.AddScoped<ITrackingService, TrackingService>();
 builder.Services.AddScoped<ITransportationService, TransportationService>();
+builder.Services.AddScoped<ITemplateService, TemplateService>();
 builder.Services.AddScoped<IWarehouseService, WarehouseService>();
 builder.Services.AddScoped<IBigPackageService, BigPackageService>();
 builder.Services.AddScoped<IVoucherService, VoucherService>();

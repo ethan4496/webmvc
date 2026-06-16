@@ -23,6 +23,11 @@ namespace WebMVC.Middlewares
             }
             catch (Exception error)
             {
+                Console.WriteLine("ERROR MESSAGE:");
+                Console.WriteLine(error.Message);
+
+                Console.WriteLine("STACK TRACE:");
+                Console.WriteLine(error.StackTrace);
                 var response = context.Response;
                 response.ContentType = "application/json";
 

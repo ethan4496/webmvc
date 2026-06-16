@@ -1,0 +1,59 @@
+@using WebMVC.Entities
+@using WebMVC.Models.Responses
+@using WebMVC.Interfaces
+@using WebMVC.Models.Requests.Creates
+@using WebMVC.Ultilities.Enums
+@model EmailTemplate
+
+<div class="container-fluid mt-4">
+    <div class="card mb-4">
+        <div class="card-header d-flex justify-content-between align-items-center">
+            <h2>Template Email</h2>
+        </div>
+        <form action="/edit-template/@Model.Id" method="post">
+            <div asp-validation-summary="All" class="text-danger"></div>
+            @Html.AntiForgeryToken()
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-6 col-xs-12 mb-3">
+                        <label for="barCode" class="form-label">Tên template</label>
+                        <input type="text" class="form-control" value="@Model.Name" id="name" name="Name" placeholder="Tên template">
+                    </div>
+                    <div class="col-md-6 col-xs-12 mb-3">
+                        <label for="status" class="form-label">Trạng thái</label>
+                        <select id="status" class="form-select" name="Status">
+                            <option value="active" selected="@(Model.Status == "active")" >Active</option>
+                            <option value="inactive" selected="@(Model.Status == "inactive")">Inactive</option>
+                        </select>
+                    </div>
+                    <div class="col-md-6 col-xs-12 mb-3">
+                        <label for="subject" class="form-label">Subject</label>
+                        <input type="text" class="form-control" value="@Model.Subject" id="subject" name="Subject" placeholder="Subject">
+                    </div>
+                    <div class="col-md-6 col-xs-12 mb-3">
+                        <label for="toDate" class="form-label">Content</label>
+                        <textarea rows="10" class="form-control" id="body" name="Body" placeholder="Content">@Model.Body</textarea>
+                    </div>
+                </div>
+                <div class="row pt-2">
+                    <div class="text-end">
+                        <button type="submit" class="btn btn-primary btn-search">Save</button>
+                    </div>
+                </div>
+
+            </div>
+        </form>
+    </div>
+    <div id="loading" style="display: none;">
+        <div class="loading-overlay">
+            <div class="spinner"></div>
+        </div>
+    </div>
+    @section Scripts {
+        <script src="~/js/template.js" asp-append-version="true"></script>
+        <style>
+            [data-bs-toggle="tooltip"] {
+            cursor: pointer;
+            }
+        </style>
+    }
