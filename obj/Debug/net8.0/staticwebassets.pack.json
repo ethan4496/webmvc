@@ -65,10 +65,13 @@
       "PackagePath": "staticwebassets\\js\\printOutStock.js"
     },
     {
+<<<<<<< HEAD
       "Id": "D:\\github\\webmvc\\wwwroot\\js\\template.js",
       "PackagePath": "staticwebassets\\js\\template.js"
     },
     {
+=======
+>>>>>>> d8e957a1b56c4e69ff610e0c366af04d5081d70f
       "Id": "D:\\github\\webmvc\\wwwroot\\templates\\EmailPXKTemplate.html",
       "PackagePath": "staticwebassets\\templates\\EmailPXKTemplate.html"
     },
@@ -1459,6 +1462,10 @@
     {
       "Id": "D:\\github\\webmvc\\wwwroot\\uploads\\images\\dc9e9935-5e58-4f22-b3f9-bbf417c2e340.png",
       "PackagePath": "staticwebassets\\uploads\\images\\dc9e9935-5e58-4f22-b3f9-bbf417c2e340.png"
+    },
+    {
+      "Id": "D:\\github\\webmvc\\wwwroot\\uploads\\pxks\\pxk11619.pdf",
+      "PackagePath": "staticwebassets\\uploads\\pxks\\pxk11619.pdf"
     },
     {
       "Id": "obj\\Debug\\net8.0\\staticwebassets\\msbuild.WebMVC.Microsoft.AspNetCore.StaticWebAssets.props",

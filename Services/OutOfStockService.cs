@@ -1,7 +1,8 @@
 ﻿using AutoMapper;
 using DocumentFormat.OpenXml.Office2010.Excel;
 using Microsoft.EntityFrameworkCore;
-using SelectPdf;
+using PuppeteerSharp;
+using PuppeteerSharp.Media;
 using Serilog;
 using System.Text;
 using WebMVC.BackgroundWorkers;
@@ -614,38 +615,98 @@ namespace WebMVC.Services
         {
             _backgroundTaskQueue.QueueBackgroundWorkItem(async token =>
             {
+                // try
+                // {
+                //     var converter = new HtmlToPdf();
+                //     converter.Options.PdfPageSize = PdfPageSize.A4;
+                //     converter.Options.MarginTop = 0;
+                //     converter.Options.MarginBottom = 0;
+                //     converter.Options.MarginLeft = 0;
+                //     converter.Options.MarginRight = 0;
+
+                //     var pdfBytes = converter.ConvertHtmlString(fileHtml);
+                //     // Đọc nội dung file HTML
+                //     string emailTemplatePath = Path.Combine(_env.WebRootPath, "templates", "EmailPXKTemplate.html");
+                //     string emailContent = await File.ReadAllTextAsync(emailTemplatePath);
+
+                //     // Thay thế các placeholder bằng dữ liệu thực tế
+                //     emailContent = emailContent
+                //         .Replace("{customerUsername}", customerUsername)
+                //         .Replace("{id}", id.ToString());
+
+                //     using (MemoryStream pdfStream = new MemoryStream())
+                //     {
+                //         pdfBytes.Save(pdfStream);
+                //         pdfStream.Position = 0;
+                //         // Gửi email với tệp đính kèm là PDF
+                //         _sendEmailService.Send(customerEmail, "Thông báo TPKEXPRESS.COM", emailContent, pdfStream.ToArray(), "phieu-xuat-kho.pdf");
+                //     }
+                // }
+                // catch (Exception ex)
+                // {
+                //     Log.Error($"Send delivery note failed PXK-{id}: {ex.Message};");
+                // }
+                // finally { }
                 try
                 {
-                    var converter = new HtmlToPdf();
-                    converter.Options.PdfPageSize = PdfPageSize.A4;
-                    converter.Options.MarginTop = 0;
-                    converter.Options.MarginBottom = 0;
-                    converter.Options.MarginLeft = 0;
-                    converter.Options.MarginRight = 0;
+                    string chromePath;
+                    if (OperatingSystem.IsWindows())
+                    {
+                        chromePath = @"C:\Program Files\Google\Chrome\Application\chrome.exe";
+                    }
+                    else
+                    {
+                        chromePath = "/snap/bin/chromium";
+                    }
+                    await using var browser = await Puppeteer.LaunchAsync(new LaunchOptions
+                    {
+                        Headless = true,
+                        ExecutablePath = chromePath
+                    });
 
-                    var pdfBytes = converter.ConvertHtmlString(fileHtml);
-                    // Đọc nội dung file HTML
-                    string emailTemplatePath = Path.Combine(_env.WebRootPath, "templates", "EmailPXKTemplate.html");
+                    await using var page = await browser.NewPageAsync();
+
+                    await page.SetContentAsync(fileHtml);
+
+                    await page.WaitForNetworkIdleAsync();
+
+                    var pdfBytes = await page.PdfDataAsync(new PdfOptions
+                    {
+                        Format = PaperFormat.A4,
+                        PrintBackground = true,
+                        MarginOptions = new MarginOptions
+                        {
+                            Top = "0mm",
+                            Bottom = "0mm",
+                            Left = "0mm",
+                            Right = "0mm"
+                        }
+                    });
+
+                    string emailTemplatePath = Path.Combine(
+                        _env.WebRootPath,
+                        "templates",
+                        "EmailPXKTemplate.html");
+
                     string emailContent = await File.ReadAllTextAsync(emailTemplatePath);
 
-                    // Thay thế các placeholder bằng dữ liệu thực tế
                     emailContent = emailContent
                         .Replace("{customerUsername}", customerUsername)
                         .Replace("{id}", id.ToString());
 
-                    using (MemoryStream pdfStream = new MemoryStream())
-                    {
-                        pdfBytes.Save(pdfStream);
-                        pdfStream.Position = 0;
-                        // Gửi email với tệp đính kèm là PDF
-                        _sendEmailService.Send(customerEmail, "Thông báo TPKEXPRESS.COM", emailContent, pdfStream.ToArray(), "phieu-xuat-kho.pdf");
-                    }
+                    _sendEmailService.Send(
+                        customerEmail,
+                        "Thông báo TPKEXPRESS.COM",
+                        emailContent,
+                        pdfBytes,
+                        "phieu-xuat-kho.pdf");
                 }
                 catch (Exception ex)
                 {
-                    Log.Error($"Send delivery note failed PXK-{id}: {ex.Message};");
+                    Log.Error(ex,
+                        "Send delivery note failed PXK-{Id}",
+                        id);
                 }
-                finally { }
             });
         }
         public async Task<bool> UpdateDeliveryInfo(int id, string deliveryInfo)

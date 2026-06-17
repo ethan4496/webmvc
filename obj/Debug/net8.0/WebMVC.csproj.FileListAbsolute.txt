@@ -169,6 +169,7 @@ D:\git2\webmvc\obj\Debug\net8.0\refint\WebMVC.dll
 D:\git2\webmvc\obj\Debug\net8.0\WebMVC.pdb
 D:\git2\webmvc\obj\Debug\net8.0\WebMVC.genruntimeconfig.cache
 D:\git2\webmvc\obj\Debug\net8.0\ref\WebMVC.dll
+<<<<<<< HEAD
 D:\github\webmvc\bin\Debug\net8.0\Select.Html.dep
 D:\github\webmvc\bin\Debug\net8.0\appsettings.Development.json
 D:\github\webmvc\bin\Debug\net8.0\publish\appsettings.Development.json
@@ -196,6 +197,9 @@ D:\github\webmvc\bin\Debug\net8.0\publish\publish\publish\WebMVC.deps.json
 D:\github\webmvc\bin\Debug\net8.0\publish\publish\publish\WebMVC.runtimeconfig.json
 D:\github\webmvc\bin\Debug\net8.0\publish\publish\WebMVC.deps.json
 D:\github\webmvc\bin\Debug\net8.0\publish\publish\WebMVC.runtimeconfig.json
+=======
+D:\github\webmvc\bin\Debug\net8.0\appsettings.Development.json
+>>>>>>> d8e957a1b56c4e69ff610e0c366af04d5081d70f
 D:\github\webmvc\bin\Debug\net8.0\WebMVC.staticwebassets.runtime.json
 D:\github\webmvc\bin\Debug\net8.0\WebMVC.exe
 D:\github\webmvc\bin\Debug\net8.0\WebMVC.deps.json
@@ -246,7 +250,10 @@ D:\github\webmvc\bin\Debug\net8.0\Mono.TextTemplating.dll
 D:\github\webmvc\bin\Debug\net8.0\Newtonsoft.Json.dll
 D:\github\webmvc\bin\Debug\net8.0\RBush.dll
 D:\github\webmvc\bin\Debug\net8.0\RestSharp.dll
+<<<<<<< HEAD
 D:\github\webmvc\bin\Debug\net8.0\Select.HtmlToPdf.dll
+=======
+>>>>>>> d8e957a1b56c4e69ff610e0c366af04d5081d70f
 D:\github\webmvc\bin\Debug\net8.0\Serilog.dll
 D:\github\webmvc\bin\Debug\net8.0\Serilog.AspNetCore.dll
 D:\github\webmvc\bin\Debug\net8.0\Serilog.Extensions.Hosting.dll
@@ -361,3 +368,11 @@ D:\github\webmvc\obj\Debug\net8.0\refint\WebMVC.dll
 D:\github\webmvc\obj\Debug\net8.0\WebMVC.pdb
 D:\github\webmvc\obj\Debug\net8.0\WebMVC.genruntimeconfig.cache
 D:\github\webmvc\obj\Debug\net8.0\ref\WebMVC.dll
+<<<<<<< HEAD
+=======
+D:\github\webmvc\bin\Debug\net8.0\PuppeteerSharp.dll
+D:\github\webmvc\bin\Debug\net8.0\publish\appsettings.Development.json
+D:\github\webmvc\bin\Debug\net8.0\publish\appsettings.json
+D:\github\webmvc\bin\Debug\net8.0\publish\WebMVC.deps.json
+D:\github\webmvc\bin\Debug\net8.0\publish\WebMVC.runtimeconfig.json
+>>>>>>> d8e957a1b56c4e69ff610e0c366af04d5081d70f

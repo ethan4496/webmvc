@@ -1049,7 +1049,7 @@
       "Microsoft.Win32.SystemEvents/6.0.0": {
         "type": "package",
         "compile": {
-          "lib/net6.0/Microsoft.Win32.SystemEvents.dll": {
+          "lib/net6.0/_._": {
             "related": ".xml"
           }
         },
@@ -1093,6 +1093,24 @@
           }
         }
       },
+      "PuppeteerSharp/18.0.5": {
+        "type": "package",
+        "dependencies": {
+          "Microsoft.Bcl.AsyncInterfaces": "1.1.0",
+          "Microsoft.Extensions.Logging": "2.0.2",
+          "Newtonsoft.Json": "13.0.1"
+        },
+        "compile": {
+          "lib/netstandard2.0/PuppeteerSharp.dll": {
+            "related": ".xml"
+          }
+        },
+        "runtime": {
+          "lib/netstandard2.0/PuppeteerSharp.dll": {
+            "related": ".xml"
+          }
+        }
+      },
       "RBush/4.0.0": {
         "type": "package",
         "compile": {
@@ -1116,37 +1134,6 @@
         "runtime": {
           "lib/net8.0/RestSharp.dll": {
             "related": ".xml"
-          }
-        }
-      },
-      "Select.HtmlToPdf.NetCore/24.1.0": {
-        "type": "package",
-        "dependencies": {
-          "Microsoft.Bcl.AsyncInterfaces": "1.1.0",
-          "Newtonsoft.Json": "13.0.1",
-          "System.Buffers": "4.5.1",
-          "System.Drawing.Common": "4.5.1",
-          "System.Numerics.Vectors": "4.5.0",
-          "System.Security.Principal.Windows": "4.5.1",
-          "System.Text.Encoding.CodePages": "4.5.1",
-          "System.Threading.Tasks.Extensions": "4.5.2"
-        },
-        "compile": {
-          "lib/netstandard2.0/Select.HtmlToPdf.dll": {
-            "related": ".xml"
-          }
-        },
-        "runtime": {
-          "lib/netstandard2.0/Select.HtmlToPdf.dll": {
-            "related": ".xml"
-          }
-        },
-        "contentFiles": {
-          "contentFiles/any/any/Select.Html.dep": {
-            "buildAction": "Content",
-            "codeLanguage": "any",
-            "copyToOutput": true,
-            "outputPath": "Select.Html.dep"
           }
         }
       },
@@ -1319,15 +1306,6 @@
           "lib/netcoreapp3.1/SixLabors.Fonts.dll": {
             "related": ".xml"
           }
-        }
-      },
-      "System.Buffers/4.5.1": {
-        "type": "package",
-        "compile": {
-          "ref/netcoreapp2.0/_._": {}
-        },
-        "runtime": {
-          "lib/netcoreapp2.0/_._": {}
         }
       },
       "System.ClientModel/1.0.0": {
@@ -1523,7 +1501,7 @@
           "Microsoft.Win32.SystemEvents": "6.0.0"
         },
         "compile": {
-          "lib/net6.0/System.Drawing.Common.dll": {
+          "lib/net6.0/_._": {
             "related": ".xml"
           }
         },
@@ -1795,7 +1773,7 @@
       "System.Security.Principal.Windows/5.0.0": {
         "type": "package",
         "compile": {
-          "ref/netcoreapp3.0/System.Security.Principal.Windows.dll": {
+          "ref/netcoreapp3.0/_._": {
             "related": ".xml"
           }
         },
@@ -1821,7 +1799,7 @@
           "System.Runtime.CompilerServices.Unsafe": "6.0.0"
         },
         "compile": {
-          "lib/net6.0/System.Text.Encoding.CodePages.dll": {
+          "lib/net6.0/_._": {
             "related": ".xml"
           }
         },
@@ -3562,6 +3540,19 @@
         "packageIcon.png"
       ]
     },
+    "PuppeteerSharp/18.0.5": {
+      "sha512": "R2r3kmiNzMKj0JEwzHWDFIm2tHJPWvk3OmdGF+ckqv+Atlmtq5jzWVK6dVeDzRmpgP385Ply1uY7ru+tLXokDQ==",
+      "type": "package",
+      "path": "puppeteersharp/18.0.5",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "lib/netstandard2.0/PuppeteerSharp.dll",
+        "lib/netstandard2.0/PuppeteerSharp.xml",
+        "puppeteersharp.18.0.5.nupkg.sha512",
+        "puppeteersharp.nuspec"
+      ]
+    },
     "RBush/4.0.0": {
       "sha512": "j3GeRxxLUQdc+UrZnvythdQxi3bd8ayn87VDjfGXrvfodF550n9wR6SgQvpo+YiAv3GJezsu6lK0l47rRqnbdg==",
       "type": "package",
@@ -3603,29 +3594,6 @@
         "restsharp.112.1.0.nupkg.sha512",
         "restsharp.nuspec",
         "restsharp.png"
-      ]
-    },
-    "Select.HtmlToPdf.NetCore/24.1.0": {
-      "sha512": "ElMGK1nthxUbzc+kSI1sEXKftk9QKYEaMfRQaVuBV4TEtegEFv4yril2Y4Dho55RFzQPX9nkCEkZwGM4x8tTHA==",
-      "type": "package",
-      "path": "select.htmltopdf.netcore/24.1.0",
-      "files": [
-        ".nupkg.metadata",
-        ".signature.p7s",
-        "contentFiles/any/any/Select.Html.dep",
-        "images/icon.png",
-        "lib/net461/Select.Html.dep",
-        "lib/net461/Select.HtmlToPdf.dll",
-        "lib/net461/Select.HtmlToPdf.xml",
-        "lib/net472/Select.Html.dep",
-        "lib/net472/Select.HtmlToPdf.dll",
-        "lib/net472/Select.HtmlToPdf.xml",
-        "lib/netstandard2.0/Select.Html.dep",
-        "lib/netstandard2.0/Select.HtmlToPdf.dll",
-        "lib/netstandard2.0/Select.HtmlToPdf.xml",
-        "readme.txt",
-        "select.htmltopdf.netcore.24.1.0.nupkg.sha512",
-        "select.htmltopdf.netcore.nuspec"
       ]
     },
     "Serilog/4.0.0": {
@@ -3858,37 +3826,6 @@
         "sixlabors.fonts.1.0.0.nupkg.sha512",
         "sixlabors.fonts.128.png",
         "sixlabors.fonts.nuspec"
-      ]
-    },
-    "System.Buffers/4.5.1": {
-      "sha512": "Rw7ijyl1qqRS0YQD/WycNst8hUUMgrMH4FCn1nNm27M4VxchZ1js3fVjQaANHO5f3sN4isvP4a+Met9Y4YomAg==",
-      "type": "package",
-      "path": "system.buffers/4.5.1",
-      "files": [
-        ".nupkg.metadata",
-        ".signature.p7s",
-        "LICENSE.TXT",
-        "THIRD-PARTY-NOTICES.TXT",
-        "lib/net461/System.Buffers.dll",
-        "lib/net461/System.Buffers.xml",
-        "lib/netcoreapp2.0/_._",
-        "lib/netstandard1.1/System.Buffers.dll",
-        "lib/netstandard1.1/System.Buffers.xml",
-        "lib/netstandard2.0/System.Buffers.dll",
-        "lib/netstandard2.0/System.Buffers.xml",
-        "lib/uap10.0.16299/_._",
-        "ref/net45/System.Buffers.dll",
-        "ref/net45/System.Buffers.xml",
-        "ref/netcoreapp2.0/_._",
-        "ref/netstandard1.1/System.Buffers.dll",
-        "ref/netstandard1.1/System.Buffers.xml",
-        "ref/netstandard2.0/System.Buffers.dll",
-        "ref/netstandard2.0/System.Buffers.xml",
-        "ref/uap10.0.16299/_._",
-        "system.buffers.4.5.1.nupkg.sha512",
-        "system.buffers.nuspec",
-        "useSharedDesignerContext.txt",
-        "version.txt"
       ]
     },
     "System.ClientModel/1.0.0": {
@@ -4884,8 +4821,8 @@
       "Microsoft.EntityFrameworkCore.SqlServer >= 8.0.11",
       "Microsoft.EntityFrameworkCore.Tools >= 8.0.11",
       "Microsoft.Extensions.Logging >= 8.0.1",
+      "PuppeteerSharp >= 18.0.5",
       "RestSharp >= 112.1.0",
-      "Select.HtmlToPdf.NetCore >= 24.1.0",
       "Serilog.AspNetCore >= 8.0.3",
       "Serilog.Sinks.File >= 6.0.0",
       "vng.zalo.ZaloDotNetSDK >= 2.1.2"
@@ -4967,13 +4904,13 @@
             "target": "Package",
             "version": "[8.0.1, )"
           },
+          "PuppeteerSharp": {
+            "target": "Package",
+            "version": "[18.0.5, )"
+          },
           "RestSharp": {
             "target": "Package",
             "version": "[112.1.0, )"
-          },
-          "Select.HtmlToPdf.NetCore": {
-            "target": "Package",
-            "version": "[24.1.0, )"
           },
           "Serilog.AspNetCore": {
             "target": "Package",

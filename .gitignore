@@ -3,11 +3,13 @@
 [Rr]elease/
 x64/
 x86/
+Logs/
 
 # .NET
 bin/
 obj/
 
+publish/
 wwwroot/uploads/
 
 # Visual Studio

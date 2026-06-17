@@ -1,6 +1,10 @@
 {
   "Version": 1,
+<<<<<<< HEAD
   "Hash": "pwajWf/0rgDag3mpQnSsHw/p20EWeYlP4JLCVpHr7JU=",
+=======
+  "Hash": "C8c1AFBxzsN13qnL3CXMKpXuFrRea8kmkB05BUwTZGA=",
+>>>>>>> d8e957a1b56c4e69ff610e0c366af04d5081d70f
   "Source": "WebMVC",
   "BasePath": "_content/WebMVC",
   "Mode": "Default",
@@ -321,6 +325,7 @@
       "OriginalItemSpec": "wwwroot\\js\\printOutStock.js"
     },
     {
+<<<<<<< HEAD
       "Identity": "D:\\github\\webmvc\\wwwroot\\js\\template.js",
       "SourceId": "WebMVC",
       "SourceType": "Discovered",
@@ -344,6 +349,12 @@
       "SourceId": "WebMVC",
       "SourceType": "Discovered",
       "ContentRoot": "D:\\github\\webmvc\\wwwroot\\",
+=======
+      "Identity": "D:\\github\\webmvc\\wwwroot\\templates\\EmailPXKTemplate.html",
+      "SourceId": "WebMVC",
+      "SourceType": "Discovered",
+      "ContentRoot": "D:\\github\\webmvc\\wwwroot\\",
+>>>>>>> d8e957a1b56c4e69ff610e0c366af04d5081d70f
       "BasePath": "_content/WebMVC",
       "RelativePath": "templates/EmailPXKTemplate.html",
       "AssetKind": "All",
@@ -6950,6 +6961,25 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\uploads\\images\\dc9e9935-5e58-4f22-b3f9-bbf417c2e340.png"
+    },
+    {
+      "Identity": "D:\\github\\webmvc\\wwwroot\\uploads\\pxks\\pxk11619.pdf",
+      "SourceId": "WebMVC",
+      "SourceType": "Discovered",
+      "ContentRoot": "D:\\github\\webmvc\\wwwroot\\",
+      "BasePath": "_content/WebMVC",
+      "RelativePath": "uploads/pxks/pxk11619.pdf",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "PreferTarget",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\uploads\\pxks\\pxk11619.pdf"
     }
   ]
 }
