@@ -3,6 +3,7 @@
 [Rr]elease/
 x64/
 x86/
+Logs/
 
 # .NET
 bin/
