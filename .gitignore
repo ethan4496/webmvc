@@ -8,6 +8,7 @@ x86/
 bin/
 obj/
 
+publish/
 wwwroot/uploads/
 
 # Visual Studio
