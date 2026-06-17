@@ -996,7 +996,7 @@ namespace WebMVC.Services
                     && (toDate == null || x.Created <= toDate)
                     && (request.PostOffice == "" || x.PostOffice == request.PostOffice)
                 )
-                .OrderByDescending(x=>x.Id)
+                .OrderByDescending(x => x.Id)
                 .Skip(request.PageIndex * 40)
                 .Take(40)
                 .ToListAsync();
@@ -1173,18 +1173,38 @@ namespace WebMVC.Services
         public async Task<ResponseClass> GetPXKByID(HandleIdRequest request)
         {
             var rs = new ResponseClass();
-            var currentAccount = await GetSessionAsync(request);
-            if (currentAccount == null)
+            try
             {
-                rs.Code = APIUtils.GetResponseCode(APIUtils.ResponseCode.NotFound);
-                rs.Status = APIUtils.ResponseMessage.Error.ToString();
-                rs.Logout = "1";
-                return rs;
+                var currentAccount = await GetSessionAsync(request);
+                if (currentAccount == null)
+                {
+                    rs.Code = APIUtils.GetResponseCode(APIUtils.ResponseCode.NotFound);
+                    rs.Status = APIUtils.ResponseMessage.Error.ToString();
+                    rs.Logout = "1";
+                    return rs;
+                }
+                var fileHtml = await _outOfStockService.RenderDeliveryNote(new List<int> { request.ID });
+                rs.data = await _uploadFileService.SavePXKToPdf(fileHtml, request.ID.ToString());
+                rs.Code = APIUtils.GetResponseCode(APIUtils.ResponseCode.SUCCESS);
+                rs.Status = APIUtils.ResponseMessage.Success.ToString();
             }
-            var fileHtml = await _outOfStockService.RenderDeliveryNote(new List<int> { request.ID });
-            rs.data = await _uploadFileService.SavePXKToPdf(fileHtml, request.ID.ToString());
-            rs.Code = APIUtils.GetResponseCode(APIUtils.ResponseCode.SUCCESS);
-            rs.Status = APIUtils.ResponseMessage.Success.ToString();
+            catch (Exception ex)
+            {
+                var current = ex;
+                int level = 0;
+
+                while (current != null)
+                {
+                    Console.WriteLine($"===== Exception Level {level} =====");
+                    Console.WriteLine($"Type: {current.GetType().FullName}");
+                    Console.WriteLine($"Message: {current.Message}");
+                    Console.WriteLine(current.StackTrace);
+
+                    current = current.InnerException;
+                    level++;
+                }
+
+            }
             return rs;
         }
 
@@ -1755,8 +1775,8 @@ namespace WebMVC.Services
                 rs.Message = "Tạo thất bại";
                 return rs;
             }
-            
-            
+
+
         }
         public async Task<ResponseClass> CreateSpeicalShip(CreateSpecialAppRequest request)
         {

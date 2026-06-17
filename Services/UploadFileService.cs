@@ -1,4 +1,5 @@
-﻿using SelectPdf;
+﻿using PuppeteerSharp;
+using PuppeteerSharp.Media;
 using WebMVC.Interfaces;
 
 namespace WebMVC.Services
@@ -94,35 +95,97 @@ namespace WebMVC.Services
 
         public async Task<string> SavePXKToPdf(string fileHtml, string id)
         {
-            var converter = new HtmlToPdf();
-            converter.Options.PdfPageSize = PdfPageSize.A4;
-            converter.Options.MarginTop = 0;
-            converter.Options.MarginBottom = 0;
-            converter.Options.MarginLeft = 0;
-            converter.Options.MarginRight = 0;
+            // var converter = new HtmlToPdf();
+            // converter.Options.PdfPageSize = PdfPageSize.A4;
+            // converter.Options.MarginTop = 0;
+            // converter.Options.MarginBottom = 0;
+            // converter.Options.MarginLeft = 0;
+            // converter.Options.MarginRight = 0;
 
-            var pdfBytes = converter.ConvertHtmlString(fileHtml);
+            // var pdfBytes = converter.ConvertHtmlString(fileHtml);
 
-            // Đọc nội dung file HTML
-            string emailTemplatePath = Path.Combine(_env.WebRootPath, "templates", "EmailPXKTemplate.html");
-            string emailContent = await File.ReadAllTextAsync(emailTemplatePath);
+            // // Đọc nội dung file HTML
+            // string emailTemplatePath = Path.Combine(_env.WebRootPath, "templates", "EmailPXKTemplate.html");
+            // string emailContent = await File.ReadAllTextAsync(emailTemplatePath);
 
-            string fileName = "pxk" + id.Trim() + ".pdf";
-            var uploadsFolder = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/uploads/pxks");
+            // string fileName = "pxk" + id.Trim() + ".pdf";
+            // var uploadsFolder = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/uploads/pxks");
+            // var filePath = Path.Combine(uploadsFolder, fileName);
+            // using (MemoryStream pdfStream = new MemoryStream())
+            // {
+            //     pdfBytes.Save(pdfStream);
+            //     pdfStream.Position = 0;
+            //     using (FileStream file = new FileStream(filePath, FileMode.Create, FileAccess.Write))
+            //     {
+            //         pdfStream.WriteTo(file);
+            //     }
+            // }
+            // var request = _httpContextAccessor.HttpContext?.Request;
+            // var baseUrl = request != null ? $"{request.Scheme}://{request.Host}" : "";
+            // var fileUrl = $"{baseUrl}/uploads/pxks/{fileName}";
+            // return fileUrl;
+            string fileName = $"pxk{id.Trim()}.pdf";
+
+            var uploadsFolder = Path.Combine(
+                Directory.GetCurrentDirectory(),
+                "wwwroot",
+                "uploads",
+                "pxks"
+            );
+
+            Directory.CreateDirectory(uploadsFolder);
+
             var filePath = Path.Combine(uploadsFolder, fileName);
-            using (MemoryStream pdfStream = new MemoryStream())
+
+            // Chỉ chạy lần đầu để tải Chromium
+            // await new BrowserFetcher().DownloadAsync();
+            string chromePath;
+            if (OperatingSystem.IsWindows())
             {
-                pdfBytes.Save(pdfStream);
-                pdfStream.Position = 0;
-                using (FileStream file = new FileStream(filePath, FileMode.Create, FileAccess.Write))
-                {
-                    pdfStream.WriteTo(file);
-                }
+                chromePath = @"C:\Program Files\Google\Chrome\Application\chrome.exe";
             }
+            else
+            {
+                chromePath = "/snap/bin/chromium";
+            }
+            await using var browser = await Puppeteer.LaunchAsync(new LaunchOptions
+            {
+                Headless = true,
+                ExecutablePath = chromePath,
+                Args = new[]
+                {
+                    "--no-sandbox",
+                    "--disable-setuid-sandbox"
+                }
+            });
+
+            await using var page = await browser.NewPageAsync();
+
+            await page.SetContentAsync(fileHtml);
+
+            // Chờ CSS, ảnh load xong
+            await page.WaitForNetworkIdleAsync();
+
+            await page.PdfAsync(filePath, new PdfOptions
+            {
+                Format = PaperFormat.A4,
+                PrintBackground = true,
+                MarginOptions = new MarginOptions
+                {
+                    Top = "0mm",
+                    Bottom = "0mm",
+                    Left = "0mm",
+                    Right = "0mm"
+                }
+            });
+
             var request = _httpContextAccessor.HttpContext?.Request;
-            var baseUrl = request != null ? $"{request.Scheme}://{request.Host}" : "";
-            var fileUrl = $"{baseUrl}/uploads/pxks/{fileName}";
-            return fileUrl;
+
+            var baseUrl = request != null
+                ? $"{request.Scheme}://{request.Host}"
+                : "";
+
+            return $"{baseUrl}/uploads/pxks/{fileName}";
         }
     }
 }
