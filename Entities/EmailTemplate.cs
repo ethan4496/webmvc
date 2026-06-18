@@ -8,6 +8,7 @@ namespace WebMVC.Entities
         public string Name { get; set; }
         public string Status { get; set; }
         public string Subject { get; set; }
-        public string Body { get; set; } 
+        public string Body { get; set; }
+        public virtual ICollection<Campaign> Campaigns { get; set; }
     }
 }

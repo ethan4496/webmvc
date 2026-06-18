@@ -65,13 +65,10 @@
       "PackagePath": "staticwebassets\\js\\printOutStock.js"
     },
     {
-<<<<<<< HEAD
       "Id": "D:\\github\\webmvc\\wwwroot\\js\\template.js",
       "PackagePath": "staticwebassets\\js\\template.js"
     },
     {
-=======
->>>>>>> d8e957a1b56c4e69ff610e0c366af04d5081d70f
       "Id": "D:\\github\\webmvc\\wwwroot\\templates\\EmailPXKTemplate.html",
       "PackagePath": "staticwebassets\\templates\\EmailPXKTemplate.html"
     },

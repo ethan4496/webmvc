@@ -1,10 +1,6 @@
 {
   "Version": 1,
-<<<<<<< HEAD
-  "Hash": "pwajWf/0rgDag3mpQnSsHw/p20EWeYlP4JLCVpHr7JU=",
-=======
-  "Hash": "C8c1AFBxzsN13qnL3CXMKpXuFrRea8kmkB05BUwTZGA=",
->>>>>>> d8e957a1b56c4e69ff610e0c366af04d5081d70f
+  "Hash": "aFOQHMm7zJPCJ7dZCIR3mlID5jsXJoO3IYkgaDQJhrI=",
   "Source": "WebMVC",
   "BasePath": "_content/WebMVC",
   "Mode": "Default",
@@ -325,7 +321,6 @@
       "OriginalItemSpec": "wwwroot\\js\\printOutStock.js"
     },
     {
-<<<<<<< HEAD
       "Identity": "D:\\github\\webmvc\\wwwroot\\js\\template.js",
       "SourceId": "WebMVC",
       "SourceType": "Discovered",
@@ -349,12 +344,6 @@
       "SourceId": "WebMVC",
       "SourceType": "Discovered",
       "ContentRoot": "D:\\github\\webmvc\\wwwroot\\",
-=======
-      "Identity": "D:\\github\\webmvc\\wwwroot\\templates\\EmailPXKTemplate.html",
-      "SourceId": "WebMVC",
-      "SourceType": "Discovered",
-      "ContentRoot": "D:\\github\\webmvc\\wwwroot\\",
->>>>>>> d8e957a1b56c4e69ff610e0c366af04d5081d70f
       "BasePath": "_content/WebMVC",
       "RelativePath": "templates/EmailPXKTemplate.html",
       "AssetKind": "All",
