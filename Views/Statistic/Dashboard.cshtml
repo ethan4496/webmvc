@@ -1,0 +1,1436 @@
+﻿@using WebMVC.Models.Responses
+@using WebMVC.Ultilities.Enums
+@{
+    ViewData["Title"] = "Dashboard";
+}
+@model AccountHomeResponse
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/chartjs-plugin-annotation/1.0.2/chartjs-plugin-annotation.min.js"></script>
+<div class="container-fluid mt-4">
+    <div class="row">
+        <div class="col-md-8">
+            <div class="card mb-4  p-3">
+                <div class="d-flex align-items-center justify-content-between p-3 bg-white">
+                    <!-- Avatar + tên -->
+                    <div class="d-flex align-items-center">
+                        @if (!string.IsNullOrEmpty(Model.Avatar))
+                        {
+                            <img src="@Url.Content(Model.Avatar)" alt="Avatar" class="rounded-circle me-3" width="80" height="80">
+                        }
+                        else
+                        {
+                            <img src="~/images/logo.png" alt="Avatar" class="rounded-circle me-3" width="80" height="80">
+                        }
+                        <div>
+                            <div>Chào mừng bạn, <strong>@Model.Fullname</strong></div>
+                            <small class="text-muted">@Model.Username</small><br />
+                            <small class="text-muted">Quyền hạn: @Model.RoleName</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card mb-4 p-3" style=" display: flex; height: 18rem; justify-content: space-around; ">
+                <h6 class="text-primary fw-bold mb-3">Đơn hàng</h6>
+                <div class="row text-center">
+                    @{
+                        var total = Model.CountOrder.Sum(x => x.Quantity);
+                    }
+                    <div class="col-6 col-md">
+                        <a href="transportation">
+                            <div class="border rounded p-2 h-100 bg-light status-card">
+                                <strong>Tất cả</strong>
+                                <h3 class="fw-bold text-orange">@total</h3>
+                            </div>
+                        </a>
+                    </div>
+                    @foreach (var item in Model.CountOrder)
+                    {
+                        <div class="col-6 col-md">
+                            <a href="transportation?Status=@item.Id">
+                                <div class="border rounded p-2 h-100 bg-light status-card">
+                                    <strong>@ETransportationStatusName.GetStatusName(item.Id)</strong>
+                                    <h3 class="fw-bold text-orange">@item.Quantity</h3>
+                                </div>
+                            </a>
+                        </div>
+                    }
+
+                    <div class="col-6 col-md">
+                        <a href="out-of-stock?StatusPayment=1">
+                            <div class="border rounded p-2 h-100 bg-light status-card">
+                                <strong>Chưa thanh toán</strong>
+                                <h3 class="fw-bold text-orange">@Model.UnPayOutOfStock</h3>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+                <div></div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card mb-4 p-3" style="height: 18rem; ">
+                <h6 class="text-primary fw-bold mb-3">Thông báo mới</h6>
+                @if (Model.NewNotifications != null && Model.NewNotifications.Any())
+                {
+                    <div style="max-height: 300px; overflow-y: auto;">
+                        <ul class="list-group list-group-flush">
+                            @foreach (var noti in Model.NewNotifications)
+                            {
+                                <li class="list-group-item">
+                                    <strong>@noti.Title</strong><br />
+                                    <small class="text-muted">@noti.Content</small>
+                                </li>
+                            }
+                        </ul>
+                    </div>
+                }
+                else
+                {
+                    <div class="text-muted">Không có thông báo mới</div>
+                }
+            </div>
+            <div class="card mb-4  p-3">
+                <h6 class="text-primary fw-bold">Kiểm tra đơn hàng </h6>
+                <div class="card-body">
+                    <div class="row">
+
+                        <div class="col-md-12">
+                            <div class="input-group mb-4">
+                                <input type="text" class="form-control" id="barcode" placeholder="Nhập mã vận đơn" value="">
+                                <button class="btn btn-primary" onclick="searchTracking()">Tra cứu</button>
+                            </div>
+                        </div>
+
+
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+
+    <div class="card mb-4">
+        <div class="card-header d-flex justify-content-between align-items-center">
+            <h3>Sản lượng và đơn trong tuần</h3>
+        </div>
+        <div class="card-body">
+            <div class="row ">
+                <div class="col-md-3">
+                    <label for="weekDate" class="form-label">Ngày</label>
+                    <input type="text" class="form-control datepicker" id="weekDate" name="weekDate" placeholder="">
+                </div>
+                <div class="col-md-3 d-flex align-items-end">
+                    <button type="button" class="btn btn-success" onclick="showWeekChart()">Lọc kết quả</button>
+                </div>
+            </div>
+            <div class="row mt-4">
+                <div class="col s12">
+                    <div class="card user-statistics-card animate fadeLeft">
+                        <div class="card-content">
+                            <div class="row px-3 pt-3">
+                                <div class="col s3">
+                                    <a href="javascript:;" onclick="WeekChartData(0, 'black')">
+                                        <div class="d-flex gap-3 align-items-center">
+                                            <i class="bi bi-circle-fill fs-1"></i>
+                                            <div>
+                                                <span class="medium-small">Đơn hàng đã giao</span>
+                                                <h5 class="mt-0 mb-0 soDon-Week"></h5>
+                                            </div>
+                                        </div>
+                                    </a>
+                                </div>
+                                <div class="col s3">
+                                    <a href="javascript:;" onclick="WeekChartData(1, 'purple')">
+                                        <div class="d-flex gap-3 align-items-center">
+                                            <i class="bi bi-circle-fill fs-1 text-purple"></i>
+                                            <div>
+                                                <span class="medium-small">Sản lượng (KG)</span>
+                                                <h5 class="mt-0 mb-0 soKg-Week"></h5>
+                                            </div>
+                                        </div>
+                                    </a>
+                                </div>
+                                <div class="col s3">
+                                    <a href="javascript:;" onclick="WeekChartData(2, 'green')">
+                                        <div class="d-flex gap-3 align-items-center">
+                                            <i class="bi bi-circle-fill fs-1 text-success"></i>
+                                            <div>
+                                                <span class="medium-small">Sản lượng (Khối)</span>
+                                                <h5 class="mt-0 mb-0 soKhoi-Week"></h5>
+                                            </div>
+                                        </div>
+                                    </a>
+                                </div>
+                                <div class="col s3">
+                                    <a href="javascript:;" onclick="WeekChartData(3, 'red')">
+                                        <div class="d-flex gap-3 align-items-center">
+                                            <i class="bi bi-circle-fill fs-1 text-danger"></i>
+                                            <div>
+                                                <span class="medium-small">Doanh số</span>
+                                                <h5 class="mt-0 mb-0 soTien-Week"></h5>
+                                            </div>
+                                        </div>
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="row" style="width: 100%; margin: auto;">
+                                <canvas id="WeekChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card mb-4">
+        <div class="card-header d-flex justify-content-between align-items-center">
+            <h3>Sản lượng và đơn trong tháng</h3>
+        </div>
+        <div class="card-body">
+            <div class="row ">
+                <div class="col-md-3">
+                    <label for="monthDate" class="form-label">Tháng</label>
+                    <input type="text" class="form-control datepicker" id="monthDate" name="monthDate" placeholder="">
+                </div>
+                <div class="col-md-3 d-flex align-items-end">
+                    <button type="button" class="btn btn-success" onclick="showMonthChart()">Lọc kết quả</button>
+                </div>
+            </div>
+            <div class="row mt-4">
+                <div class="col s12">
+                    <div class="card user-statistics-card animate fadeLeft">
+                        <div class="card-content">
+                            <div class="row px-3 pt-3">
+                                <div class="col s3">
+                                    <a href="javascript:;" onclick="MonthChartData(0, 'black')">
+                                        <div class="d-flex gap-3 align-items-center">
+                                            <i class="bi bi-circle-fill fs-1"></i>
+                                            <div>
+                                                <span class="medium-small">Đơn hàng đã giao</span>
+                                                <h5 class="mt-0 mb-0 soDon-Month"></h5>
+                                            </div>
+                                        </div>
+                                    </a>
+                                </div>
+                                <div class="col s3">
+                                    <a href="javascript:;" onclick="MonthChartData(1, 'purple')">
+                                        <div class="d-flex gap-3 align-items-center">
+                                            <i class="bi bi-circle-fill fs-1 text-purple"></i>
+                                            <div>
+                                                <span class="medium-small">Sản lượng (KG)</span>
+                                                <h5 class="mt-0 mb-0 soKg-Month"></h5>
+                                            </div>
+                                        </div>
+                                    </a>
+                                </div>
+                                <div class="col s3">
+                                    <a href="javascript:;" onclick="MonthChartData(2, 'green')">
+                                        <div class="d-flex gap-3 align-items-center">
+                                            <i class="bi bi-circle-fill fs-1 text-success"></i>
+                                            <div>
+                                                <span class="medium-small">Sản lượng (Khối)</span>
+                                                <h5 class="mt-0 mb-0 soKhoi-Month"></h5>
+                                            </div>
+                                        </div>
+                                    </a>
+                                </div>
+                                <div class="col s3">
+                                    <a href="javascript:;" onclick="MonthChartData(3, 'red')">
+                                        <div class="d-flex gap-3 align-items-center">
+                                            <i class="bi bi-circle-fill fs-1 text-danger"></i>
+                                            <div>
+                                                <span class="medium-small">Doanh số</span>
+                                                <h5 class="mt-0 mb-0 soTien-Month"></h5>
+                                            </div>
+                                        </div>
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="row" style="width: 100%; margin: auto;">
+                                <canvas id="MonthChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card mb-4">
+        <div class="card-header d-flex justify-content-between align-items-center">
+            <h3>Sản lượng và đơn trong năm</h3>
+        </div>
+        <div class="card-body">
+            <div class="row ">
+                <div class="col-md-3">
+                    <label for="yearDate" class="form-label">Năm</label>
+                    <input type="text" class="form-control datepicker" id="yearDate" name="yearDate" placeholder="">
+                </div>
+                <div class="col-md-3 d-flex align-items-end">
+                    <button type="button" class="btn btn-success" onclick="showYearChart()">Lọc kết quả</button>
+                </div>
+            </div>
+            <div class="row mt-4">
+                <div class="col s12">
+                    <div class="card user-statistics-card animate fadeLeft">
+                        <div class="card-content">
+                            <div class="row px-3 pt-3">
+                                <div class="col s3">
+                                    <a href="javascript:;" onclick="YearChartData(0, 'black')">
+                                        <div class="d-flex gap-3 align-items-center">
+                                            <i class="bi bi-circle-fill fs-1"></i>
+                                            <div>
+                                                <span class="medium-small">Đơn hàng đã giao</span>
+                                                <h5 class="mt-0 mb-0 soDon-Year"></h5>
+                                            </div>
+                                        </div>
+                                    </a>
+                                </div>
+                                <div class="col s3">
+                                    <a href="javascript:;" onclick="YearChartData(1, 'purple')">
+                                        <div class="d-flex gap-3 align-items-center">
+                                            <i class="bi bi-circle-fill fs-1 text-purple"></i>
+                                            <div>
+                                                <span class="medium-small">Sản lượng (KG)</span>
+                                                <h5 class="mt-0 mb-0 soKg-Year"></h5>
+                                            </div>
+                                        </div>
+                                    </a>
+                                </div>
+                                <div class="col s3">
+                                    <a href="javascript:;" onclick="YearChartData(2, 'green')">
+                                        <div class="d-flex gap-3 align-items-center">
+                                            <i class="bi bi-circle-fill fs-1 text-success"></i>
+                                            <div>
+                                                <span class="medium-small">Sản lượng (Khối)</span>
+                                                <h5 class="mt-0 mb-0 soKhoi-Year"></h5>
+                                            </div>
+                                        </div>
+                                    </a>
+                                </div>
+                                <div class="col s3">
+                                    <a href="javascript:;" onclick="YearChartData(3, 'red')">
+                                        <div class="d-flex gap-3 align-items-center">
+                                            <i class="bi bi-circle-fill fs-1 text-danger"></i>
+                                            <div>
+                                                <span class="medium-small">Doanh số</span>
+                                                <h5 class="mt-0 mb-0 soTien-Year"></h5>
+                                            </div>
+                                        </div>
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="row" style="width: 100%; margin: auto;">
+                                <canvas id="YearChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row mb-4">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <h3>Khách hàng có nhiều đơn trong tháng</h3>
+                </div>
+                <div class="card-body">
+                    <div class="row ">
+                        <div class="col-md-3">
+                            <label for="from1" class="form-label">Từ ngày</label>
+                            <input type="text" class="form-control datepicker" id="from1" name="from1" placeholder="">
+                        </div>
+                        <div class="col-md-3">
+                            <label for="to1" class="form-label">Đến ngày</label>
+                            <input type="text" class="form-control datepicker" id="to1" name="to1" placeholder="">
+                        </div>
+                        <div class="col-md-3 d-flex align-items-end">
+                            <button type="button" class="btn btn-primary " onclick="showTable1()">Lọc kết quả</button>
+                        </div>
+                        <div class="col-md-3 d-flex align-items-end">
+                            <button type="button" class="btn btn-success " onclick="exportTable1()">Xuất Excel</button>
+                        </div>
+                    </div>
+                    <div class="row mt-4">
+                        <div class="table-content">
+                            <table id="table1" class="table table-hover table-bordered">
+                                <thead class="table">
+                                    <tr>
+                                        <th class="text-center">#</th>
+                                        <th class="text-center">Tên khách hàng</th>
+                                        <th class="text-center">SĐT</th>
+                                        <th class="text-center">Số đơn</th>
+                                        <th class="text-center">Tiền thanh toán</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <h3>Doanh số trong tháng</h3>
+                </div>
+                <div class="card-body">
+                    <div class="row ">
+                        <div class="col-md-3">
+                            <label for="from2" class="form-label">Từ ngày</label>
+                            <input type="text" class="form-control datepicker" id="from2" name="from2" placeholder="">
+                        </div>
+                        <div class="col-md-3">
+                            <label for="to2" class="form-label">Đến ngày</label>
+                            <input type="text" class="form-control datepicker" id="to2" name="to2" placeholder="">
+                        </div>
+                        <div class="col-md-3 d-flex align-items-end">
+                            <button type="button" class="btn btn-primary " onclick="showTable2()">Lọc kết quả</button>
+                        </div>
+                        <div class="col-md-3 d-flex align-items-end">
+                            <button type="button" class="btn btn-success " onclick="exportTable2()">Xuất Excel</button>
+                        </div>
+                    </div>
+                    <div class="row mt-4">
+                        <div class="table-content">
+                            <table id="table2" class="table table-hover table-bordered">
+                                <thead class="table">
+                                    <tr>
+                                        <th class="text-center">#</th>
+                                        <th class="text-center">Tên khách hàng</th>
+                                        <th class="text-center">SĐT</th>
+                                        <th class="text-center">Doanh số</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row mb-4">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <h3>Doanh số Chính ngạch trong tháng</h3>
+                </div>
+                <div class="card-body">
+                    <div class="row ">
+                        <div class="col-md-3">
+                            <label for="fromCN" class="form-label">Từ ngày</label>
+                            <input type="text" class="form-control datepicker" id="fromCN" name="fromCN" placeholder="">
+                        </div>
+                        <div class="col-md-3">
+                            <label for="toCN" class="form-label">Đến ngày</label>
+                            <input type="text" class="form-control datepicker" id="toCN" name="toCN" placeholder="">
+                        </div>
+                        <div class="col-md-3 d-flex align-items-end">
+                            <button type="button" class="btn btn-primary " onclick="showTableCN()">Lọc kết quả</button>
+                        </div>
+                        <div class="col-md-3 d-flex align-items-end">
+                            <button type="button" class="btn btn-success " onclick="exportTableCN()">Xuất Excel</button>
+                        </div>
+                    </div>
+                    <div class="row mt-4">
+                        <div class="table-content">
+                            <table id="tableCN" class="table table-hover table-bordered">
+                                <thead class="table">
+                                    <tr>
+                                        <th class="text-center">#</th>
+                                        <th class="text-center">Tên khách hàng</th>
+                                        <th class="text-center">SĐT</th>
+                                        <th class="text-center">Doanh số</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <h3>Doanh số Đi thường trong tháng</h3>
+                </div>
+                <div class="card-body">
+                    <div class="row ">
+                        <div class="col-md-3">
+                            <label for="fromDT" class="form-label">Từ ngày</label>
+                            <input type="text" class="form-control datepicker" id="fromDT" name="fromDT" placeholder="">
+                        </div>
+                        <div class="col-md-3">
+                            <label for="toDT" class="form-label">Đến ngày</label>
+                            <input type="text" class="form-control datepicker" id="toDT" name="toDT" placeholder="">
+                        </div>
+                        <div class="col-md-3 d-flex align-items-end">
+                            <button type="button" class="btn btn-primary " onclick="showTableDT()">Lọc kết quả</button>
+                        </div>
+                        <div class="col-md-3 d-flex align-items-end">
+                            <button type="button" class="btn btn-success " onclick="exportTableDT()">Xuất Excel</button>
+                        </div>
+                    </div>
+                    <div class="row mt-4">
+                        <div class="table-content">
+                            <table id="tableDT" class="table table-hover table-bordered">
+                                <thead class="table">
+                                    <tr>
+                                        <th class="text-center">#</th>
+                                        <th class="text-center">Tên khách hàng</th>
+                                        <th class="text-center">SĐT</th>
+                                        <th class="text-center">Doanh số</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    
+
+    <div class="row mb-4">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header d-flex justify-content-between flex-column">
+                    <h3>Khách hàng mới trong tháng (<span id="table3Title1"></span>)</h3>
+                    <h6>Số khách đã đặt (<span id="table3Title2"></span>)</h6>
+                    <h6>Tỷ lệ (<span id="table3Title3"></span>)</h6>
+                </div>
+                <div class="card-body">
+                    <div class="row ">
+                        <div class="col-md-4">
+                            <label for="from3" class="form-label">Từ ngày</label>
+                            <input type="text" class="form-control datepicker" id="from3" name="from3" placeholder="">
+                        </div>
+                        <div class="col-md-4">
+                            <label for="to3" class="form-label">Đến ngày</label>
+                            <input type="text" class="form-control datepicker" id="to3" name="to3" placeholder="">
+                        </div>
+                        <div class="col-md-4">
+                            <label for="type3" class="form-label">Loại khách</label>
+                            <select id="type3" class="form-select" name="Type3">
+                                <option value="">Tất cả</option>
+                                <option value="true">Đã đặt</option>
+                                <option value="false">Chưa đặt</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row mt-2">
+                        <div class="col-md-4 d-flex align-items-end">
+                            <button type="button" class="btn btn-primary " onclick="showTable3()">Lọc kết quả</button>
+                        </div>
+                        <div class="col-md-4 d-flex align-items-end">
+                            <button type="button" class="btn btn-success " onclick="exportTable3()">Xuất Excel</button>
+                        </div>
+                    </div>
+                    <div class="row mt-4">
+                        <div class="table-content" style=" height: 71vh; ">
+                            <table id="table3" class="table table-hover table-bordered">
+                                <thead class="table">
+                                    <tr>
+                                        <th class="text-center">#</th>
+                                        <th class="text-center">ID</th>
+                                        <th class="text-center">Đã mua hàng</th>
+                                        <th class="text-center">Username</th>
+                                        <th class="text-center">Số điện thoại</th>
+                                        <th class="text-center">Ngày tạo</th>
+                                        <th class="text-center"></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header d-flex justify-content-between flex-column">
+                    <h3>Khách hàng có giao dịch lần đầu</h3>
+                </div>
+                <div class="card-body">
+                    <div class="row ">
+                        <div class="col-md-3">
+                            <label for="from4" class="form-label">Từ ngày</label>
+                            <input type="text" class="form-control datepicker" id="from4" name="from4" placeholder="">
+                        </div>
+                        <div class="col-md-3">
+                            <label for="to4" class="form-label">Đến ngày</label>
+                            <input type="text" class="form-control datepicker" id="to4" name="to4" placeholder="">
+                        </div>
+                        <div class="col-md-3 d-flex align-items-end">
+                            <button type="button" class="btn btn-primary " onclick="showTable4()">Lọc kết quả</button>
+                        </div>
+                        <div class="col-md-3 d-flex align-items-end">
+                            <button type="button" class="btn btn-success " onclick="exportTable4()">Xuất Excel</button>
+                        </div>
+                    </div>
+                    <div class="row mt-4">
+                        <div class="table-content">
+                            <table id="table4" class="table table-hover table-bordered">
+                                <thead class="table">
+                                    <tr>
+                                        <th class="text-center">#</th>
+                                        <th class="text-center">Tên khách hàng</th>
+                                        <th class="text-center">SĐT</th>
+                                        <th class="text-center">Tổng tiền</th>
+                                        <th class="text-center"></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row mb-4">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <h3>Khách chưa đi hàng trong 6 tháng (<span id="table5Title"></span>)</h3>
+                    <button type="button" class="btn btn-success " onclick="exportTable5()">Xuất Excel</button>
+                </div>
+                <div class="card-body">
+                    <div class="row mt-4">
+                        <div class="table-content">
+                            <table id="table5" class="table table-hover table-bordered">
+                                <thead class="table">
+                                    <tr>
+                                        <th class="text-center">#</th>
+                                        <th class="text-center">Tên khách hàng</th>
+                                        <th class="text-center">SĐT</th>
+                                        <th class="text-center">Đơn hàng cuối</th>
+                                        <th class="text-center">Ngày chênh lệch</th>
+                                        <th class="text-center"></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <h3>Khách chưa đi hàng trong 3 tháng (<span id="table6Title"></span>)</h3>
+                    <button type="button" class="btn btn-success " onclick="exportTable6()">Xuất Excel</button>
+                </div>
+                <div class="card-body">
+                    <div class="row mt-4">
+                        <div class="table-content">
+                            <table id="table6" class="table table-hover table-bordered">
+                                <thead class="table">
+                                    <tr>
+                                        <th class="text-center">#</th>
+                                        <th class="text-center">Tên khách hàng</th>
+                                        <th class="text-center">SĐT</th>
+                                        <th class="text-center">Đơn hàng cuối</th>
+                                        <th class="text-center">Ngày chênh lệch</th>
+                                        <th class="text-center"></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row mb-4">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <h3>Doanh số Hỏa tốc trong tháng</h3>
+                </div>
+                <div class="card-body">
+                    <div class="row ">
+                        <div class="col-md-3">
+                            <label for="fromHT" class="form-label">Từ ngày</label>
+                            <input type="text" class="form-control datepicker" id="fromHT" name="fromHT" placeholder="">
+                        </div>
+                        <div class="col-md-3">
+                            <label for="toHT" class="form-label">Đến ngày</label>
+                            <input type="text" class="form-control datepicker" id="toHT" name="toHT" placeholder="">
+                        </div>
+                        <div class="col-md-3 d-flex align-items-end">
+                            <button type="button" class="btn btn-primary " onclick="showTableHT()">Lọc kết quả</button>
+                        </div>
+                        <div class="col-md-3 d-flex align-items-end">
+                            <button type="button" class="btn btn-success " onclick="exportTableHT()">Xuất Excel</button>
+                        </div>
+                    </div>
+                    <div class="row mt-4">
+                        <div class="table-content">
+                            <table id="tableHT" class="table table-hover table-bordered">
+                                <thead class="table">
+                                    <tr>
+                                        <th class="text-center">#</th>
+                                        <th class="text-center">Tên khách hàng</th>
+                                        <th class="text-center">SĐT</th>
+                                        <th class="text-center">Doanh số</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>    
+    </div>
+</div>
+
+<script src="~/js/createLineChart.js"></script>
+<script>
+    $(document).ready(function () {
+        showWeekChart();
+        showMonthChart();
+        showYearChart();
+        showTable1();
+        showTable2();
+        showTableCN();
+        showTableHT();
+        showTableDT();
+        showTable3();
+        showTable4();
+        showTable5();
+        showTable6();
+    });
+    function searchTracking() {
+        const barcode = document.getElementById('barcode').value.trim();
+        if (!barcode) {
+            return;
+        }
+        window.location.href = `/tracking?barcode=${barcode}`;
+    }
+    function showWeekChart() {
+        WeekChart();
+        WeekChartData(0, 'black');
+    }
+
+    function showMonthChart() {
+        MonthChart();
+        MonthChartData(0, 'black');
+    }
+    function showYearChart() {
+        YearChart();
+        YearChartData(0, 'black');
+    }
+
+    function WeekChart() {
+        const weekDateInput = $('#weekDate').val();
+        const weekDate = weekDateInput ? parseDate(weekDateInput) : null;
+
+        $.ajax({
+            url: '/Statistic/GetWeekChart',
+            data: { dataDate: weekDate ? weekDate : '' },
+            type: 'GET',
+            success: function (data) {
+                $(".soDon-Week").text(Math.floor(data.Order));
+                $(".soKg-Week").text(data.Weight.toFixed(2));
+                $(".soKhoi-Week").text(data.Volume.toFixed(2));
+                $(".soTien-Week").text(data.TotalPriceVND.toLocaleString('en-US'));
+            },
+            error: function () {
+            }
+        });
+    }
+    function WeekChartData(index, colorW) {
+        const weekDate = $('#weekDate').val() ? parseDate($('#weekDate').val()) : null;
+        $.ajax({
+            url: '/Statistic/GetWeekChartData',
+            data: { dataDate: weekDate ? weekDate : '', type: index },
+            type: 'GET',
+            success: function (response) {
+                createChart('WeekChart', response, colorW, ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"]);
+            },
+            error: function () { }
+        });
+    }
+    function MonthChart() {
+        const monthDateInput = $('#monthDate').val();
+        const monthDate = monthDateInput ? parseDate(monthDateInput) : null;
+        $.ajax({
+            url: '/Statistic/GetMonthChart',
+            data: { dataDate: monthDate ? monthDate : '' },
+            type: 'GET',
+            success: function (data) {
+                $(".soDon-Month").text(Math.floor(data.Order));
+                $(".soKg-Month").text(data.Weight.toFixed(2));
+                $(".soKhoi-Month").text(data.Volume.toFixed(2));
+                $(".soTien-Month").text(data.TotalPriceVND.toLocaleString('en-US'));
+            },
+            error: function () {
+            }
+        });
+    }
+
+    function MonthChartData(index, colorW) {
+        const monthDate = $('#monthDate').val() ? parseDate($('#monthDate').val()) : new Date();
+        const numDaysInMonth = new Date(monthDate.getFullYear(), monthDate.getMonth() + 1, 0).getDate();
+        let labels = [];
+        for (let i = 1; i <= numDaysInMonth; i++) {
+            labels.push(i);
+        }
+        $.ajax({
+            url: '/Statistic/GetMonthChartData',
+            data: { dataDate: monthDate ? monthDate : '', type: index },
+            type: 'GET',
+            success: function (response) {
+                createChart('MonthChart', response, colorW, labels);
+            },
+            error: function () { }
+        });
+    }
+
+    function YearChart() {
+        const yearDateInput = $('#yearDate').val();
+        const yearDate = yearDateInput ? parseDate(yearDateInput) : null;
+        $.ajax({
+            url: '/Statistic/GetYearChart',
+            data: { dataDate: yearDate ? yearDate : '' },
+            type: 'GET',
+            success: function (data) {
+                $(".soDon-Year").text(Math.floor(data.Order));
+                $(".soKg-Year").text(data.Weight.toFixed(2));
+                $(".soKhoi-Year").text(data.Volume.toFixed(2));
+                $(".soTien-Year").text(data.TotalPriceVND.toLocaleString('en-US'));
+            },
+            error: function () {
+            }
+        });
+    }
+    function YearChartData(index, colorW) {
+        const yearDate = $('#yearDate').val() ? parseDate($('#yearDate').val()) : null;
+        $.ajax({
+            url: '/Statistic/GetYearChartData',
+            data: { dataDate: yearDate ? yearDate : '', type: index },
+            type: 'GET',
+            success: function (response) {
+                createChart('YearChart', response, colorW, ["Tháng 1", "Tháng 2", "Tháng 3", "Tháng 4", "Tháng 5", "Tháng 6", "Tháng 7", "Tháng 8", "Tháng 9", "Tháng 10", "Tháng 11", "Tháng 12"]);
+            },
+            error: function () { }
+        });
+    }
+
+    function showTable1() {
+        const fromDateInput = $('#from1').val();
+        const fromDateParse = fromDateInput ? parseDate(fromDateInput) : null;
+        const fromDate = fromDateParse ? fromDateParse : '';
+
+        const toDateInput = $('#to1').val();
+        const toDateParse = toDateInput ? parseDate(toDateInput) : null;
+        const toDate = toDateParse ? toDateParse : '';
+        $.ajax({
+            url: '/Statistic/GetStatisticTable1', // Thay thế URL với controller của bạn
+            type: 'GET',
+            data: {
+                fromDate: fromDate,
+                toDate: toDate
+            },
+            success: function (data) {
+                const tableBody = $('#table1 tbody'); // Chỉ định bảng bằng ID
+                tableBody.empty(); // Xóa các dòng cũ
+
+                data.forEach((item, index) => {
+                    const row = `
+                                                            <tr>
+                                                                <td class="text-center">${index + 1}</td>
+                                                                    <td class="text-center">${item.Username}</td>
+                                                                    <td class="text-center">${item.Phone}</td>
+                                                                    <td class="text-center">${item.Order}</td>
+                                                                    <td class="text-center">${item.TotalPriceVND.toLocaleString('en-US')}</td>
+                                                            </tr>
+                                                        `;
+                    tableBody.append(row);
+                });
+            },
+            error: function () {
+            }
+        });
+    }
+    function exportTable1() {
+        const fromDateInput = $('#from1').val();
+        const fromDateParse = fromDateInput ? parseDate(fromDateInput) : null;
+        const fromDate = fromDateParse ? fromDateParse : '';
+
+        const toDateInput = $('#to1').val();
+        const toDateParse = toDateInput ? parseDate(toDateInput) : null;
+        const toDate = toDateParse ? toDateParse : '';
+
+        const params = new URLSearchParams({
+            'fromDate': fromDate,
+            'toDate': toDate
+        });
+        fetch('/Statistic/ExportStatisticTable1' + `?${params.toString()}`)
+            .then(response => response.blob())
+            .then(blob => {
+                const url = window.URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = "Khách hàng có nhiều đơn trong tháng.xlsx";
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+            })
+            .catch(error => console.error("Lỗi khi tải file mẫu:", error));
+    }
+    function showTable2() {
+        const fromDateInput = $('#from2').val();
+        const fromDateParse = fromDateInput ? parseDate(fromDateInput) : null;
+        const fromDate = fromDateParse ? fromDateParse : '';
+
+        const toDateInput = $('#to2').val();
+        const toDateParse = toDateInput ? parseDate(toDateInput) : null;
+        const toDate = toDateParse ? toDateParse : '';
+        $.ajax({
+            url: '/Statistic/GetStatisticTable2', // Thay thế URL với controller của bạn
+            type: 'GET',
+            data: {
+                fromDate: fromDate,
+                toDate: toDate
+            },
+            success: function (data) {
+                const tableBody = $('#table2 tbody'); // Chỉ định bảng bằng ID
+                tableBody.empty(); // Xóa các dòng cũ
+
+                data.forEach((item, index) => {
+                    const row = `
+                                                            <tr>
+                                                                <td class="text-center">${index + 1}</td>
+                                                                    <td class="text-center">${item.Username}</td>
+                                                                    <td class="text-center">${item.Phone}</td>
+                                                                    <td class="text-center">${item.TotalPriceVND.toLocaleString('en-US')}</td>
+                                                            </tr>
+                                                        `;
+                    tableBody.append(row);
+                });
+            },
+            error: function () {
+            }
+        });
+    }
+    function exportTable2() {
+        const fromDateInput = $('#from2').val();
+        const fromDateParse = fromDateInput ? parseDate(fromDateInput) : null;
+        const fromDate = fromDateParse ? fromDateParse : '';
+
+        const toDateInput = $('#to2').val();
+        const toDateParse = toDateInput ? parseDate(toDateInput) : null;
+        const toDate = toDateParse ? toDateParse : '';
+
+        const params = new URLSearchParams({
+            'fromDate': fromDate,
+            'toDate': toDate
+        });
+        fetch('/Statistic/ExportStatisticTable2' + `?${params.toString()}`)
+            .then(response => response.blob())
+            .then(blob => {
+                const url = window.URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = "Doanh số trong tháng.xlsx";
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+            })
+            .catch(error => console.error("Lỗi khi tải file mẫu:", error));
+    }
+
+    function showTable3() {
+        const fromDateInput = $('#from3').val();
+        const fromDateParse = fromDateInput ? parseDate(fromDateInput) : null;
+        const fromDate = fromDateParse ? fromDateParse : '';
+
+        const toDateInput = $('#to3').val();
+        const toDateParse = toDateInput ? parseDate(toDateInput) : null;
+        const toDate = toDateParse ? toDateParse : '';
+
+        $.ajax({
+            url: '/Statistic/GetStatisticTitleTable3',
+            type: 'GET',
+            data: {
+                fromDate: fromDate,
+                toDate: toDate,
+            },
+            success: function (data) {
+                $('#table3Title1').text(data.Title1);
+                $('#table3Title2').text(data.Title2);
+                $('#table3Title3').text(data.Title3);
+            },
+            error: function () {
+            }
+        });
+
+        $.ajax({
+            url: '/Statistic/GetStatisticTable3',
+            type: 'GET',
+            data: {
+                fromDate: fromDate,
+                toDate: toDate,
+                isOrder: $('#type3').val()
+            },
+            success: function (data) {
+                const tableBody = $('#table3 tbody');
+                tableBody.empty();
+
+                data.forEach((item, index) => {
+                    const row = `
+                                                            <tr>
+                                                                <td class="text-center">${index + 1}</td>
+                                                                <td class="text-center">${item.Id}</td>
+                                                                <td class="text-center">
+                                                                    ${item.IsOrder
+                            ? '<i class="bi bi-check-circle-fill text-success"></i>'
+                            : '<i class="bi bi-x-circle-fill text-danger"></i>'}
+                                                                </td>
+                                                                <td class="text-center">${item.Username}</td>
+                                                                <td class="text-center">${item.Phone}</td>
+                                                                <td class="text-center">${item.Created}</td>
+                                                                <td class="text-center"><a class="btn btn-primary" href="/account-detail/${item.Id}" target="_blank">Chi tiết</a></td>
+                                                            </tr>
+                                                        `;
+                    tableBody.append(row);
+                });
+            },
+            error: function () {
+            }
+        });
+    }
+    function exportTable3() {
+        const fromDateInput = $('#from3').val();
+        const fromDateParse = fromDateInput ? parseDate(fromDateInput) : null;
+        const fromDate = fromDateParse ? fromDateParse : '';
+
+        const toDateInput = $('#to3').val();
+        const toDateParse = toDateInput ? parseDate(toDateInput) : null;
+        const toDate = toDateParse ? toDateParse : '';
+
+        const params = new URLSearchParams({
+            'fromDate': fromDate,
+            'toDate': toDate
+        });
+        fetch('/Statistic/ExportStatisticTable3' + `?${params.toString()}`)
+            .then(response => response.blob())
+            .then(blob => {
+                const url = window.URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = "Khách hàng mới trong tháng.xlsx";
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+            })
+            .catch(error => console.error("Lỗi khi tải file mẫu:", error));
+    }
+
+    function showTable4() {
+        const fromDateInput = $('#from4').val();
+        const fromDateParse = fromDateInput ? parseDate(fromDateInput) : null;
+        const fromDate = fromDateParse ? fromDateParse : '';
+
+        const toDateInput = $('#to4').val();
+        const toDateParse = toDateInput ? parseDate(toDateInput) : null;
+        const toDate = toDateParse ? toDateParse : '';
+
+        $.ajax({
+            url: '/Statistic/GetStatisticTable4',
+            type: 'GET',
+            data: {
+                fromDate: fromDate,
+                toDate: toDate,
+            },
+            success: function (data) {
+                const tableBody = $('#table4 tbody');
+                tableBody.empty();
+
+                data.forEach((item, index) => {
+                    const row = `
+                                <tr>
+                                    <td class="text-center">${index + 1}</td>
+                                    <td class="text-center">${item.Username}</td>
+                                    <td class="text-center">${item.Phone}</td>
+                                    <td class="text-center">${item.TotalPriceVND}</td>
+                                    <td class="text-center"><a class="btn btn-primary" href="/account-detail/${item.Id}" target="_blank">Chi tiết</a></td>
+                                </tr>
+                            `;
+                    tableBody.append(row);
+                });
+            },
+            error: function () {
+            }
+        });
+    }
+    function exportTable4() {
+        const fromDateInput = $('#from4').val();
+        const fromDateParse = fromDateInput ? parseDate(fromDateInput) : null;
+        const fromDate = fromDateParse ? fromDateParse : '';
+
+        const toDateInput = $('#to4').val();
+        const toDateParse = toDateInput ? parseDate(toDateInput) : null;
+        const toDate = toDateParse ? toDateParse : '';
+
+        const params = new URLSearchParams({
+            'fromDate': fromDate,
+            'toDate': toDate
+        });
+        fetch('/Statistic/ExportStatisticTable4' + `?${params.toString()}`)
+            .then(response => response.blob())
+            .then(blob => {
+                const url = window.URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = "Khách hàng giao dịch lần đầu.xlsx";
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+            })
+            .catch(error => console.error("Lỗi khi tải file mẫu:", error));
+    }
+
+    function showTable5() {
+        $.ajax({
+            url: '/Statistic/GetStatisticTable5', // Thay thế URL với controller của bạn
+            type: 'GET',
+            success: function (data) {
+                const tableBody = $('#table5 tbody'); // Chỉ định bảng bằng ID
+                tableBody.empty(); // Xóa các dòng cũ
+                $('#table5Title').text(data.length);
+                data.forEach((item, index) => {
+                    const row = `
+                                                    <tr>
+                                                        <td class="text-center">${index + 1}</td>
+                                                            <td class="text-center">${item.Username}</td>
+                                                            <td class="text-center">${item.Phone}</td>
+                                                            <td class="text-center">${item.LastOrder}</td>
+                                                            <td class="text-center">${item.DifferenceDay > 0 ? item.DifferenceDay : ""}</td>
+                                                            <td class="text-center"><a class="btn btn-primary" href="/account-detail/${item.Id}" target="_blank">Chi tiết</a></td>
+                                                    </tr>
+                                                `;
+                    tableBody.append(row);
+                });
+            },
+            error: function () {
+            }
+        });
+    }
+
+    function exportTable5() {
+        fetch('/Statistic/ExportStatisticTable5')
+            .then(response => response.blob())
+            .then(blob => {
+                const url = window.URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = "Khách chưa đi hàng trong 6 tháng.xlsx";
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+            })
+            .catch(error => console.error("Lỗi khi tải file mẫu:", error));
+    }
+
+    function showTable6() {
+        $.ajax({
+            url: '/Statistic/GetStatisticTable6', // Thay thế URL với controller của bạn
+            type: 'GET',
+            success: function (data) {
+                const tableBody = $('#table6 tbody'); // Chỉ định bảng bằng ID
+                tableBody.empty(); // Xóa các dòng cũ
+                $('#table6Title').text(data.length);
+                data.forEach((item, index) => {
+                    const row = `
+                                                    <tr>
+                                                        <td class="text-center">${index + 1}</td>
+                                                            <td class="text-center">${item.Username}</td>
+                                                            <td class="text-center">${item.Phone}</td>
+                                                            <td class="text-center">${item.LastOrder}</td>
+                                                            <td class="text-center">${item.DifferenceDay > 0 ? item.DifferenceDay : ""}</td>
+                                                            <td class="text-center"><a class="btn btn-primary" href="/account-detail/${item.Id}" target="_blank">Chi tiết</a></td>
+                                                    </tr>
+                                                `;
+                    tableBody.append(row);
+                });
+            },
+            error: function () {
+            }
+        });
+    }
+    function exportTable6() {
+        fetch('/Statistic/ExportStatisticTable6')
+            .then(response => response.blob())
+            .then(blob => {
+                const url = window.URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = "Khách chưa đi hàng trong 3 tháng.xlsx";
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+            })
+            .catch(error => console.error("Lỗi khi tải file mẫu:", error));
+    }
+
+    function showTableCN() {
+        const fromDateInput = $('#fromCN').val();
+        const fromDateParse = fromDateInput ? parseDate(fromDateInput) : null;
+        const fromDate = fromDateParse ? fromDateParse : '';
+
+        const toDateInput = $('#toCN').val();
+        const toDateParse = toDateInput ? parseDate(toDateInput) : null;
+        const toDate = toDateParse ? toDateParse : '';
+        $.ajax({
+            url: '/Statistic/GetStatisticTable2', // Thay thế URL với controller của bạn
+            type: 'GET',
+            data: {
+                fromDate: fromDate,
+                toDate: toDate,
+                shipId: 5
+            },
+            success: function (data) {
+                const tableBody = $('#tableCN tbody'); // Chỉ định bảng bằng ID
+                tableBody.empty(); // Xóa các dòng cũ
+
+                data.forEach((item, index) => {
+                    const row = `
+                                                            <tr>
+                                                                <td class="text-center">${index + 1}</td>
+                                                                    <td class="text-center">${item.Username}</td>
+                                                                    <td class="text-center">${item.Phone}</td>
+                                                                    <td class="text-center">${item.TotalPriceVND.toLocaleString('en-US')}</td>
+                                                            </tr>
+                                                        `;
+                    tableBody.append(row);
+                });
+            },
+            error: function () {
+            }
+        });
+    }
+    function exportTableCN() {
+        const fromDateInput = $('#fromCN').val();
+        const fromDateParse = fromDateInput ? parseDate(fromDateInput) : null;
+        const fromDate = fromDateParse ? fromDateParse : '';
+
+        const toDateInput = $('#toCN').val();
+        const toDateParse = toDateInput ? parseDate(toDateInput) : null;
+        const toDate = toDateParse ? toDateParse : '';
+
+        const params = new URLSearchParams({
+            'fromDate': fromDate,
+            'toDate': toDate,
+            'shipId': 5
+        });
+        fetch('/Statistic/ExportStatisticTable2' + `?${params.toString()}`)
+            .then(response => response.blob())
+            .then(blob => {
+                const url = window.URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = "Doanh số CN trong tháng.xlsx";
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+            })
+            .catch(error => console.error("Lỗi khi tải file mẫu:", error));
+    }
+
+    function showTableHT() {
+        const fromDateInput = $('#fromHT').val();
+        const fromDateParse = fromDateInput ? parseDate(fromDateInput) : null;
+        const fromDate = fromDateParse ? fromDateParse : '';
+
+        const toDateInput = $('#toHT').val();
+        const toDateParse = toDateInput ? parseDate(toDateInput) : null;
+        const toDate = toDateParse ? toDateParse : '';
+        $.ajax({
+            url: '/Statistic/GetStatisticTable2', // Thay thế URL với controller của bạn
+            type: 'GET',
+            data: {
+                fromDate: fromDate,
+                toDate: toDate,
+                shipId: 4
+            },
+            success: function (data) {
+                const tableBody = $('#tableHT tbody'); // Chỉ định bảng bằng ID
+                tableBody.empty(); // Xóa các dòng cũ
+
+                data.forEach((item, index) => {
+                    const row = `
+                                                            <tr>
+                                                                <td class="text-center">${index + 1}</td>
+                                                                    <td class="text-center">${item.Username}</td>
+                                                                    <td class="text-center">${item.Phone}</td>
+                                                                    <td class="text-center">${item.TotalPriceVND.toLocaleString('en-US')}</td>
+                                                            </tr>
+                                                        `;
+                    tableBody.append(row);
+                });
+            },
+            error: function () {
+            }
+        });
+    }
+    function exportTableHT() {
+        const fromDateInput = $('#fromHT').val();
+        const fromDateParse = fromDateInput ? parseDate(fromDateInput) : null;
+        const fromDate = fromDateParse ? fromDateParse : '';
+
+        const toDateInput = $('#toHT').val();
+        const toDateParse = toDateInput ? parseDate(toDateInput) : null;
+        const toDate = toDateParse ? toDateParse : '';
+
+        const params = new URLSearchParams({
+            'fromDate': fromDate,
+            'toDate': toDate,
+            'shipId': 4
+        });
+        fetch('/Statistic/ExportStatisticTable2' + `?${params.toString()}`)
+            .then(response => response.blob())
+            .then(blob => {
+                const url = window.URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = "Doanh số HT trong tháng.xlsx";
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+            })
+            .catch(error => console.error("Lỗi khi tải file mẫu:", error));
+    }
+
+    function showTableDT() {
+        const fromDateInput = $('#fromDT').val();
+        const fromDateParse = fromDateInput ? parseDate(fromDateInput) : null;
+        const fromDate = fromDateParse ? fromDateParse : '';
+
+        const toDateInput = $('#toDT').val();
+        const toDateParse = toDateInput ? parseDate(toDateInput) : null;
+        const toDate = toDateParse ? toDateParse : '';
+        $.ajax({
+            url: '/Statistic/GetStatisticTable2', // Thay thế URL với controller của bạn
+            type: 'GET',
+            data: {
+                fromDate: fromDate,
+                toDate: toDate,
+                shipId: 3
+            },
+            success: function (data) {
+                const tableBody = $('#tableDT tbody'); // Chỉ định bảng bằng ID
+                tableBody.empty(); // Xóa các dòng cũ
+
+                data.forEach((item, index) => {
+                    const row = `
+                                                            <tr>
+                                                                <td class="text-center">${index + 1}</td>
+                                                                    <td class="text-center">${item.Username}</td>
+                                                                    <td class="text-center">${item.Phone}</td>
+                                                                    <td class="text-center">${item.TotalPriceVND.toLocaleString('en-US')}</td>
+                                                            </tr>
+                                                        `;
+                    tableBody.append(row);
+                });
+            },
+            error: function () {
+            }
+        });
+    }
+    function exportTableDT() {
+        const fromDateInput = $('#fromDT').val();
+        const fromDateParse = fromDateInput ? parseDate(fromDateInput) : null;
+        const fromDate = fromDateParse ? fromDateParse : '';
+
+        const toDateInput = $('#toDT').val();
+        const toDateParse = toDateInput ? parseDate(toDateInput) : null;
+        const toDate = toDateParse ? toDateParse : '';
+
+        const params = new URLSearchParams({
+            'fromDate': fromDate,
+            'toDate': toDate,
+            'shipId': 4
+        });
+        fetch('/Statistic/ExportStatisticTable2' + `?${params.toString()}`)
+            .then(response => response.blob())
+            .then(blob => {
+                const url = window.URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = "Doanh số DT trong tháng.xlsx";
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+            })
+            .catch(error => console.error("Lỗi khi tải file mẫu:", error));
+    }
+</script>
+<style>
+    .table-content {
+        height: 80vh;
+    }
+
+    @@media (max-width: 1245px) {
+        .col-md-6 {
+            flex: 0 0 auto;
+            width: 100% !important;
+            margin-top: 1rem;
+        }
+    }
+
+    .status-card {
+        display: grid;
+        grid-template-rows: 1fr auto; /* Chia thành 2 hàng, hàng trên chiếm 1 phần, hàng dưới tự động co giãn */
+        justify-items: center; /* Căn giữa nội dung theo chiều ngang */
+        align-items: center;
+        transform: translateY(-5px);
+        box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+        min-width: 110px;
+    }
+
+    .row {
+        flex-wrap: wrap;
+    }
+
+    @@media (max-width: 576px) {
+        .status-card strong {
+            font-size: 12px;
+        }
+
+        .status-card h3 {
+            font-size: 16px;
+        }
+    }
+</style>

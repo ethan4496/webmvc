@@ -1,0 +1,29 @@
+﻿@{
+    var token = ViewData["ChatToken"]?.ToString();
+}
+
+<div id="chatWindow" class="chat-window">
+    <div class="chat-header d-flex justify-content-between">
+        <div class="d-flex align-items-end">
+            <div style="padding-right:5px">
+                <button id="backButton" style="display:none;">←</button>
+                <span id="chatTitle">Trò chuyện</span>
+                <span id="notificationDot" class="notification-dot" style="display:none;"></span>
+            </div>
+        </div>
+
+        <div class="d-flex align-items-center gap-3">
+            <i id="closeChat" class="bi bi-dash fs-5" role="button"></i>
+            <a href="/chat" target="_blank" class="text-decoration-none text-white">
+                <i class="bi bi-arrows-fullscreen fs-5"></i>
+            </a>
+        </div>
+    </div>
+
+    <div id="chat-body" style="display:none">
+        <iframe id="chatIframe"
+                src="https://chat.tpkexpress.cn/?token=@token"
+                style="width: 100%; height: 500px; border: none;">
+        </iframe>
+    </div>
+</div>

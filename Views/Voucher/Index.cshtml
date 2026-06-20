@@ -1,0 +1,344 @@
+﻿@using WebMVC.Models.Responses
+@model List<VoucherResponse>
+@using WebMVC.Interfaces
+@using WebMVC.Ultilities.Enums
+@{
+    ViewData["Title"] = "Danh sách voucher";
+}
+
+<div class="container-fluid mt-4">
+    <div class="card mb-4">
+        <div class="card-header d-flex justify-content-between align-items-center">
+            <h2>Danh sách voucher</h2>
+            <div>
+                <button id="toggleFilterButton" class="btn btn-primary">Ẩn bộ lọc</button>
+                <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#addModal">
+                    <i class="bi bi-plus"></i> Thêm mới
+                </button>
+            </div>
+        </div>
+        <div class="card-body" id="filterContainer">
+            <div class="row">
+                <div class="col-md-2">
+                    <label for="name" class="form-label">Tên</label>
+                    <input type="text" class="form-control" id="name" name="name" placeholder="">
+                </div>
+                <div class="col-md-2">
+                    <label for="fromDate" class="form-label">Từ ngày</label>
+                    <input type="text" class="form-control datepicker" id="fromDate" name="fromDate" placeholder="">
+                </div>
+                <div class="col-md-2">
+                    <label for="toDate" class="form-label">Đến ngày</label>
+                    <input type="text" class="form-control datepicker" id="toDate" name="toDate" placeholder="">
+                </div>
+                <div class="col-md-2">
+                    <label for="status" class="form-label">Trạng thái</label>
+                    <select id="status" class="form-select" name="Status">
+                        <option value="">
+                            Tất cả
+                        </option>
+                        @foreach (var status in Enum.GetValues(typeof(EVoucherStatus)).Cast<EVoucherStatus>())
+                        {
+                            var statusValue = (int)status;
+                            var statusName = EVoucherStatusName.GetStatusName(statusValue);
+                            <option value="@statusValue">
+                                @statusName
+                            </option>
+                        }
+                    </select>
+                </div>
+                <div class="col-md-2 d-flex align-items-end">
+                    <button type="button" class="btn btn-primary btn-search" onclick="loadPage(1)">Tìm kiếm</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    @await Html.PartialAsync("_VoucherTable", Model)
+</div>
+
+<div class="modal fade" id="addModal" tabindex="-1" aria-labelledby="addModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Tạo mới</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="addForm">
+                    <div class="row">
+                        <div class="col-6 mb-3">
+                            <label for="addName" class="form-label">Tên</label>
+                            <input type="text" class="form-control" id="addName" required>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-6 mb-3">
+                            <label for="addAmount" class="form-label">Số tiền</label>
+                            <input class="form-control input-money" id="addAmount" required>
+                        </div>
+                        <div class="col-6 mb-3">
+                            <label for="addImage" class="form-label">Hình ảnh</label>
+                            <input type="file" class="form-control" id="addImage" accept="image/png, image/jpeg, image/jpg, image/gif">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-6 mb-3">
+                            <label for="addFrom" class="form-label">Ngày bắt đầu</label>
+                            <input type="text" class="form-control datepicker" id="addFrom" required>
+                        </div>
+                        <div class="col-6 mb-3">
+                            <label for="addTo" class="form-label">Ngày kết thúc</label>
+                            <input type="text" class="form-control datepicker" id="addTo" required>
+                        </div>
+                    </div>
+                    <div class="row">
+
+                        <div class="col-6 mb-3">
+                            <label for="addFile" class="form-label">File khách hàng</label>
+                            <input type="file" class="form-control" id="addFile" accept=".xlsx, .xls" required>
+                        </div>
+                        <div class="col-6 mb-3 d-flex align-items-end">
+                            <button type="button" class="btn btn-warning" onclick="exportSample()">Xuất file mẫu</button>
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="addDescription" class="form-label">Mô tả</label>
+                        <textarea class="form-control" id="addDescription" rows="3"></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-success">Lưu</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editModalLabel">Cập nhật</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="editForm">
+                    <div class="row">
+                        <div class="col-6 mb-3">
+                            <label for="editName" class="form-label">Tên</label>
+                            <input type="text" class="form-control" id="editName" required>
+                        </div>
+                        <div class="col-6 mb-3">
+                            <label for="editStatus" class="form-label">Trạng thái</label>
+                            <select id="editStatus" class="form-select" name="Status">
+                                @foreach (var status in Enum.GetValues(typeof(EVoucherStatus)).Cast<EVoucherStatus>())
+                                {
+                                    var statusValue = (int)status;
+                                    var statusName = EVoucherStatusName.GetStatusName(statusValue);
+                                    <option value="@statusValue">
+                                        @statusName
+                                    </option>
+                                }
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-6 mb-3">
+                            <label for="editAmount" class="form-label">Số tiền</label>
+                            <input class="form-control input-money" id="editAmount" required>
+                        </div>
+                        <div class="col-6 mb-3">
+                            <label for="editImage" class="form-label">Hình ảnh</label>
+                            <input type="file" class="form-control" id="editImage" accept="image/png, image/jpeg, image/jpg, image/gif">
+                            <img id="editImagePreview" class="img-fluid mt-2 border rounded" style="max-width: 100px; display: none;" />
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-6 mb-3">
+                            <label for="editFrom" class="form-label">Ngày bắt đầu</label>
+                            <input type="text" class="form-control datepicker" id="editFrom" required>
+                        </div>
+                        <div class="col-6 mb-3">
+                            <label for="editTo" class="form-label">Ngày kết thúc</label>
+                            <input type="text" class="form-control datepicker" id="editTo" required>
+                        </div>
+                    </div>
+                    <div class="row">
+
+                        <div class="col-6 mb-3">
+                            <label for="editFile" class="form-label">File khách hàng</label>
+                            <input type="file" class="form-control" id="editFile" accept=".xlsx, .xls">
+                        </div>
+                        <div class="col-6 mb-3 d-flex align-items-end">
+                            <button type="button" class="btn btn-warning" onclick="exportSample()">Xuất file mẫu</button>
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="editDescription" class="form-label">Mô tả</label>
+                        <textarea class="form-control" id="editDescription" rows="3"></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-success">Lưu</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+@section Scripts {
+    <script>
+        function loadPage(page) {
+            const fromDateInput = $('#fromDate').val();
+            const toDateInput = $('#toDate').val();
+
+            const fromDate = fromDateInput ? parseDate(fromDateInput) : null;
+            const toDate = toDateInput ? parseDate(toDateInput) : null;
+
+            const request = {
+                PageIndex: page,
+                Name: $('#name').val() || '',
+                Code: $('#code').val() || '',
+                Status: $('#status').val() ? parseInt($('#status').val()) : null,
+                StartDate: fromDate ? fromDate : null,
+                EndDate: toDate ? toDate : null,
+            };
+
+            $.ajax({
+                url: '/Voucher/GetVoucherPaging',
+                data: request,
+                type: 'GET',
+                success: function (data) {
+                    $('#table-container').html(data);
+                },
+                error: function () {
+                    alert('Lỗi khi tải dữ liệu');
+                }
+            });
+        }
+
+        $('#toggleFilterButton').on('click', function () {
+            $('#filterContainer').toggle();
+            let isVisible = $('#filterContainer').is(':visible');
+            $(this).text(isVisible ? 'Ẩn bộ lọc' : 'Hiện bộ lọc');
+        });
+
+        function exportSample() {
+            fetch('/Voucher/ExportSampleExcel')
+                .then(response => response.blob())
+                .then(blob => {
+                    const url = window.URL.createObjectURL(blob);
+                    const a = document.createElement('a');
+                    a.href = url;
+                    a.download = "Sample.xlsx";
+                    document.body.appendChild(a);
+                    a.click();
+                    document.body.removeChild(a);
+                })
+                .catch(error => console.error("Lỗi khi tải file mẫu:", error));
+        }
+
+        document.getElementById("addForm").addEventListener("submit", async function (event) {
+            event.preventDefault();
+
+            const addFromDateInput = $('#addFrom').val();
+            const addToDateInput = $('#addTo').val();
+
+            const addFromDate = addFromDateInput ? parseDate(addFromDateInput) : null;
+            const addToDate = addToDateInput ? parseDate(addToDateInput) : null;
+
+            let formData = new FormData();
+            formData.append("Name", document.getElementById("addName").value);
+            formData.append("Amount", getRawValue(document.getElementById("addAmount").value));
+            formData.append("StartDate", addFromDate);
+            formData.append("EndDate", addToDate);
+            formData.append("Description", document.getElementById("addDescription").value);
+
+            let fileInput = document.getElementById("addFile");
+            if (fileInput.files.length > 0) {
+                formData.append("File", fileInput.files[0]);
+            } else {
+                showToast("Vui lòng chọn file Excel.", 2, false);
+                return;
+            }
+            const imageInput = document.getElementById("addImage");
+            const imageFile = imageInput.files[0];
+            formData.append("Image", imageFile);
+
+            disableButton();
+            $.ajax({
+                url: "/Voucher/Create",
+                type: "POST",
+                data: formData,
+                contentType: false,
+                processData: false,
+                success: function (response) {
+                    showToast(response.Message, response.Type, true);
+                },
+                error: function (response) {
+                    showToast(response.responseJSON?.Message || "Lỗi không xác định", response.responseJSON?.Type || 2, false);
+                },
+                complete: function () {
+                    enableButton();
+                }
+            });
+        });
+
+        function editItem(voucher) {
+            $("#editName").val(voucher.Name);
+            $("#editAmount").val(voucher.Amount.toLocaleString("en-US"));
+            $("#editFrom").val(formatDateForInput(voucher.StartDate));
+            $("#editTo").val(formatDateForInput(voucher.EndDate));
+            $("#editDescription").val(voucher.Description);
+            $("#editStatus").val(voucher.Status);
+
+            // Nếu voucher có hình ảnh, hiển thị ảnh hiện tại
+            if (voucher.Image) {
+                $("#editImagePreview").attr("src", voucher.Image).show();
+            } else {
+                $("#editImagePreview").hide();
+            }
+
+            // Lưu ID voucher vào form để gửi khi cập nhật
+            $("#editForm").data("voucher-id", voucher.Id);
+        }
+
+        $("#editForm").submit(async function (event) {
+            event.preventDefault();
+
+            const voucherId = $(this).data("voucher-id");
+            const editFromDate = parseDate($("#editFrom").val());
+            const editToDate = parseDate($("#editTo").val());
+
+            let formData = new FormData();
+            formData.append("Id", voucherId);
+            formData.append("Name", $("#editName").val());
+            formData.append("Amount", getRawValue($("#editAmount").val()));
+            formData.append("StartDate", editFromDate); // Chuyển về YYYY-MM-DD
+            formData.append("EndDate", editToDate); // Chuyển về YYYY-MM-DD
+            formData.append("Description", $("#editDescription").val());
+            formData.append("Status", $("#editStatus").val());
+            let fileInput = document.getElementById("editFile");
+            if (fileInput.files.length > 0) {
+                formData.append("File", fileInput.files[0]);
+            }
+            const imageFile = $("#editImage")[0].files[0];
+            if (imageFile) {
+                formData.append("Image", imageFile);
+            }
+
+            disableButton();
+            $.ajax({
+                url: `/Voucher/Update?id=${voucherId}`,
+                type: "PUT",
+                data: formData,
+                contentType: false,
+                processData: false,
+                success: function (response) {
+                    showToast(response.Message, response.Type, true);
+                },
+                error: function (response) {
+                    showToast(response.responseJSON?.Message || "Lỗi không xác định", response.responseJSON?.Type || 2, false);
+                },
+                complete: function () {
+                    enableButton();
+                }
+            });
+        });
+    </script>
+}

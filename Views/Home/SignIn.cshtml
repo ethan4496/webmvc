@@ -1,0 +1,315 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="utf-8" />
+    <title>Đăng nhập</title>
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <meta name="robots" content="index, follow">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta property="fb:app_id" content="676758839172144" />
+    <meta name="google-site-verification" content="aZcoR9301-yojJzH9Tv-3BE_WFhhPClH0JCS_wJihU0" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+    <link rel="icon" type="image/png" href="favicon.ico">
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+
+        gtag('config', 'G-P7K2QJ4TQE');
+    </script>
+    <div class="zalo-chat-widget" data-oaid="1299806935331929179" data-welcome-message="Rất vui khi được hỗ trợ bạn!" data-autopopup="0" data-width="" data-height=""></div>
+
+    <script src="https://sp.zalo.me/plugins/sdk.js"></script>
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        .login-wrapper {
+            display: flex;
+            height: 100vh;
+        }
+
+        /* LEFT */
+        .login-left {
+            flex: 7;
+            background: url('/tpkexpress/images/auth-background.jpg');
+            position: relative;
+        }
+
+
+
+        /* RIGHT */
+        .login-right {
+            flex: 3;
+            background: #fff;
+            display: flex;
+            align-items: start;
+            justify-content: center;
+            padding-top: 2rem;
+        }
+
+        .login-box {
+            width: 90%;
+        }
+
+        .login-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .logo {
+            max-width: 160px;
+            margin-bottom: 1rem;
+        }
+
+        .login-header h2 {
+            font-size: 1.4rem;
+            margin: 0;
+        }
+
+        .form-group {
+            margin-bottom: 1.4rem;
+        }
+
+        .icon-input {
+            position: relative;
+        }
+
+            .icon-input i {
+                position: absolute;
+                left: 4px;
+                top: 50%;
+                transform: translateY(-50%);
+                color: #999;
+                font-size: 14px;
+            }
+
+            .icon-input input {
+                width: 100%;
+                padding: 0.6rem 0.4rem 0.6rem 26px;
+                border: none;
+                border-bottom: 1px solid #ccc;
+                font-size: 0.95rem;
+            }
+
+                .icon-input input:focus {
+                    outline: none;
+                    border-bottom-color: #ff6600;
+                }
+
+            .icon-input:focus-within i {
+                color: #ff6600;
+            }
+
+        .remember {
+            margin: 1rem 0;
+            font-size: 0.9rem;
+        }
+
+        .btn-login {
+            width: 100%;
+            background: #f45b1e;
+            color: #fff;
+            border: none;
+            padding: 0.65rem;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 0.95rem;
+        }
+
+            .btn-login:hover {
+                background: #e04f18;
+            }
+
+        .login-links {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 1rem;
+            font-size: 0.85rem;
+        }
+
+            .login-links a {
+                color: #f45b1e;
+                text-decoration: none;
+            }
+    </style>
+</head>
+<body>
+
+    <div class="login-wrapper">
+
+        <!-- LEFT -->
+        <div class="login-left">
+            <div class="overlay"></div>
+        </div>
+
+        <!-- RIGHT -->
+        <div class="login-right">
+            <div class="login-box">
+
+                <div class="login-header">
+                    <a href="/">
+                        <img src="/images/logo.png" class="logo">
+                    </a>
+                    <h3>Đăng nhập</h3>
+                </div>
+
+                <div class="form-group icon-input">
+                    <i class="fa fa-user"></i>
+                    <input type="text" id="username" placeholder="Tài khoản">
+                </div>
+
+                <div class="form-group icon-input">
+                    <i class="fa fa-lock"></i>
+                    <input type="password" id="password" placeholder="Mật khẩu">
+                </div>
+
+                <button class="btn-login" onclick="signIn()">Đăng nhập</button>
+
+                <div class="login-links">
+                    <a href="/dang-ky">Đăng ký ngay !</a>
+                    <a href="/quen-mat-khau">Quên mật khẩu ?</a>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+
+</body>
+</html>
+<script src="/tpkexpress/assets/library/jquery/jquery.js"></script>
+<script src="/tpkexpress/assets/library/swiper/swiper-bundle.min.js"></script>
+<script src="/tpkexpress/assets/library/aos/aos.js"></script>
+<script src="/tpkexpress/assets/library/select2/select2.min.js"></script>
+<script src="/tpkexpress/assets/library/gallery/lightgallery-all.min.js"></script>
+<script src="/tpkexpress/assets/library/jquery/jquery-migrate.js"></script>
+<script src="/tpkexpress/assets/library/smoothscroll/SmoothScroll.min.js"></script>
+<script src="/tpkexpress/assets/library/splitting/splitting.min.js"></script>
+<script src="/tpkexpress/assets/library/fancybox/fancybox.umd.js"></script>
+<script src="/tpkexpress/assets/library/gsap/gsap.min.js"></script>
+<script src="/tpkexpress/assets/library/gsap/ScrollTrigger.min.js"></script>
+<script src="/tpkexpress/js/main.js" type="module"></script>
+<script>
+    function signIn() {
+        let userName = $('#username').val();
+        if (userName.trim() === "") {
+            showToast("Username là bắt buộc", 3, false);
+            return;
+        }
+        let password = $('#password').val();
+        if (password.trim() === "") {
+            showToast("Password là bắt buộc", 3, false);
+            return;
+        }
+        disableButton();
+        // Gửi yêu cầu AJAX
+        $.ajax({
+            url: '/Home/SignIn', // URL tới action
+            type: 'POST',
+            data: { username: userName, password: password },
+            success: function (response) {
+                if (response.Data == 2) {
+                    window.location.href = "/home";
+                } else {
+                    window.location.href = "/dashboard";
+                }
+            },
+            error: function (response) {
+                showToast(response.responseJSON.Message, response.responseJSON.Type, false);
+            },
+            complete: function () {
+                enableButton();
+            }
+        });
+    }
+</script>
+<script>
+    function showToast(message, type, isReload) {
+        let bgColor = "green";
+        switch (type) {
+            case 1:
+                bgColor = "red"
+                break;
+            case 2:
+                bgColor = "#ffc107"
+                break;
+            case 3:
+                bgColor = "blue"
+                break;
+            default:
+                bgColor = "green";
+                break;
+        }
+        Toastify({
+            text: message,
+            duration: 3000,
+            gravity: "top", // Vị trí top
+            position: "right", // Hiển thị bên phải
+            backgroundColor: bgColor,
+        }).showToast();
+        if (isReload) {
+            setTimeout(
+                function () {
+                    window.location.reload();
+                },
+                1000
+            );
+        }
+    }
+
+    function disableButton() {
+        // Chọn tất cả các button và link (a) trên trang
+        const elements = document.querySelectorAll('button, a');
+
+        elements.forEach(el => {
+            // Thêm lớp 'disabled' để hiển thị trạng thái không hoạt động
+            el.classList.add('disabled');
+
+            // Disable nút nếu là button
+            if (el.tagName.toLowerCase() === 'button') {
+                el.disabled = true;
+            }
+
+            // Ngăn chặn hành động mặc định nếu là link (a)
+            if (el.tagName.toLowerCase() === 'a') {
+                el.addEventListener('click', function (event) {
+                    event.preventDefault();
+                });
+            }
+        });
+    }
+
+    function enableButton() {
+        // Chọn tất cả các button và link (a) có lớp 'disabled'
+        const elements = document.querySelectorAll('button, a');
+
+        elements.forEach(el => {
+            // Xóa lớp 'disabled' để khôi phục trạng thái hoạt động
+            el.classList.remove('disabled');
+
+            // Bật lại nút nếu là button
+            if (el.tagName.toLowerCase() === 'button') {
+                el.disabled = false;
+            }
+
+            // Loại bỏ sự kiện 'click' ngăn hành động mặc định nếu là link (a)
+            if (el.tagName.toLowerCase() === 'a') {
+                const newElement = el.cloneNode(true); // Tạo bản sao không có sự kiện
+                el.replaceWith(newElement); // Thay thế thẻ hiện tại bằng bản sao
+            }
+        });
+    }
+</script>

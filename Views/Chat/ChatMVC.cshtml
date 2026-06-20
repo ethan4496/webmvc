@@ -1,0 +1,16 @@
+﻿@using WebMVC.Interfaces
+@model string;
+@inject IHttpContextService _httpContextService;
+@{
+    var loggedModel = _httpContextService.GetLoggedModel();
+}
+<iframe id="chatIframe"
+        src='https://chat.tpkexpress.cn/?token=@Model'
+        style="
+            width: 100%;
+            height: @(loggedModel.IsStaff == 1 ? "94vh" : "85vh");
+            border: none;
+        ">
+</iframe>
+
+

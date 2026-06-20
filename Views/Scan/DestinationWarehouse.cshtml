@@ -1,0 +1,361 @@
+﻿@{
+    ViewData["Title"] = "Kiểm hàng Kho VN";
+}
+<div class="container-fluid mt-4">
+    <h1 class="mb-4">Kiểm hàng Kho VN</h1>
+
+    <div class="row mb-4">
+        <div class="col col-6">
+            <select class="form-select" id="bigPackageSelect" style="width:100%"></select>
+        </div>
+        <div class="col col-6">
+            <button type="submit" id="confirmButton" class="btn btn-primary">Xác nhận</button>
+        </div>
+    </div>
+
+    <!-- Nhập mã vận đơn -->
+    <div class="table-responsive">
+        <table class="table table-hover table-bordered">
+            <thead>
+                <tr>
+                    <th class="text-center">Mã vận đơn</th>
+                    <th class="text-center">Người gửi</th>
+                    <th class="text-center">Số kiện</th>
+                    <th class="text-center">Số cân(kg)</th>
+                    <th class="text-center">Số khối(m3)</th>
+                    <th class="text-center">Phụ phí(tệ)</th>
+                    <th class="text-center">Ghi chú NV</th>
+                    <th class="text-center"></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><input type="text" class="form-control form-control-sm barcode" value=""></td>
+                    <td><input type="text" class="form-control form-control-sm accountName" value=""></td>
+                    <td><input type="number" min="1" class="form-control form-control-sm quantity" value=""></td>
+                    <td><input type="number" min="0" class="form-control form-control-sm weight" value=""></td>
+                    <td><input type="number" min="0" class="form-control form-control-sm volume" value=""></td>
+                    <td><input min="0" class="form-control input-money form-control-sm surcharge" value=""></td>
+                    <td><input type="text" class="form-control form-control-sm staffNote" value=""></td>
+                    <td>
+                        <button type="submit" id="updateBarcodeButton" class="btn btn-primary" disabled>Cập nhật</button>
+                        <button type="submit" id="assignBarcodeButton" class="btn btn-warning assignRowButton" disabled style="display:none">Gán đơn</button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <input type="hidden" class="form-control form-control-sm transId" value="">
+
+    <!-- Danh sách mã vận đơn -->
+    <div id="waybillList" class="table-responsive">
+        <table class="table table-hover table-bordered">
+            <thead>
+                <tr>
+                    <th class="text-center">Mã vận đơn</th>
+                    <th class="text-center">Người gửi</th>
+                    <th class="text-center">Số kiện</th>
+                    <th class="text-center">Số cân(kg)</th>
+                    <th class="text-center">Số khối(m3)</th>
+                    <th class="text-center">Phụ phí(tệ)</th>
+                    <th class="text-center">Phụ phí(VND)</th>
+                    <th class="text-center">Ghi chú NV</th>
+                    <th class="text-center">Trạng thái</th>
+                </tr>
+            </thead>
+            <tbody id="waybillTableBody">
+            </tbody>
+        </table>
+    </div>
+</div>
+
+@await Html.PartialAsync("~/Views/Shared/Components/AssignTransporationVNModel.cshtml")
+@section Scripts {
+    <script>
+        // Initialize select2 only once
+        $('#bigPackageSelect').select2({
+            placeholder: "Chọn bao hàng",
+            allowClear: true,
+            theme: "bootstrap-5",
+            ajax: {
+                url: "/BigPackage/Paging",
+                dataType: 'json',
+                delay: 250,
+                data: function (params) {
+                    return {
+                        Name: params.term || '',
+                        PageIndex: params.page || 1,
+                        PageSize: 10
+                    };
+                },
+                processResults: function (data, params) {
+                    return {
+                        results: data.Items.map(item => ({
+                            id: item.Id,
+                            text: item.Name
+                        })),
+                        pagination: {
+                            more: data.PageIndex < data.TotalPage && params.term
+                        }
+                    };
+                },
+                cache: true
+            }
+        });
+
+        // Trigger API call only when dropdown opens
+        $('#bigPackageSelect').on('select2:open', function () {
+            $(this).select2('open'); // Ensure dropdown stays open
+        });
+
+        $('#confirmButton').click(function () {
+            const bigPackageId = $('#bigPackageSelect').val();
+
+            showLoading();
+            $.ajax({
+                url: '/Scan/GetTransporationByBigPackageId',
+                type: 'GET',
+                data: { bigPackageId: bigPackageId },
+                success: function (response) {
+                    var data = response.Data;  // Assuming response.Data is an array
+                    if (data && Array.isArray(data)) {
+                        $('#waybillTableBody').empty();
+                        data.forEach(item => {
+                            const formattedSurchargeVND = item.SurchargeVND.toLocaleString('en-US');
+                            const newRow = `<tr>
+                                                        <td class="text-center">${item.Barcode}</td>
+                                                        <td class="text-center">${item.AccountName || ''}</td>
+                                                        <td class="text-center">${item.Quantity}</td>
+                                                        <td class="text-center">${item.Weight}</td>
+                                                        <td class="text-center">${item.Volume}</td>
+                                                        <td class="text-center">${item.Surcharge}</td>
+                                                        <td class="text-center">${formattedSurchargeVND}</td>
+                                                        <td class="text-center">${item.StaffNote || ''}</td>
+                                                        <td class="text-center">
+                                                            ${item.StatusName}
+                                                            <br/>${item.DateArrivedAtVNWarehouseString || ''}
+                                                        </td>
+                                                    </tr>`;
+                            $('#waybillTableBody').prepend(newRow);
+                        });
+                    }
+                },
+                error: function (response) {
+                    showToast(response.responseJSON.Message, response.responseJSON.Type, false);
+                },
+                complete: function () {
+                    hideLoading();
+                }
+            });
+        });
+
+        $('.barcode').on('keypress', function (e) {
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                const waybillCode = $(this).val().trim();
+                if (waybillCode) {
+                    scanBarcode(waybillCode);
+                }
+            }
+        });
+
+        function scanBarcode(barcode) {
+            const bigPackageId = $('#bigPackageSelect').val();
+            showLoading();
+            $.ajax({
+                url: '/Scan/ScanAtDestinationWarehouse',
+                type: 'GET',
+                data: { barcode: barcode, bigPackageId: bigPackageId },
+                success: function (response) {
+                    var data = response.Data;
+                    if (data != null){
+                        $('.transId').val(data.Id);
+                        $('.quantity').val(data.Quantity);
+                        let accountName = data.AccountName || '';
+                        if (accountName.trim()) {
+                            $('.accountName').val(accountName);
+                            $('.accountName').prop('disabled', true);
+                        } else {
+                            $('.accountName').val('');
+                            $('.accountName').prop('disabled', false);
+                            $('#assignBarcodeButton').prop('disabled', false);
+                            $('#assignBarcodeButton').show();
+                        }
+                        $('.weight').val(data.Weight);
+                        $('.volume').val(data.Volume);
+                        $('.surcharge').val(data.Surcharge);
+                        $('.staffNote').val(data.StaffNote) || '';
+                        $('#updateBarcodeButton').prop('disabled', false);
+
+                        if(data.BigPackageId != bigPackageId){
+                            if(data.BigPackageName){
+                                showToast("Mã vận đơn nằm trong bao " + data.BigPackageName, 2, false);
+                            }else{
+                                showToast("Mã vận đơn không nằm trong bao ", 2, false);
+                            }
+                        }
+                    }
+                    else {
+                        showConfirmModal(`Bạn chắc chắn tạo kiện mới`, function () {
+                            $('.accountName').val('');
+                            $('.accountName').prop('disabled', false);
+                            createFloatingTransportation(barcode, bigPackageId);
+                        });
+
+                        return;
+                    }
+                },
+                error: function (response) {
+                    showToast(response.responseJSON.Message, response.responseJSON.Type, false);
+                }, complete: function () {
+                    hideLoading();
+                }
+            });
+        }
+
+        function createFloatingTransportation(barcode, bigPackageId) {
+            $.ajax({
+                url: '/Scan/CreateFloatingTransportation',
+                type: 'POST',
+                data: { barcode: barcode, type: 5, bigPackageId : bigPackageId },
+                success: function (response) {
+                    scanBarcode(barcode);
+                },
+                error: function (response) {
+                    showToast(response.responseJSON.Message, response.responseJSON.Type, false);
+                }
+            });
+        }
+
+        $('#updateBarcodeButton').click(function () {
+            const row = $(this).closest('tr');
+            const id = $('.transId').val();
+            const barCode = $('.barcode').val();
+            const accountName = $('.accountName').val();
+            const weight = parseFloat(row.find('.weight').val()) || 0;
+            const volume = parseFloat(row.find('.volume').val()) || 0;
+            const quantity = parseFloat(row.find('.quantity').val()) || 0;
+            const surcharge = parseFloat(getRawValue(row.find('.surcharge').val())) || 0;
+            const staffNote = $('.staffNote').val();
+
+            const updatedData = {
+                Id: id,
+                BarCode: barCode,
+                AccountName: accountName,
+                Quantity: quantity,
+                Weight: weight,
+                Volume: volume,
+                Surcharge: surcharge,
+                StaffNote: staffNote
+            };
+            showLoading();
+            $.ajax({
+                url: '/Scan/UpdateBarcodeAtDestinationWarehouse',
+                type: 'PUT',
+                contentType: 'application/json',
+                data: JSON.stringify(updatedData),
+                success: function (response) {
+                    showToast(response.Message, response.Type, false);
+                    var item = response.Data;
+                    if (item != null) {
+                        let existingRow = $('#waybillTableBody tr').filter(function () {
+                            return $(this).find('td:first').text().trim() === barCode;
+                        });
+
+                        if (existingRow.length) {
+                            existingRow.remove();
+                        }
+                        const formattedSurchargeVND = item.SurchargeVND.toLocaleString('en-US');
+                        const newRow = `<tr class = "table-success">
+                                                                        <td class="text-center">${item.Barcode}</td>
+                                                                        <td class="text-center">${accountName || ''}</td>
+                                                                        <td class="text-center">${item.Quantity}</td>
+                                                                        <td class="text-center">${item.Weight}</td>
+                                                                        <td class="text-center">${item.Volume}</td>
+                                                                        <td class="text-center">${item.Surcharge}</td>
+                                                                        <td class="text-center">${formattedSurchargeVND}</td>
+                                                                        <td class="text-center">${item.StaffNote || ''}</td>
+                                                                        <td class="text-center">
+                                                                            ${item.StatusName}
+                                                                            <br/>${item.DateArrivedAtVNWarehouseString || ''}
+                                                                        </td>
+                                                                    </tr>`;
+                        $('#waybillTableBody').prepend(newRow);
+
+                        $('.barcode').val('');
+                        $('.accountName').val('');
+                        $('.accountName').prop('disabled', false);
+                        row.find('.weight').val('');
+                        row.find('.volume').val('');
+                        row.find('.quantity').val('');
+                        row.find('.surcharge').val('');
+                        row.find('.staffNote').val('');
+
+                    }
+                },
+                error: function (response) {
+                    showToast(response.responseJSON.Message, response.responseJSON.Type, false);
+                },
+                complete: function () {
+                    hideLoading();
+                }
+            });
+        });
+
+        $(document).on('click', '.assignRowButton', function () {
+            const barcode = $('.barcode').val();
+            showAssignModal(barcode);
+        });
+        function handleAfterAssign() {
+            const barcode = $('.barcode').val();
+            scanBarcode(barcode);
+        }
+
+        $(document).on('focus', '.accountName', function () {
+            $(this).data('old', $(this).val());
+        });
+
+        $(document).on('keydown', '.accountName, .quantity, .weight, .volume, .surcharge, .staffNote', async function (e) {
+            if (e.key === 'Enter') {
+                e.preventDefault();
+
+                const row = $(this).closest('tr');
+
+                try {
+                    const accountInput = row.find('.accountName');
+                    const oldVal = (accountInput.data('old') || '').trim();
+                    const newVal = (accountInput.val() || '').trim();
+
+                    // nếu accountName thay đổi thì assign
+                    if (oldVal !== newVal && newVal) {
+                        await assignAuto(row);
+
+                        // cập nhật lại old value
+                        accountInput.data('old', newVal);
+                    }
+
+                    row.find('#updateBarcodeButton').click();
+
+                } catch (err) {
+                    showToast(err.responseJSON?.Message || 'Có lỗi xảy ra', 1, false);
+                }
+            }
+        });
+
+        async function assignAuto(row) {
+            const request = {
+                Barcode: row.find('.barcode').val(),
+                AccountName: row.find('.accountName').val(),
+                FromId: 1,
+                ToId: 2,
+                ShipId: 4
+            };
+
+            return $.ajax({
+                url: '/Scan/AssignTransportationToCustomer',
+                type: 'PUT',
+                contentType: 'application/json',
+                data: JSON.stringify(request)
+            });
+        }</script>
+}

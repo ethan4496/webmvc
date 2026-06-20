@@ -1,0 +1,322 @@
+﻿@using WebMVC.Models.Responses
+@using WebMVC.Interfaces
+@using WebMVC.Ultilities.Enums
+@{
+    ViewData["Title"] = "Thống kê cước vận chuyển";
+}
+<script src="~/js/printOutStock.js?v=@DateTime.Now.Ticks"></script>
+<div class="container-fluid mt-4">
+    <div class="card mb-4">
+        <div class="card-header d-flex justify-content-between align-items-center">
+            <h2>Thống kê cước vận chuyển</h2>
+            <button id="toggleFilterButton" class="btn btn-primary">Ẩn bộ lọc</button>
+        </div>
+        <div class="card-body" id="filterContainer">
+            <div>
+                <p class="sub-title">
+                    Mọi chi tiết thắc mắc xin quý Khách vui lòng gọi đến hotline: <a style="color: red;" href="tel:0963647269 ">0963647269</a> hoặc nhân viên chăm sóc đang trực tiếp hỗ trợ.
+                </p>
+                <p class="sub-title">Quý Khách thanh toán xong tiền cước, TPK sẽ tự động thay đổi trạng thái và sắp xếp giao hàng trong giờ hành chính</p>
+                <p class="sub-title">Thông tin nhận hàng nếu có thay đổi, mong quý khách cập nhật lại. Nếu không chúng tôi sẽ tự động gửi theo địa chỉ cũ của quý khách</p>
+            </div>
+            <div class="row">
+                <div class="col-md-3">
+                    <label for="id" class="form-label">Mã phiếu</label>
+                    <input type="text" class="form-control" id="id" name="id" placeholder="">
+                </div>
+                <div class="col-md-3">
+                    <label for="barCode" class="form-label">Mã vận đơn</label>
+                    <input type="text" class="form-control" id="barCode" name="barCode" placeholder="">
+                </div>
+                <div class="col-md-3">
+                    <label for="status" class="form-label">Trạng thái xuất kho</label>
+                    <select id="status" class="form-select" name="Status">
+                        <option value="">
+                            Tất cả
+                        </option>
+                        @foreach (var status in Enum.GetValues(typeof(EOutOfStockStatus)).Cast<EOutOfStockStatus>())
+                        {
+                            var statusValue = (int)status;
+                            if (statusValue == (int)EOutOfStockStatus.Cancel)
+                                continue;
+                            var statusName = EOutOfStockStatusName.GetStatusName(statusValue);
+                            <option value="@statusValue">
+                                @statusName
+                            </option>
+                        }
+                    </select>
+                </div>
+                <div class="col-md-3">
+                    <label for="statusPayment" class="form-label">Trạng thái thanh toán</label>
+                    <select id="statusPayment" class="form-select" name="StatusPayment">
+                        <option value="">
+                            Tất cả
+                        </option>
+                        @foreach (var status in Enum.GetValues(typeof(EPaymentOutOfStockStatus)).Cast<EPaymentOutOfStockStatus>())
+                        {
+                            var statusValue = (int)status;
+                            var statusName = EPaymentOutOfStockStatusName.GetStatusName(statusValue);
+                            <option value="@statusValue">
+                                @statusName
+                            </option>
+                        }
+                    </select>
+                </div>
+            </div>
+            <div class="row pt-2">
+
+                <div class="col-md-3">
+                    <label for="fromDate" class="form-label">Từ ngày</label>
+                    <input type="text" class="form-control datepicker" id="fromDate" name="fromDate" placeholder="">
+                </div>
+                <div class="col-md-3">
+                    <label for="toDate" class="form-label">Đến ngày</label>
+                    <input type="text" class="form-control datepicker" id="toDate" name="toDate" placeholder="">
+                </div>
+                <div class="col-md-6 d-flex align-items-end gap-3">
+                    <button type="button" class="btn btn-primary btn-search" onclick="loadPage(1)">Tìm kiếm</button>
+                    <button type="button" class="btn btn-success" onclick="exportList()">Xuất Excel</button>
+                    <button type="button" class="btn btn-success " onclick="payAll()">Thanh toán tất cả</button>
+                    <button type="button" class="btn btn-success d-none" onclick="requestAcceptSelected()" id="btnRequestAcceptSelected">Duyệt thanh toán đã chọn</button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    @await Html.PartialAsync("_OutOfStockTable", new List<OutOfStockResponse>())
+</div>
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            restoreFilters();
+            loadPage(1);
+        });
+        $('#toggleFilterButton').on('click', function () {
+            $('#filterContainer').toggle();
+            let isVisible = $('#filterContainer').is(':visible');
+            $(this).text(isVisible ? 'Ẩn bộ lọc' : 'Hiện bộ lọc');
+        });
+        $(document).on('change', '#selectAll', function () {
+            $('.waybillCheckbox').prop('checked', this.checked).trigger('change');
+        });
+
+        $(document).on('change', '.waybillCheckbox', function () {
+            const checked = $('.waybillCheckbox:checked').length;
+            const total = $('.waybillCheckbox').length;
+
+            $('#selectAll').prop('checked', checked === total);
+            $('#btnRequestAcceptSelected').toggleClass('d-none', checked === 0);
+        });
+        function restoreFilters() {
+            const urlParams = new URLSearchParams(window.location.search);
+
+            $('#barCode').val(urlParams.get('Barcode') || '');
+            $('#id').val(urlParams.get('Id') || '');
+            $('#status').val(urlParams.get('Status') || '');
+            $('#statusPayment').val(urlParams.get('statusPayment') || '');
+
+            const fromDate = urlParams.get('FromDate');
+            const toDate = urlParams.get('ToDate');
+
+            if (fromDate) $('#fromDate').val(formatDateForInput(new Date(fromDate)));
+            if (toDate) $('#toDate').val(formatDateForInput(new Date(toDate)));
+        }
+        function loadPage(page) {
+            const fromDateInput = $('#fromDate').val();
+            const toDateInput = $('#toDate').val();
+            const fromDate = fromDateInput ? parseDate(fromDateInput) : null;
+            const toDate = toDateInput ? parseDate(toDateInput) : null;
+
+            const params = new URLSearchParams();
+
+            // Danh sách các input cần kiểm tra
+            const filters = {
+                'PageIndex': page > 1 ? page : null,
+                'Id': $('#id').val(),
+                'Barcode': $('#barCode').val(),
+                'Status': $('#status').val(),
+                'StatusPayment': $('#statusPayment').val(),
+                'FromDate': fromDate ? fromDate : '',
+                'ToDate': toDate ? toDate : '',
+            };
+
+            // Chỉ thêm vào query string nếu giá trị không phải null hoặc chuỗi rỗng
+            Object.keys(filters).forEach(key => {
+                if (filters[key] !== null && filters[key] !== '') {
+                    params.set(key, filters[key]);
+                }
+            });
+
+            const queryString = params.toString();
+            const newUrl = queryString ? '?' + queryString : 'out-of-stock';
+
+            history.pushState({}, '', newUrl);
+            $.ajax({
+                url: '/OutOfStock/GetOutOfStockPaging?' + queryString,
+                data: { PageIndex: page },
+                type: 'GET',
+                success: function (data) {
+                    $('#table-container').html(data);
+                },
+                error: function () {
+                    alert('Lỗi khi tải dữ liệu');
+                }
+            });
+        }
+
+        function exportList() {
+            const fromDateInput = $('#fromDate').val();
+            const toDateInput = $('#toDate').val();
+            const fromDate = fromDateInput ? parseDate(fromDateInput) : null;
+            const toDate = toDateInput ? parseDate(toDateInput) : null;
+
+            const params = new URLSearchParams();
+
+            const filters = {
+                'PageIndex': 1,
+                'Id': $('#id').val(),
+                'Barcode': $('#barCode').val(),
+                'Status': $('#status').val(),
+                'StatusPayment': $('#statusPayment').val(),
+                'FromDate': fromDate ? fromDate : '',
+                'ToDate': toDate ? toDate : '',
+            };
+
+            Object.keys(filters).forEach(key => {
+                if (filters[key] !== null && filters[key] !== '') {
+                    params.set(key, filters[key]);
+                }
+            });
+
+            const queryString = params.toString();
+            const newUrl = queryString ? '?' + queryString : '';
+
+            fetch('/OutOfStock/ExportExcel' + newUrl)
+                .then(response => response.blob())
+                .then(blob => {
+                    const url = window.URL.createObjectURL(blob);
+                    const a = document.createElement('a');
+                    a.href = url;
+                    a.download = "Phiếu xuất kho.xlsx";
+                    document.body.appendChild(a);
+                    a.click();
+                    document.body.removeChild(a);
+                })
+                .catch(error => console.error("Lỗi khi tải file mẫu:", error));
+        }
+
+        function updatedeliveryMethod(outOfStockId) {
+            var row = document.querySelector(`tr[out-stock-id='${outOfStockId}']`);
+            var deliveryMethod = row.querySelector(".deliveryMethod").value;
+            disableButton();
+            $.ajax({
+                url: `/OutOfStock/DeliveryMethod?id=${outOfStockId}`,
+                data: { deliveryMethod: deliveryMethod },
+                type: 'PUT',
+                success: function (response) {
+                    showToast(response.Message, response.Type, true);
+                },
+                error: function (response) {
+                    showToast(response.responseJSON.Message, response.responseJSON.Type, false);
+                },
+                complete: function () {
+                    enableButton();
+                }
+            });
+        }
+
+        function updateDeliveryInfo(outOfStockId) {
+            var row = document.querySelector(`tr[out-stock-id='${outOfStockId}']`);
+            var deliveryInfo = row.querySelector(".deliveryInfo").value;
+            disableButton();
+            $.ajax({
+                url: `/OutOfStock/DeliveryInfo?id=${outOfStockId}`,
+                data: { deliveryInfo: deliveryInfo },
+                type: 'PUT',
+                success: function (response) {
+                    showToast(response.Message, response.Type, true);
+                },
+                error: function (response) {
+                    showToast(response.responseJSON.Message, response.responseJSON.Type, false);
+                },
+                complete: function () {
+                    enableButton();
+                }
+            });
+        }
+
+        function requestAccept(id, totalPriceVND) {
+            showConfirmModal(`Bạn đã chắc chắn chuyển khoản thanh toán cho TPKexpress theo phiếu xuất kho số: ${id}, Số Tiền là: ${totalPriceVND} VND?')`, function () {
+                disableButton();
+                let ids = [id]
+                $.ajax({
+                    url: '/OutOfStock/SendRequest',
+                    data: JSON.stringify(ids),
+                    contentType: 'application/json',
+                    type: 'PUT',
+                    success: function (response) {
+                        showToast(response.Message, response.Type, true);
+                    },
+                    error: function (response) {
+                        showToast(response.responseJSON.Message, response.responseJSON.Type, false);
+                    },
+                    complete: function () {
+                        enableButton();
+                    }
+                });
+            });
+        }
+
+        function requestAcceptSelected() {
+            const $rows = $('.waybillCheckbox:checked').closest('tr');
+            const ids = $rows.map((_, tr) => $(tr).attr('out-stock-id')).get();   // [1,2,3]
+            const pxkName = ids.join(', ');
+                const total = $rows.toArray()
+                    .reduce((sum, tr) => {
+                        const raw = $(tr).attr('out-stock-amount').replace(/,/g, '');
+                        return sum + Number(raw);
+                    }, 0).toLocaleString('vi-VN');
+            if (ids.length === 0) return;
+            showConfirmModal(`Bạn đã chắc chắn chuyển khoản thanh toán cho TPKexpress theo phiếu xuất kho số: ${pxkName}, Số Tiền là: ${total} đ?')`, function () {
+                disableButton();
+                $.ajax({
+                    url: '/OutOfStock/SendRequest',
+                    data: JSON.stringify(ids),
+                    contentType: 'application/json',
+                    type: 'PUT',
+                    success: function (response) {
+                        showToast(response.Message, response.Type, true);
+                    },
+                    error: function (response) {
+                        showToast(response.responseJSON.Message, response.responseJSON.Type, false);
+                    },
+                    complete: function () {
+                        enableButton();
+                    }
+                });
+            });
+        }
+        function payAll(){
+            disableButton();
+            $.ajax({
+                url: '/OutOfStock/PrintAll',
+                type: 'GET',
+                success: function (response) {
+                    printInvoice(response.Data);
+                },
+                error: function (response) {
+                    showToast(response.responseJSON.Message, response.responseJSON.Type, false);
+                },
+                complete: function () {
+                    enableButton();
+                }
+            });
+        }
+
+    </script>
+}
+<style>
+    .sub-title {
+        color: red;
+    }
+</style>

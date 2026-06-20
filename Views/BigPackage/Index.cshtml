@@ -1,0 +1,166 @@
+﻿@using WebMVC.Interfaces
+@using WebMVC.Models.Responses
+@using WebMVC.Ultilities.Enums
+@model List<BigPackageResponse>
+@inject IHttpContextService _httpContextService;
+@{
+    var loggedModel = _httpContextService.GetLoggedModel();
+}
+@{
+    ViewData["Title"] = "Danh sách bao hàng";
+}
+
+<div class="container-fluid mt-4">
+    <div class="card mb-4">
+        <div class="card-header d-flex justify-content-between align-items-center">
+            <h2>Danh sách bao hàng</h2>
+            <div>
+                <button id="toggleFilterButton" class="btn btn-primary">Ẩn bộ lọc</button>
+            </div>
+        </div>
+        <div class="card-body" id="filterContainer">
+            <div class="row">
+                <div class="col-md-3">
+                    <label for="name" class="form-label">Mã bao</label>
+                    <input type="text" class="form-control" id="name" name="name" placeholder="">
+                </div>
+                <div class="col-md-3">
+                    <label for="fromDate" class="form-label">Từ ngày</label>
+                    <input type="text" class="form-control datepicker" id="fromDate" name="fromDate" placeholder="">
+                </div>
+                <div class="col-md-3">
+                    <label for="toDate" class="form-label">Đến ngày</label>
+                    <input type="text" class="form-control datepicker" id="toDate" name="toDate" placeholder="">
+                </div>
+                <div class="col-md-3">
+                    <label for="status" class="form-label">Trạng thái</label>
+                    <select id="status" class="form-select" name="Status">
+                        <option value="">
+                            Tất cả
+                        </option>
+                        @foreach (var status in Enum.GetValues(typeof(EBigPackageStatus)).Cast<EBigPackageStatus>())
+                        {
+                            var statusValue = (int)status;
+                            var statusName = EBigPackageStatusName.GetStatusName(statusValue);
+                            <option value="@statusValue">
+                                @statusName
+                            </option>
+                        }
+                    </select>
+                </div>
+            </div>
+            <div class="row pt-2">
+                <div class="col-md-9 gap-3">
+                    @if (loggedModel.RoleId == (int)ERoleId.Admin)
+                    {
+                        <button type="button" class="btn btn-danger" onclick="deleteFilterd()">Xóa theo bộ lọc</button>
+                        <button type="button" class="btn btn-danger d-none" onclick="deleteSelected()" id="btnDeleteSelected">Xóa đã chọn</button>
+                    }
+                </div>
+                <div class="text-end col-md-3">
+                    <button type="button" id="createOrder" class="btn btn-primary btn-search" onclick="loadPage(1)">Tìm kiếm</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    @await Html.PartialAsync("_BigPackageTable", Model)
+</div>
+@section Scripts {
+    <script>
+
+        function loadPage(page) {
+            const fromDateInput = $('#fromDate').val();
+            const toDateInput = $('#toDate').val();
+            const fromDate = fromDateInput ? parseDate(fromDateInput) : null;
+            const toDate = toDateInput ? parseDate(toDateInput) : null;
+            const request = {
+                PageIndex: page > 1 ? page : null,
+                Name: $('#name').val(),
+                Status: $('#status').val(),
+                FromDate: fromDate ? fromDate : '',
+                ToDate: toDate ? toDate : '',
+            };
+            showLoading();
+            $.ajax({
+                url: '/BigPackage/GetBigPackagePaging',
+                data: request,
+                type: 'GET',
+                success: function (data) {
+                    $('#table-container').html(data);
+                },
+                error: function (response) {
+                    showToast(response.responseJSON.Message, response.responseJSON.Type, false);
+                },
+                complete: function () {
+                    hideLoading();
+                }
+            });
+        }
+        $('#toggleFilterButton').on('click', function () {
+            $('#filterContainer').toggle();
+            let isVisible = $('#filterContainer').is(':visible');
+            $(this).text(isVisible ? 'Ẩn bộ lọc' : 'Hiện bộ lọc');
+        });
+        $(document).on('change', '.waybillCheckbox', function () {
+            const anyChecked = $('.waybillCheckbox:checked').length > 0;
+            $('#btnDeleteSelected').toggleClass('d-none', !anyChecked);
+        });
+
+        function deleteFilterd(){
+            const fromDateInput = $('#fromDate').val();
+            const toDateInput = $('#toDate').val();
+            const fromDate = fromDateInput ? parseDate(fromDateInput) : null;
+            const toDate = toDateInput ? parseDate(toDateInput) : null;
+            const request = {
+                Name: $('#name').val(),
+                Status: $('#status').val() ? parseInt($('#status').val()) : null,
+                FromDate: fromDate ? fromDate : null,
+                ToDate: toDate ? toDate : null,
+            };
+            showConfirmModal(`Bạn chắc chắn xóa dữ liệu`, function () {
+                showLoading();
+                $.ajax({
+                    url: '/BigPackage/DeleteFilterd',
+                    data:  JSON.stringify(request),
+                    contentType: 'application/json',
+                    dataType: 'json',
+                    type: 'DELETE',
+                    success: function (response) {
+                        showToast(response.Message, response.Type, true);
+                    },
+                    error: function (response) {
+                        showToast(response.responseJSON.Message, response.responseJSON.Type, false);
+                    },
+                    complete: function () {
+                        hideLoading();
+                    }
+                });
+            });
+        }
+        function deleteSelected() {
+            const $rows = $('.waybillCheckbox:checked').closest('tr');
+            const ids = $rows.map((_, tr) => $(tr).attr('item-id')).get();   // [1,2,3]
+
+            if (ids.length === 0) return;
+            showConfirmModal(`Bạn chắc chắn xóa dữ liệu`, function () {
+                showLoading();
+                $.ajax({
+                    url: '/BigPackage/DeleteSelected',
+                    data: JSON.stringify(ids),
+                    contentType: 'application/json',
+                    type: 'DELETE',
+                    dataType: 'json',
+                    success: function (response) {
+                        showToast(response.Message, response.Type, true);
+                    },
+                    error: function (response) {
+                        showToast(response.responseJSON.Message, response.responseJSON.Type, false);
+                    },
+                    complete: function () {
+                        hideLoading();
+                    }
+                });
+            });
+        }
+    </script>
+}

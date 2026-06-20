@@ -1,0 +1,215 @@
+﻿@{
+    ViewData["Title"] = "Xuất kho";
+}
+<div class="container-fluid mt-4 ">
+    <div class="card mb-6">
+        <div class="card-header d-flex justify-content-between align-items-center">
+            <h2 class="text-center ">Xuất kho</h2>
+        </div>
+        <div class="card-body">
+            <div class="row mb-4">
+                <div class="col col-3">
+                    <select class="form-select" id="usernameSelect" style="width:100%" name="Username"></select>
+                </div>
+                <div class="col col-3">
+                    <button type="submit" id="confirmButton" class="btn btn-primary">Xác nhận</button>
+                </div>
+            </div>
+            <div class="row mb-4">
+                <div class="col col-3">
+                    <label for="barCode" class="form-label">Mã vận đơn</label>
+                    <input type="text" class="form-control" id="barCode" name="barCode" placeholder="">
+                </div>
+                <div class="col-md-3 d-flex align-items-end">
+                    <button type="submit" id="createButton" class="btn btn-success" disabled>Xuất kho</button>
+                </div>
+            </div>
+
+            <div id="waybillList" class="table-responsive">
+                <table class="table table-hover table-bordered">
+                    <thead>
+                        <tr>
+                            <th class="text-center">
+                                <input type="checkbox" id="selectAll" />
+                            </th>
+                            <th class="text-center">Mã vận đơn</th>
+                            <th class="text-center">Người gửi</th>
+                            <th class="text-center">Số kiện</th>
+                            <th class="text-center">Số cân(kg)</th>
+                            <th class="text-center">Số khối(m3)</th>
+                            <th class="text-center">Phụ phí(tệ)</th>
+                            <th class="text-center">Phụ phí(VND)</th>
+                            <th class="text-center">Tổng tiền</th>
+                            <th class="text-center">Trạng thái</th>
+                        </tr>
+                    </thead>
+                    <tbody id="waybillTableBody">
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+@section Scripts {
+    <script>
+        $("#usernameSelect").select2({
+            placeholder: "Chọn username",
+            allowClear: true,
+            theme: "bootstrap-5",
+            ajax: {
+                url: "/Account/Paging",
+                dataType: 'json',
+                delay: 250,
+                data: function (params) {
+                    return {
+                        Username: params.term || '',
+                        PageIndex: params.page || 1,
+                        PageSize: 10
+                    };
+                },
+                processResults: function (data, params) {
+                    return {
+                        results: data.Items.map(item => ({
+                            id: item.Id,
+                            text: item.Username
+                        })),
+                        pagination: {
+                            more: data.PageIndex < data.TotalPage && params.term
+                        }
+                    };
+                },
+                cache: true
+            }
+        });
+
+        $('#confirmButton').click(function () {
+            const accountId = $('#usernameSelect').val();
+            showLoading();
+            $.ajax({
+                url: '/OutOfStock/GetTransporationAtOutOfStock',
+                type: 'GET',
+                data: { accountId: accountId },
+                success: function (response) {
+                    var data = response.Data;
+                    if (data && Array.isArray(data)) {
+                        $('#waybillTableBody').empty();
+                        data.forEach(item => {
+                            const formattedSurchargeVND = item.SurchargeVND.toLocaleString('en-US');
+                            const formattedTotalPriceVND = item.TotalPriceVND.toLocaleString('en-US');
+                            const newRow = `<tr data-barcode-id="${item.Barcode}">
+                                                        <td class="text-center">
+                                                            <input type="checkbox" class="waybillCheckbox" />
+                                                        </td>
+                                                        <td>${item.Barcode}</td>
+                                                        <td>${item.AccountName || ''}</td>
+                                                        <td>${item.Quantity}</td>
+                                                        <td>${item.Weight}</td>
+                                                        <td>${item.Volume}</td>
+                                                        <td>${item.Surcharge}</td>
+                                                        <td>${formattedSurchargeVND}</td>
+                                                        <td>${formattedTotalPriceVND}</td>
+                                                        <td>${item.StatusName}</td>
+                                                    </tr>`;
+                            $('#waybillTableBody').prepend(newRow);
+                        });
+                    }
+                },
+                error: function (response) {
+                    showToast(response.responseJSON.Message, response.responseJSON.Type, false);
+                },
+                complete: function () {
+                    hideLoading();
+                }
+            });
+        });
+
+        $('#barCode').on('keypress', function (e) {
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                const waybillCode = $(this).val().trim();
+                if (waybillCode) {
+                    const row = $(`#waybillTableBody tr[data-barcode-id="${waybillCode}"]`);
+                    if (row.length > 0) {
+                        const checkbox = row.find('.waybillCheckbox');
+                        checkbox.prop('checked', !checkbox.prop('checked'));
+                        row.toggleClass('table-success', checkbox.prop('checked')); // Thêm hoặc xóa class table-success
+
+                        // Kiểm tra nếu tất cả checkbox đều được chọn, cập nhật checkbox tổng (#selectAll)
+                        const allChecked = $('.waybillCheckbox').length === $('.waybillCheckbox:checked').length;
+                        $('#selectAll').prop('checked', allChecked);
+
+                        // Cập nhật trạng thái của nút Xuất kho
+                        $('#createButton').prop('disabled', $('.waybillCheckbox:checked').length === 0);
+                    }
+                }
+            }
+        });
+
+
+        $(document).on('change', '.waybillCheckbox', function () {
+            const row = $(this).closest('tr');
+            row.toggleClass('table-success', $(this).is(':checked')); // Thêm hoặc xóa class table-success
+
+            // Kiểm tra nếu tất cả các checkbox đều được chọn thì chọn #selectAll
+            const allChecked = $('.waybillCheckbox').length === $('.waybillCheckbox:checked').length;
+            $('#selectAll').prop('checked', allChecked);
+
+            $('#createButton').prop('disabled', $('.waybillCheckbox:checked').length === 0);
+        });
+
+
+        $('#selectAll').on('change', function () {
+            const isChecked = $(this).is(':checked');
+            $('.waybillCheckbox').each(function () {
+                $(this).prop('checked', isChecked);
+                $(this).closest('tr').toggleClass('table-success', isChecked); // Thêm hoặc xóa class table-success
+            });
+            $('#createButton').prop('disabled', !isChecked);
+        });
+
+
+        $('#createButton').click(function () {
+            const accountId = parseInt($('#usernameSelect').val());
+            const barcodes = [];
+            $('#waybillTableBody tr').each(function () {
+                const checkbox = $(this).find('.waybillCheckbox');
+                if (checkbox.is(':checked')) {
+                    const id = $(this).data('barcode-id');
+                    barcodes.push(id);
+                }
+            });
+            const request = {
+                AccountId: accountId,
+                Barcodes: barcodes
+            };
+            if (accountId <= 0) {
+                showToast('Vui lòng nhập Username', 2, false);
+                return;
+            }
+            if (barcodes.length <= 0) {
+                showToast('Vui lòng chọn đơn', 2, false);
+                return;
+            }
+
+            showLoading();
+            $.ajax({
+                url: '/OutOfStock/Create',
+                type: 'POST',
+                data: request,
+                success: function (response) {
+                    showToast(response.Message, response.Type, true);
+                    if (response.Data) {
+                        window.location.href = "/out-of-stock-manage?Id=" + response.Data;
+                    }
+                },
+                error: function (response) {
+                    showToast(response.responseJSON.Message, response.responseJSON.Type, false);
+                },
+                complete: function () {
+                    hideLoading();
+                }
+            });
+        });
+
+    </script>
+}

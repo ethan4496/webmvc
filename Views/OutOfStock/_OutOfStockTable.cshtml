@@ -1,0 +1,153 @@
+﻿@using WebMVC.Models.Responses
+@using WebMVC.Ultilities.Enums
+@model List<OutOfStockResponse>
+
+<div id="table-container">
+    <div class="table-content">
+        <table class="table table-hover table-bordered">
+            <thead class="table">
+                <tr>
+                    <th class="text-center">
+                        <input type="checkbox" id="selectAll" />
+                    </th>
+                    <th class="text-center">Mã phiếu</th>
+                    <th class="text-center">Bưu cục</th>
+                    <th class="text-center">HT giao hàng</th>
+                    <th class="text-center">Thông tin nhận hàng</th>
+                    <th class="text-center">Tổng tiền</th>
+                    <th class="text-center">Ngày tạo</th>
+                    <th class="text-center">Trạng thái</th>
+                    <th class="text-center" style="width:50px"></th>
+                </tr>
+            </thead>
+            <tbody>
+                @for (int i = 0; i < Model.Count; i++)
+                {
+                    <tr out-stock-id="@Model[i].Id" out-stock-amount="@Model[i].TotalPriceVND">
+                        @if (Model[i].IsRequest != true && Model[i].Status == (int)EPaymentOutOfStockStatus.New)
+                        {
+                            <td class="text-center"><input type="checkbox" class="waybillCheckbox" /></td>
+                        }
+                        else
+                        {
+                            <td class="text-center"></td>
+                        }
+                        <td class="text-center">@Model[i].Id</td>
+                        <td class="text-center">@Model[i].PostOffice</td>
+                        <td class="text-center">
+                            <select class="form-select deliveryMethod" name="deliveryMethod" onchange="updatedeliveryMethod(@Model[i].Id)">
+                                <option value="">
+                                </option>
+                                @foreach (var status in DeliveryMethodName.GetDeliveryMethod())
+                                {
+                                    if (status == Model[i].DeliveryMethod)
+                                    {
+                                        <option value="@status" selected>
+                                            @status
+                                        </option>
+                                    }
+                                    else
+                                    {
+                                        <option value="@status">
+                                            @status
+                                        </option>
+                                    }
+                                }
+                            </select>
+                        </td>
+                        <td class="text-center">
+                            <textarea class="form-control deliveryInfo" rows="5" style="min-width: 24rem !important;">@Model[i].DeliveryInfo</textarea>
+                            @if (Model[i].Status == (int)EOutOfStockStatus.New)
+                            {
+                                <p class="pt-2">
+                                    <button class="btn btn-sm btn-warning" onclick="updateDeliveryInfo(@Model[i].Id)">Cập nhật</button>
+                                </p>
+                            }
+                        </td>
+                        <td class="text-center">@string.Format("{0:N0}", Model[i].TotalPriceVND) đ</td>
+                        <td class="text-center">@Model[i].Created.ToString("dd/MM/yyyy HH:mm")</td>
+                        <td class="text-center">
+                            <p>@Html.Raw(Model[i].StatusPaymentName)</p>
+                            <p class="pt-2">@Html.Raw(Model[i].StatusName)</p>
+                        </td>
+                        <td class="text-center">
+                            @if (Model[i].IsRequest != true && Model[i].Status == (int)EPaymentOutOfStockStatus.New)
+                            {
+                                <p><button class="btn btn-sm btn-primary w-100" onclick="requestAccept(@Model[i].Id, @string.Format("{0:N0}", Model[i].TotalPriceVND))">Duyệt thanh toán</button></p>
+                            }
+                            else if (Model[i].IsRequest == true && Model[i].Status == (int)EPaymentOutOfStockStatus.New)
+                            {
+                                <p><button class="btn btn-sm btn-success w-100" disabled>Đã yêu cầu</button></p>
+                            }
+                            <p><button class="btn btn-sm btn-secondary  w-100" onclick="printOutOfStock(@Model[i].Id)">Chi tiết</button></p>
+
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+    @if (Model.Count > 0)
+    {
+        <nav aria-label="Page navigation">
+            <ul class="pagination justify-content-end">
+
+                @* Nút về đầu *@
+                @if (ViewBag.CurrentPage > 1)
+                {
+                    <li class="page-item">
+                        <a class="page-link" href="javascript:void(0);" onclick="loadPage(1)">Đầu</a>
+                    </li>
+                }
+
+                @{
+                    int range = 4; // 👈 số trang mỗi bên
+                    int startPage = Math.Max(1, ViewBag.CurrentPage - range);
+                    int endPage = Math.Min(ViewBag.TotalPages, ViewBag.CurrentPage + range);
+                }
+
+                @* Dấu ... phía trước *@
+                @if (startPage > 1)
+                {
+                    <li class="page-item disabled">
+                        <span class="page-link">...</span>
+                    </li>
+                }
+
+                @* Danh sách số trang *@
+                @for (int i = startPage; i <= endPage; i++)
+                {
+                    <li class="page-item @(i == ViewBag.CurrentPage ? "active" : "")">
+                        <a class="page-link" href="javascript:void(0);" onclick="loadPage(@i)">@i</a>
+                    </li>
+                }
+
+                @* Dấu ... phía sau *@
+                @if (endPage < ViewBag.TotalPages)
+                {
+                    <li class="page-item disabled">
+                        <span class="page-link">...</span>
+                    </li>
+                }
+
+                @* Nút về cuối *@
+                @if (ViewBag.CurrentPage < ViewBag.TotalPages)
+                {
+                    <li class="page-item">
+                        <a class="page-link" href="javascript:void(0);" onclick="loadPage(@ViewBag.TotalPages)">Cuối</a>
+                    </li>
+                }
+
+            </ul>
+        </nav>
+    }
+</div>
+<style>
+    .text-center .form-select {
+        width: unset !important;
+    }
+
+    .text-center .form-control {
+        width: unset !important;
+    }
+</style>

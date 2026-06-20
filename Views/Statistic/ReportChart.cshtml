@@ -1,0 +1,315 @@
+﻿@using WebMVC.Ultilities.Enums
+@{
+    ViewData["Title"] = "Báo cáo biểu đồ";
+}
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.0.0"></script>
+<div class="container-fluid mt-4">
+    <div class="card mb-4">
+        <div class="card-body">
+            <div class="row ">
+                <div class="col-md-3">
+                    <label for="yearDate" class="form-label">Thời gian</label>
+                    <input type="text" class="form-control datepicker" id="yearDate" name="yearDate" placeholder="">
+                </div>
+                <div class="col-md-3 d-flex align-items-end">
+                    <button type="button" class="btn btn-success" onclick="showYearChart()">Lọc kết quả</button>
+                </div>
+            </div>
+            <div class="row mt-4">
+                <div class="col s12">
+                    <canvas id="yearChart" width="400" height="200"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card mb-4">
+        <div class="card-body">
+            <div class="row ">
+                <div class="col-md-3">
+                    <label for="postOfficeDate" class="form-label">Thời gian</label>
+                    <input type="text" class="form-control datepicker" id="postOfficeDate" name="postOfficeDate" placeholder="">
+                </div>
+                <div class="col-md-3 d-flex align-items-end">
+                    <button type="button" class="btn btn-success" onclick="showPostOfficeChart()">Lọc kết quả</button>
+                </div>
+            </div>
+            <div class="row mt-4">
+                <div class="col s12">
+                    <canvas id="postOfficeChart" width="400" height="200"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card mb-4">
+        <div class="card-body">
+            <div class="row ">
+                <div class="col-md-3">
+                    <label for="newAccountDate" class="form-label">Thời gian</label>
+                    <input type="text" class="form-control datepicker" id="newAccountDate" name="newAccountDate" placeholder="">
+                </div>
+                <div class="col-md-3 d-flex align-items-end">
+                    <button type="button" class="btn btn-success" onclick="showNewAccountChart()">Lọc kết quả</button>
+                </div>
+            </div>
+            <div class="row mt-4">
+                <div class="col s12">
+                    <canvas id="newAccountChart" width="400" height="200"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="card mb-4">
+        <div class="card-body">
+            <div class="row ">
+                <div class="col-md-3">
+                    <label for="orderedAccountDate" class="form-label">Thời gian</label>
+                    <input type="text" class="form-control datepicker" id="orderedAccountDate" name="orderedAccountDate" placeholder="">
+                </div>
+                <div class="col-md-3 d-flex align-items-end">
+                    <button type="button" class="btn btn-success" onclick="showOrderedAccountChart()">Lọc kết quả</button>
+                </div>
+            </div>
+            <div class="row mt-4">
+                <div class="col s12">
+                    <canvas id="orderedAccountChart" width="400" height="200"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            showYearChart();
+            showPostOfficeChart();
+            showNewAccountChart();
+            showOrderedAccountChart();
+        });
+        function createChart(canvasId, labels, datasets, titleText) {
+            var canvas = document.getElementById(canvasId);
+            var ctx = canvas.getContext('2d');
+
+            // Kiểm tra và hủy biểu đồ cũ nếu có
+            var existingChart = Chart.getChart(canvas);
+            if (existingChart) {
+                existingChart.destroy();
+            }
+            return new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: labels,
+                    datasets: datasets
+                },
+                options: {
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                            labels: {
+                                padding: 20
+                            }
+                        },
+                        datalabels: {
+                            color: '#000000',
+                            anchor: 'end',
+                            align: 'top',
+                            formatter: (value) => value !== 0 ? value.toLocaleString('en-US') : ''
+                        },
+                        title: {
+                            display: true,
+                            text: titleText,
+                            padding: { top: 20, bottom: 30 },
+                            font: { size: 18, weight: 'bold' }
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            grid: { display: false }
+                        },
+                        x: {
+                            grid: { display: false }
+                        }
+                    }
+                },
+                plugins: [ChartDataLabels]
+            });
+        }
+
+        function showYearChart() {
+            const yearDate = $('#yearDate').val() ? parseDate($('#yearDate').val()) : null;
+            $.ajax({
+                url: '/Statistic/GetReportFeeYearChartData',
+                data: { dataDate: yearDate ? yearDate : '' },
+                type: 'GET',
+                success: function (response) {
+                    const labels = ['Tháng 1', 'Tháng 2', 'Tháng 3', 'Tháng 4', 'Tháng 5', 'Tháng 6', 'Tháng 7', 'Tháng 8', 'Tháng 9', 'Tháng 10', 'Tháng 11', 'Tháng 12'];
+                    const datasets = [
+                        {
+                            label: 'Tổng Doanh số',
+                            data: response.Col1,
+                            backgroundColor: 'green',
+                            borderColor: 'rgba(54, 162, 235, 1)',
+                            borderWidth: 1
+                        },
+                        {
+                            label: 'Chi Phí Cố Định',
+                            data: response.Col2,
+                            backgroundColor: 'red',
+                            borderColor: 'rgba(255, 159, 64, 1)',
+                            borderWidth: 1
+                        },
+                        {
+                            label: 'Chi Phí Đối Tác',
+                            data: response.Col3,
+                            backgroundColor: 'purple',
+                            borderColor: 'rgba(201, 203, 207, 1)',
+                            borderWidth: 1
+                        },
+                        {
+                            label: 'Chi Phí Khác',
+                            data: response.Col4,
+                            backgroundColor: 'yellow',
+                            borderColor: 'rgba(255, 206, 86, 1)',
+                            borderWidth: 1
+                        }
+                    ];
+                    createChart('yearChart', labels, datasets, 'Thông số năm');
+                },
+                error: function () { }
+            });
+        }
+
+        function showPostOfficeChart() {
+            const postOfficeDate = $('#postOfficeDate').val() ? parseDate($('#postOfficeDate').val()) : null;
+            $.ajax({
+                url: '/Statistic/GetReportFeePostOfficeChartData',
+                data: { dataDate: postOfficeDate ? postOfficeDate : '' },
+                type: 'GET',
+                success: function (response) {
+                    const labels = @Html.Raw(Json.Serialize(PostOfficeName.GetPostOffice()));
+
+                    const datasets = [
+                        {
+                            label: 'Tổng Doanh số',
+                            data: response.Col1,
+                            backgroundColor: 'green',
+                            borderColor: 'rgba(54, 162, 235, 1)',
+                            borderWidth: 1
+                        },
+                        {
+                            label: 'Chi Phí Cố Định',
+                            data: response.Col2,
+                            backgroundColor: 'red',
+                            borderColor: 'rgba(255, 159, 64, 1)',
+                            borderWidth: 1
+                        },
+                        {
+                            label: 'Chi Phí Khác',
+                            data: response.Col4,
+                            backgroundColor: 'yellow',
+                            borderColor: 'rgba(255, 206, 86, 1)',
+                            borderWidth: 1
+                        }
+                    ];
+                    createChart('postOfficeChart', labels, datasets, 'Thông số từng tháng theo bưu cục');
+                },
+                error: function () { }
+            });
+        }
+
+        function showNewAccountChart() {
+            const newAccountDate = $('#newAccountDate').val() ? parseDate($('#newAccountDate').val()) : null;
+            $.ajax({
+                url: '/Statistic/GetReportNewAccountChartData',
+                data: { dataDate: newAccountDate ? newAccountDate : '' },
+                type: 'GET',
+                success: function (response) {
+                    const labels = ['Tháng 1', 'Tháng 2', 'Tháng 3', 'Tháng 4', 'Tháng 5', 'Tháng 6', 'Tháng 7', 'Tháng 8', 'Tháng 9', 'Tháng 10', 'Tháng 11', 'Tháng 12'];
+
+                    const datasets = [
+                        {
+                            label: '@Html.Raw(PostOfficeName.GetPostOffice()[0])',
+                            data: response.Col1,
+                            backgroundColor: 'green',
+                            borderColor: 'rgba(54, 162, 235, 1)',
+                            borderWidth: 1
+                        },
+                        {
+                            label: '@Html.Raw(PostOfficeName.GetPostOffice()[1])',
+                            data: response.Col2,
+                            backgroundColor: 'red',
+                            borderColor: 'rgba(255, 159, 64, 1)',
+                            borderWidth: 1
+                        },
+                        {
+                            label: '@Html.Raw(PostOfficeName.GetPostOffice()[2])',
+                            data: response.Col3,
+                            backgroundColor: 'purple',
+                            borderColor: 'rgba(201, 203, 207, 1)',
+                            borderWidth: 1
+                        },
+                        {
+                            label: '@Html.Raw(PostOfficeName.GetPostOffice()[2])',
+                            data: response.Col4,
+                            backgroundColor: 'yellow',
+                            borderColor: 'rgba(255, 206, 86, 1)',
+                            borderWidth: 1
+                        }
+                    ];
+                    createChart('newAccountChart', labels, datasets, 'Tổng số khách');
+                },
+                error: function () { }
+            });
+        }
+
+        function showOrderedAccountChart() {
+            const orderedAccountDate = $('#orderedAccountDate').val() ? parseDate($('#orderedAccountDate').val()) : null;
+            $.ajax({
+                url: '/Statistic/GetReportAccountOrderedChartData',
+                data: { dataDate: orderedAccountDate ? orderedAccountDate : '' },
+                type: 'GET',
+                success: function (response) {
+                    const labels = ['Tháng 1', 'Tháng 2', 'Tháng 3', 'Tháng 4', 'Tháng 5', 'Tháng 6', 'Tháng 7', 'Tháng 8', 'Tháng 9', 'Tháng 10', 'Tháng 11', 'Tháng 12'];
+
+                    const datasets = [
+                        {
+                            label: '@Html.Raw(PostOfficeName.GetPostOffice()[0])',
+                            data: response.Col1,
+                            backgroundColor: 'green',
+                            borderColor: 'rgba(54, 162, 235, 1)',
+                            borderWidth: 1
+                        },
+                        {
+                            label: '@Html.Raw(PostOfficeName.GetPostOffice()[1])',
+                            data: response.Col2,
+                            backgroundColor: 'red',
+                            borderColor: 'rgba(255, 159, 64, 1)',
+                            borderWidth: 1
+                        },
+                        {
+                            label: '@Html.Raw(PostOfficeName.GetPostOffice()[2])',
+                            data: response.Col3,
+                            backgroundColor: 'purple',
+                            borderColor: 'rgba(201, 203, 207, 1)',
+                            borderWidth: 1
+                        },
+                        {
+                            label: '@Html.Raw(PostOfficeName.GetPostOffice()[2])',
+                            data: response.Col4,
+                            backgroundColor: 'yellow',
+                            borderColor: 'rgba(255, 206, 86, 1)',
+                            borderWidth: 1
+                        }
+                    ];
+                    createChart('orderedAccountChart', labels, datasets, 'Tổng số khách đi hàng');
+                },
+                error: function () { }
+            });
+        }
+    </script>
+}

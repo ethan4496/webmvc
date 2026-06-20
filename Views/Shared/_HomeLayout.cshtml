@@ -1,0 +1,664 @@
+﻿@using WebMVC.Interfaces
+@using WebMVC.Ultilities.Enums
+@inject IHttpContextService _httpContextService;
+@{
+    var loggedModel = await _httpContextService.GetCurrentAccount();
+}
+<!DOCTYPE html>
+<html>
+<head runat="server">
+    <meta charset="utf-8">
+    <title>@ViewData["Title"]</title>
+    <!--
+    <meta name="description" content="">
+    <meta name="keywords" content="">-->
+    <meta name="robots" content="index, follow">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta property="fb:app_id" content="676758839172144" />
+    <meta name="google-site-verification" content="aZcoR9301-yojJzH9Tv-3BE_WFhhPClH0JCS_wJihU0" />
+    <link rel="stylesheet" href="/tpkexpress/css/style.css">
+    <link rel="stylesheet" href="/tpkexpress/css/backdoor.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+    <link rel="icon" type="image/png" href="/favicon.png">
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+
+        gtag('config', 'G-P7K2QJ4TQE');
+    </script>
+    <div class="zalo-chat-widget" data-oaid="1299806935331929179" data-welcome-message="Rất vui khi được hỗ trợ bạn!" data-autopopup="0" data-width="" data-height=""></div>
+
+    <script src="https://sp.zalo.me/plugins/sdk.js"></script>
+</head>
+<body>
+    <header class="hd">
+        <div class="container">
+            <div class="hd-wrapper">
+                <div class="hd-logo">
+                    <div class="hd-logo-dc">
+                        <img src="/tpkexpress/assets/images/logo-cuved.svg" alt="" />
+                    </div>
+                    <a class="custom-logo-link" href="/">
+                        <img src="/tpkexpress/assets/images/logo.png" alt="" />
+                    </a>
+                </div>
+                <div class="hd-main">
+                    <div class="hd-top">
+                        <div class="hd-top-list">
+                            <div class="hd-top-item">
+                                <a class="hd-ct-btn" href="tel: 0338964163">
+                                    <img src="/tpkexpress/assets/images/icon-phone-white.svg" alt=""><span class="txt">
+                                        Hotline:
+                                        0796589224 , 0338964163
+                                    </span>
+                                </a>
+                            </div>
+                            <div class="hd-top-item">
+                                <div class="social">
+                                    <div class="social-list">
+                                        <a class="social-link" href="#">
+                                            <img src="/tpkexpress/assets/images/social-1.svg" alt="" />
+                                        </a>
+                                        <a class="social-link" href=""><img src="/tpkexpress/assets/images/social-2.svg" alt="" /></a>
+                                        <a class="social-link" href="https://www.facebook.com/profile.php?id=100064603496782&mibextid=ZbWKwL"><img src="/tpkexpress/assets/images/social-3.svg" alt="" /></a>
+                                        <a class="social-link" href=""><img src="/tpkexpress/assets/images/social-4.svg" alt="" /></a>
+                                    </div>
+                                </div>
+                            </div>
+
+                            @if (loggedModel?.Id > 0)
+                            {
+                                <div class="hd-top-item">
+                                    <div class="hd-regi">
+                                        <div class="hd-ct-btn">
+                                            <div class="user-box">
+                                                <div class="acc-info">
+                                                    <a class="acc-info-btn" href="/thong-tin-nguoi-dung">
+                                                        <i class="icon fas fa-user"></i><span>@loggedModel?.Username</span>
+                                                    </a>
+                                                    <div class="status-desktop">
+                                                        <div class="status-wrap">
+                                                            <div class="status__header"></div> 
+                                                            <div class="status__body">
+                                                                @* <div class="balance">
+                                                            <p>Số dư:</p>
+                                                            <div class="balance__number">
+                                                            <p class="vnd">1,485,943</p>
+                                                            </div>
+                                                            </div> *@
+                                                                @if (loggedModel?.RoleId != (int)ERoleId.User)
+                                                                {
+                                                                    <div class="links">
+                                                                        <a href="/Home/Staff">
+                                                                            Quản trị<i class="fa fa-caret-right"></i>
+                                                                        </a>
+                                                                    </div>
+                                                                }
+                                                                <div class="links">
+                                                                    <a href="/profile">
+                                                                        Thông tin tài khoản<i class="fa fa-caret-right"></i>
+                                                                    </a>
+                                                                </div>
+                                                                <div class="links">
+                                                                    <a href="/transportation">
+                                                                        Đơn hàng<i class="fa fa-caret-right"></i>
+                                                                    </a>
+                                                                </div>
+                                                            </div>
+                                                            <div class="status__footer">
+                                                                <a href="/Home/SignOff" class="ft-btn">ĐĂNG XUẤT</a>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="status-mobile">
+                                                        <h3 class="username">@loggedModel?.Username</h3>
+                                                        @* <div class="user-info">
+                                                    Số tiền: <span class="money">1,485,943</span>
+                                                    </div>
+                                                    <div class="nav-percent">
+                                                    <div class="nav-percent-ok" style="width: 11%"></div>
+                                                    </div> *@
+                                                        <div class="profile-bottom">
+                                                            <ul class="menu-in-profile">
+                                                                <li><a href="/">TRANG CHỦ</a></li>
+                                                                <li><a href="/profile">THÔNG TIN TÀI KHOẢN</a></li>
+                                                                <li>
+                                                                    <a href="/transportation">ĐƠN HÀNG</a>
+                                                                </li>
+                                                            </ul>
+                                                        </div>
+                                                        <a href="/Home/SignOff" class="main-btn">Đăng xuất</a>
+                                                    </div>
+                                                    <div class="overlay-status-mobile"></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            }
+                            else
+                            {
+                                <div class="hd-top-item">
+                                    <div class="hd-regi">
+                                        <div class="hd-ct-btn">
+                                            <div class="user-box">
+
+                                                <i style="display:none" id="userIcon" class="icon fas fa-user"></i><div class="hd-regi-list"><a class="hd-regi-btn" href="/dang-ky"><span class="txt">Đăng ký</span></a><a class="hd-regi-btn" href="/dang-nhap"><span class="txt">Đăng nhập</span></a></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                        <div class="hd-burger" id="hamburger">
+                            <div class="burger">
+                                <div class="hamburger"><span class="line"></span><span class="line"></span></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="hd-bot">
+                        <div class="hd-nav">
+                            <div class="menu-nav menu-arr">
+                                <ul class="menu-list">
+                                    <li class="menu-item">
+                                        <a class="menu-link" href="/gioi-thieu">GIỚI THIỆU</a>
+                                    </li>
+                                    <li class="menu-item">
+                                        <a class="menu-link" href="/huong-dan">HƯỚNG DẪN</a>
+                                    </li>
+                                    <li class="menu-item">
+                                        <a class="menu-link" href="/bieu-phi">BIỂU PHÍ</a>
+                                    </li>
+                                    <li class="menu-item">
+                                        <a class="menu-link" href="/chinh-sach">CHÍNH SÁCH</a>
+                                    </li>
+                                    <li class="menu-item">
+                                        <a class="menu-link" href="/dich-vu">DỊCH VỤ</a>
+                                    </li>
+                                    <li class="menu-item">
+                                        <a class="menu-link" href="/tin-tuc">TIN TỨC</a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+    <div class="mobile-overlay"></div>
+    <div class="mobile">
+        <div class="mobile-con">
+            <div class="mobile-wr">
+                <div class="mobile-nav">
+                    <div class="menu-nav menu-arr">
+                        <ul class="menu-list">
+                            <li class="menu-item">
+                                <a class="menu-link" href="/gioi-thieu">GIỚI THIỆU</a>
+                            </li>
+                            <li class="menu-item">
+                                <a class="menu-link" href="/huong-dan">HƯỚNG DẪN</a>
+                            </li>
+                            <li class="menu-item">
+                                <a class="menu-link" href="/bieu-phi">BIỂU PHÍ</a>
+                            </li>
+                            <li class="menu-item">
+                                <a class="menu-link" href="/chinh-sach">CHÍNH SÁCH</a>
+                            </li>
+                            <li class="menu-item">
+                                <a class="menu-link" href="/dich-vu">DỊCH VỤ</a>
+                            </li>
+                            <li class="menu-item">
+                                <a class="menu-link" href="/tin-tuc">TIN TỨC</a>
+                            </li>
+                            @if (loggedModel?.Id > 0)
+                            {
+                                <li class="menu-item">
+                                    <a class="menu-link" href="/dang-nhap">ĐĂNG NHẬP</a>
+                                </li>
+
+                                <li class="menu-item">
+                                    <a class="menu-link" href="/dang-ky">ĐĂNG KÝ</a>
+                                </li>
+                            }else{
+                                <li class="menu-item">
+                                    <a class="menu-link" href="/transportation">Đơn hàng</a>
+                                </li>
+                            }
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="mobile-mxh">
+            <a class="mobile-mxh-link" href="#">
+                <img src="/tpkexpress/assets/images/social-5.svg" alt="" />
+            </a>
+            <a class="mobile-mxh-link" href="#">
+                <img src="/tpkexpress/assets/images/social-6.svg" alt="" />
+            </a>
+            <a class="mobile-mxh-link" href="#">
+                <img src="/tpkexpress/assets/images/social-7.svg" alt="" />
+            </a>
+            <a class="mobile-mxh-link" href="#">
+                <img src="/tpkexpress/assets/images/social-8.svg" alt="" />
+            </a>
+            <a class="mobile-mxh-link" href="#">
+                <img src="/tpkexpress/assets/images/social-9.svg" alt="" />
+            </a>
+        </div>
+    </div>
+    @RenderBody()
+    <div class="ft">
+        <div class="container">
+            <div class="ft-top">
+                <a class="custom-logo-link" href="/">
+                    <img src="/tpkexpress/assets/images/logo.png" alt="" />
+                </a>
+                <!--                    <p class="des">Sói Tuyết với mảng dịch vụ chủ chốt là kết nối thương nhân Việt Nam và công xưởng Trung Quốc, làm thủ tục xuất nhập khẩu hàng hoá Trung Việt bao gồm đầy đủ các phân khúc khách hàng: hàng lẻ, hàng lô, hàng nguyên cont.</p>-->
+            </div>
+            <div class="ft-row row">
+                <div class="ft-col col">
+                    <div class="ft-wr">
+                        <p class="ft-title">Liên hệ</p>
+                        <div class="ft-ct">
+                            <div class="ft-ct-item">
+                                <p class="title">Hotline</p>
+                                <a class="des phone" href="tel: 0338964163">0796589224 , 0338964163</a>
+                            </div>
+                            <div class="ft-ct-item">
+                                <p class="title">Văn phòng  HN</p>
+                                <p class="des">CS1 : KCN Phú Minh, Đường Trại Gà, P.Cổ Nhuê 2, Q.Bắc Từ Liêm, Hà Nội</p>
+                                <p class="des">CS2: KDT Đại Thanh, P. Tả Thanh Oanh, Q. Thanh Trì, Hà Nội</p>
+                            </div>
+                            <!--<div class="ft-ct-item">
+                                <p class="title">Văn phòng  HCM</p>
+                                <p class="des">Shophouse CS7 Tòa Diamond Riverside - 1646A Võ Văn Kiệt, P16, Q8. HCM.</p>
+                            </div>-->
+                        </div>
+                    </div>
+                </div>
+                <div class="ft-col col">
+                    <div class="ft-wr">
+                        <p class="ft-title">MENU</p>
+                        <div class="ft-menu">
+                            <ul class="menu-list">
+                                <li class="menu-item">
+                                    <a class="menu-link" href="/gioi-thieu">GIỚI THIỆU</a>
+                                </li>
+                                <li class="menu-item">
+                                    <a class="menu-link" href="/huong-dan">HƯỚNG DẪN</a>
+                                </li>
+                                <li class="menu-item">
+                                    <a class="menu-link" href="/bieu-phi">BIỂU PHÍ</a>
+                                </li>
+                                <li class="menu-item">
+                                    <a class="menu-link" href="/chinh-sach">CHÍNH SÁCH</a>
+                                </li>
+                                <li class="menu-item">
+                                    <a class="menu-link" href="/dich-vu">DỊCH VỤ</a>
+                                </li>
+                                <li class="menu-item">
+                                    <a class="menu-link" href="/tin-tuc">TIN TỨC</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="ft-col col">
+                    <div class="ft-wr">
+                        <p class="ft-title">DỊCH VỤ</p>
+                        <div class="ft-menu">
+                            <ul class="menu-list">
+                                <li class="menu-item"><a href="/dich-vu" class="menu-link">Dịch vụ mua hộ, tìm nguồn hàng</a></li>
+                                <li class="menu-item"><a href="/dich-vu" class="menu-link">Dịch vụ ký gửi line TMDT</a></li>
+                                <li class="menu-item"><a href="/dich-vu" class="menu-link">Dịch vụ vận chuyển chính ngạch</a></li>
+                                <li class="menu-item"><a href="/dich-vu" class="menu-link">Dịch vụ tư vấn miễn phí</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="ft-col col">
+                    <div class="ft-wr">
+                        <p class="ft-title">THEO DÕI</p>
+                        <div class="social">
+                            <div class="social-list">
+                                <a class="social-link" href="https://www.facebook.com/profile.php?id=100064603496782&mibextid=ZbWKwL">
+                                    <img src="/tpkexpress/assets/images/social-5.svg" alt="" />
+                                </a>
+                                <a class="social-link" href="#"><img src="/tpkexpress/assets/images/social-6.svg" alt="" /></a>
+                                <a class="social-link" href="#"><img src="/tpkexpress/assets/images/social-7.svg" alt="" /></a>
+                                <a class="social-link" href="#"><img src="/tpkexpress/assets/images/social-8.svg" alt="" /></a>
+                                <a class="social-link" href="#"><img src="/tpkexpress/assets/images/social-9.svg" alt="" /></a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="ft-wr">
+                        <div class="re-dl">
+                            <h2 class="t-title">CÀI ĐẶT ỨNG DỤNG</h2>
+                            <div class="re-dl-wr">
+                                <a class="re-dl-link" target="_blank" href="https://github.com/TPKExppress/app/raw/main/tpk-express.apk" download="true">
+                                    <img src="/tpkexpress/assets/images/download-gg.png" alt="" />
+                                </a>
+                                <a class="re-dl-link" target="_blank" href="https://apps.apple.com/us/app/tpk-express/id6472759285">
+                                    <img src="/tpkexpress/assets/images/download-appstore.png" alt="" />
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="ft-author">
+                <!--<div class="ft-author-img">
+                    <img src="/tpkexpress/assets/images/ft-author.png" alt="" />
+                </div>-->
+            </div>
+        </div>
+    </div>
+    <div class="back-to-top backToTop">
+        <div class="triangle"></div>
+        <div class="triangle"></div>
+        <div class="triangle"></div>
+    </div>
+    <div class="mess-contact">
+        <div class="swiper-container myIcon">
+            <div class="swiper-wrapper">
+                <!--<div class="swiper-slide">
+                    <p>
+                        <i class="fa fa-comments" aria-hidden="true"></i>
+                    </p>
+                </div>
+                <div class="swiper-slide">
+                    <p>
+                        <img src="/tpkexpress/assets/images/mess.png" alt="">
+                    </p>
+                </div>-->
+                <div class="swiper-slide">
+                    <p>
+                        <i class="fa fa-phone" aria-hidden="true"></i>
+                    </p>
+                </div>
+                <div class="swiper-slide">
+                    <p>
+                        <img src="/tpkexpress/assets/images/mess.png" alt="">
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div class="tooltips-mess">
+            <a href="https://www.facebook.com/profile.php?id=100064603496782&mibextid=ZbWKwL">
+                <span class="icon-ct" style="background-color: #1e88e5;">
+                    <img src="/tpkexpress/assets/images/messenger-ic.png" alt="">
+                </span>
+                <span style="color: black;">Messenger</span>
+            </a>
+            <!--<a href="https://zalo.me/0355721516">
+                <span class="icon-ct" style="background-color: #0068ff;">
+                    <b>Zalo</b>
+                </span>
+                <span style="color: black;">Zalo chat</span>
+            </a>-->
+            <a href="tel:+0338964163">
+                <span class="icon-ct" style="background-color: #4EB625;">
+                    <i class="fa fa-phone" aria-hidden="true"></i>
+                </span>
+                <span style="color: black;">Gọi 0338964163</span>
+            </a>
+        </div>
+    </div>
+    <script src="/tpkexpress/assets/library/jquery/jquery.js"></script>
+    <script src="/tpkexpress/assets/library/swiper/swiper-bundle.min.js"></script>
+    <script src="/tpkexpress/assets/library/aos/aos.js"></script>
+    <script src="/tpkexpress/assets/library/select2/select2.min.js"></script>
+    <script src="/tpkexpress/assets/library/gallery/lightgallery-all.min.js"></script>
+    <script src="/tpkexpress/assets/library/jquery/jquery-migrate.js"></script>
+    <script src="/tpkexpress/assets/library/smoothscroll/SmoothScroll.min.js"></script>
+    <script src="/tpkexpress/assets/library/splitting/splitting.min.js"></script>
+    <script src="/tpkexpress/assets/library/fancybox/fancybox.umd.js"></script>
+    <script src="/tpkexpress/assets/library/gsap/gsap.min.js"></script>
+    <script src="/tpkexpress/assets/library/gsap/ScrollTrigger.min.js"></script>
+    <script src="/tpkexpress/js/main.js" type="module"></script>
+    <script>
+        $(document).ready(function () {
+            Slide();
+            $(".myIcon").on('click', function () {
+                $(".tooltips-mess").toggleClass("open-tool");
+            });
+            const $tool = $('.tooltips-mess')
+            $(document).mouseup(e => {
+                if (!$tool.is(e.target)
+                    && $tool.has(e.target).length === 0) {
+                    $tool.removeClass('open-tool');
+                }
+            });
+        })
+        function Slide() {
+            var swiper = new Swiper(".myIcon", {
+                spaceBetween: 30,
+                centeredSlides: true,
+                // allowTouchMove : false,
+                autoplay: {
+                    delay: 2500,
+                    disableOnInteraction: false,
+                },
+                pagination: {
+                    el: ".swiper-pagination",
+                    clickable: true,
+                },
+                navigation: {
+                    nextEl: ".swiper-button-next",
+                    prevEl: ".swiper-button-prev",
+                },
+            });
+        }
+    </script>
+    <style>
+        .mess-contact {
+            width: 80px;
+            border-radius: 50%;
+            height: 80px;
+            border: 10px solid #b92727;
+            position: fixed;
+            display: -webkit-box;
+            display: -ms-flexbox;
+            display: flex;
+            -webkit-box-pack: center;
+            -ms-flex-pack: center;
+            justify-content: center;
+            -webkit-box-align: center;
+            -ms-flex-align: center;
+            align-items: center;
+            font-size: 32px;
+            color: #b92727;
+            cursor: pointer;
+            bottom: 100px;
+            z-index: 1005;
+            right: 20px;
+            background: white;
+        }
+
+            .mess-contact img {
+                width: 36px !important
+            }
+
+            .mess-contact p {
+                display: -webkit-box;
+                display: -ms-flexbox;
+                display: flex;
+                -webkit-box-orient: vertical;
+                -webkit-box-direction: normal;
+                -ms-flex-direction: column;
+                flex-direction: column;
+                -webkit-box-align: center;
+                -ms-flex-align: center;
+                align-items: center;
+            }
+
+                .mess-contact p span {
+                    font-weight: bold;
+                    font-size: 20px;
+                }
+
+        .tooltips-mess {
+            position: fixed;
+            bottom: 220px;
+            right: 20px;
+            background-color: white;
+            border-radius: 5px;
+            padding: 15px 0;
+            -webkit-transition: 0.3s all;
+            transition: 0.3s all;
+            -webkit-transform: scale(0);
+            transform: scale(0);
+            -webkit-box-shadow: 0 0 10px rgba(0, 0, 0, 0.6);
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.6);
+        }
+
+            .tooltips-mess::before {
+                content: '';
+                position: absolute;
+                bottom: -13px;
+                right: 25px;
+                width: 0;
+                height: 0;
+                border-left: 10px solid transparent;
+                border-right: 10px solid transparent;
+                border-top: 15px solid white;
+            }
+
+            .tooltips-mess a {
+                display: -webkit-box;
+                display: -ms-flexbox;
+                display: flex;
+                padding: 5px 40px 5px 15px;
+                -webkit-box-align: center;
+                -ms-flex-align: center;
+                align-items: center;
+                font-size: 20px;
+                width: 100%;
+            }
+
+                .tooltips-mess a:hover {
+                    background-color: #ccc;
+                }
+
+            .tooltips-mess .icon-ct {
+                width: 50px;
+                height: 50px;
+                background-color: red;
+                border-radius: 50%;
+                display: -webkit-box;
+                display: -ms-flexbox;
+                display: flex;
+                font-size: 28px;
+                color: white;
+                -webkit-box-pack: center;
+                -ms-flex-pack: center;
+                justify-content: center;
+                -webkit-box-align: center;
+                -ms-flex-align: center;
+                align-items: center;
+                margin-right: 15px;
+            }
+
+                .tooltips-mess .icon-ct b {
+                    font-size: 18px;
+                }
+
+        .open-tool {
+            -webkit-transform: scale(1);
+            transform: scale(1);
+        }
+
+        @@media screen and (max-width: 600px) {
+            #userIcon {
+                display: unset !important;
+            }
+        }
+    </style>
+
+    <script>
+        function showToast(message, type, isReload) {
+            let bgColor = "green";
+            switch (type) {
+                case 1:
+                    bgColor = "red"
+                    break;
+                case 2:
+                    bgColor = "#ffc107"
+                    break;
+                case 3:
+                    bgColor = "blue"
+                    break;
+                default:
+                    bgColor = "green";
+                    break;
+            }
+            Toastify({
+                text: message,
+                duration: 3000,
+                gravity: "top", // Vị trí top
+                position: "right", // Hiển thị bên phải
+                backgroundColor: bgColor,
+            }).showToast();
+            if (isReload) {
+                setTimeout(
+                    function () {
+                        window.location.reload();
+                    },
+                    1000
+                );
+            }
+        }
+
+        function disableButton() {
+            // Chọn tất cả các button và link (a) trên trang
+            const elements = document.querySelectorAll('button, a');
+
+            elements.forEach(el => {
+                // Thêm lớp 'disabled' để hiển thị trạng thái không hoạt động
+                el.classList.add('disabled');
+
+                // Disable nút nếu là button
+                if (el.tagName.toLowerCase() === 'button') {
+                    el.disabled = true;
+                }
+
+                // Ngăn chặn hành động mặc định nếu là link (a)
+                if (el.tagName.toLowerCase() === 'a') {
+                    el.addEventListener('click', function (event) {
+                        event.preventDefault();
+                    });
+                }
+            });
+        }
+
+        function enableButton() {
+            // Chọn tất cả các button và link (a) có lớp 'disabled'
+            const elements = document.querySelectorAll('button, a');
+
+            elements.forEach(el => {
+                // Xóa lớp 'disabled' để khôi phục trạng thái hoạt động
+                el.classList.remove('disabled');
+
+                // Bật lại nút nếu là button
+                if (el.tagName.toLowerCase() === 'button') {
+                    el.disabled = false;
+                }
+
+                // Loại bỏ sự kiện 'click' ngăn hành động mặc định nếu là link (a)
+                if (el.tagName.toLowerCase() === 'a') {
+                    const newElement = el.cloneNode(true); // Tạo bản sao không có sự kiện
+                    el.replaceWith(newElement); // Thay thế thẻ hiện tại bằng bản sao
+                }
+            });
+        }
+    </script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

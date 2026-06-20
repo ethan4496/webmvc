@@ -1,0 +1,434 @@
+﻿@using WebMVC.Entities
+@using WebMVC.Interfaces
+@using WebMVC.Ultilities.Enums
+@model List<Warehouse>
+@inject IHttpContextService _httpContextService;
+@{
+    var loggedModel = await _httpContextService.GetCurrentAccount();
+}
+@{
+    ViewData["Title"] = "Tạo đơn ký gửi";
+}
+
+<div class="container-fluid mt-4">
+    <div class="card mb-6">
+        <div class="card-header d-flex justify-content-between align-items-center">
+            <h2 class="text-center ">Tạo Đơn Ký Gửi</h2>
+        </div>
+        <div class="card-body">
+            <form id="orderForm" class="row">
+                <div class="col-md-4">
+                    <div class="row mb-3">
+                        <div class="col-md-6 d-flex align-items-end">
+                            <label for="warehouseFrom" class="form-label">Kho TQ</label>
+                        </div>
+                        <div class="col-md-6">
+                            <select id="warehouseFrom" class="form-select" required>
+                                <option value="">Chọn Kho TQ</option>
+                                @foreach (var item in Model.Where(x => x.Type == (int)EWarehouseType.Reciever).ToList())
+                                {
+                                    <option value=@item.Id selected>@item.Name</option>
+                                }
+                            </select>
+                            <div id="warehouseFromError" class="text-danger" style="display: none;">Vui lòng chọn Kho TQ</div>
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-md-6 d-flex align-items-end">
+                            <label for="warehouseTo" class="form-label">Kho VN</label>
+                        </div>
+                        <div class="col-md-6">
+                            <select id="warehouseTo" class="form-select" required>
+                                <option value="">Chọn Kho VN</option>
+                                @foreach (var item in Model.Where(x => x.Type == (int)EWarehouseType.Destination).ToList())
+                                {
+                                    if (item.Id == loggedModel.ToWarehouseId)
+                                    {
+                                        <option value=@item.Id selected>@item.Name</option>
+                                    }
+                                    else
+                                    {
+                                        <option value=@item.Id>@item.Name</option>
+                                    }
+                                }
+                            </select>
+                            <div id="warehouseToError" class="text-danger" style="display: none;">Vui lòng chọn Kho VN</div>
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-md-6 d-flex align-items-end">
+                            <label for="transportMethod" class="form-label">Hình Thức Vận Chuyển</label>
+                        </div>
+                        <div class="col-md-6">
+                            <select id="transportMethod" class="form-select" required>
+                                <option value="">Chọn Hình Thức</option>
+                                @foreach (var item in Model.Where(x => x.Type == (int)EWarehouseType.Shipping && x.Id != 5).ToList())
+                                {
+                                    <option value=@item.Id>@item.Name</option>
+                                }
+                            </select>
+                            <div id="transportMethodError" class="text-danger" style="display: none;">Vui lòng chọn Hình Thức Vận Chuyển</div>
+                        </div>
+                    </div>
+
+                    <div class="text-end">
+                        <a href="/templates/template.xlsx" download class="btn btn-outline-success"> File mẫu</a>
+                        <button type="button" id="addItem" class="btn btn-primary "> Thêm Kiện</button>
+                        <button type="button" id="createOrder" class="btn btn-success" disabled>Tạo Đơn Hàng</button>
+                    </div>
+                </div>
+                <div class="col-md-8">
+                    <div id="orderItems" class="mb-3">
+                        <table class="table table-bordered">
+                            <thead>
+                                <tr>
+                                    <th style="width: 20%;">Mã Vận Đơn</th>
+                                    <th style="width: 20%;">Thông tin SP</th>
+                                    <th style="width: 20%;">File SP</th>
+                                    <th style="width: 20%;">Voucher</th>
+                                    <th style="width: 20%;">Thao Tác</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </form>
+            <div>
+                <p style="color:red; font-style:italic">Quý Khách Hàng Lưu ý : </p>
+                <p>
+                    Đối với hình thức " Vận Chuyển Thường '' Và '' Vận Chuyển Chính Ngạch'' , TPK cần có tên sản phẩm và hình ảnh để khai báo hải quan
+                </p>
+                <p>Để  tránh ảnh hưởng đến vấn đề xếp xe và tốc độ giao hàng rất mong quý khách điền đầy đủ thông tin</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<style>
+    .table th {
+        text-align: center;
+    }
+
+    /* Căn nút "Tạo Đơn Hàng" sang phải */
+    .text-end {
+        text-align: right;
+    }
+</style>
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            let selectedVouchers = [];
+            let transportMethodId = "";
+            const legallyTransportMethodId = '5';
+            function loadVouchers(selectElement) {
+                $.ajax({
+                    url: '/Voucher/GetVoucherAccount',
+                    type: 'GET',
+                    data: {},
+                    success: function (response) {
+                        if (response.Data) {
+                            const vouchers = response.Data;
+                            const $this = $(selectElement); // Tham chiếu đến dropdown đang được mở
+                            const selectedVoucherId = $this.val(); // Lấy id của voucher đã được chọn
+
+                            $this.empty();  // Xóa tất cả các option hiện tại
+                            $this.append('<option value="">Chọn Voucher</option>');
+
+                            // Duyệt qua tất cả các voucher và thêm vào dropdown
+                            vouchers.forEach(function (voucher) {
+                                const amount = voucher.Amount.toLocaleString('en-US');
+                                const isSelected = selectedVouchers.includes(voucher.Id.toString()); // Kiểm tra voucher đã chọn
+
+                                // Chỉ bỏ những voucher đã chọn khỏi danh sách
+                                if (!isSelected) {
+                                    $this.append(`<option value="${voucher.Id}">${voucher.Name} - ${amount} đ</option>`);
+                                } else if (isSelected && voucher.Id.toString() === selectedVoucherId) {
+                                    $this.append(`<option selected="selected" value="${voucher.Id}">${voucher.Name} - ${amount} đ</option>`);
+                                }
+                            });
+                        }
+                    },
+                    error: function () {
+                        showToast(response.responseJSON?.Message || "Lỗi không xác định", response.responseJSON?.Type || 2, false);
+                    }
+                });
+            }
+
+            function toggleCreateButton() {
+                const hasItems = $("#orderItems .order-item").length > 0;
+                $("#createOrder").prop("disabled", !hasItems);
+            }
+
+            $('#transportMethod').on('change', function () {
+                const selectedId = $(this).val(); // ID hiện tại (kiểu chuỗi)
+
+                const isOldLegal = transportMethodId == legallyTransportMethodId;
+                const isNewLegal = selectedId == legallyTransportMethodId;
+
+                // Cập nhật trạng thái mới
+                transportMethodId = selectedId;
+                // Nếu chuyển từ hoặc đến "5" (chính ngạch) thì reset + addItem
+                if (isOldLegal !== isNewLegal) {
+                    $('#orderItems tbody').empty();
+                    $('#addItem').trigger('click');
+                }
+            });
+
+            $("#addItem").on("click", function () {
+                let itemHtml = `
+                                    <tr class="order-item">
+                                        <td>
+                                                <div class="d-flex align-items-center gap-1">
+                                                    <span class="required-mark">*</span>
+                                                    <input type="text" class="form-control barcode" placeholder="Mã Vận Đơn" required>
+                                                </div>
+                                            <div class="text-danger barcode-error" style="display: none;">Mã Vận Đơn bị trùng!</div>
+                                        </td>
+                                        <td>
+                                            <div class="d-flex align-items-center gap-1">
+                                                        <input type="text" class="form-control note" placeholder="Tên SP/ Số Kiện">
+                                               </div>
+                                                                            <div class="text-danger note-error" style="display: none;">Không được bỏ trống</div>
+                                       </td>
+                                                <td>
+            <div class="d-flex align-items-center gap-1">
+                        <input type="file" class="form-control image"  multiple required>
+            </div>
+                            <div class="text-danger image-error" style="display: none;">Không được bỏ trống</div>
+        </td>
+                                                <td>
+                                            <select class="form-select voucher-select" >
+                                                <option value="">Chọn Voucher</option>
+                                            </select>
+                                        </td>
+                                        <td class="text-center">
+                                            <button type="button" class="btn btn-danger btn-remove-item">&#x2212;</button>
+                                        </td>
+                                    </tr>`;
+                // if(transportMethodId === legallyTransportMethodId){
+                //     itemHtml+= `<tr class="order-item-user-upload-1">
+                //         <td>
+                //             <input type="text" class="form-control userUploadName" placeholder="Tên hàng" >
+                //         </td>
+                //         <td>
+                //             <input type="number" class="form-control userUploadQuantity" placeholder="Số lượng" value="1" min="1" >
+                //         </td>
+                //         <td>
+                //             <input type="number" class="form-control userUploadWeight" placeholder="Cân nặng" value="0" min="0">
+                //         </td>
+                //         <td>
+                //             <input type="number" class="form-control userUploadVolume" placeholder="Số khối" value="0" min="0">
+                //         </td>
+                //     </tr>
+                //     <tr class="order-item-user-upload-2">
+                //         <td>
+                //             <input type="text" class="form-control userUploadDimensions" placeholder="Kích thước" >
+                //         </td>
+                //         <td>
+                //             <input type="text" class="form-control userUploadOtherInfor" placeholder="Công suất điện áp, chất liệu" >
+                //         </td>
+                //         <td>
+                //             <input type="file" class="form-control userUploadImage" accept=".jpg, .jpeg, .png, .gif" placeholder="Ảnh sản phẩm">
+                //         </td>
+                //         <td>
+                //         </td>
+                //     </tr>`
+                // }
+                $("#orderItems tbody").prepend(itemHtml);
+                toggleCreateButton();
+            });
+
+            $("#orderItems").on("click", ".btn-remove-item", function () {
+                const orderRow = $(this).closest("tr.order-item");
+
+                // Xử lý voucher nếu có
+                const voucherId = orderRow.find(".voucher-select").val();
+                if (voucherId) {
+                    selectedVouchers = selectedVouchers.filter(function (id) {
+                        return id !== voucherId;
+                    });
+                }
+
+                // Xóa dòng chính và 2 dòng kế tiếp nếu có (upload info)
+                const row1 = orderRow.next(".order-item-user-upload-1");
+                const row2 = row1.next(".order-item-user-upload-2");
+
+                orderRow.remove();
+                if (row1.length) row1.remove();
+                if (row2.length) row2.remove();
+
+                toggleCreateButton();
+            });
+
+            $("#createOrder").on("click", function () {
+                const warehouseFrom = $("#warehouseFrom").val();
+                const warehouseTo = $("#warehouseTo").val();
+                const transportMethod = $("#transportMethod").val();
+
+                let valid = validateSelectFields(warehouseFrom, warehouseTo, transportMethod);
+                valid = validateBarcodes() && valid;
+
+                if (!valid) return;
+
+                const formData = new FormData();
+
+                formData.append("WarehouseFrom", warehouseFrom);
+                formData.append("WarehouseTo", warehouseTo);
+                formData.append("TransportMethod", transportMethod);
+
+                // Build item data
+                $("#orderItems .order-item").each(function (index) {
+                    const barcode = $(this).find(".barcode").val()?.trim();
+                    const note = $(this).find(".note").val()?.trim();
+                    const voucherId = $(this).find(".voucher-select").val() || null;
+
+                    formData.append(`Items[${index}].Barcode`, barcode);
+                    formData.append(`Items[${index}].Note`, note);
+                    formData.append(`Items[${index}].VoucherId`, voucherId);
+                    const imageInput = $(this).find(".image")[0];
+                    if (imageInput?.files?.length > 0) {
+                        for (let i = 0; i < imageInput.files.length; i++) {
+                            formData.append(`Items[${index}].Images`, imageInput.files[i]);
+                        }
+                    }
+                });
+
+                disableButton();
+
+                $.ajax({
+                    url: "/Transportation/Create",
+                    type: "POST",
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+                    success: function (response) {
+                        showToast(response.Message, response.Type, true);
+                    },
+                    error: function (response) {
+                        showToast(response.responseJSON?.Message || "Đã xảy ra lỗi", response.responseJSON?.Type || "error", false);
+                    },
+                    complete: function () {
+                        enableButton();
+                    }
+                });
+            });
+
+            $("#orderItems").on("mousedown", ".voucher-select", function () {
+                loadVouchers($(this));
+            });
+
+            $("#orderItems").on("change", ".voucher-select", function () {
+                const selectedVoucherId = $(this).val();
+                const $this = $(this);
+
+                // Lấy voucher cũ đã chọn trong dropdown
+                const previousVoucherId = $this.data('previous-value');
+
+                // Nếu có voucher cũ, loại bỏ nó khỏi selectedVouchers
+                if (previousVoucherId && previousVoucherId !== selectedVoucherId) {
+                    // Loại bỏ voucher cũ khỏi danh sách selectedVouchers
+                    selectedVouchers = selectedVouchers.filter(function (id) {
+                        return id !== previousVoucherId;
+                    });
+                }
+
+                // Nếu có voucher mới được chọn, thêm vào selectedVouchers
+                if (selectedVoucherId) {
+                    selectedVouchers.push(selectedVoucherId);
+                }
+
+                // Lưu giá trị voucher mới vào data-attribute để so sánh lần sau
+                $this.data('previous-value', selectedVoucherId);
+            });
+            function validateSelectFields(from, to, method) {
+                let valid = true;
+
+                if (!from) {
+                    $("#warehouseFromError").show();
+                    valid = false;
+                } else {
+                    $("#warehouseFromError").hide();
+                }
+
+                if (!to) {
+                    $("#warehouseToError").show();
+                    valid = false;
+                } else {
+                    $("#warehouseToError").hide();
+                }
+
+                if (!method) {
+                    $("#transportMethodError").show();
+                    valid = false;
+                } else {
+                    $("#transportMethodError").hide();
+                }
+
+                return valid;
+            }
+
+            function validateBarcodes() {
+                const barcodes = [];
+                let valid = true;
+
+                $("#orderItems .order-item").each(function () {
+                    const $item = $(this);
+
+                    // --- Kiểm tra Barcode ---
+                    const barcodeInput = $item.find("input.barcode");
+                    const barcode = barcodeInput.val()?.trim();
+                    const barcodeErrorDiv = $item.find(".barcode-error");
+
+                    if (!barcode) {
+                        barcodeErrorDiv.text("Mã Vận Đơn không được để trống!").show();
+                        valid = false;
+                    } else if (barcodes.includes(barcode)) {
+                        barcodeErrorDiv.text("Mã Vận Đơn bị trùng!").show();
+                        valid = false;
+                    } else {
+                        barcodeErrorDiv.hide();
+                        barcodes.push(barcode);
+                    }
+
+                    // // --- Kiểm tra Note ---
+                    // const noteInput = $item.find("input.note");
+                    // const noteErrorDiv = $item.find(".note-error");
+
+                    // if (!noteInput.val()?.trim()) {
+                    //     noteErrorDiv.text("Không được để trống").show();
+                    //     valid = false;
+                    // } else {
+                    //     noteErrorDiv.hide();
+                    // }
+
+                    // // --- Kiểm tra Image ---
+                    // const imageInput = $item.find("input.image")[0];
+                    // const file = imageInput?.files?.[0];
+                    // const imageErrorDiv = $item.find(".image-error");
+                    // if (!file) {
+                    //     // Nếu cần thêm div lỗi ảnh, bạn có thể tạo div .image-error bên dưới input
+                    //     imageErrorDiv.text("Không được để trống").show();
+                    //     valid = false;
+                    // } else {
+                    //     // Có thể kiểm tra định dạng ảnh nếu cần
+                    //     const allowedExtensions = ["jpg", "jpeg", "png", "gif"];
+                    //     const fileExtension = file.name.split('.').pop().toLowerCase();
+                    //     if (!allowedExtensions.includes(fileExtension)) {
+                    //         imageErrorDiv.text("Ảnh phải có định dạng jpg, jpeg, png, hoặc gif").show();
+                    //         valid = false;
+                    //     }
+                    // }
+                });
+
+                return valid;
+            }
+
+
+            toggleCreateButton();
+            $("#addItem").trigger("click");
+        });
+    </script>
+}

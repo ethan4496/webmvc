@@ -1,0 +1,87 @@
+@using WebMVC.Models.Responses;
+@using WebMVC.Ultilities.Enums
+
+@{
+    ViewData["Title"] = "Tra cứu";
+}
+<!-- HTML and Razor markup remain unchanged -->
+<div class="container-fluid mt-4">
+    <h1 class="mb-4 d-flex justify-content-center">Tra cứu</h1>
+    <div class="row">
+        <div class="col-md-2">
+        </div>
+        <div class="col-md-2">
+            <input type="text" class="form-control" id="name" placeholder="Nhập tên hàng" value="">
+        </div>
+
+        <div class="col-md-6">
+            <div class="input-group mb-4">
+                <input type="text" class="form-control" id="hscode" placeholder="Nhập HS code" value="">
+                <button class="btn btn-primary" id="search">Tra cứu</button>
+            </div>
+        </div>
+        <div class="col-md-2"></div>
+
+    </div>
+
+    
+    <div class="col-12 mt-4 table-content">
+        <table class="table table-bordered" id="result">
+            <thead class="table-light">
+                <tr>
+                    <th>STT</th>
+                    <th>Tên hàng</th>
+                    <th>Mã HS</th>
+                    <th>Thuế VAT</th>
+                    <th>Thuế NK có FE</th>
+                    <th>Giá khai tham khảo(USD/CPE)</th>
+                    <th>Xuất xứ</th>
+                </tr>
+            </thead>
+            <tbody>
+
+            </tbody>
+        </table>
+    </div>
+</div>
+<!-- Script remains unchanged -->
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            $('#search').on('click', function () {
+
+                const name = $('#name').val()
+                const hscode = $('#hscode').val()
+                $.ajax({
+                    url: '@Url.Action("SearchCode", "Transportation")',
+                    type: 'GET',
+                    data: {
+                        name: name,
+                        hscode: hscode
+                    },
+                    dataType: 'json',
+                    success: function (res) {
+                        let html = '';
+                        $.each(res.data, function (index, item) {
+                            html += `<tr>
+                                <td>${index + 1}</td>
+                                <td>${item.UserNote}</td>
+                                <td>${item.hscode}</td>
+                                <td></td>
+                                <td></td>
+                                <td>${item.TotalPriceVND}</td>
+                                <td>${item.PostOffice}</td>
+                            </tr>`
+                        });
+                        $('#result tbody').html(html);
+                    },
+                    error: function (xhr, status, error) {
+                        console.log("Lỗi gọi API:", xhr.responseText);
+                    }
+                });
+            })
+        });
+    </script>
+}
+

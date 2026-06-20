@@ -1,0 +1,86 @@
+﻿@using WebMVC.Models.Responses
+@model StaffTargetResponse
+
+@if (Model != null)
+{
+    <div id="table-container">
+        <div class="table-content" style="height:auto !important">
+            <table class="table table-bordered">
+                <thead class="table">
+                    <tr>
+                        <th class="text-center">Ảnh</th>
+                        <th class="text-center">SaleName</th>
+                        <th class="text-center"></th>
+                        <th class="text-center" style=" width: 50px; ">Số đơn hàng</th>
+                        <th class="text-center" style=" width: 50px; ">Tổng số KG</th>
+                        <th class="text-center" style=" width: 50px; ">Tổng số khối</th>
+                        <th class="text-center" style=" width: 50px; ">Tổng khách</th>
+                        <th class="text-center" style=" width: 50px; ">Số Khách</th>
+                        <th class="text-center">Doanh Số KH mới</th>
+                        <th class="text-center" style=" width: 50px; ">Khách mới</th>
+                        <th class="text-center" style=" min-width: 150px;">CN</th>
+                        <th class="text-center" style=" min-width: 150px;">HT</th>
+                        <th class="text-center" style=" min-width: 150px;">DT</th>
+                        <th class="text-center" style=" min-width: 150px;">Tổng DS</th>
+                        <th class="text-center">Thưởng doanh số</th>
+                        <th class="text-center">Trạng thái</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr item-id="@Model.Id">
+                        <td rowspan="2" class="text-center align-content-center">
+                            @if (!string.IsNullOrEmpty(Model.StaffAvatar))
+                            {
+                                <div class="d-flex justify-content-center align-content-center">
+                                    <img src="@Model.StaffAvatar" class="img-fluid rounded border" style="max-width: 100px; max-height: 100px;" alt=" Image">
+                                </div>
+                            }
+                        </td>
+
+                        <td rowspan="2" class="text-center align-content-center">@Model.Username</td>
+                        <td class="text-center align-content-center">Target</td>
+                        <td rowspan="2" class="text-center align-content-center">@Model.OrderReal</td>
+                        <td rowspan="2" class="text-center align-content-center">@Model.WeightReal</td>
+                        <td rowspan="2" class="text-center align-content-center">@Model.VolumeReal</td>
+                        <td class="text-center align-content-center  d-none"><input class="form-control order" type="number" value="@Model.Order" step="1" min="0" /></td>
+                        <td class="text-center align-content-center  d-none"><input class="form-control weight" type="number" value="@Model.Weight" min="0" /></td>
+                        <td class="text-center align-content-center  d-none"><input class="form-control volume" type="number" value="@Model.Volume" min="0" /></td>
+                        <td rowspan="2" class="text-center align-content-center">@Model.TotalAccount</td>
+                        <td rowspan="2" class="text-center align-content-center">@Model.TotalNewAccountHasOrder</td>
+                        <td rowspan="2" class="text-center align-content-center">@Model.TotalPriceVNDNewAccountHasOrder</td>
+                        <td class="text-center align-content-center"><input class="form-control newAccount" type="number" value="@Model.NewAccount" min="0" /></td>
+                        <td class="text-center align-content-center"><input type="text" class="form-control input-money totalPriceVNDCN" value="@string.Format("{0:N0}", Model.TotalPriceVNDCN)" min="0" /></td>
+                        <td class="text-center align-content-center"><input type="text" class="form-control input-money totalPriceVNDHT" value="@string.Format("{0:N0}", Model.TotalPriceVNDHT)" min="0" /></td>
+                        <td class="text-center align-content-center"><input type="text" class="form-control input-money totalPriceVNDDT" value="@string.Format("{0:N0}", Model.TotalPriceVNDDT)" min="0" /></td>
+                        <td class="text-center align-content-center"><input type="text" class="form-control input-money totalPriceVND" value="@string.Format("{0:N0}", Model.TotalPriceVND)" min="0" /></td>
+                        <td rowspan="2" class="text-center align-content-center">@string.Format("{0:N0}", Model.Profit) đ</td>
+                        <td rowspan="2" class="text-center align-content-center">@Html.Raw(Model.Status)</td>
+                    </tr>
+                    <tr>
+                        <td class="text-center align-content-center">Thực tế</td>
+@*                         <td class="text-center align-content-center"><input class="form-control " type="number" value="@Model.OrderReal" step="1" min="0" readonly /></td>
+                        <td class="text-center align-content-center"><input class="form-control " type="number" value="@Model.WeightReal" min="0" readonly /></td>
+                        <td class="text-center align-content-center"><input class="form-control " type="number" value="@Model.VolumeReal" min="0" readonly /></td> *@
+                        <td class="text-center align-content-center"><input class="form-control " type="number" value="@Model.NewAccountReal" min="0" readonly /></td>
+                        <td class="text-center align-content-center"><input class="form-control input-money" type="text" value="@string.Format("{0:N0}", Model.TotalPriceVNDRealCN)" min="0" readonly /></td>
+                        <td class="text-center align-content-center"><input class="form-control input-money" type="text" value="@string.Format("{0:N0}", Model.TotalPriceVNDRealHT)" min="0" readonly /></td>
+                        <td class="text-center align-content-center"><input class="form-control input-money" type="text" value="@string.Format("{0:N0}", Model.TotalPriceVNDRealDT)" min="0" readonly /></td>
+                        @{
+                            var isNotCompleted = Model.Status?.Contains("bg-danger");
+                        }
+
+                        <td class="text-center align-content-center">
+                            <input class="form-control input-money @(isNotCompleted == true ? "text-danger border-danger" : "text-success border-success")"
+                                   type="text"
+                                   value="@string.Format("{0:N0}", Model.TotalPriceVNDReal)"
+                                   min="0"
+                                   readonly />
+                        </td>
+@*                         <td class="text-center align-content-center"><input class="form-control input-money" type="text" value="@string.Format("{0:N0}", Model.TotalPriceVNDReal)" min="0" readonly /></td>
+ *@                    </tr>
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+}

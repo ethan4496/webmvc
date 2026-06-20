@@ -1,0 +1,183 @@
+﻿@using WebMVC.Models.Responses
+@using WebMVC.Ultilities.Enums
+@model OutOfStockResponse
+@{
+    ViewData["Title"] = "Chi tiết phiên xuất kho";
+}
+
+<div class="container-fluid mt-4">
+    <h1 class="mb-4">Chi tiết phiên xuất kho #@Model.Id</h1>
+
+    <div class="d-flex flex-column align-items-start mb-4 p-3 bg-light border rounded">
+        <div class="w-100 d-flex justify-content-between">
+            <p><strong>Người tạo:</strong> @Model.Username</p>
+            <p><strong>Số tiền:</strong> @string.Format("{0:N0}", Model.TotalPriceVND) đ</p>
+            <p><strong>Trạng thái:</strong> @Html.Raw(Model.StatusName)</p>
+            <p><strong>Trạng thái thanh toán:</strong> @Html.Raw(Model.StatusPaymentName)</p>
+        </div>
+        @if (Model.Status != (int)EOutOfStockStatus.Cancel)
+        {
+            <div class="w-100 d-flex justify-content-end gap-3 mt-3">
+                @if (Model.IsRequest == true && Model.StatusPayment == (int)EPaymentOutOfStockStatus.New)
+                {
+                    <p><button class="btn btn-sm btn-purple w-100" onclick="requestAccept(@Model.Id)">Yêu cầu duyệt</button></p>
+                }
+                @if (Model.Status == (int)EOutOfStockStatus.New)
+                {
+                    <p><button class="btn btn-sm btn-success w-100" onclick="exportOutOfStock(@Model.Id)">In phiếu</button></p>
+                }
+                @if (Model.StatusPayment == (int)EPaymentOutOfStockStatus.New)
+                {
+                    <p><button class="btn btn-sm btn-success w-100" onclick="updatePaied(@Model.Id)">Đã thanh toán</button></p>
+                }
+                @if (Model.StatusPayment != (int)EOutOfStockStatus.Cancel)
+                {
+                    <p><button class="btn btn-sm btn-danger w-100" onclick="deleteOutOfStock(@Model.Id)">Hủy phiếu</button></p>
+                }
+                @if (Model.IsSend != true)
+                {
+                    <p><button class="btn btn-sm btn-secondary  w-100" onclick="sendDeliveryNote(@Model.Id)">Gửi phiếu</button></p>
+                }
+                <p><button class="btn btn-sm btn-secondary  w-100" onclick="printOutOfStockTemp(@Model.Id)">In phiếu tạm</button></p>
+            </div>
+        }
+    </div>
+
+    <div class="table-content">
+        <table class="table table-hover table-bordered">
+            <thead class="table">
+                <tr>
+                    <th class="text-center">#</th>
+                    <th class="text-center">Mã vận đơn</th>
+                    <th class="text-center">Ghi chú</th>
+                    <th class="text-center">Thông tin hàng</th>
+                    <th class="text-center">Thông tin phí</th>
+                    <th class="text-center"></th>
+                </tr>
+            </thead>
+            <tbody>
+                @for (int i = 0; i < Model.TransportationResponses.Count; i++)
+                {
+                    var item = Model.TransportationResponses[i];
+                    <tr>
+                        <td class="text-center">@(i + 1)</td>
+                        <td>
+                            <p>@item.Barcode</p>
+                            <p>Ngày tạo: @item.Created.ToString("dd/MM/yyyy HH:mm")</p>
+                        </td>
+                        <td>@item.UserNote</td>
+                        <td>
+                            <p>@item.Weight (kg) - @item.Volume (m3) - @item.Quantity (kiện)</p>
+                            <p>Trạng thái: @Html.Raw(item.StatusName)</p>
+                        </td>
+                        <td>
+                            <div class="d-flex justify-content-between gap-3">
+                                <span>Phụ phí:</span>
+                                <span>@string.Format("{0:N0}", item.SurchargeVND) đ</span>
+                            </div>
+                            <div class="d-flex justify-content-between gap-3">
+                                <span>Phí vận chuyển:</span>
+                                <span>@string.Format("{0:N0}", item.PriceShipping) đ</span>
+                            </div>
+                            <div class="d-flex justify-content-between gap-3">
+                                <span>Voucher:</span>
+                                <span>- @string.Format("{0:N0}", item.Discount) đ</span>
+                            </div>
+                            <div class="d-flex justify-content-between gap-3">
+                                <span>Tổng:</span>
+                                <span>@string.Format("{0:N0}", item.TotalPriceVND) đ</span>
+                            </div>
+                        </td>
+                        <td class="text-center">
+                            <p>
+                                <button class="btn btn-sm btn-primary" onclick="window.location.href='@Url.Action("Index", "Tracking", new { barcode = item.Barcode })'">Chi tiết</button>
+                            </p>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+<script src="~/js/printOutStock.js"></script>
+@section Scripts {
+    <script>
+        function deleteOutOfStock(outOfStockId) {
+            showConfirmModal('Bạn chắc chắn muốn hủy phiên xuất kho này?', function () {
+                disableButton();
+                $.ajax({
+                    url: '/OutOfStock/Cancel',
+                    data: { Id: outOfStockId },
+                    type: 'PUT',
+                    success: function (response) {
+                        showToast(response.Message, response.Type, true);
+                    },
+                    error: function (response) {
+                        showToast(response.responseJSON.Message, response.responseJSON.Type, false);
+                    },
+                    complete: function () {
+                        enableButton();
+                    }
+                });
+            });
+        }
+        function exportOutOfStock(outOfStockId) {
+            showConfirmModal('Bạn chắc chắn muốn xuất kho phiếu này?', function () {
+                disableButton();
+                $.ajax({
+                    url: '/OutOfStock/Export',
+                    data: { Id: outOfStockId },
+                    type: 'PUT',
+                    success: function (response) {
+                        showToast(response.Message, response.Type, true);
+                        printOutOfStock(outOfStockId);
+                    },
+                    error: function (response) {
+                        showToast(response.responseJSON.Message, response.responseJSON.Type, false);
+                    },
+                    complete: function () {
+                        enableButton();
+                    }
+                });
+            });
+        }
+
+        function sendDeliveryNote(outOfStockId) {
+            disableButton();
+            $.ajax({
+                url: '/OutOfStock/SendDeliveryNote',
+                data: { Id: outOfStockId },
+                type: 'PUT',
+                success: function (response) {
+                    showToast(response.Message, response.Type, true);
+                },
+                error: function (response) {
+                    showToast(response.responseJSON.Message, response.responseJSON.Type, false);
+                },
+                complete: function () {
+                    enableButton();
+                }
+            });
+        }
+                function updatePaied(id) {
+            showConfirmModal('Bạn xác nhận thanh toán phiên xuất kho này?', function () {
+                disableButton();
+                $.ajax({
+                    url: '/OutOfStock/Paied',
+                    data: { Id: id },
+                    type: 'PUT',
+                    success: function (response) {
+                        showToast(response.Message, response.Type, true);
+                    },
+                    error: function (response) {
+                        showToast(response.responseJSON.Message, response.responseJSON.Type, false);
+                    },
+                    complete: function () {
+                        enableButton();
+                    }
+                });
+            });
+        }
+
+    </script>
+}

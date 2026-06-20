@@ -1,0 +1,204 @@
+﻿<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Phiếu Xuất Kho</title>
+    <style>
+        @page {
+            size: A4;
+            margin: 10mm; /* Bạn có thể điều chỉnh margin nếu cần */
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            transform: scale(0.8); /* Điều chỉnh tỷ lệ 90% */
+            transform-origin: top left;
+            width: 100%;
+            height: 100%;
+        }
+
+        .container {
+            width: 310mm;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header, .footer {
+            text-align: center;
+        }
+
+            .header img {
+                width: 240px;
+            }
+
+            .header h1 {
+                margin: 0;
+            }
+
+        .info, .details, .summary {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+            .info td, .details th, .details td, .summary td {
+                border: 1px solid #ddd;
+                padding: 8px;
+            }
+
+            .details th {
+                font-size: 16px;
+                background-color: #f2f2f2;
+            }
+
+            .summary td {
+                text-align: right;
+                font-weight: bold;
+            }
+
+        .qr-code {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+            .qr-code img {
+                width: 70%;
+            }
+
+        .sign {
+            text-align: center;
+            margin-top: 50px;
+        }
+
+        .row {
+            display: flex;
+            justify-content: space-between;
+            align-items: start;
+        }
+
+        .qr-code, .sign {
+            width: 50%;
+        }
+
+        .header-info {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+
+            .header-info td {
+                border: none;
+                padding: 0;
+            }
+
+                .header-info td:first-child {
+                    text-align: left;
+                }
+
+                .header-info td:last-child {
+                    text-align: right;
+                }
+
+        .font-bold {
+            font-weight: bold;
+        }
+        .text-center {
+            text-align: center;
+        }
+
+        @media print {
+            .page-break {
+                page-break-before: always;
+            }
+                /* Ẩn ngắt trang ở phần tử đầu tiên */
+                .page-break:first-child {
+                    page-break-before: auto;
+                }
+        }
+    </style>
+</head>
+<body>
+    <div class="page-break"></div>
+    <div class="container">
+        <div class="header">
+            <table class="header-info">
+                <tr>
+                    <td>
+                        <strong>TPKEXPRESS.COM.VN</strong><br />
+                        Địa chỉ: KCN Phú Minh, P. Trại Gà, Q. Bắc Từ Liêm, Hà Nội<br />
+                        Điện Thoại: 0935698757
+                    </td>
+                    <td>
+                        <img src="../images/logo.png" />
+                        <p>Mã phiếu {id}</p>
+                    </td>
+                </tr>
+            </table>
+            <h1>PHIẾU XUẤT KHO</h1>
+            <p>{dateExport}</p>
+        </div>
+        <table class="info">
+            <tr>
+                <td><strong>Người đến nhận</strong></td>
+                <td>{username}</td>
+                <td><strong>Số ĐT</strong></td>
+                <td>{phone}</td>
+            </tr>
+            <tr>
+                <td><strong>Bưu cục</strong></td>
+                <td>{postOffice}</td>
+                <td><strong>Địa chỉ người đến nhận</strong></td>
+                <td>{userAddress}</td>
+            </tr>
+        </table>
+        <table class="details">
+            <thead>
+                <tr>
+                    <th>STT</th>
+                    <th>Mã kiện</th>
+                    <th>Ghi chú</th>
+                    <th>PTVC</th>
+                    <th>Số kiện</th>
+                    <th>Cân nặng (kg)</th>
+                    <th>Đơn giá cước</th>
+                    <th>Số khối (m3)</th>
+                    <th>Đơn giá khối</th>
+                    <th>Phụ phí TQ (tệ)</th>
+                    <th>Voucher</th>
+                    <th>Tổng tiền</th>
+                </tr>
+            </thead>
+            <tbody>
+                {htmlPdf}
+                <tr class="font-bold text-center"> <td colspan="12">STK 843573184633 TECHCOMBANK DO TU ANH</td> </tr>
+            </tbody>
+        </table>
+        <p></p>
+        <strong>
+            <i>*Cảm ơn Quý Khách hàng đã và đang đồng hành cùng TPK chúng tôi suốt thời gian qua. Mọi thắc mắc và phản hồi vui lòng liên hệ Hotline: 09639147269.</i>
+        </strong>
+        <p>
+            Quy định lưu kho: TPKexpress miễn phí lưu kho tối đa 03 ngày, không áp dụng cho hàng thực phẩm.
+        </p>
+        <p>
+            Phí lưu kho từ ngày thứ 4: 100.000đ/ngày/khối; từ ngày thứ 9: 150.000đ/ngày/khối.
+        </p>
+        <p>
+            Đơn hàng nhỏ dưới 1 khối: 50.000đ/ngày; từ ngày thứ 9: 100.000đ/ngày.
+        </p>
+        <p>
+            Sau thời gian trên, TPK xin phép không cam kết về số lượng và chất lượng hàng hóa.
+        </p>
+        <div class="row">
+            <div class="qr-code">
+                <img src="{qrBase64}" />
+            </div>
+            <div class="sign">
+                <p style="margin-bottom: 10rem;"><strong>Người nhận hàng</strong><br />(Ký, họ tên)</p>
+                <p>{fullname}</p>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+

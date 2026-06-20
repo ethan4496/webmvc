@@ -1,0 +1,171 @@
+﻿@using WebMVC.Entities
+@using WebMVC.Ultilities.Enums
+@model WebConfiguration
+@{
+    ViewData["Title"] = "Cấu hình hệ thống";
+}
+<div class="container-fluid mt-4">
+    <div class="card mb-4">
+        <div class="card-header d-flex justify-content-between align-items-center">
+            <h3>Cấu hình hệ thống</h3>
+        </div>
+        <div class="card-body row">
+            <div class="col-md-4 ">
+                <div class="row mt-2">
+                    <label for="websiteName" class="form-label">Tên Website</label>
+                    <input value="@Model.WebsiteName" type="text" class="form-control " id="websiteName" name="websiteName" placeholder="">
+                </div>
+                <div class="row mt-2">
+                    <label for="websiteUrl" class="form-label">Website Url</label>
+                    <input value="@Model.WebsiteUrl" type="text" class="form-control " id="websiteUrl" name="websiteUrl" placeholder="">
+                </div>
+                <div class="row mt-2">
+                    <label for="currency" class="form-label">Tỷ giá</label>
+                    <input value="@Model.Currency" type="text" class="form-control " id="currency" name="currency" placeholder="">
+                </div>
+                <div class="row mt-2">
+                    <label for="hotline" class="form-label">Hotline</label>
+                    <input value="@Model.Hotline" type="text" class="form-control " id="hotline" name="hotline" placeholder="">
+                </div>
+                <div class="row mt-2">
+                    <label for="zaloLink" class="form-label">Zalo Link</label>
+                    <input value="@Model.ZaloLink" type="text" class="form-control " id="zaloLink" name="zaloLink" placeholder="">
+                </div>
+                <div class="row mt-2">
+                    <label for="appNotiImage" class="form-label">Thông báo app</label>
+                    <input type="file" class="form-control " id="appNotiImage" accept="image/png, image/jpeg, image/jpg, image/gif">
+                    <img src="@Model.AppNotiImage" id="appNotiImagePreview" class="img-fluid mt-2 border" style="max-width: 100px;" />
+                </div>
+                <div class="row mt-2">
+                    <button type="button" class="btn btn-success w-50" onclick="updateItem()">Cập nhật</button>
+                </div>
+            </div>
+
+            <div class="col-md-8">
+                <h3>Cấu hình Zalo Hook</h3>
+                <div class="row mt-2">
+                    <div class="col-md-6">
+                        <label for="hook01" class="form-label">@ETransportationStatusName.GetStatusName((int)ETransportationStatus.New)</label>
+                        <textarea class="form-control" id="hook01" rows="3">@Model.Hook01</textarea>
+                    </div>
+                    <div class="col-md-6">
+                        <label for="hook02" class="form-label">@ETransportationStatusName.GetStatusName((int)ETransportationStatus.ArrivedAtTQWarehouse)</label>
+                        <textarea class="form-control" id="hook02" rows="3">@Model.Hook02</textarea>
+                    </div>
+                </div>
+
+                <div class="row mt-2">
+                    <div class="col-md-6">
+                        <label for="hook03" class="form-label">@ETransportationStatusName.GetStatusName((int)ETransportationStatus.ExitedFromTQWarehouse)</label>
+                        <textarea class="form-control" id="hook03" rows="3">@Model.Hook03</textarea>
+                    </div>
+                    <div class="col-md-6">
+                        <label for="hook04" class="form-label">@ETransportationStatusName.GetStatusName((int)ETransportationStatus.CustomsInspectedGoods)</label>
+                        <textarea class="form-control" id="hook04" rows="3">@Model.Hook04</textarea>
+                    </div>
+                </div>
+
+                <div class="row mt-2">
+                    <div class="col-md-6">
+                        <label for="hook05" class="form-label">@ETransportationStatusName.GetStatusName((int)ETransportationStatus.ReturningToVNWarehouse)</label>
+                        <textarea class="form-control" id="hook05" rows="3">@Model.Hook05</textarea>
+                    </div>
+                    <div class="col-md-6">
+                        <label for="hook06" class="form-label">@ETransportationStatusName.GetStatusName((int)ETransportationStatus.ArrivedAtVNWarehouse)</label>
+                        <textarea class="form-control" id="hook06" rows="3">@Model.Hook06</textarea>
+                    </div>
+                </div>
+
+                <div class="row mt-2">
+                    <div class="col-md-6">
+                        <label for="hook07" class="form-label">@ETransportationStatusName.GetStatusName((int)ETransportationStatus.Completed)</label>
+                        <textarea class="form-control" id="hook07" rows="3">@Model.Hook07</textarea>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+@section Scripts {
+    <script>
+        function updateItem() {
+            const input = document.getElementById('appNotiImage');
+            const file = input.files[0];
+
+            if (file) {
+                const formData = new FormData();
+                formData.append("file", file);
+
+                $.ajax({
+                    url: '/api/UploadFile',
+                    type: 'POST',
+                    data: formData,
+                    contentType: false,
+                    processData: false,
+                    success: function (response) {
+                        const uploadedImage = response.Message || "";
+                        const finalImage = uploadedImage || $("#appNotiImagePreview").attr("src");
+                        sendUpdate(finalImage);
+
+                        // Cập nhật lại preview nếu cần
+                        if (uploadedImage) {
+                            $("#appNotiImagePreview").attr("src", uploadedImage);
+                        }
+                    },
+                    error: function () {
+                        console.warn("Upload ảnh lỗi, vẫn tiếp tục cập nhật.");
+                        const fallbackImage = $("#appNotiImagePreview").attr("src");
+                        sendUpdate(fallbackImage);
+                    }
+                });
+            } else {
+                // Không upload ảnh mới → dùng ảnh cũ trong preview
+                const fallbackImage = $("#appNotiImagePreview").attr("src");
+                sendUpdate(fallbackImage);
+            }
+        }
+
+        function sendUpdate(appNotiImage) {
+            const requestData = {
+                WebsiteName: $("#websiteName").val(),
+                WebsiteUrl: $("#websiteUrl").val(),
+                Currency: $("#currency").val(),
+                Hook01: $("#hook01").val(),
+                Hook02: $("#hook02").val(),
+                Hook03: $("#hook03").val(),
+                Hook04: $("#hook04").val(),
+                Hook05: $("#hook05").val(),
+                Hook06: $("#hook06").val(),
+                Hook07: $("#hook07").val(),
+                ZaloLink: $("#zaloLink").val(),
+                Hotline: $("#hotline").val(),
+                AppNotiImage: appNotiImage
+            };
+
+            disableButton();
+            $.ajax({
+                url: `/WebConfiguration/Update`,
+                type: "PUT",
+                data: requestData,
+                success: function (response) {
+                    showToast(response.Message, response.Type, true);
+                },
+                error: function (response) {
+                    showToast(response.responseJSON?.Message || "Lỗi không xác định", response.responseJSON?.Type || 2, false);
+                },
+                complete: function () {
+                    enableButton();
+                }
+            });
+        }
+
+        $('#appNotiImage').change(function (e) {
+            let reader = new FileReader();
+            reader.onload = function (e) {
+                $('#appNotiImagePreview').attr('src', e.target.result);
+            }
+            reader.readAsDataURL(this.files[0]);
+        });
+    </script>
+}

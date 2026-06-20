@@ -1,0 +1,339 @@
+﻿@using WebMVC.Entities
+@using WebMVC.Models.Responses
+@model List<AccountResponse>
+@using WebMVC.Interfaces
+@using WebMVC.Ultilities.Enums
+@{
+    ViewData["Title"] = "Danh sách khách hàng";
+}
+
+<div class="container-fluid mt-4">
+    <div class="card mb-4">
+        <div class="card-header d-flex justify-content-between align-items-center">
+            <h2>Danh sách khách hàng</h2>
+            <div>
+                <button id="exportList" onclick="exportList()" class="btn btn-info">Export</button>
+                <button id="toggleFilterButton" class="btn btn-primary">Ẩn bộ lọc</button>
+                <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#addModal">
+                    <i class="bi bi-plus"></i> Thêm mới
+                </button>
+            </div>
+        </div>
+        <div class="card-body" id="filterContainer">
+            <div class="row">
+                <div class="col-md-3">
+                    <label for="name" class="form-label">Username</label>
+                    <select class="form-select" id="usernameSelect" style="width:100%" name="Username"></select>
+                </div>
+                <div class="col-md-3">
+                    <label for="sale" class="form-label">NV Sale</label>
+                    <select class="form-select" id="saleSelect" style="width:100%" name="Sale"></select>
+                </div>
+                <div class="col-md-3">
+                    <label for="postOffice" class="form-label">Bưu cục</label>
+                    <select id="postOffice" class="form-select" name="postOffice">
+                        <option value="">
+                            Tất cả
+                        </option>
+                        @foreach (var status in PostOfficeName.GetPostOffice())
+                        {
+                            <option value="@status">
+                                @status
+                            </option>
+                        }
+                    </select>
+                </div>
+                <div class="col-md-2 d-flex align-items-end">
+                    <button type="button" class="btn btn-primary btn-search" onclick="loadPage(1)">Tìm kiếm</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    @await Html.PartialAsync("_CustomerTable", new List<AccountResponse>())
+</div>
+
+<div class="modal fade" id="addModal" tabindex="-1" aria-labelledby="addModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Tạo mới</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="addForm">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <label for="addUsername" class="form-label">Username</label>
+                            <input value="" required type="text" class="form-control" id="addUsername" name="addUsername" placeholder="">
+                        </div>
+                        <div class="col-md-6">
+                            <label for="addFullName" class="form-label">Họ và tên</label>
+                            <input value="" required type="text" class="form-control" id="addFullName" placeholder="Họ và tên">
+                        </div>
+                    </div>
+                    <div class="row pt-2">
+                        <div class="col-md-6">
+                            <label for="addEmail" class="form-label">Email</label>
+                            <input value="" required type="email" class="form-control" id="addEmail" placeholder="Email">
+                        </div>
+                        <div class="col-md-6">
+                            <label for="addPhone" class="form-label">Số điện thoại</label>
+                            <input value="" required type="text" class="form-control" id="addPhone" placeholder="Số điện thoại" >
+                        </div>
+                    </div>
+                    <div class="row pt-2">
+                        <div class="col-md-6">
+                            <label for="addAddress" class="form-label">Địa chỉ</label>
+                            <input value="" required type="text" class="form-control" id="addAddress" placeholder="Địa chỉ">
+                        </div>
+                        <div class="col-md-6">
+                            <label for="addSaleSelect" class="form-label">NV Sale</label>
+                            <select class="form-select" id="addSaleSelect" style="width:100%" name="addSaleSelect"></select>
+                        </div>
+                    </div>
+                    <div class="row pt-2">
+                        <div class="col-md-6">
+                            <label for="addPostOffice" class="form-label">Bưu cục</label>
+                            <select id="addPostOffice" class="form-select" name="addPostOffice">
+                                <option value="">
+                                </option>
+                                @foreach (var status in PostOfficeName.GetPostOffice())
+                                {
+                                    <option value="@status">
+                                        @status
+                                    </option>
+                                }
+                            </select>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="addDeliveryMethod" class="form-label">Hình thức nhận hàng</label>
+                            <select id="addDeliveryMethod" class="form-select" name="addDeliveryMethod">
+                                <option value="">
+                                </option>
+                                @foreach (var status in DeliveryMethodName.GetDeliveryMethod())
+                                {
+                                    <option value="@status">
+                                        @status
+                                    </option>
+                                }
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row pt-2">
+                        <div class="col-md-6">
+                            <label for="addPassword" class="form-label">Mật khẩu</label>
+                            <input type="text" class="form-control" id="addPassword" placeholder="">
+                        </div>
+                        <div class="col-md-6 d-flex align-items-end">
+                            <button type="submit" class="btn btn-success  w-50">Lưu</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            loadPage(1);
+        });
+        function loadPage(page) {
+            const request = {
+                PageIndex: page,
+                AccountId: $('#usernameSelect').val() ? parseInt($('#usernameSelect').val()) : null,
+                SaleId: $('#saleSelect').val() ? parseInt($('#saleSelect').val()) : null,
+                PostOffice: $('#postOffice').val() ? parseInt($('#postOffice').val()) : null,
+            };
+            showLoading();
+            $.ajax({
+                url: '/Account/GetCustomerPaging',
+                data: request,
+                type: 'GET',
+                success: function (data) {
+                    $('#table-container').html(data);
+                },
+                error: function (response) {
+                    showToast(response.responseJSON.Message, response.responseJSON.Type, false);
+                },
+                complete: function () {
+                    hideLoading();
+                }
+            });
+        }
+        function exportList() {
+            const request = {
+                AccountId: $('#usernameSelect').val() ? parseInt($('#usernameSelect').val()) : null,
+                SaleId: $('#saleSelect').val() ? parseInt($('#saleSelect').val()) : null,
+                PostOffice: $('#postOffice').val() ? parseInt($('#postOffice').val()) : null,
+            };
+            const params = new URLSearchParams();
+            Object.entries(request).forEach(([key, value]) => {
+                if (value !== null && value !== undefined) {
+                    params.append(key, value);
+                }
+            });
+            fetch(`/Account/Export?${params.toString()}`)
+                .then(response => response.blob())
+                .then(blob => {
+                    const url = window.URL.createObjectURL(blob);
+                    const a = document.createElement('a');
+                    a.href = url;
+                    a.download = "custmers.xlsx";
+                    document.body.appendChild(a);
+                    a.click();
+                    document.body.removeChild(a);
+                })
+                .catch(error => console.error("Lỗi khi tải file mẫu:", error));
+        }
+
+        $('#toggleFilterButton').on('click', function () {
+            $('#filterContainer').toggle();
+            let isVisible = $('#filterContainer').is(':visible');
+            $(this).text(isVisible ? 'Ẩn bộ lọc' : 'Hiện bộ lọc');
+        });
+
+        document.getElementById("addForm").addEventListener("submit", async function (event) {
+            event.preventDefault();
+
+            let username = $('#addUsername').val().trim();
+            let email = $('#addEmail').val().trim();
+            let phone = $('#addPhone').val().trim();
+            let address = $('#addAddress').val().trim();
+            let fullName = $('#addFullName').val().trim();
+            let password = $('#addPassword').val().trim();
+            let saleId = parseInt($('#addSaleSelect').val()) || null;
+            let postOffice = $('#addPostOffice').val().trim() || null;
+            let deliveryMethod = $('#addDeliveryMethod').val().trim() || null;
+
+            if (username === "" || email === "" || phone === "" || address === "" || fullName === "" || password === "") {
+                showToast("Vui lòng điền thông tin còn thiếu", 2, false);
+                return;
+            }
+
+            const createData = {
+                Username: username,
+                Email: email,
+                Phone: phone,
+                Address: address,
+                FullName: fullName,
+                SaleId: saleId,
+                PostOffice: postOffice,
+                DeliveryMethod: deliveryMethod,
+                Password: password,
+            }
+            disableButton();
+            $.ajax({
+                url: "/Account/Create",
+                type: "POST",
+                data: { Request: createData },
+                success: function (response) {
+                    showToast(response.Message, response.Type, true);
+                },
+                error: function (response) {
+                    showToast(response.responseJSON?.Message || "Lỗi không xác định", response.responseJSON?.Type || 2, false);
+                },
+                complete: function () {
+                    enableButton();
+                }
+            });
+        });
+
+        $("#usernameSelect").select2({
+            placeholder: "Chọn username",
+            allowClear: true,
+            theme: "bootstrap-5",
+            ajax: {
+                url: "/Account/Paging",
+                dataType: 'json',
+                delay: 250,
+                data: function (params) {
+                    return {
+                        Username: params.term || '',
+                        PageIndex: params.page || 1,
+                        PageSize: 10,
+                        IsCustomer: 1
+                    };
+                },
+                processResults: function (data, params) {
+                    return {
+                        results: data.Items.map(item => ({
+                            id: item.Id,
+                            text: item.Username
+                        })),
+                        pagination: {
+                            more: data.PageIndex < data.TotalPage && params.term
+                        }
+                    };
+                },
+                cache: true
+            }
+        });
+
+        $("#saleSelect").select2({
+            placeholder: "Chọn NV Sale",
+            allowClear: true,
+            theme: "bootstrap-5",
+            ajax: {
+                url: "/Account/Paging",
+                dataType: 'json',
+                delay: 250,
+                data: function (params) {
+                    return {
+                        Username: params.term || '',
+                        PageIndex: params.page || 1,
+                        PageSize: 10,
+                        IsCustomer: 0,
+                        RoleId: 4
+                    };
+                },
+                processResults: function (data, params) {
+                    return {
+                        results: data.Items.map(item => ({
+                            id: item.Id,
+                            text: item.Username
+                        })),
+                        pagination: {
+                            more: data.PageIndex < data.TotalPage && params.term
+                        }
+                    };
+                },
+                cache: true
+            }
+        });
+
+        $("#addSaleSelect").select2({
+            placeholder: "Chọn NV Sale",
+            allowClear: true,
+            theme: "bootstrap-5",
+            ajax: {
+                url: "/Account/Paging",
+                dataType: 'json',
+                delay: 250,
+                data: function (params) {
+                    return {
+                        Username: params.term || '',
+                        PageIndex: params.page || 1,
+                        PageSize: 10,
+                        IsCustomer: 0,
+                        RoleId: 4
+                    };
+                },
+                processResults: function (data, params) {
+                    return {
+                        results: data.Items.map(item => ({
+                            id: item.Id,
+                            text: item.Username
+                        })),
+                        pagination: {
+                            more: data.PageIndex < data.TotalPage && params.term
+                        }
+                    };
+                },
+                cache: true
+            }
+        });
+        
+    </script>
+}

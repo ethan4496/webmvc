@@ -1,0 +1,11 @@
+﻿@using WebMVC.Models.Responses
+@model OutOfStockResponse
+
+<div>
+    <h1>Phiếu xuất kho #@Model.Id</h1>
+    <p><strong>Người tạo:</strong> @Model.Username</p>
+    <p><strong>Số tiền:</strong> @string.Format("{0:N0}", Model.TotalPriceVND) đ</p>
+    <p><strong>Trạng thái:</strong> @Model.StatusName</p>
+
+    <!-- Thêm các thông tin khác ở đây -->
+</div>

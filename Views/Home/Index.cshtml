@@ -1,0 +1,1362 @@
+﻿@{
+    Layout = "~/Views/Shared/_HomeLayout.cshtml";
+    ViewData["Title"] = "Trang chủ";
+}
+@model string;
+<main class="main page-template">
+    <section class="sec-bn">
+        <div class="bn">
+            <div class="bn-br">
+                <img src="/tpkexpress/assets/images/bn-br-light-orange.jpg" alt="" />
+            </div>
+            <div class="container">
+                <div class="bn-top">
+                    <h1 class="bn-title">
+                        BỨT PHÁ <span class="hl --first">TỐC ĐỘ </span>
+                        <br>
+                        <span class="hl --second">VẸN TRÒN</span><span class="hl --third"> UY TÍN</span>
+                    </h1>
+                </div>
+                <div class="bn-mid">
+                    <div class="re-dl">
+                        <h2 class="t-title">Cài đặt ứng dụng</h2>
+                        <a class="re-dl-link" target="_blank" href="https://github.com/TPKExppress/app/raw/main/tpk-express.apk" download="true">
+                            <img src="/tpkexpress/assets/images/download-gg.png" alt="" />
+                        </a>
+                        <a class="re-dl-link" target="_blank" href="https://apps.apple.com/us/app/tpk-express/id6472759285">
+                            <img src="/tpkexpress/assets/images/download-appstore.png" alt="" />
+                        </a>
+                    </div>
+                </div>
+                <div class="bn-bot">
+                    <div class="bn-row row">
+                        <div class="bn-col col">
+                            <div class="bn-col-inner">
+                                <div class="bn-pp">
+                                    <div class="bn-pp-cloud">
+                                        <img src="/tpkexpress/assets/images/bn-cloud2.png" alt="" />
+                                    </div>
+                                    <div class="bn-pp-cloud">
+                                        <img src="/tpkexpress/assets/images/bn-cloud2.png" alt="" />
+                                    </div>
+                                    <div class="bn-pp-cloud">
+                                        <img src="/tpkexpress/assets/images/bn-cloud2.png" alt="" />
+                                    </div>
+                                    <div class="bn-pp-inner">
+                                        <img src="/tpkexpress/assets/images/bn-pp.png" alt="" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="bn-col col">
+                            <div class="bn-col-inner">
+                                <div class="bn-map">
+                                    <div class="bn-map-pin">
+                                        <img src="/tpkexpress/assets/images/bn-map-pin2.png" alt="" />
+                                    </div>
+                                    <div class="bn-map-pin">
+                                        <img src="/tpkexpress/assets/images/bn-map-pin.png" alt="" />
+                                    </div>
+                                    <div class="bn-map-pin">
+                                        <img src="/tpkexpress/assets/images/bn-map-pin.png" alt="" />
+                                    </div>
+                                    <div class="bn-map-pin">
+                                        <img src="/tpkexpress/assets/images/bn-map-pin2.png" alt="" />
+                                    </div>
+                                    <div class="bn-map-pin">
+                                        <img src="/tpkexpress/assets/images/bn-map-pin.png" alt="" />
+                                    </div>
+                                    <div class="bn-map-inner">
+                                        <img src="/tpkexpress/assets/images/bn-map.png" alt="" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="bn-col col">
+                            <div class="bn-col-inner">
+                                <div class="bn-wo">
+                                    <div class="bn-wo-cloud">
+                                        <img src="/tpkexpress/assets/images/bn-cloud2.png" alt="" />
+                                    </div>
+                                    <div class="bn-wo-cloud">
+                                        <img src="/tpkexpress/assets/images/bn-cloud.png" alt="" />
+                                    </div>
+                                    <div class="bn-wo-cloud">
+                                        <img src="/tpkexpress/assets/images/bn-cloud2.png" alt="" />
+                                    </div>
+                                    <div class="bn-wo-inner" data-aos="fade-left">
+                                        <img src="/tpkexpress/assets/images/bn-wo.png" alt="" />
+                                    </div>
+                                </div>
+                                <div class="bn-box">
+                                    <div class="bn-box-inner">
+                                        <img src="/tpkexpress/assets/images/bn-box.png" alt="" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="bn-foot-dc">
+                <img src="/tpkexpress/assets/images/bn-foot-dc.png" alt="" />
+            </div>
+            <div class="bn-may">
+                <img src="/tpkexpress/assets/images/bn-may.png" alt="" />
+            </div>
+        </div>
+        <div class="fil">
+            <div class="container">
+                <div class="fil-wrapper tabJS">
+                    <div class="fil-top" style=" display: none; ">
+                        <ul class="fil-nav">
+                            <li class="fil-nav-item tabBtn">
+                                <img src="/tpkexpress/assets/images/fil-icon-2.svg" alt="" /><span class="txt">Tra cứu mã đơn hàng</span>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="fil-body">
+                        <div class="fil-panel tabPanel">
+                            <div class="fil-form">
+                                <div>
+                                    <div class="fil-form-wr">
+                                        <div class="fil-form-inner">
+                                            <input class="re-input" id="mvd" type="text" placeholder="Nhập mã vận đơn bạn muốn tìm kiếm" />
+                                        </div>
+                                        <a class="btn fil-form-btn" onclick="Tracking()"><i class="fas fa-search"></i><span class="txt">Tra cứu mã vận đơn</span></a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="sec-pro">
+        <div class="pro ss-pd">
+            <div class="pro-dc">
+                <img src="/tpkexpress/assets/images/pro-dc.svg" alt="" />
+            </div>
+            <div class="container">
+                <div class="pro-slider">
+                    <div class="swiper-container">
+                        <div class="swiper rows">
+                            <div class="swiper-wrapper">
+                                <div class="swiper-slide col col-4">
+                                    <div class="pro-wr">
+                                        <a class="pro-img" href="/chuyen-muc/huong-dan">
+                                            <img src="/tpkexpress/assets/images/slide (1).png" alt="" />
+                                        </a>
+                                        <div class="pro-content">
+                                            <!-- <h3 class="pro-name"><a href="/chuyen-muc/huong-dan">Hướng dẫn tính cước vận chuyển</a></h3>
+                                            <p class="pro-des">Đời sống của người dân ngày càng được nâng cao, kéo theo sự phát triển không ngừng của các hình thức giải trí mới.</p>-->
+                                            <div class="pro-note">
+                                                <div class="pro-note-item">
+                                                    <img src="/tpkexpress/assets/images/pro-icon-1.svg" alt="" />
+                                                    <p class="text"><span class="title">Đăng ngày: </span>18/10/2023</p>
+                                                </div>
+                                                <!--<div class="pro-note-item">
+                                                    <img src="/tpkexpress/assets/images/pro-icon-2.svg" alt="" />
+                                                    <p class="text"><span class="title">Admin:</span> Jill Phan</p>
+                                                </div>-->
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="swiper-slide col col-4">
+                                    <div class="pro-wr">
+                                        <a class="pro-img" href="/chuyen-muc/huong-dan">
+                                            <img src="/tpkexpress/assets/images/slide (2).png" alt="" />
+                                        </a>
+                                        <div class="pro-content">
+                                            <!--  <h3 class="pro-name"><a href="/chuyen-muc/huong-dan">Hướng dẫn cài địa chỉ kho TQ</a></h3>
+                                            <p class="pro-des">Đời sống của người dân ngày càng được nâng cao, kéo theo sự phát triển không ngừng của các hình thức giải trí mới.</p>-->
+                                            <div class="pro-note">
+                                                <div class="pro-note-item">
+                                                    <img src="/tpkexpress/assets/images/pro-icon-1.svg" alt="" />
+                                                    <p class="text"><span class="title">Đăng ngày: </span>18/10/2023</p>
+                                                </div>
+                                                <!--<div class="pro-note-item">
+                                                    <img src="/tpkexpress/assets/images/pro-icon-2.svg" alt="" />
+                                                    <p class="text"><span class="title">Admin:</span> Jill Phan</p>
+                                                </div>-->
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="swiper-slide col col-4">
+                                    <div class="pro-wr">
+                                        <a class="pro-img" href="/chuyen-muc/huong-dan">
+                                            <img src="/tpkexpress/assets/images/slide (3).png" alt="" />
+                                        </a>
+                                        <div class="pro-content">
+                                            <!--                                                 <h3 class="pro-name"><a href="/chuyen-muc/huong-dan">Hướng dẫn uỷ quyền thanh toán hộ</a></h3>
+                                            <p class="pro-des">Đời sống của người dân ngày càng được nâng cao, kéo theo sự phát triển không ngừng của các hình thức giải trí mới.</p>-->
+                                            <div class="pro-note">
+                                                <div class="pro-note-item">
+                                                    <img src="/tpkexpress/assets/images/pro-icon-1.svg" alt="" />
+                                                    <p class="text"><span class="title">Đăng ngày: </span>18/10/2023</p>
+                                                </div>
+                                                <!--                                                    <div class="pro-note-item">
+                                                    <img src="/tpkexpress/assets/images/pro-icon-2.svg" alt="" />
+                                                    <p class="text"><span class="title">Admin:</span> Jill Phan</p>
+                                                </div>-->
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!--                                    <div class="swiper-slide col col-4">
+                                    <div class="pro-wr">
+                                        <a class="pro-img" href="">
+                                            <img src="/tpkexpress/assets/images/pro-1.jpg" alt="" />
+                                        </a>
+                                        <div class="pro-content">
+                                            <h3 class="pro-name"><a href="">Tình trạng tắc biên Trung Quốc thường xảy ra khi nào? Cách giải quyết</a></h3>
+                                            <p class="pro-des">Đời sống của người dân ngày càng được nâng cao, kéo theo sự phát triển không ngừng của các hình thức giải trí mới.</p>
+                                            <div class="pro-note">
+                                                <div class="pro-note-item">
+                                                    <img src="/tpkexpress/assets/images/pro-icon-1.svg" alt="" />
+                                                    <p class="text"><span class="title">Đăng ngày: </span>18/10/2023</p>
+                                                </div>
+                                                <div class="pro-note-item">
+                                                    <img src="/tpkexpress/assets/images/pro-icon-2.svg" alt="" />
+                                                    <p class="text"><span class="title">Admin:</span> Jill Phan</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="swiper-slide col col-4">
+                                    <div class="pro-wr">
+                                        <a class="pro-img" href="">
+                                            <img src="/tpkexpress/assets/images/pro-1.jpg" alt="" />
+                                        </a>
+                                        <div class="pro-content">
+                                            <h3 class="pro-name"><a href="">Tình trạng tắc biên Trung Quốc thường xảy ra khi nào? Cách giải quyết</a></h3>
+                                            <p class="pro-des">Đời sống của người dân ngày càng được nâng cao, kéo theo sự phát triển không ngừng của các hình thức giải trí mới.</p>
+                                            <div class="pro-note">
+                                                <div class="pro-note-item">
+                                                    <img src="/tpkexpress/assets/images/pro-icon-1.svg" alt="" />
+                                                    <p class="text"><span class="title">Đăng ngày: </span>18/10/2023</p>
+                                                </div>
+                                                <div class="pro-note-item">
+                                                    <img src="/tpkexpress/assets/images/pro-icon-2.svg" alt="" />
+                                                    <p class="text"><span class="title">Admin:</span> Jill Phan</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>-->
+                            </div>
+                        </div>
+                    </div>
+                    <div class="swiper-pagination"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="sec-ser">
+        <div class="ser">
+            <div class="ser-cloud one">
+                <img src="/tpkexpress/assets/images/ser-cloud-1.png" alt="" />
+            </div>
+            <div class="ser-cloud two">
+                <img src="/tpkexpress/assets/images/ser-cloud-2.png" alt="" />
+            </div>
+            <div class="ser-cuved top">
+                <img src="/tpkexpress/assets/images/ser-cuved.svg" alt="" /><img src="/tpkexpress/assets/images/ser-dc.svg" alt="" />
+            </div>
+            <div class="ser-cuved bot">
+                <img src="/tpkexpress/assets/images/ser-cuved.svg" alt="" /><img src="/tpkexpress/assets/images/ser-dc.svg" alt="" />
+            </div>
+            <div class="container">
+                <div class="head t-center">
+                    <h2 class="t-title">DỊCH VỤ</h2>
+                    <p class="des">tpkexpress.com là giải pháp vận chuyển tối ưu cho quý khách.</p>
+                </div>
+            </div>
+            <div class="ser-slider">
+                <div class="swiper-container">
+                    <div class="swiper rows">
+                        <div class="swiper-wrapper">
+                            <div class="swiper-slide col col-4i">
+                                <div class="ser-wr">
+                                    <a href="/chuyen-muc/dich-vu" class="ser-img">
+                                        <img src="/tpkexpress/assets/images/Dịch vụ (1).png" alt="" />
+                                    </a>
+                                    <div class="ser-content">
+                                        <h3 class="ser-name"><a href="/chuyen-muc/dich-vu">Dịch vụ mua hộ, tìm nguồn hàng</a></h3>
+                                        <!--                                            <p class="ser-des">Ngồi nhà nhập hàng kinh doanh, tiết kiệm thời gian và chi phí hơn trước.</p>-->
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="swiper-slide col col-4i">
+                                <div class="ser-wr">
+                                    <a href="/chuyen-muc/dich-vu" class="ser-img">
+                                        <img src="/tpkexpress/assets/images/Dịch vụ (2).png" alt="" />
+                                    </a>
+                                    <div class="ser-content">
+                                        <h3 class="ser-name"><a href="/chuyen-muc/dich-vu">Dịch vụ ký gửi line TMDT</a></h3>
+                                        <!--                                            <p class="ser-des">Hệ thống ví điện tử giúp giao dịch nhanh chóng, tích điểm nhận nhiều ưu đãi.</p>-->
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="swiper-slide col col-4i">
+                                <div class="ser-wr">
+                                    <a href="/chuyen-muc/dich-vu" class="ser-img">
+                                        <img src="/tpkexpress/assets/images/Dịch vụ (3).png" alt="" />
+                                    </a>
+                                    <div class="ser-content">
+                                        <h3 class="ser-name"><a href="/chuyen-muc/dich-vu">Dịch vụ vận chuyển chính ngạch</a></h3>
+                                        <!--                                            <p class="ser-des">Vận chuyển hàng hóa từ khắp các tỉnh thành của Trung Quốc về Việt Nam.</p>-->
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="swiper-slide col col-4i">
+                                <div class="ser-wr">
+                                    <a href="/chuyen-muc/dich-vu" class="ser-img">
+                                        <img src="/tpkexpress/assets/images/Dịch vụ (4).png" alt="" />
+                                    </a>
+                                    <div class="ser-content">
+                                        <h3 class="ser-name"><a href="/chuyen-muc/dich-vu">Dịch vụ tư vấn miễn phí</a></h3>
+                                        <!--                                            <p class="ser-des">Đặt hàng từ tất cả các website TMĐT Trung Quốc như taobao, 1688, tmall.</p>-->
+                                    </div>
+                                </div>
+                            </div>
+                            <!--                                <div class="swiper-slide col col-6i">
+                                <div class="ser-wr">
+                                    <a class="ser-img">
+                                        <img src="/tpkexpress/assets/images/ser-5.jpg" alt="" />
+                                    </a>
+                                    <div class="ser-content">
+                                        <h3 class="ser-name"><a href="">Chuyển tiền, nạp tiền alipay, wechat</a></h3>
+                                        <p class="ser-des">Thanh toán đơn hàng, nạp tiền tài khoản ngân hàng hoặc Alipay, Wechat, QQ pay.</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="swiper-slide col col-6i">
+                                <div class="ser-wr">
+                                    <a class="ser-img">
+                                        <img src="/tpkexpress/assets/images/ser-6.jpg" alt="" />
+                                    </a>
+                                    <div class="ser-content">
+                                        <h3 class="ser-name"><a href="">Hỗ trợ và tư vấn chuyên nghiệp</a></h3>
+                                        <p class="ser-des">Tư vấn miễn phí. Hỗ trợ tìm kiếm nguồn hàng, hỗ trợ kiểm đếm hàng hóa</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="swiper-slide col col-6i">
+                                <div class="ser-wr">
+                                    <a class="ser-img">
+                                        <img src="/tpkexpress/assets/images/ser-1.jpg" alt="" />
+                                    </a>
+                                    <div class="ser-content">
+                                        <h3 class="ser-name"><a href="">Đặt hàng, ship hàng quốc tế</a></h3>
+                                        <p class="ser-des">Đặt hàng từ tất cả các website TMĐT Trung Quốc như taobao, 1688, tmall.</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="swiper-slide col col-6i">
+                                <div class="ser-wr">
+                                    <a class="ser-img">
+                                        <img src="/tpkexpress/assets/images/ser-1.jpg" alt="" />
+                                    </a>
+                                    <div class="ser-content">
+                                        <h3 class="ser-name"><a href="">Chuyển tiền, nạp tiền alipay, wechat</a></h3>
+                                        <p class="ser-des">Thanh toán đơn hàng, nạp tiền tài khoản ngân hàng hoặc Alipay, Wechat, QQ pay.</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="swiper-slide col col-6i">
+                                <div class="ser-wr">
+                                    <a class="ser-img">
+                                        <img src="/tpkexpress/assets/images/ser-1.jpg" alt="" />
+                                    </a>
+                                    <div class="ser-content">
+                                        <h3 class="ser-name"><a href="">Hỗ trợ và tư vấn chuyên nghiệp</a></h3>
+                                        <p class="ser-des">Tư vấn miễn phí. Hỗ trợ tìm kiếm nguồn hàng, hỗ trợ kiểm đếm hàng hóa</p>
+                                    </div>
+                                </div>
+                            </div>-->
+                        </div>
+                    </div>
+                </div>
+                <!--                    <div class="ser-control swiper-control white">
+                    <div class="swiper-control-btn swiper-prev"><i class="far fa-chevron-left"></i></div>
+                    <a class="btn white" href=""><span class="txt">Xem chi tiết</span></a>
+                    <div class="swiper-control-btn swiper-next"><i class="far fa-chevron-right"></i></div>
+                </div>-->
+            </div>
+        </div>
+    </section>
+    <section class="sec-inter">
+        <div class="inter ss-pd">
+            <div class="container">
+                <div class="head t-center">
+                    <h2 class="t-title">QUYỀN LỢI KHÁCH HÀNG</h2>
+                </div>
+                <div class="inter-wrapper">
+                    <div class="inter-midle">
+                        <img src="/tpkexpress/assets/images/quyenloi.png" alt="" />
+                    </div>
+                    <div class="inter-list row">
+                        <div class="inter-item col col-6">
+                            <div class="inter-wr">
+                                <div class="inter-content">
+                                    <div class="inter-top">
+                                        <p class="inter-number">01</p>
+                                        <h3 class="inter-name">Vận chuyển nhanh chóng và an toàn</h3>
+                                    </div>
+                                    <div class="inter-bot">
+                                        <p class="inter-des">Khách hàng sẽ nhận được hàng hóa trong thời gian nhanh nhất nhờ dịch vụ vận chuyển hỏa tốc Trung - Việt, đảm bảo an toàn và tiết kiệm thời gian.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="inter-item col col-6">
+                            <div class="inter-wr">
+                                <div class="inter-content">
+                                    <div class="inter-top">
+                                        <p class="inter-number">02</p>
+                                        <h3 class="inter-name">Đảm bảo quy trình minh bạch</h3>
+                                    </div>
+                                    <div class="inter-bot">
+                                        <p class="inter-des">Quy trình nhập hàng từ A-Z sẽ được hướng dẫn rõ ràng, khách hàng sẽ hiểu rõ từng bước trong quá trình nhập hàng và vận chuyển, tránh bất kỳ sự cố nào.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="inter-item col col-6">
+                            <div class="inter-wr">
+                                <div class="inter-content">
+                                    <div class="inter-top">
+                                        <p class="inter-number">03</p>
+                                        <h3 class="inter-name">Lựa chọn dịch vụ linh hoạt</h3>
+                                    </div>
+                                    <div class="inter-bot">
+                                        <p class="inter-des">Khách hàng có thể lựa chọn giữa nhiều dịch vụ vận chuyển phù hợp với nhu cầu và ngân sách của mình, từ vận chuyển hỏa tốc đến các lựa chọn tiết kiệm hơn.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="inter-item col col-6">
+                            <div class="inter-wr">
+                                <div class="inter-content">
+                                    <div class="inter-top">
+                                        <p class="inter-number">04</p>
+                                        <h3 class="inter-name">Hỗ trợ theo dõi đơn hàng</h3>
+                                    </div>
+                                    <div class="inter-bot">
+                                        <p class="inter-des">Khách hàng có thể dễ dàng theo dõi tình trạng đơn hàng của mình thông qua hệ thống app, website, zalo cập nhật thường xuyên giúp  nắm rõ thời gian giao hàng.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="inter-map">
+            <img src="/tpkexpress/assets/images/inter-map.svg" alt="" />
+            <div class="inter-map-pin">
+                <img src="/tpkexpress/assets/images/bn-map-pin.png" alt="" />
+            </div>
+            <div class="inter-map-pin">
+                <img src="/tpkexpress/assets/images/bn-map-pin.png" alt="" />
+            </div>
+        </div>
+    </section>
+    <section class="sec-road">
+        <div class="road">
+            <div class="road-br">
+                <img src="/tpkexpress/assets/images/road-br.png" alt="" />
+            </div>
+            <div class="container">
+                <div class="head t-center">
+                    <h2 class="t-title">QUY TRÌNH LÀM VIỆC VỚI TPK EXPRESS</h2>
+                </div>
+            </div>
+            <div class="road-main">
+                <div class="road-main-top">
+                    <div class="road-list row">
+                        <div class="road-item col">
+                            <div class="road-wr">
+                                <div class="road-top">
+                                    <p class="road-number">01</p>
+                                    <h3 class="road-name">Tiếp nhận yêu cầu</h3>
+                                </div>
+                                <div class="road-bot">
+                                    <div class="road-icon">
+                                        <img src="/tpkexpress/assets/images/road-icon-1.svg" alt="" />
+                                    </div>
+                                    <div class="road-line">
+                                        <div class="line"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="road-item col">
+                            <div class="road-wr">
+                                <div class="road-top">
+                                    <p class="road-number">02</p>
+                                    <h3 class="road-name">Tư vấn hướng dẫn</h3>
+                                </div>
+                                <div class="road-bot">
+                                    <div class="road-icon">
+                                        <img src="/tpkexpress/assets/images/road-icon-2.svg" alt="" />
+                                    </div>
+                                    <div class="road-line">
+                                        <div class="line"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="road-item col">
+                            <div class="road-wr">
+                                <div class="road-top">
+                                    <p class="road-number">03</p>
+                                    <h3 class="road-name">Đặt hàng thanh toán</h3>
+                                </div>
+                                <div class="road-bot">
+                                    <div class="road-icon">
+                                        <img src="/tpkexpress/assets/images/road-icon-3.svg" alt="" />
+                                    </div>
+                                    <div class="road-line">
+                                        <div class="line"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="road-item col">
+                            <div class="road-wr">
+                                <div class="road-top">
+                                    <p class="road-number">04</p>
+                                    <h3 class="road-name">Vận chuyển từ TQ về VN</h3>
+                                </div>
+                                <div class="road-bot">
+                                    <div class="road-icon">
+                                        <img src="/tpkexpress/assets/images/road-icon-4.svg" alt="" />
+                                    </div>
+                                    <div class="road-line">
+                                        <div class="line"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="road-item col">
+                            <div class="road-wr">
+                                <div class="road-top">
+                                    <p class="road-number">05</p>
+                                    <h3 class="road-name">Thông báo giao nhận hàng</h3>
+                                </div>
+                                <div class="road-bot">
+                                    <div class="road-icon">
+                                        <img src="/tpkexpress/assets/images/road-icon-5.svg" alt="" />
+                                    </div>
+                                    <div class="road-line">
+                                        <div class="line"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="road-item col">
+                            <div class="road-wr">
+                                <div class="road-top">
+                                    <p class="road-number">06</p>
+                                    <h3 class="road-name">Hỗ trợ sau bán </h3>
+                                </div>
+                                <div class="road-bot">
+                                    <div class="road-icon">
+                                        <img src="/tpkexpress/assets/images/road-icon-6.svg" alt="" />
+                                    </div>
+                                    <div class="road-line">
+                                        <div class="line"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="road-img">
+                    <img src="/tpkexpress/assets/images/road-img.svg" alt="" />
+                    <div class="road-car">
+                        <img src="/tpkexpress/assets/images/road-car.png" alt="" />
+                    </div>
+                    <div class="road-buicay one">
+                        <img src="/tpkexpress/assets/images/road-buicay.svg" alt="" />
+                    </div>
+                    <div class="road-buicay two">
+                        <img src="/tpkexpress/assets/images/road-buicay.svg" alt="" />
+                    </div>
+                    <div class="road-buicay three">
+                        <img src="/tpkexpress/assets/images/road-buicay.svg" alt="" />
+                    </div>
+                    <div class="road-happy" data-aos="fade-right">
+                        <img src="/tpkexpress/assets/images/quytrinh.png" alt="" />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="sec-set">
+        <div class="set">
+            <div class="container">
+                <div class="set-wrapper">
+                    <div class="set-cuved">
+                        <img src="/tpkexpress/assets/images/set-cuved.png" alt="" />
+                    </div>
+                    <div class="set-row row">
+                        <div class="set-col col">
+                            <div class="set-person">
+                                <img src="/tpkexpress/assets/images/set-person1.png" alt="" />
+                            </div>
+                        </div>
+                        <div class="set-col col">
+                            <div class="re-dl">
+                                <h2 class="t-title">CÀI ĐẶT ỨNG DỤNG NGAY</h2>
+                                <div class="re-dl-wr">
+                                    <a class="re-dl-link" target="_blank" href="https://github.com/TPKExppress/app/raw/main/tpk-express.apk" download="true">
+                                        <img src="/tpkexpress/assets/images/download-gg.png" alt="" />
+                                    </a>
+                                    <a class="re-dl-link" target="_blank" href="https://apps.apple.com/us/app/tpk-express/id6472759285">
+                                        <img src="/tpkexpress/assets/images/download-appstore.png" alt="" />
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="set-col col">
+                            <div class="set-phone">
+                                <img src="/tpkexpress/assets/images/set-phone.svg" alt="" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="set-plane">
+                    <img src="/tpkexpress/assets/images/set-plane.png " alt="" />
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="sec-nums">
+        <div class="nums ss-pd">
+            <div class="nums-br">
+                <img src="/tpkexpress/assets/images/nums-br.png" alt="" />
+            </div>
+            <div class="container">
+                <div class="nums-row row">
+                    <div class="nums-col col col-6">
+                        <div class="head">
+                            <h2 class="t-title">NHỮNG CỘT MỐC ĐÁNG NHỚ</h2>
+                            <p class="des">TPK EXPRESS là đơn vị chuyên cung cấp dịch vụ vận chuyển hỏa tốc từ Trung Quốc về Việt Nam, giúp các doanh nghiệp nhỏ và cá nhân nhập hàng nhanh chóng và an toàn.</p>
+                        </div>
+                        <div class="nums-list row">
+                            <div class="nums-item col">
+                                <div class="nums-wr">
+                                    <span class="line one"></span><span class="line two"></span>
+                                    <div class="nums-content">
+                                        <div class="nums-top">
+                                            <p class="nums-number">
+                                                <span class="number">10.000</span>+
+                                            </p>
+                                        </div>
+                                        <h3 class="nums-name">Khách hàng đã sử dụng dịch vụ</h3>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="nums-item col">
+                                <div class="nums-wr">
+                                    <span class="line one"></span><span class="line two"></span>
+                                    <div class="nums-content">
+                                        <div class="nums-top">
+                                            <p class="nums-number">
+                                                <span class="number">8</span>+
+                                            </p>
+                                            <span class="text">
+                                                Năm kinh<br>
+                                                nghiệm
+                                            </span>
+                                        </div>
+                                        <h3 class="nums-name">Tự tin mang lại dịch vụ tốt nhất cho khách hàng</h3>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="nums-item col">
+                                <div class="nums-wr">
+                                    <span class="line one"></span><span class="line two"></span>
+                                    <div class="nums-content">
+                                        <div class="nums-top">
+                                            <p class="nums-number">
+                                                <span class="number">98</span>%
+                                            </p>
+                                        </div>
+                                        <h3 class="nums-name">Khách hàng hài lòng và quay lại sử dụng dịch vụ</h3>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="nums-plane">
+                            <img src="/tpkexpress/assets/images/nums-plane.svg" alt="" />
+                        </div>
+                    </div>
+                    <div class="nums-col col col-6">
+                        <div class="nums-img">
+                            <img src="/tpkexpress/assets/images/cotmoc3.png" alt="" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="sec-media">
+        <div class="media">
+            <div class="container">
+                <div class="head t-center">
+                    <h2 class="t-title">HÌNH ẢNH VỀ TPK EXPRESS</h2>
+                </div>
+                <div class="media-slider gallery">
+                    <div class="swiper-container">
+                        <div class="swiper rows">
+                            <div class="swiper-wrapper">
+                                <div class="swiper-slide col col-6">
+                                    <div class="media-list row">
+                                        <div class="media-item col">
+                                            <div class="media-wr">
+                                                <div class="media-img">
+                                                    <img src="/tpkexpress/assets/images/Hình ảnh công ty 1.jpg" alt="" />
+                                                </div>
+                                                <a class="media-play" href="https://www.youtube.com/watch?v=_BtP8Suvs-A" data-fancybox><i class="fas fa-play"></i></a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="swiper-slide col col-6">
+                                    <div class="media-list row">
+                                        <div class="media-item col">
+                                            <div class="media-wr">
+                                                <div class="media-img gItem" data-src="/tpkexpress/assets/images/Hình ảnh công ty 2.jpg">
+                                                    <img src="/tpkexpress/assets/images/Hình ảnh công ty 2.jpg" alt="" />
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="media-item col">
+                                            <div class="media-wr">
+                                                <div class="media-img gItem" data-src="/tpkexpress/assets/images/Hình ảnh công ty 3.jpg">
+                                                    <img src="/tpkexpress/assets/images/Hình ảnh công ty 3.jpg" alt="" />
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="media-item col">
+                                            <div class="media-wr">
+                                                <div class="media-img gItem" data-src="/tpkexpress/assets/images/Hình ảnh công ty 4.jpg">
+                                                    <img src="/tpkexpress/assets/images/Hình ảnh công ty 4.jpg" alt="" />
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="media-item col">
+                                            <div class="media-wr">
+                                                <div class="media-img gItem" data-src="/tpkexpress/assets/images/Hình ảnh công ty 1.jpg">
+                                                    <img src="/tpkexpress/assets/images/Hình ảnh công ty 1.jpg" alt="" />
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="swiper-slide col col-6">
+                                    <div class="media-list row">
+                                        <div class="media-item col">
+                                            <div class="media-wr">
+                                                <div class="media-img">
+                                                    <img src="/tpkexpress/assets/images/Hình ảnh công ty 2.jpg" alt="" />
+                                                </div>
+                                                <a class="media-play" href="https://youtu.be/XS0PRNvT3qw?si=CqAJc6TPPlZxkmo3" data-fancybox><i class="fas fa-play"></i></a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="swiper-pagination"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="sec-cusc">
+        <div class="cusc ss-pd cusc-slider">
+            <div class="cusc-cuved top">
+                <img src="/tpkexpress/assets/images/cusc-cuved.svg" alt="" />
+            </div>
+            <div class="cusc-cuved bot">
+                <img src="/tpkexpress/assets/images/cusc-cuved.svg" alt="" />
+            </div>
+            <div class="cusc-dc">
+                <img src="/tpkexpress/assets/images/cusc-dc.png" alt="" />
+            </div>
+            <div class="container">
+                <div class="head space">
+                    <div class="left">
+                        <h2 class="t-title" style="color:white">KHÁCH HÀNG NÓI GÌ VỀ CHÚNG TÔI </h2>
+                    </div>
+                    <div class="right">
+                        <div class="swiper-control trans">
+                            <div class="swiper-control-btn swiper-prev"><i class="fas fa-arrow-left"></i></div>
+                            <div class="swiper-control-btn swiper-next"><i class="fas fa-arrow-right"></i></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="cusc-slider-wrapper">
+                    <div class="swiper-container">
+                        <div class="swiper rows">
+                            <div class="swiper-wrapper">
+                                <div class="swiper-slide col col-6">
+                                    <div class="cusc-wr">
+                                        <div class="cusc-top">
+                                            <p class="cusc-number">01</p>
+                                        </div>
+                                        <div class="cusc-body">
+                                            <div class="cusc-left">
+                                                <div class="cusc-img">
+                                                    <img src="/tpkexpress/assets/images/Đối tác 1.jpg" alt="" />
+                                                </div>
+                                            </div>
+                                            <div class="cusc-right">
+                                                <div class="cusc-content">
+                                                    <div class="cusc-icon">
+                                                        <img src="/tpkexpress/assets/images/cusc-mess.svg" alt="" />
+                                                    </div>
+                                                    <p class="cusc-des" style=" color: white; ">TPK Express là đối tác đáng tin cậy trong lĩnh vực vận chuyển hàng hóa Trung - Việt. Với tốc độ giao hàng nhanh, an toàn và đội ngũ hỗ trợ nhiệt tình, TPK đã giúp rất nhiều học viên của tôi yên tâm khi nhập hàng từ Trung Quốc. Tôi luôn sẵn sàng giới thiệu TPK như một giải pháp vận chuyển tối ưu và hiệu quả</p>
+                                                </div>
+                                                <div class="cusc-info">
+                                                    <div class="star">
+                                                        <div class="star-list">
+                                                            <div class="star-flex star-empty">
+                                                                <img src="/tpkexpress/assets/images/star-opa.svg" alt="" /><img src="/tpkexpress/assets/images/star-opa.svg" alt="" /><img src="/tpkexpress/assets/images/star-opa.svg" alt="" /><img src="/tpkexpress/assets/images/star-opa.svg" alt="" /><img src="/tpkexpress/assets/images/star-opa.svg" alt="" />
+                                                            </div>
+                                                            <div class="star-flex star-filter" style="width: 100%">
+                                                                <img src="/tpkexpress/assets/images/star-yellow.svg" alt="" /><img src="/tpkexpress/assets/images/star-yellow.svg" alt="" /><img src="/tpkexpress/assets/images/star-yellow.svg" alt="" /><img src="/tpkexpress/assets/images/star-yellow.svg" alt="" /><img src="/tpkexpress/assets/images/star-yellow.svg" alt="" />
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <p class="cusc-info-name">Ms Hường Maruco </p>
+                                                    <p class="cusc-info-des" style=" color: #ffffffd6; ">Chủ doanh nghiệp MIGABA</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="swiper-slide col col-6">
+                                    <div class="cusc-wr">
+                                        <div class="cusc-top">
+                                            <p class="cusc-number">02</p>
+                                        </div>
+                                        <div class="cusc-body">
+                                            <div class="cusc-left">
+                                                <div class="cusc-img">
+                                                    <img src="/tpkexpress/assets/images/Đối tác 2.jpg" alt="" />
+                                                </div>
+                                            </div>
+                                            <div class="cusc-right">
+                                                <div class="cusc-content">
+                                                    <div class="cusc-icon">
+                                                        <img src="/tpkexpress/assets/images/cusc-mess.svg" alt="" />
+                                                    </div>
+                                                    <p class="cusc-des" style=" color: white; ">TPK Express là đối tác vượt trội mà tôi luôn tin tưởng. Đây không chỉ là một đơn vị vận chuyển, mà còn là người đồng hành đắc lực trên hành trình chinh phục thị trường. Chúc TPK ngày càng phát triển và thành công hơn nữa!</p>
+                                                </div>
+                                                <div class="cusc-info">
+                                                    <div class="star">
+                                                        <div class="star-list">
+                                                            <div class="star-flex star-empty">
+                                                                <img src="/tpkexpress/assets/images/star-opa.svg" alt="" /><img src="/tpkexpress/assets/images/star-opa.svg" alt="" /><img src="/tpkexpress/assets/images/star-opa.svg" alt="" /><img src="/tpkexpress/assets/images/star-opa.svg" alt="" /><img src="/tpkexpress/assets/images/star-opa.svg" alt="" />
+                                                            </div>
+                                                            <div class="star-flex star-filter" style="width: 100%">
+                                                                <img src="/tpkexpress/assets/images/star-yellow.svg" alt="" /><img src="/tpkexpress/assets/images/star-yellow.svg" alt="" /><img src="/tpkexpress/assets/images/star-yellow.svg" alt="" /><img src="/tpkexpress/assets/images/star-yellow.svg" alt="" /><img src="/tpkexpress/assets/images/star-yellow.svg" alt="" />
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <p class="cusc-info-name">Mr Thành Vũ</p>
+                                                    <p class="cusc-info-des" style=" color: #ffffffd6; ">CEO Học viện PBS</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="swiper-slide col col-6">
+                                    <div class="cusc-wr">
+                                        <div class="cusc-top">
+                                            <p class="cusc-number">03</p>
+                                        </div>
+                                        <div class="cusc-body">
+                                            <div class="cusc-left">
+                                                <div class="cusc-img">
+                                                    <img src="/tpkexpress/assets/images/chique.jpg" alt="" />
+                                                </div>
+                                            </div>
+                                            <div class="cusc-right">
+                                                <div class="cusc-content">
+                                                    <div class="cusc-icon">
+                                                        <img src="/tpkexpress/assets/images/cusc-mess.svg" alt="" />
+                                                    </div>
+                                                    <p class="cusc-des" style=" color: white; ">Tôi đã đồng hành cùng TPK từ những ngày đầu khởi nghiệp. TPK là đơn vị tôi thấy thực sự tận tâm với khách hàng. Các bạn luôn hỗ trợ tận tình trong quá trình vận chuyển hàng, giải quyết các vấn đề phát sinh nhanh chóng. Chúc TPK luôn giữ vững phong độ như thế</p>
+                                                </div>
+                                                <div class="cusc-info">
+                                                    <div class="star">
+                                                        <div class="star-list">
+                                                            <div class="star-flex star-empty">
+                                                                <img src="/tpkexpress/assets/images/star-opa.svg" alt="" /><img src="/tpkexpress/assets/images/star-opa.svg" alt="" /><img src="/tpkexpress/assets/images/star-opa.svg" alt="" /><img src="/tpkexpress/assets/images/star-opa.svg" alt="" /><img src="/tpkexpress/assets/images/star-opa.svg" alt="" />
+                                                            </div>
+                                                            <div class="star-flex star-filter" style="width: 100%">
+                                                                <img src="/tpkexpress/assets/images/star-yellow.svg" alt="" /><img src="/tpkexpress/assets/images/star-yellow.svg" alt="" /><img src="/tpkexpress/assets/images/star-yellow.svg" alt="" /><img src="/tpkexpress/assets/images/star-yellow.svg" alt="" /><img src="/tpkexpress/assets/images/star-yellow.svg" alt="" />
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <p class="cusc-info-name">Ms. Hồng Quế</p>
+                                                    <p class="cusc-info-des" style=" color: #ffffffd6; ">Founder Tập đoàn ECOM FOS</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="swiper-slide col col-6">
+                                    <div class="cusc-wr">
+                                        <div class="cusc-top">
+                                            <p class="cusc-number">04</p>
+                                        </div>
+                                        <div class="cusc-body">
+                                            <div class="cusc-left">
+                                                <div class="cusc-img">
+                                                    <img src="/tpkexpress/assets/images/chihang.jpg" alt="" />
+                                                </div>
+                                            </div>
+                                            <div class="cusc-right">
+                                                <div class="cusc-content">
+                                                    <div class="cusc-icon">
+                                                        <img src="/tpkexpress/assets/images/cusc-mess.svg" alt="" />
+                                                    </div>
+                                                    <p class="cusc-des" style=" color: white; ">Mình nhập hàng Trung Quốc hơn 3 năm và chuyển qua dùng dịch vụ của TPK từ đầu năm 2025. Hàng về nhanh, báo giá rõ ràng, đặc biệt hỗ trợ xử lý vấn đề rất có trách nhiệm. Là đối tác vận chuyển mình thấy yên tâm nhất từ trước đến nay.</p>
+                                                </div>
+                                                <div class="cusc-info">
+                                                    <div class="star">
+                                                        <div class="star-list">
+                                                            <div class="star-flex star-empty">
+                                                                <img src="/tpkexpress/assets/images/star-opa.svg" alt="" /><img src="/tpkexpress/assets/images/star-opa.svg" alt="" /><img src="/tpkexpress/assets/images/star-opa.svg" alt="" /><img src="/tpkexpress/assets/images/star-opa.svg" alt="" /><img src="/tpkexpress/assets/images/star-opa.svg" alt="" />
+                                                            </div>
+                                                            <div class="star-flex star-filter" style="width: 100%">
+                                                                <img src="/tpkexpress/assets/images/star-yellow.svg" alt="" /><img src="/tpkexpress/assets/images/star-yellow.svg" alt="" /><img src="/tpkexpress/assets/images/star-yellow.svg" alt="" /><img src="/tpkexpress/assets/images/star-yellow.svg" alt="" /><img src="/tpkexpress/assets/images/star-yellow.svg" alt="" />
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <p class="cusc-info-name">Ms. Thu Hằng</p>
+                                                    <p class="cusc-info-des" style=" color: #ffffffd6; ">Kinh Doanh Thời Trang</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="swiper-slide col col-6">
+                                    <div class="cusc-wr">
+                                        <div class="cusc-top">
+                                            <p class="cusc-number">05</p>
+                                        </div>
+                                        <div class="cusc-body">
+                                            <div class="cusc-left">
+                                                <div class="cusc-img">
+                                                    <img src="/tpkexpress/assets/images/chihuyen.jpg" alt="" />
+                                                </div>
+                                            </div>
+                                            <div class="cusc-right">
+                                                <div class="cusc-content">
+                                                    <div class="cusc-icon">
+                                                        <img src="/tpkexpress/assets/images/cusc-mess.svg" alt="" />
+                                                    </div>
+                                                    <p class="cusc-des" style=" color: white; ">Trước đây mình sợ nhập chính ngạch vì thủ tục phức tạp, nhưng được đội ngũ hướng dẫn từ A-Z nên làm rất dễ, hỗ trợ cả các đơn hàng nhỏ. Hàng về đúng hẹn, không phát sinh chi phí. Dịch vụ chuyên nghiệp và đáng tin cậy.</p>
+                                                </div>
+                                                <div class="cusc-info">
+                                                    <div class="star">
+                                                        <div class="star-list">
+                                                            <div class="star-flex star-empty">
+                                                                <img src="/tpkexpress/assets/images/star-opa.svg" alt="" /><img src="/tpkexpress/assets/images/star-opa.svg" alt="" /><img src="/tpkexpress/assets/images/star-opa.svg" alt="" /><img src="/tpkexpress/assets/images/star-opa.svg" alt="" /><img src="/tpkexpress/assets/images/star-opa.svg" alt="" />
+                                                            </div>
+                                                            <div class="star-flex star-filter" style="width: 100%">
+                                                                <img src="/tpkexpress/assets/images/star-yellow.svg" alt="" /><img src="/tpkexpress/assets/images/star-yellow.svg" alt="" /><img src="/tpkexpress/assets/images/star-yellow.svg" alt="" /><img src="/tpkexpress/assets/images/star-yellow.svg" alt="" /><img src="/tpkexpress/assets/images/star-yellow.svg" alt="" />
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <p class="cusc-info-name">Ms Thanh Huyền</p>
+                                                    <p class="cusc-info-des" style=" color: #ffffffd6; ">Kinh Doanh Ngành Kim Khí</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="swiper-pagination"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="sec-dki">
+        <div class="dki ss-pd-t">
+            <div class="container">
+                <div class="dki-side row">
+                    <div class="dki-left col">
+                        <div class="dki-img">
+                            <img src="/tpkexpress/assets/images/nhanvien.png" alt="" />
+                        </div>
+                    </div>
+                    <div class="dki-right col">
+                        <div class="head t-center">
+                            <h2 class="t-title">Đăng ký tư vấn</h2>
+                        </div>
+                        <div class="dki-form">
+                            <div action="">
+                                <div class="f-list row">
+                                    <div class="f-item col col-6">
+                                        <label for="">Họ tên <span>*  </span></label>
+                                        <input class="re-input" type="text" placeholder="Họ tên" />
+                                    </div>
+                                    <div class="f-item col col-6">
+                                        <label for="">Bạn là<span>*  </span></label>
+                                        <input class="re-input" type="text" placeholder="" />
+                                    </div>
+                                    <div class="f-item col col-6">
+                                        <label for="">Số điện thoại  <span>*  </span></label>
+                                        <input class="re-input" type="text" placeholder="Nhập số điện thoại của bạn" />
+                                    </div>
+                                    <div class="f-item col col-6">
+                                        <label for="">Email <span>*  </span></label>
+                                        <input class="re-input" type="text" placeholder="Nhập email của bạn" />
+                                    </div>
+                                    <div class="f-item col">
+                                        <label for="">Họ tên <span>*  </span></label>
+                                        <textarea class="re-input area" name="" cols="30" rows="5"> </textarea>
+                                    </div>
+                                </div>
+                                <button class="btn second m-mid m-top" type="submit"><span class="txt" style=" color: white; ">Đăng Ký Ngay</span><i class="fas fa-arrow-right" style=" color: white; "></i></button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</main>
+@if (!string.IsNullOrEmpty(@Model))
+{
+    <div id="bg_popup_home" style="opacity: 0.7;"></div>
+    <div id="pupip_home" class="columns-container1">  <div class="center_column col-xs-12 col-sm-5" id="popup_content_home"><div class="popup_header">TPK EXPRESS<a style="cursor:pointer;right:5px;" onclick="close_popup_ms()" class="close_message"></a></div>     <div class="changeavatar">         <div class="content1"><p><img src="@Model" data-mce-src="@Model"></p>         </div>         <div class="content2"><a href="javascript:;" class="btn btn-close" onclick="close_popup_ms()">Đóng</a>         </div>     </div><div class="popup_footer"><span class="float-right">TPK EXPRESS</span></div>   </div></div>
+}
+<script>
+    function close_popup_ms() {
+        $("#pupip_home").animate({ "opacity": 0 }, 400);
+        $("#bg_popup_home").animate({ "opacity": 0 }, 400);
+        setTimeout(function () {
+            $("#pupip_home").remove();
+            $(".zoomContainer").remove();
+            $("#bg_popup_home").remove();
+            $('body').css('overflow', 'auto').attr('onkeydown', '');
+        }, 500);
+    }
+
+    function Tracking() {
+        var content = $("#mvd").val();
+        if (!content) {
+            return;
+        }
+        $.ajax({
+            type: "POST",
+            url: "/Home/GetInfo",
+            data: JSON.stringify(content),
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            success: function (msg) {
+                if (msg.d != "null") {
+                    if (msg.d.includes("baidu.com")) {
+                        window.open(msg.d);
+                        return;
+                    }
+                    var title = "Thông tin mã vận đơn";
+                    var content = msg.d;
+                    var email = "";
+                    var obj = $('body');
+                    $(obj).css('overflow', 'hidden');
+                    $(obj).attr('onkeydown', 'keyclose_ms(event)');
+                    var bg = "<div id='bg_popup_home'></div>";
+                    var fr = "<div id='pupip_home' class=\"columns-container1\">" +
+                        "  <div class=\"center_column col-xs-12 col-sm-5\" id=\"popup_content_home\">";
+                    fr += "<div class=\"popup_header\">";
+                    fr += title;
+                    fr += "<a style='cursor:pointer;right:5px;' onclick='close_popup_ms()' class='close_message'></a>";
+                    fr += "</div>";
+                    fr += "     <div class=\"changeavatar\">";
+                    fr += "         <div class=\"content1\" style=\"width:75%;margin-left:11%\">";
+                    fr += content;
+                    fr += "         </div>";
+                    fr += "         <div class=\"content2\">";
+                    fr += "             <a href=\"javascript:;\" class=\"btn btn-close\" onclick='close_popup_ms()'><span>Đóng X</span></a>";
+                    fr += "         </div>";
+                    fr += "     </div>";
+                    fr += "<div class=\"popup_footer\">";
+                    fr += "<span class=\"float-right\">" + email + "</span>";
+                    fr += "</div>";
+                    fr += "   </div>";
+                    fr += "</div>";
+                    $(bg).appendTo($(obj)).show().animate({ "opacity": 0.7 }, 800);
+                    $(fr).appendTo($(obj));
+                    setTimeout(function () {
+                        $('#pupip_home').show().animate({ "opacity": 1, "top": "20%" }, 200);
+                        $("#bg_popup_home").attr("onclick", "close_popup_ms()");
+                    }, 1000);
+                }
+            },
+            error: function (err) {
+            }
+        });
+    }
+
+    function keyclose_ms(e) {
+        if (e.keyCode == 27) {
+            close_popup_ms();
+        }
+    }
+</script>
+<style>
+    #bg_popup_home {
+        position: fixed;
+        width: 100%;
+        height: 100%;
+        background-color: #333;
+        opacity: 0.7;
+        filter: alpha(opacity=70);
+        left: 0px;
+        top: 0px;
+        z-index: 999999999;
+        opacity: 0;
+        filter: alpha(opacity=0);
+    }
+
+    #popup_ms_home {
+        background: #fff;
+        border-radius: 0px;
+        box-shadow: 0px 2px 10px #fff;
+        float: left;
+        position: fixed;
+        width: 735px;
+        z-index: 10000;
+        left: 50%;
+        margin-left: -370px;
+        top: 200px;
+        opacity: 0;
+        filter: alpha(opacity=0);
+        height: 360px;
+    }
+
+        #popup_ms_home .popup_body {
+            border-radius: 0px;
+            float: left;
+            position: relative;
+            width: 735px;
+        }
+
+        #popup_ms_home .content {
+            /*background-color: #487175;     border-radius: 10px;*/
+            margin: 12px;
+            padding: 15px;
+            float: left;
+        }
+
+        #popup_ms_home .title_popup {
+            /*background: url("../images/img_giaoduc1.png") no-repeat scroll -200px 0 rgba(0, 0, 0, 0);*/
+            color: #ffffff;
+            font-family: Arial;
+            font-size: 24px;
+            font-weight: bold;
+            height: 35px;
+            margin-left: 0;
+            margin-top: -5px;
+            padding-left: 40px;
+            padding-top: 0;
+            text-align: center;
+        }
+
+        #popup_ms_home .text_popup {
+            color: #fff;
+            font-size: 14px;
+            margin-top: 20px;
+            margin-bottom: 20px;
+            line-height: 20px;
+        }
+
+            #popup_ms_home .text_popup a.quen_mk, #popup_ms_home .text_popup a.dangky {
+                color: #FFFFFF;
+                display: block;
+                float: left;
+                font-style: italic;
+                list-style: -moz-hangul outside none;
+                margin-bottom: 5px;
+                margin-left: 110px;
+                -webkit-transition-duration: 0.3s;
+                -moz-transition-duration: 0.3s;
+                transition-duration: 0.3s;
+            }
+
+                #popup_ms_home .text_popup a.quen_mk:hover, #popup_ms_home .text_popup a.dangky:hover {
+                    color: #8cd8fd;
+                }
+
+        #popup_ms_home .close_popup {
+            background: url("/App_Themes/Camthach/images/close_button.png") no-repeat scroll 0 0 rgba(0, 0, 0, 0);
+            display: block;
+            height: 28px;
+            position: absolute;
+            right: 0px;
+            top: 5px;
+            width: 26px;
+            cursor: pointer;
+            z-index: 10;
+        }
+
+    #popup_content_home {
+        height: auto;
+        position: fixed;
+        background-color: #fff;
+        top: 15%;
+        z-index: 999999999;
+        left: 20%;
+        border-radius: 10px;
+        -moz-border-radius: 10px;
+        -webkit-border-radius: 10px;
+        width: 60%;
+        padding: 20px;
+    }
+
+    #popup_content_home {
+        padding: 0;
+    }
+
+    .popup_header, .popup_footer {
+        float: left;
+        width: 100%;
+        background: #f5a850;
+        padding: 9px;
+        position: relative;
+        color: #fff;
+        font-size: 10px;
+    }
+
+    .popup_header {
+        border-top-left-radius: inherit;
+        border-top-right-radius: inherit;
+        border-bottom-left-radius: 0;
+        border-bottom-right-radius: 0;
+    }
+
+    .popup_footer {
+        border-top-left-radius: 0;
+        border-top-right-radius: 0;
+        border-bottom-left-radius: inherit;
+        border-bottom-right-radius: inherit;
+    }
+
+    .content2 {
+        position: absolute;
+        top: -20px;
+        right: -5px;
+        border-top: 0px solid #eee !important;
+    }
+
+    .popup_header {
+        font-weight: bold;
+        font-size: 10px;
+        text-transform: uppercase;
+    }
+
+    .close_message {
+        top: 10px;
+    }
+
+    .changeavatar {
+        padding: 10px;
+        margin: 5px 0;
+        float: left;
+        width: 100%;
+    }
+
+    .float-right {
+        float: right;
+    }
+
+    .content1 {
+        float: left;
+        width: 100%;
+        font-size: 17px !important;
+    }
+
+    .content2 {
+        float: left;
+        width: 100%;
+        border-top: 1px solid #eee;
+        clear: both;
+        margin-top: 10px;
+    }
+
+    .extra-a {
+        text-align: center;
+        margin-top: 30px;
+    }
+
+        .extra-a a {
+            margin-top: 20px;
+            font-size: 20px;
+            color: #00bbf0;
+            font-weight: bold;
+        }
+
+    .btn.btn-close {
+        float: right;
+        background: #3676ca;
+        color: #fff;
+        margin: 10px 5px;
+        text-transform: none;
+        padding: 5px;
+        font-size: 16px;
+    }
+
+
+        .btn.btn-close::after {
+            background: unset !important;
+        }
+
+    .btn.btn-close-full {
+        float: right;
+        background: #3676ca;
+        color: #fff;
+        margin: 10px 5px;
+        text-transform: none;
+        padding: 10px 20px;
+    }
+
+        .btn.btn-close-full:hover {
+            background: #6692a5;
+        }
+
+    @@media only screen and (max-width: 1024px) {
+        body {
+            #popup_content_home {
+                width: unset;
+                left: unset;
+            }
+        }
+    }
+
+    @@media only screen and (max-width: 700px) {
+        body {
+            #popup_content_home {
+                max-height: 80%;
+                overflow-y: scroll;
+            }
+        }
+    }
+</style>

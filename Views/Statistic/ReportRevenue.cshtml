@@ -1,0 +1,244 @@
+﻿@using WebMVC.Models.Responses
+@model int
+@{
+    ViewData["Title"] = "Báo cáo doanh số";
+}
+<div class="container-fluid mt-4">
+    <div class="card mb-2">
+        <div class="card-header d-flex justify-content-between align-items-center">
+            <h3>Báo cáo doanh số</h3>
+            <button id="toggleFilterButton" class="btn btn-primary">Ẩn bộ lọc</button>
+        </div>
+        <div class="card-body" id="filterContainer">
+            <div class="row">
+                <div class="col-md-3">
+                    <label for="fromDate" class="form-label">Ngày trong tháng</label>
+                    <input type="text" class="form-control datepicker" id="fromDate" name="fromDate" placeholder="">
+                </div>
+                <div class="col-md-3">
+                    <label for="name" class="form-label">Username</label>
+                    <select class="form-select" id="usernameSelect" style="width:100%" name="Username"></select>
+                </div>
+                <div class="col-md-3">
+                    <label for="sale" class="form-label">NV Sale</label>
+                    <select class="form-select" id="saleSelect" style="width:100%" name="Sale"></select>
+                </div>
+                <div class="col-md-3 d-flex align-items-end">
+                    <button type="button" class="btn btn-primary btn-search" onclick="loadPage(1)">Tìm kiếm</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    @await Html.PartialAsync("_ReportRevenueTable", new List<ReportRevenueResponse>())
+
+    <div class="card mb-4 mt-2">
+        <div class="card-header d-flex justify-content-between align-items-center">
+            <h5>Biểu đồ báo cáo doanh số trong năm</h5>
+        </div>
+        <div class="card-body">
+            <div class="row mt-4">
+                <div class="col s12">
+                    <div class="card user-statistics-card animate fadeLeft">
+                        <div class="card-content">
+                            <div class="row px-3 pt-3">
+                                <div class="col s3">
+                                    <a href="javascript:;" onclick="YearChartData(0, 'black')">
+                                        <div class="d-flex gap-3 align-items-center">
+                                            <i class="bi bi-circle-fill fs-1"></i>
+                                            <div>
+                                                <span class="medium-small">Đơn hàng đã giao</span>
+                                                <h5 class="mt-0 mb-0 soDon-Year"></h5>
+                                            </div>
+                                        </div>
+                                    </a>
+                                </div>
+                                <div class="col s3">
+                                    <a href="javascript:;" onclick="YearChartData(1, 'purple')">
+                                        <div class="d-flex gap-3 align-items-center">
+                                            <i class="bi bi-circle-fill fs-1 text-purple"></i>
+                                            <div>
+                                                <span class="medium-small">Sản lượng (KG)</span>
+                                                <h5 class="mt-0 mb-0 soKg-Year"></h5>
+                                            </div>
+                                        </div>
+                                    </a>
+                                </div>
+                                <div class="col s3">
+                                    <a href="javascript:;" onclick="YearChartData(2, 'green')">
+                                        <div class="d-flex gap-3 align-items-center">
+                                            <i class="bi bi-circle-fill fs-1 text-success"></i>
+                                            <div>
+                                                <span class="medium-small">Sản lượng (Khối)</span>
+                                                <h5 class="mt-0 mb-0 soKhoi-Year"></h5>
+                                            </div>
+                                        </div>
+                                    </a>
+                                </div>
+                                <div class="col s3">
+                                    <a href="javascript:;" onclick="YearChartData(3, 'red')">
+                                        <div class="d-flex gap-3 align-items-center">
+                                            <i class="bi bi-circle-fill fs-1 text-danger"></i>
+                                            <div>
+                                                <span class="medium-small">Doanh số</span>
+                                                <h5 class="mt-0 mb-0 soTien-Year"></h5>
+                                            </div>
+                                        </div>
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="row" style="width: 100%; margin: auto;">
+                                <canvas id="YearChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/chartjs-plugin-annotation/1.0.2/chartjs-plugin-annotation.min.js"></script>
+<script src="~/js/createLineChart.js"></script>
+<script>
+    $(document).ready(function () {
+        loadPage(1);
+    });
+    function loadPage(page) {
+        const fromDateInput = $('#fromDate').val();
+        const fromDate = fromDateInput ? parseDate(fromDateInput) : null;
+        const request = {
+            PageIndex: page,
+            fromDate: fromDate ? fromDate : '',
+            AccountId: $('#usernameSelect').val() ? parseInt($('#usernameSelect').val()) : null,
+            SaleId: $('#saleSelect').val() ? parseInt($('#saleSelect').val()) : null,
+            PostOffice: @Model || null,
+        };
+        showLoading();
+        $.ajax({
+            url: '/Statistic/GetReportRevenue',
+            data: request,
+            type: 'GET',
+            success: function (data) {
+                $('#table-container').html(data);
+            },
+            error: function (response) {
+                showToast(response.responseJSON.Message, response.responseJSON.Type, false);
+            },
+            complete: function () {
+                hideLoading();
+            }
+        });
+        showYearChart(request);
+    }
+    function showYearChart(request) {
+        YearChart(request);
+        YearChartData(0, 'black');
+    }
+
+    function YearChart(request) {
+        $.ajax({
+            url: '/Statistic/GetReportRevenueYearChart',
+            data: request,
+            type: 'GET',
+            success: function (data) {
+                $(".soDon-Year").text(Math.floor(data.Order));
+                $(".soKg-Year").text(data.Weight.toFixed(2));
+                $(".soKhoi-Year").text(data.Volume.toFixed(2));
+                $(".soTien-Year").text(data.TotalPriceVND.toLocaleString('en-US'));
+            },
+            error: function () {
+            }
+        });
+    }
+
+    function YearChartData(index, colorW) {
+        const fromDateInput = $('#fromDate').val();
+        const fromDate = fromDateInput ? parseDate(fromDateInput) : null;
+        const request = {
+            fromDate: fromDate ? fromDate : '',
+            AccountId: $('#usernameSelect').val() ? parseInt($('#usernameSelect').val()) : null,
+            SaleId: $('#saleSelect').val() ? parseInt($('#saleSelect').val()) : null,
+            PostOffice: @Model || null,
+            Type: index
+        };
+        $.ajax({
+            url: '/Statistic/GetReportRevenueYearStatisticData',
+            data: request,
+            type: 'GET',
+            success: function (response) {
+                createChart('YearChart', response, colorW, ["Tháng 1", "Tháng 2", "Tháng 3", "Tháng 4", "Tháng 5", "Tháng 6", "Tháng 7", "Tháng 8", "Tháng 9", "Tháng 10", "Tháng 11", "Tháng 12"]);
+            },
+            error: function () { }
+        });
+    }
+
+    $('#toggleFilterButton').on('click', function () {
+        $('#filterContainer').toggle();
+        let isVisible = $('#filterContainer').is(':visible');
+        $(this).text(isVisible ? 'Ẩn bộ lọc' : 'Hiện bộ lọc');
+    });
+
+    $("#usernameSelect").select2({
+        placeholder: "Chọn username",
+        allowClear: true,
+        theme: "bootstrap-5",
+        ajax: {
+            url: "/Account/Paging",
+            dataType: 'json',
+            delay: 250,
+            data: function (params) {
+                return {
+                    Username: params.term || '',
+                    PageIndex: params.page || 1,
+                    PageSize: 10,
+                    IsCustomer: 1
+                };
+            },
+            processResults: function (data, params) {
+                return {
+                    results: data.Items.map(item => ({
+                        id: item.Id,
+                        text: item.Username
+                    })),
+                    pagination: {
+                        more: data.PageIndex < data.TotalPage && params.term
+                    }
+                };
+            },
+            cache: true
+        }
+    });
+
+    $("#saleSelect").select2({
+        placeholder: "Chọn NV Sale",
+        allowClear: true,
+        theme: "bootstrap-5",
+        ajax: {
+            url: "/Account/Paging",
+            dataType: 'json',
+            delay: 250,
+            data: function (params) {
+                return {
+                    Username: params.term || '',
+                    PageIndex: params.page || 1,
+                    PageSize: 10,
+                    IsCustomer: 0,
+                    RoleId: 4
+                };
+            },
+            processResults: function (data, params) {
+                return {
+                    results: data.Items.map(item => ({
+                        id: item.Id,
+                        text: item.Username
+                    })),
+                    pagination: {
+                        more: data.PageIndex < data.TotalPage && params.term
+                    }
+                };
+            },
+            cache: true
+        }
+    });
+</script>

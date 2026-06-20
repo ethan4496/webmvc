@@ -1,0 +1,289 @@
+﻿@{
+    ViewData["Title"] = "Trang chủ";
+}
+@using WebMVC.Models.Responses
+@using WebMVC.Ultilities.Enums
+@model AccountHomeResponse
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/chartjs-plugin-annotation/1.0.2/chartjs-plugin-annotation.min.js"></script>
+<script src="~/js/createLineChart.js"></script>
+
+<div class="mt-4">
+    <!-- Thông tin tài khoản -->
+    <!-- Thống kê đơn hàng -->
+    <div class="row">
+        <div class="col-md-8">
+            <div class="card mb-4  p-3">
+                <div class="d-flex align-items-center justify-content-between p-3 bg-white">
+                    <!-- Avatar + tên -->
+                    <div class="d-flex align-items-center">
+                        @if (!string.IsNullOrEmpty(Model.Avatar))
+                        {
+                            <img src="@Url.Content(Model.Avatar)" alt="Avatar" class="rounded-circle me-3" width="80" height="80">
+                        }
+                        else
+                        {
+                            <img src="~/images/logo.png" alt="Avatar" class="rounded-circle me-3" width="80" height="80">
+                        }
+                        <div>
+                            <div>Chào mừng bạn, <strong>@Model.Fullname</strong></div>
+                            <small class="text-muted">@Model.Username</small><br />
+                            <small class="text-muted">Quyền hạn: @Model.RoleName</small>
+                        </div>
+                    </div>
+
+                    <!-- Voucher -->
+                    <div class="d-flex align-items-center" style=" padding-right: 2rem; ">
+                        <div class="position-relative">
+                            <img src="~/images/voucher.jpg"
+                                 alt="Voucher"
+                                 class="rounded" height="80" />
+
+                            <!-- Badge hiển thị số lượng -->
+                            <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                                @Model.Voucher
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card mb-4 p-3">
+                <h6 class="text-primary fw-bold mb-3">Đơn hàng</h6>
+                <div class="row text-center">
+                    @{
+                        var total = Model.CountOrder.Sum(x => x.Quantity);
+                    }
+                    <div class="col">
+                        <a href="transportation">
+                            <div class="border rounded p-2 h-100  bg-light status-card">
+                                <strong>Tất cả</strong>
+                                <h3 class="fw-bold text-orange">@total</h3>
+                            </div>
+                        </a>
+                    </div>
+                    @foreach (var item in Model.CountOrder)
+                    {
+                        <div class="col">
+                            <a href="transportation?Status=@item.Id">
+                                <div class="border rounded p-2 h-100  bg-light status-card">
+                                    <strong>@ETransportationStatusName.GetStatusName(item.Id)</strong>
+                                    <h3 class="fw-bold text-orange">@item.Quantity</h3>
+                                </div>
+                            </a>
+                        </div>
+                    }
+
+                    <div class="col">
+                        <a href="out-of-stock?StatusPayment=1">
+                            <div class="border rounded p-2 h-100  bg-light status-card">
+                                <strong>Chưa thanh toán</strong>
+                                <h3 class="fw-bold text-orange">@Model.UnPayOutOfStock</h3>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+
+            </div>
+            <div class="card mb-4" >
+
+                <div class="card-body" >
+                    @*                 <div class="row ">
+                    <div class="col-md-3">
+                    <label for="yearDate" class="form-label">Năm</label>
+                    <input type="text" class="form-control datepicker" id="yearDate" name="yearDate" placeholder="">
+                    </div>
+                    <div class="col-md-3 d-flex align-items-end">
+                    <button type="button" class="btn btn-success" onclick="showYearChart()">Lọc kết quả</button>
+                    </div>
+                    </div> *@
+                    @*                         <div class="row mt-4">*@
+                    <h6 class="text-primary fw-bold mb-3">Sản lượng và đơn trong năm</h6>
+                    <div class="col s12">
+                        <div class="card user-statistics-card animate fadeLeft">
+                            <div class="card-content" >
+                                <div class="row px-3 pt-3">
+                                    <div class="col s3">
+                                        <a href="javascript:;" onclick="YearChartData(0, 'black')">
+                                            <div class="d-flex gap-3 align-items-center">
+                                                <i class="bi bi-circle-fill fs-1"></i>
+                                                <div>
+                                                    <span class="medium-small">Đơn hàng đã giao</span>
+                                                    <h5 class="mt-0 mb-0 soDon-Year"></h5>
+                                                </div>
+                                            </div>
+                                        </a>
+                                    </div>
+                                    <div class="col s3">
+                                        <a href="javascript:;" onclick="YearChartData(1, 'purple')">
+                                            <div class="d-flex gap-3 align-items-center">
+                                                <i class="bi bi-circle-fill fs-1 text-purple"></i>
+                                                <div>
+                                                    <span class="medium-small">Sản lượng (KG)</span>
+                                                    <h5 class="mt-0 mb-0 soKg-Year"></h5>
+                                                </div>
+                                            </div>
+                                        </a>
+                                    </div>
+                                    <div class="col s3">
+                                        <a href="javascript:;" onclick="YearChartData(2, 'green')">
+                                            <div class="d-flex gap-3 align-items-center">
+                                                <i class="bi bi-circle-fill fs-1 text-success"></i>
+                                                <div>
+                                                    <span class="medium-small">Sản lượng (Khối)</span>
+                                                    <h5 class="mt-0 mb-0 soKhoi-Year"></h5>
+                                                </div>
+                                            </div>
+                                        </a>
+                                    </div>
+                                    <div class="col s3">
+                                        <a href="javascript:;" onclick="YearChartData(3, 'red')">
+                                            <div class="d-flex gap-3 align-items-center">
+                                                <i class="bi bi-circle-fill fs-1 text-danger"></i>
+                                                <div>
+                                                    <span class="medium-small">Phí VC</span>
+                                                    <h5 class="mt-0 mb-0 soTien-Year"></h5>
+                                                </div>
+                                            </div>
+                                        </a>
+                                    </div>
+                                </div>
+                                <div class="row" style="width: 100%; margin: auto; height: 20rem;">
+                                    <canvas id="YearChart"></canvas>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    @*</div>*@
+                </div>
+            </div>
+            @*@await Html.PartialAsync("~/Views/Tracking/IndexContent.cshtml", new TrackingResponse())*@
+        </div>
+
+        <div class="col-md-4">
+            <div class="card mb-4 p-3" style=" min-height: 10rem; ">
+                <h6 class="text-primary fw-bold mb-3">Thông báo mới</h6>
+                @if (Model.NewNotifications != null && Model.NewNotifications.Any())
+                {
+                    <div style="max-height: 30rem; overflow-y: auto;">
+                        <ul class="list-group list-group-flush">
+                            @foreach (var noti in Model.NewNotifications)
+                            {
+                                <li class="list-group-item">
+                                    <strong>@noti.Title</strong><br />
+                                    <small class="text-muted">@noti.Content</small>
+                                </li>
+                            }
+                        </ul>
+                    </div>
+                }
+                else
+                {
+                    <div class="text-muted">Không có thông báo mới</div>
+                }
+            </div>
+
+            <div class="card mb-4 " style=" padding: 4rem 2rem; ">
+                <h6 class="text-primary fw-bold">Kiểm tra đơn hàng </h6>
+                <div class="card-body">
+                    <div class="row">
+
+                        <div class="col-md-12">
+                            <div class="input-group mb-4">
+                                <input type="text" class="form-control" id="barcode" placeholder="Nhập mã vận đơn" value="">
+                                <button class="btn btn-primary" onclick="searchTracking()">Tra cứu</button>
+                            </div>
+                        </div>
+
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+</div>
+<style>
+    .status-card {
+        display: grid;
+        grid-template-rows: 1fr auto; /* Chia thành 2 hàng, hàng trên chiếm 1 phần, hàng dưới tự động co giãn */
+        justify-items: center; /* Căn giữa nội dung theo chiều ngang */
+        align-items: center;
+        transform: translateY(-5px);
+        box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+        min-width: 110px;
+    }
+
+    .row {
+        flex-wrap: wrap;
+    }
+
+    @@media (max-width: 576px) {
+        .status-card strong {
+            font-size: 12px;
+        }
+
+        .status-card h3 {
+            font-size: 16px;
+        }
+    }
+
+    #YearChart{
+        width: 100% !important;
+        height: 280px !important;
+    }
+</style>
+<script>
+    $(document).ready(function () {
+        showYearChart();
+    });
+
+    function searchTracking() {
+        const barcode = document.getElementById('barcode').value.trim();
+        if (!barcode) {
+            return;
+        }
+        window.location.href = `/tracking?barcode=${barcode}`;
+    }
+    function showYearChart() {
+        YearChart();
+        YearChartData(3, 'red');
+    }
+    function YearChart() {
+        // const yearDateInput = $('#yearDate').val();
+        // const yearDate = yearDateInput ? parseDate(yearDateInput) : null;
+        $.ajax({
+            url: '/Statistic/GetYearChartOfAccount' + `?id=${@Model.Id}`,
+            // data: { dataDate: yearDate ? yearDate : '' },
+            type: 'GET',
+            success: function (data) {
+                $(".soDon-Year").text(Math.floor(data.Order));
+                $(".soKg-Year").text(data.Weight.toFixed(2));
+                $(".soKhoi-Year").text(data.Volume.toFixed(2));
+                $(".soTien-Year").text((data.TotalPriceVND/1000).toLocaleString('en-US'));
+            },
+            error: function () {
+            }
+        });
+    }
+    function YearChartData(index, colorW) {
+        const yearDate = $('#yearDate').val() ? parseDate($('#yearDate').val()) : null;
+        $.ajax({
+            url: '/Statistic/GetYearChartDataOfAccount' + `?id=${@Model.Id}`,
+            data: { type: index },
+            type: 'GET',
+            success: function (response) {
+                let data = response.Data;
+
+                // Nếu index = 3 thì chia toàn bộ data cho 1000
+                if (index === 3 && Array.isArray(data)) {
+                    data = data.map(x => x / 1000);
+                }
+
+                createChart('YearChart', data, colorW, response.Title);
+            },
+            error: function () { }
+        });
+    }
+</script>

@@ -1,0 +1,189 @@
+﻿<div class="modal fade" id="assignModal" tabindex="-1" aria-labelledby="assignModalLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="assignModalLabel">
+                    Gán đơn
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div id="assignForm">
+                    <div class="row mb-3">
+                        <div class="col col-6">
+                            <label for="assignBarcode" class="form-label">
+                                Mã vận đơn
+                            </label>
+                            <input type="text" class="form-control" id="assignBarcode" required readonly>
+                        </div>
+                        <div class="col col-6">
+                            <label for="usernameSelect" class="form-label">
+                                Username
+                            </label>
+                            <select class="form-select" id="usernameSelect" style="width:100%" name="Username"></select>
+                            <span class="text-danger" id="usernameSelectError"></span>
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col col-6">
+                            <label for="fromSelect" class="form-label">
+                                Kho TQ
+                            </label>
+                            <select class="form-select" id="fromSelect" style="width:100%"></select>
+                            <span class="text-danger" id="fromSelectError"></span>
+                        </div>
+                        <div class="col col-6">
+                            <label for="toSelect" class="form-label">
+                                Kho VN
+                            </label>
+                            <select class="form-select" id="toSelect" style="width:100%"></select>
+                            <span class="text-danger" id="toSelectError"></span>
+                        </div>
+                    </div>
+                    <div class="row mb-3 align-items-end">
+                        <div class="col col-6">
+                            <label for="shipSelect" class="form-label">
+                                PTVC
+                            </label>
+                            <select class="form-select" id="shipSelect" style="width:100%"></select>
+                            <span class="text-danger" id="shipSelectError"></span>
+                        </div>
+                        <div class="col col-6 text-end">
+                            <button type="submit" onclick="assignTransportation()" class="btn btn-primary">Xác nhận</button>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    function showAssignModal(barcode) {
+        $('#assignBarcode').val(barcode);
+        $("#usernameSelect").select2({
+            dropdownParent: $("#assignModal"),
+            placeholder: "Username",
+            allowClear: true,
+            theme: "bootstrap-5",
+            ajax: {
+                url: "/Account/Paging",
+                dataType: 'json',
+                delay: 250,
+                data: function (params) {
+                    return {
+                        Username: params.term || '',
+                        PageIndex: params.page || 1,
+                        PageSize: 10
+                    };
+                },
+                processResults: function (data, params) {
+                    return {
+                        results: data.Items.map(item => ({
+                            id: item.Username,
+                            text: item.Username
+                        })),
+                        pagination: {
+                            more: data.PageIndex < data.TotalPage && params.term
+                        }
+                    };
+                },
+                cache: true
+            }
+        });
+        $.ajax({
+            url: '/Warehouse/GetActive',
+            type: 'GET',
+            dataType: 'json',
+            success: function (data) {
+                var fromSelect = $('#fromSelect');
+                fromSelect.empty();
+                var toSelect = $('#toSelect');
+                toSelect.empty();
+                var shipSelect = $('#shipSelect');
+                shipSelect.empty();
+                $.each(data, function (index, item) {
+                    switch (item.Type) {
+                        case 1:
+                            fromSelect.append($('<option>', {
+                                value: item.Id,
+                                text: item.Name
+                            }));
+                            break;
+                        case 2:
+                            toSelect.append($('<option>', {
+                                value: item.Id,
+                                text: item.Name
+                            }));
+                            break;
+                        case 3:
+                            shipSelect.append($('<option>', {
+                                value: item.Id,
+                                text: item.Name
+                            }));
+                            break;
+                        default: break;
+                    }
+
+                });
+            },
+            error: function () {
+                showToast(response.responseJSON.Message, response.responseJSON.Type, false);
+            }
+        });
+        $('#assignModal').modal('show');
+    }
+    function assignTransportation() {
+        let isValid = true;
+        const barcode = $('#assignBarcode').val();
+        const username = $('#usernameSelect').val();
+        const fromId = $('#fromSelect').val();
+        const toId = $('#toSelect').val();
+        const shipId = $('#shipSelect').val();
+
+        $('.text-danger').text('');
+
+        if (!barcode) {
+            $('#assignBarcodeError').text('Mã vận đơn không được để trống.');
+            isValid = false;
+        }
+        if (!username) {
+            $('#usernameSelectError').text('Vui lòng chọn username.');
+            isValid = false;
+        }
+        if (!fromId) {
+            $('#fromSelectError').text('Vui lòng chọn kho gửi.');
+            isValid = false;
+        }
+        if (!toId) {
+            $('#toSelectError').text('Vui lòng chọn Kho TQ.');
+            isValid = false;
+        }
+        if (!shipId) {
+            $('#shipSelectError').text('Vui lòng chọn phương thức vận chuyển.');
+            isValid = false;
+        }
+        if (!isValid) return;
+        const request = {
+            Barcode: barcode,
+            AccountName: username,
+            FromId: fromId,
+            ToId: toId,
+            ShipId: shipId
+        };
+        $.ajax({
+            url: '/Scan/AssignTransportationToCustomer',
+            type: 'PUT',
+            contentType: 'application/json',
+            data: JSON.stringify(request),
+            success: function (response) {
+                showToast('Gán đơn thành công', response.Type, false);
+                handleAfterAssign();
+                $('#assignModal').modal('hide');
+            },
+            error: function (response) {
+                showToast(response.responseJSON.Message, response.responseJSON.Type, false);
+            }
+        });
+    }
+</script>
