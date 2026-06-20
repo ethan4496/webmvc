@@ -656,12 +656,18 @@ namespace WebMVC.Services
                     }
                     else
                     {
-                        chromePath = "/snap/bin/chromium";
+                        chromePath = "/usr/bin/google-chrome";
                     }
                     await using var browser = await Puppeteer.LaunchAsync(new LaunchOptions
                     {
                         Headless = true,
-                        ExecutablePath = chromePath
+                        ExecutablePath = chromePath,
+                        Args = new[]
+                        {
+                            "--no-sandbox",
+                            "--disable-setuid-sandbox",
+                            "--disable-dev-shm-usage"
+                        }
                     });
 
                     await using var page = await browser.NewPageAsync();

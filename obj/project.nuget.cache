@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "+va3gtyQSsM=",
+  "dgSpecHash": "3k96nUENpx4=",
   "success": true,
   "projectFilePath": "D:\\github\\webmvc\\WebMVC.csproj",
   "expectedPackageFiles": [
@@ -103,7 +103,8 @@
     "C:\\Users\\Admin\\.nuget\\packages\\system.threading.channels\\6.0.0\\system.threading.channels.6.0.0.nupkg.sha512",
     "C:\\Users\\Admin\\.nuget\\packages\\system.threading.tasks.extensions\\4.5.4\\system.threading.tasks.extensions.4.5.4.nupkg.sha512",
     "C:\\Users\\Admin\\.nuget\\packages\\system.windows.extensions\\6.0.0\\system.windows.extensions.6.0.0.nupkg.sha512",
-    "C:\\Users\\Admin\\.nuget\\packages\\vng.zalo.zalodotnetsdk\\2.1.2\\vng.zalo.zalodotnetsdk.2.1.2.nupkg.sha512"
+    "C:\\Users\\Admin\\.nuget\\packages\\vng.zalo.zalodotnetsdk\\2.1.2\\vng.zalo.zalodotnetsdk.2.1.2.nupkg.sha512",
+    "C:\\Users\\Admin\\.nuget\\packages\\microsoft.netcore.app.host.linux-x64\\8.0.28\\microsoft.netcore.app.host.linux-x64.8.0.28.nupkg.sha512"
   ],
   "logs": [
     {
@@ -113,7 +114,8 @@
       "message": "Package 'AutoMapper' 13.0.1 has a known high severity vulnerability, https://github.com/advisories/GHSA-rvv3-g6hj-g44x",
       "libraryId": "AutoMapper",
       "targetGraphs": [
-        "net8.0"
+        "net8.0",
+        "net8.0/linux-x64"
       ]
     },
     {

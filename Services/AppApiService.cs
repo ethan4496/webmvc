@@ -302,7 +302,7 @@ namespace WebMVC.Services
             try
             {
                 var currentDate = DateTime.Now;
-                var customerAccount = await _unitOfWork.Repository<Account>().GetQueryable().SingleOrDefaultAsync(x => x.Username == request.Username.Trim());
+                var customerAccount = await _unitOfWork.Repository<Account>().GetQueryable().SingleOrDefaultAsync(x => x.Username == request.Username);
                 //if (customerAccount == null)
                 //{
                 //    rs.Code = APIUtils.GetResponseCode(APIUtils.ResponseCode.NotFound);
@@ -375,7 +375,7 @@ namespace WebMVC.Services
                 await _unitOfWork.RollbackAsync();
                 rs.Code = APIUtils.GetResponseCode(APIUtils.ResponseCode.NotFound);
                 rs.Status = APIUtils.ResponseMessage.Error.ToString();
-                rs.Message = ex.Message;
+                rs.Message = ex.ToString();
                 return rs;
             }
         }
