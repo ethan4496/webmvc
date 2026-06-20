@@ -1600,6 +1600,7 @@ namespace WebMVC.Services
         public async Task<ResponseClass> UploadFile(IFormFile request)
         {
             var rs = new ResponseClass();
+            
             var fileUrl = await _uploadFileService.UploadFile(request);
             rs.Message = fileUrl;
             rs.Code = APIUtils.GetResponseCode(APIUtils.ResponseCode.SUCCESS);
