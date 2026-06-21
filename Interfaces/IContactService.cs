@@ -10,9 +10,9 @@ namespace WebMVC.Interfaces
 {
     public interface IContactService
     {
-        Task<PagedList<ContactListResponse>> GetPaging(CampaignSearch search);
-        Task CreateAsync(CreateCampaignRequest request);
-        Task SaveAsync(int id, CreateCampaignRequest request);
+        Task<PagedList<ContactListResponse>> GetPaging(ContactSearch search);
+        Task CreateAsync(CreateContactListRequest request);
+        Task addContact(int id, AddContactRequest request);
         Task<Campaign> GetCampaignById(int id);
         Task DeleteAsync(int id);
 

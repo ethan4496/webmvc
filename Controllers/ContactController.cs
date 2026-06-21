@@ -29,12 +29,11 @@ namespace WebMVC.Controllers
         [HttpGet]
         public async Task<IActionResult> Index()
         {
-            var templates = await _contactService.GetPage();
-            return View(templates);
+            return View();
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetTemplatePaging(CampaignSearch search)
+        public async Task<IActionResult> GetContactListPaging(ContactSearch search)
         {
             var data = await _contactService.GetPaging(search);
             return Json(new
@@ -48,23 +47,23 @@ namespace WebMVC.Controllers
         }
 
         
-        [Route("create-campagin")]
+        [Route("create-contact-list")]
         [HttpGet]
         public async Task<IActionResult> Create()
         {
             return View();
         }
         
-        [Route("campagins")]
+        [Route("contact-lists")]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(CreateCampaignRequest request)
+        public async Task<IActionResult> Create(CreateContactListRequest request)
         {
             try
             {
                 await _contactService.CreateAsync(request);
 
-                TempData["SuccessMessage"] = "Tạo template thành công";
+                TempData["SuccessMessage"] = "Tạo contact list thành công";
 
                 return Redirect("/templates");
             }
@@ -75,26 +74,15 @@ namespace WebMVC.Controllers
                 return View(request);
             }
         }
-        [Route("edit-campaign/{id}")]
-        [HttpGet]
-        public async Task<IActionResult> Edit(int id)
-        {
-            if (id <= 0)
-                return BadRequest();
-            var template = await _contactService.GetCampaignById(id);
-            if (template == null)
-                return NotFound();
-            return View(template);
-        }
 
-        [Route("edit-campaign/{id}")]
+        [Route("add-contact/{id}")]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Save(int id, CreateCampaignRequest request)
+        public async Task<IActionResult> Save(int id, AddContactRequest request)
         {
             try
             {
-                await _contactService.SaveAsync(id, request);
+                await _contactService.addContact(id, request);
                 TempData["SuccessMessage"] = "Save template thành công";
                 return Redirect("/templates");
             }

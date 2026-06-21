@@ -6,6 +6,7 @@ namespace WebMVC.Interfaces
     {
         IQueryable<T> GetQueryable();
         Task Add(T entity, DateTime currentDate, int currentAccountId);
+        Task AddPlain(T entity);
         Task AddRange(List<T> entities, DateTime currentDate, int currentAccountId);
         void Update(T entity, DateTime currentDate, int currentAccountId);
         void UpdateRange(List<T> entities, DateTime currentDate, int currentAccountId);

@@ -1,5 +1,6 @@
 using AutoMapper;
 using Azure.Core;
+using ClosedXML.Excel;
 using DocumentFormat.OpenXml.Office2010.Excel;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
@@ -42,48 +43,42 @@ namespace WebMVC.Services
             _uploadFileService = uploadFileService;
         }
 
-        public async Task<PagedList<ContactListResponse>> GetPaging(CampaignSearch search)
+        public async Task<PagedList<ContactListResponse>> GetPaging(ContactSearch search)
         {
             var loggedModel = _httpContextService.GetLoggedModel();
             return await GetPagingForAPI(search, loggedModel);
 
         }
 
-        public async Task<PagedList<CampaignResponse>> GetPagingForAPI(CampaignSearch search, LoggedModel loggedModel)
+        public async Task<PagedList<ContactListResponse>> GetPagingForAPI(ContactSearch search, LoggedModel loggedModel)
         {
-            var query = _unitOfWork.Repository<Campaign>().GetQueryable();
+
+            var query = _unitOfWork.Repository<ContactList>().GetQueryable();
             if (!string.IsNullOrWhiteSpace(search.Name))
             {
-                query = query.Where(x =>
-                    x.Name.Contains(search.Name));
+                query = query.Where(x => x.Name.Contains(search.Name));
             }
 
-            if (!string.IsNullOrWhiteSpace(search.Status))
-            {
-                query = query.Where(x =>
-                    x.Status == search.Status);
-            }
-
-            if (search.FromDate.HasValue)
-            {
-                query = query.Where(x =>
-                    x.Created >= search.FromDate.Value);
-            }
-
-            if (search.ToDate.HasValue)
-            {
-                var toDate = search.ToDate.Value.Date.AddDays(1);
-
-                query = query.Where(x =>
-                    x.Created < toDate);
-            }
-
-            var totalItems = await query.CountAsync();
+            var total = await query.CountAsync();
 
             var items = await query
                 .OrderByDescending(x => x.Created)
                 .Skip((search.PageIndex - 1) * search.PageSize)
                 .Take(search.PageSize)
+                .Select(x => new ContactListResponse
+                {
+                    Id = x.Id,
+                    Name = x.Name,
+                    Contacts = x.ContactListContacts
+                        .Select(clc => new Contact
+                        {
+                            Id = clc.Contact.Id,
+                            FirstName = clc.Contact.FirstName,
+                            LastName = clc.Contact.LastName,
+                            Email = clc.Contact.Email
+                        })
+                        .ToList()
+                })
                 .ToListAsync();
             // Console.WriteLine(
             //     "items"
@@ -91,25 +86,25 @@ namespace WebMVC.Services
             // Console.WriteLine(
             //     JsonConvert.SerializeObject(items, Formatting.Indented)
             // );
-            var responseItems = items.Select(x => new CampaignResponse
-            {
-                Id = x.Id,
-                Name = x.Name,
-                Subject = x.Subject,
-                Status = x.Status,
-                Body = x.Body,
-                Created = x.Created,
-                CreatedBy = x.CreatedBy,
-                Updated = x.Updated,
-                UpdateBy = x.UpdateBy
-            }).ToList();
+            // var responseItems = items.Select(x => new CampaignResponse
+            // {
+            //     Id = x.Id,
+            //     Name = x.Name,
+            //     Subject = x.Subject,
+            //     Status = x.Status,
+            //     Body = x.Body,
+            //     Created = x.Created,
+            //     CreatedBy = x.CreatedBy,
+            //     Updated = x.Updated,
+            //     UpdateBy = x.UpdateBy
+            // }).ToList();
 
-            return new PagedList<CampaignResponse>
+            return new PagedList<ContactListResponse>
             {
-                Items = responseItems,
+                Items = items,
                 PageIndex = search.PageIndex,
                 PageSize = search.PageSize,
-                TotalItem = totalItems
+                TotalItem = total
             };
         }
         public async Task<Campaign> GetCampaignById(int id)
@@ -117,44 +112,104 @@ namespace WebMVC.Services
             var template = await _unitOfWork.Repository<Campaign>().GetQueryable().FirstOrDefaultAsync(x => x.Id == id);
             return template;
         }
-        public async Task CreateAsync(CreateCampaignRequest request)
+        public async Task CreateAsync(CreateContactListRequest request)
         {
             var currentDate = DateTime.Now;
             var currentAccount = await _httpContextService.GetCurrentAccount();
-            var template = new Campaign
+            var contactList = new ContactList
             {
                 Name = request.Name,
-                Subject = request.Subject,
-                Body = request.Body,
-                Status = request.Status,
-                Created = currentDate,
             };
 
-            await _unitOfWork.Repository<Campaign>().Add(template, currentDate, currentAccount.Id);
+            await _unitOfWork.Repository<ContactList>().Add(contactList, currentDate, currentAccount.Id);
+            if (request.File != null && request.File.Length > 0)
+            {
+                using var stream = new MemoryStream();
+                await request.File.CopyToAsync(stream);
+                stream.Position = 0;
+
+                using var workbook = new XLWorkbook(stream);
+                var worksheet = workbook.Worksheet(1);
+
+                // Bỏ qua dòng header (dòng 1)
+                var rows = worksheet.RowsUsed().Skip(1);
+
+                foreach (var row in rows)
+                {
+                    var firstName = row.Cell(1).GetString().Trim();
+                    var lastName = row.Cell(2).GetString().Trim();
+                    var email = row.Cell(3).GetString().Trim();
+
+
+                    if (string.IsNullOrWhiteSpace(firstName) &&
+                        string.IsNullOrWhiteSpace(lastName) &&
+                        string.IsNullOrWhiteSpace(email))
+                    {
+                        continue;
+                    }
+
+                    var contact = new Contact
+                    {
+                        FirstName = firstName,
+                        LastName = lastName,
+                        Email = email,
+                    };
+
+                    await _unitOfWork.Repository<Contact>().Add(contact, currentDate, currentAccount.Id);
+
+                    var contactListContact = new ContactListContact
+                    {
+                        ContactList = contactList,
+                        Contact = contact,
+                    };
+
+                    await _unitOfWork.PlainRepository<ContactListContact>().AddAsync(contactListContact);
+                }
+            }
 
             await _unitOfWork.SaveAsync();
         }
-        public async Task SaveAsync(int id, CreateCampaignRequest request)
+        public async Task addContact(int id, AddContactRequest request)
         {
+            var contactListExists = await _unitOfWork.Repository<ContactList>()
+            .GetQueryable()
+            .AnyAsync(x => x.Id == id);
+
+            if (!contactListExists)
+            {
+                throw new Exception("ContactList not found");
+            }
+            var emailExists = await _unitOfWork.Repository<Contact>()
+                .GetQueryable()
+                .AnyAsync(c => c.Email == request.Email);
+
+            if (emailExists)
+            {
+                throw new Exception("Email already exists in this contact list");
+            }
             var currentDate = DateTime.Now;
             var currentAccount = await _httpContextService.GetCurrentAccount();
-            var template = new EmailTemplate
+            var contact = new Contact
             {
-                Id = id, 
-                Name = request.Name,
-                Subject = request.Subject,
-                Body = request.Body,
-                Status = request.Status,
-                Created = currentDate,
+                FirstName = request.FirstName,
+                LastName = request.LastName,
+                Email = request.Email,
             };
-            _unitOfWork.Repository<EmailTemplate>().Update(template, currentDate, currentAccount.Id);
+
+            await _unitOfWork.Repository<Contact>().Add(contact, currentDate, currentAccount.Id);
+            var contactListContact = new ContactListContact
+            {
+                ContactListId = id,
+                Contact = contact,
+            };
+            await _unitOfWork.PlainRepository<ContactListContact>().AddAsync(contactListContact);
 
             await _unitOfWork.SaveAsync();
         }
 
         public async Task DeleteAsync(int id)
         {
-            var entity = await _unitOfWork.Repository<Campaign>().GetQueryable()
+            var entity = await _unitOfWork.Repository<ContactList>().GetQueryable()
                 .FirstOrDefaultAsync(x => x.Id == id);
 
             if (entity == null)
@@ -162,10 +217,10 @@ namespace WebMVC.Services
                 throw new Exception("Không tìm thấy dữ liệu");
             }
 
-            _unitOfWork.Repository<Campaign>().Delete(entity);
+            _unitOfWork.Repository<ContactList>().Delete(entity);
 
             await _unitOfWork.SaveAsync();
         }
-        
+
     }
 }
