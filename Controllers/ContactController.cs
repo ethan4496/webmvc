@@ -53,6 +53,19 @@ namespace WebMVC.Controllers
         {
             return View();
         }
+
+        [Route("contact-detail/{id}")]
+        [HttpGet]
+        public async Task<IActionResult> Detail(int id)
+        {
+             if (id <= 0)
+                return BadRequest();
+            var contact = await _contactService.GetContactById(id);
+            if (contact == null)
+                return NotFound();
+            
+            return View(contact);
+        }
         
         [Route("contact-lists")]
         [HttpPost]
@@ -65,7 +78,7 @@ namespace WebMVC.Controllers
 
                 TempData["SuccessMessage"] = "Tạo contact list thành công";
 
-                return Redirect("/templates");
+                return Redirect("/contact-lists");
             }
             catch (Exception ex)
             {
@@ -75,22 +88,54 @@ namespace WebMVC.Controllers
             }
         }
 
-        [Route("add-contact/{id}")]
+        [Route("edit-contact/{id}")]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Save(int id, AddContactRequest request)
+        public async Task<IActionResult> Save(int id, AddContactListRequest request)
         {
             try
             {
-                await _contactService.addContact(id, request);
+                await _contactService.SaveAsync(id, request);
                 TempData["SuccessMessage"] = "Save template thành công";
-                return Redirect("/templates");
+                return Redirect("/contact-lists");
             }
             catch (Exception ex)
             {
                 ModelState.AddModelError(string.Empty, ex.Message);
-                var template = await _contactService.GetCampaignById(id);
-                return View("Edit", template);
+                var contact = await _contactService.GetContactById(id);
+                return View("Detail", contact);
+            }
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> AddContact(AddContactRequest request)
+        {
+            try
+            {
+                Console.WriteLine(
+                    "AddContact"
+                );
+                var contact = await _contactService.addContact(request);
+                return Ok(new
+                {
+                    success = true,
+                    data = new { contact.Id, contact.FirstName, contact.LastName, contact.Email },
+                    message = "Thêm liên hệ thành công"
+                });
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(
+                    "items"
+                );
+                Console.WriteLine(
+                    ex.ToString()
+                );
+                return BadRequest(new
+                {
+                    success = false,
+                    message = ex.Message
+                });
             }
         }
         [HttpDelete]
@@ -101,6 +146,18 @@ namespace WebMVC.Controllers
                 throw new AppException("ModelState InValid");
             }
             await _contactService.DeleteAsync(id);
+            return new ApiResponse()
+            {
+                StatusCode = (int)HttpStatusCode.OK,
+                Message = "Xóa thành công",
+                Type = (int)EApiResponseType.Success,
+            };
+        }
+        [HttpDelete]
+        public async Task<ApiResponse> DeleteContact(int id, int ContactListId)
+        {
+            
+            await _contactService.DeleteContact(id, ContactListId);
             return new ApiResponse()
             {
                 StatusCode = (int)HttpStatusCode.OK,

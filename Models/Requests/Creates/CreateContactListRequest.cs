@@ -10,7 +10,4 @@ public class CreateContactListRequest
 
     [Required]
     public IFormFile File { get; set; }
-
-    [Required]
-    public int TemplateId { get; set; }
 }

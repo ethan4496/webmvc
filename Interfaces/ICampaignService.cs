@@ -15,6 +15,8 @@ namespace WebMVC.Interfaces
         Task SaveAsync(int id, CreateCampaignRequest request);
         Task<Campaign> GetCampaignById(int id);
         Task DeleteAsync(int id);
-
+        Task<List<object>> GetAllCampaignNames();
+        Task<object> GetReportStats(int? campaignId);
+        Task<object> GetReportLogs(int? campaignId, int pageIndex, int pageSize);
     }
 }

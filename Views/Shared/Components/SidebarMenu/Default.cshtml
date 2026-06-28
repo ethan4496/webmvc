@@ -82,6 +82,18 @@
                     <a href="/import-excel/@((int)ETransportationStatus.ReturningToVNWarehouse)"><i class="bi bi-dot"></i>Excel đang về VN</a>
                     <a href="/import-excel/@((int)ETransportationStatus.ArrivedAtVNWarehouse)"><i class="bi bi-dot"></i>Excel kho VN</a>
                 </div>
+                <a href="#" onclick="toggleDropdown('emailService')">
+                    <div class="d-flex gap-3">
+                        <i class="bi bi-envelope-at"></i> <span>Email Service</span>
+                    </div>
+                    <i class="bi bi-chevron-down dropdown-icon"></i>
+                </a>
+                <div id="emailService" class="dropdown-content">
+                    <a href="/templates"><i class="bi bi-dot"></i>Templates</a>
+                    <a href="/campagins"><i class="bi bi-dot"></i>Campaigns</a>
+                    <a href="/contact-lists"><i class="bi bi-dot"></i>Contact List</a>
+                    <a href="/campaign-report"><i class="bi bi-dot"></i>Report</a>
+                </div>
                 <a href="/destination-warehouse">
                     <div class="d-flex gap-3">
                         <i class="bi bi-truck"></i> <span>Kiểm hàng Kho VN</span>

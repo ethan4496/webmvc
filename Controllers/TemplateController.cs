@@ -14,13 +14,15 @@ using WebMVC.Ultilities.Enums;
 namespace WebMVC.Controllers
 {
     [Authorize]
-    
+
     public class TemplateController : Controller
     {
         private readonly ITemplateService _templateService;
-        public TemplateController(ITemplateService templateService, IWarehouseService warehouseService)
+        private readonly IUploadFileService _uploadFileService;
+        public TemplateController(ITemplateService templateService, IWarehouseService warehouseService, IUploadFileService uploadFileService)
         {
             _templateService = templateService;
+            _uploadFileService = uploadFileService;
         }
 
         [Route("templates")]
@@ -28,6 +30,14 @@ namespace WebMVC.Controllers
         public async Task<IActionResult> Index()
         {
             return View();
+        }
+
+        [Route("signature")]
+        [HttpGet]
+        public async Task<IActionResult> Signature()
+        {
+            var signature = await _templateService.GetSignature();
+            return View(signature);
         }
 
         [HttpGet]
@@ -49,7 +59,8 @@ namespace WebMVC.Controllers
         [HttpGet]
         public async Task<IActionResult> Create()
         {
-            return View();
+            var signature = await _templateService.GetSignature();
+            return View(signature);
         }
         
         [Route("templates")]
@@ -64,6 +75,37 @@ namespace WebMVC.Controllers
                 TempData["SuccessMessage"] = "Tạo template thành công";
 
                 return Redirect("/templates");
+            }
+            catch (Exception ex)
+            {
+                ModelState.AddModelError(string.Empty, ex.Message);
+                var signature = await _templateService.GetSignature();
+                return View(signature);
+            }
+        }
+        [Route("signature/upload-logo")]
+        [HttpPost]
+        public async Task<IActionResult> UploadSignatureLogo(IFormFile file)
+        {
+            if (file == null || file.Length == 0)
+                return BadRequest(new { message = "No file provided" });
+
+            var path = await _uploadFileService.UploadImage(file);
+            return Ok(new { path });
+        }
+
+        [Route("signature")]
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> SaveSignature(CreateSignatureRequest request)
+        {
+            try
+            {
+                await _templateService.saveSignature(request);
+
+                TempData["SuccessMessage"] = "Tạo Signature thành công";
+
+                return Redirect("/signature");
             }
             catch (Exception ex)
             {

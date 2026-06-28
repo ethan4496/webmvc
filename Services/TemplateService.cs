@@ -51,10 +51,12 @@ namespace WebMVC.Services
 
         public async Task<List<EmailTemplate>> GetAll()
         {
-            var query = _unitOfWork.Repository<EmailTemplate>().GetQueryable();
+            var currentAccount = await _httpContextService.GetCurrentAccount();
+            var query = _unitOfWork.Repository<EmailTemplate>().GetQueryable().Where(x => x.CreatedBy == currentAccount.Id);
             var items = await query
                 .AsNoTracking()
                 .OrderByDescending(x => x.Created)
+                .Where(x => x.Status == "active")
                 .Select(x => new EmailTemplate
                 {
                     Id = x.Id,
@@ -67,7 +69,8 @@ namespace WebMVC.Services
 
         public async Task<PagedList<TemplateResponse>> GetPagingForAPI(TemplateSearch search, LoggedModel loggedModel)
         {
-            var query = _unitOfWork.Repository<EmailTemplate>().GetQueryable();
+            var currentAccount = await _httpContextService.GetCurrentAccount();
+            var query = _unitOfWork.Repository<EmailTemplate>().GetQueryable().Where(x => x.CreatedBy == currentAccount.Id);
             if (!string.IsNullOrWhiteSpace(search.Name))
             {
                 query = query.Where(x =>
@@ -133,6 +136,13 @@ namespace WebMVC.Services
             var template = await _unitOfWork.Repository<EmailTemplate>().GetQueryable().FirstOrDefaultAsync(x => x.Id == id);
             return template;
         }
+        public async Task<AccountSignature> GetSignature()
+        {
+            var currentAccount = await _httpContextService.GetCurrentAccount();
+            var signature = await _unitOfWork.Repository<AccountSignature>().GetQueryable().FirstOrDefaultAsync(x => x.AccountId == currentAccount.Id);
+            return signature;
+        }
+
         public async Task CreateAsync(CreateTemplateRequest request)
         {
             var currentDate = DateTime.Now;
@@ -156,7 +166,7 @@ namespace WebMVC.Services
             var currentAccount = await _httpContextService.GetCurrentAccount();
             var template = new EmailTemplate
             {
-                Id = id, 
+                Id = id,
                 Name = request.Name,
                 Subject = request.Subject,
                 Body = request.Body,
@@ -164,6 +174,33 @@ namespace WebMVC.Services
                 Created = currentDate,
             };
             _unitOfWork.Repository<EmailTemplate>().Update(template, currentDate, currentAccount.Id);
+
+            await _unitOfWork.SaveAsync();
+        }
+
+        public async Task saveSignature(CreateSignatureRequest request)
+        {
+            var currentDate = DateTime.Now;
+            var currentAccount = await _httpContextService.GetCurrentAccount();
+            var signature = await _unitOfWork.Repository<AccountSignature>().GetQueryable().FirstOrDefaultAsync(x => x.AccountId == currentAccount.Id);
+            if (signature != null)
+            {
+                signature.Body = request.Body;
+                if (!string.IsNullOrEmpty(request.LogoPath))
+                    signature.Logo = request.LogoPath;
+                _unitOfWork.Repository<AccountSignature>().Update(signature, currentDate, currentAccount.Id);
+            }
+            else
+            {
+                var template = new AccountSignature
+                {
+                    AccountId = currentAccount.Id,
+                    Body = request.Body,
+                    Logo = request.LogoPath,
+                };
+
+                await _unitOfWork.Repository<AccountSignature>().Add(template, currentDate, currentAccount.Id);
+            }
 
             await _unitOfWork.SaveAsync();
         }
@@ -182,6 +219,6 @@ namespace WebMVC.Services
 
             await _unitOfWork.SaveAsync();
         }
-        
+
     }
 }

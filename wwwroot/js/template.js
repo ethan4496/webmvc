@@ -158,6 +158,3 @@ function showLoading() {
 function hideLoading() {
     $('#loading').hide();
 }
-$(document).ready(function () {
-    loadPage(1);
-})

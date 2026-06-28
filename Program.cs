@@ -35,11 +35,15 @@ builder.Services.AddScoped<IStatisticService, StatisticService>();
 builder.Services.AddScoped<IWebConfigurationService, WebConfigurationService>();
 builder.Services.AddScoped<IZaloAPIService, ZaloAPIService>();
 builder.Services.AddScoped<IStaffTargetService, StaffTargetService>();
+builder.Services.AddScoped<IContactService, ContactService>();
+builder.Services.AddScoped<ICampaignService, CampaignService>();
+builder.Services.AddScoped<IEmailService, EmailService>();
 
 builder.Services.AddScoped<IAppApiService, AppApiService>();
 
 builder.Services.AddSingleton<IBackgroundTaskQueue, BackgroundTaskQueue>();
 builder.Services.AddHostedService<QueuedHostedService>();
+builder.Services.AddHostedService<CampaignJob>();
 
 builder.Services.AddControllersWithViews();
 builder.Services.AddSignalR(options =>

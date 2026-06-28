@@ -1,0 +1,133 @@
+@using WebMVC.Entities
+@using WebMVC.Models.Responses
+@using WebMVC.Interfaces
+@using WebMVC.Models.Requests.Creates
+@using WebMVC.Ultilities.Enums
+
+<div class="container-fluid mt-4">
+    <div class="card mb-4">
+        <div class="card-header d-flex justify-content-between align-items-center">
+            <h2>Thêm danh sách liên hệ</h2>
+        </div>
+        <form action="/contact-lists" method="post" enctype="multipart/form-data">
+            <div asp-validation-summary="All" class="text-danger"></div>
+            @Html.AntiForgeryToken()
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-6 col-xs-12 mb-3">
+                        <label for="barCode" class="form-label">Tên template</label>
+                        <input type="text" class="form-control" required value="" id="name" name="Name"
+                               placeholder="Tên template">
+                    </div>
+                    <div class="col-xs-12">
+                        <div id="dropzone" class="dropzone">
+                            <input type="file" id="fileInput" required name="File" accept=".xlsx,.xls" style="display: block;" />
+
+                            <div id="dropContent">
+                                <i class="ti ti-upload" style="font-size: 32px; color: #888780;"></i>
+                                <p class="dz-title">Kéo thả file Excel vào đây</p>
+                                <p class="dz-subtitle">hoặc bấm để chọn file (.xlsx, .xls)</p>
+                                <button type="button" id="browseBtn" class="btn btn-outline-secondary">Chọn
+                                    file</button>
+                                </div>
+
+                                <div id="fileInfo" class="file-info" style="display: none;">
+                                    <i class="ti ti-file-spreadsheet" style="font-size: 22px; color: #185fa5;"></i>
+                                    <div class="file-text">
+                                        <p id="fileName" class="file-name"></p>
+                                        <p id="fileSize" class="file-size"></p>
+                                    </div>
+                                    <button type="button" id="removeBtn" class="btn-remove" aria-label="Xoá file">
+                                        <i class="ti ti-x"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <p id="errorMsg" class="error-msg" style="display:none;"></p>
+
+                    </div>
+                    <div class="row pt-2">
+                        <div class="text-end">
+                            <button type="submit" class="btn btn-primary btn-search">Save</button>
+                        </div>
+                    </div>
+
+                </div>
+            </form>
+        </div>
+        <div id="loading" style="display: none;">
+            <div class="loading-overlay">
+                <div class="spinner"></div>
+            </div>
+        </div>
+        @section Scripts {
+            <script src="~/js/contact.js" asp-append-version="true"></script>
+            <style>
+                [data-bs-toggle="tooltip"] {
+                cursor: pointer;
+                }
+
+                .dropzone {
+                border: 1.5px dashed #b4b2a9;
+                border-radius: 12px;
+                background: #f1efe8;
+                padding: 40px 24px;
+                text-align: center;
+                cursor: pointer;
+                transition: background 0.15s, border-color 0.15s;
+                }
+
+                .dropzone.dragover {
+                border-color: #185fa5;
+                background: #ffffff;
+                }
+
+                .dz-title {
+                font-weight: 500;
+                font-size: 15px;
+                margin: 12px 0 4px;
+                }
+
+                .dz-subtitle {
+                font-size: 13px;
+                color: #5f5e5a;
+                margin: 0 0 16px;
+                }
+
+                .file-info {
+                align-items: center;
+                justify-content: center;
+                gap: 10px;
+                display: flex;
+                }
+
+                .file-text {
+                text-align: left;
+                }
+
+                .file-name {
+                font-weight: 500;
+                font-size: 14px;
+                margin: 0;
+                }
+
+                .file-size {
+                font-size: 12px;
+                color: #5f5e5a;
+                margin: 0;
+                }
+
+                .btn-remove {
+                border: none;
+                background: transparent;
+                cursor: pointer;
+                padding: 6px;
+                }
+
+                .error-msg {
+                color: #a32d2d;
+                font-size: 13px;
+                margin: 8px 0 0;
+                }
+            </style>
+        }

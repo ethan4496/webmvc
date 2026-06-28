@@ -11,10 +11,13 @@ namespace WebMVC.Interfaces
     public interface IContactService
     {
         Task<PagedList<ContactListResponse>> GetPaging(ContactSearch search);
+        Task<List<ContactList>> GetAll();
         Task CreateAsync(CreateContactListRequest request);
-        Task addContact(int id, AddContactRequest request);
-        Task<Campaign> GetCampaignById(int id);
+        Task<Contact> addContact(AddContactRequest request);
+        Task<ContactListResponse> GetContactById(int id);
+        Task SaveAsync(int id, AddContactListRequest request);
         Task DeleteAsync(int id);
+        Task DeleteContact(int id, int ContactListId);
 
     }
 }

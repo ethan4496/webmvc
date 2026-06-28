@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Http;
 
 public class AddContactRequest
 {
+    public int Id {get; set;}
     [Required]
     [MaxLength(255)]
     public string FirstName { get; set; }

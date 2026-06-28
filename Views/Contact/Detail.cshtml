@@ -1,0 +1,116 @@
+@using WebMVC.Entities
+@using WebMVC.Models.Responses
+@using WebMVC.Interfaces
+@using WebMVC.Models.Requests.Creates
+@using WebMVC.Ultilities.Enums
+@model ContactListResponse
+
+<div class="container-fluid mt-4">
+    <div class="card mb-4">
+        <div class="card-header d-flex justify-content-between align-items-center">
+            <h2>Liên hệ : @Model.Name</h2>
+        </div>
+        <form action="/edit-contact/@Model.Id" method="post">
+            <div asp-validation-summary="All" class="text-danger"></div>
+            @Html.AntiForgeryToken()
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-6 col-xs-12 mb-3">
+                        <label for="barCode" class="form-label">Tên template</label>
+                        <input type="text" class="form-control" value="@Model.Name" id="name" name="Name"
+                               placeholder="Tên template">
+                    </div>
+                    <div class="d-flex justify-content-end mb-3">
+                        <button type="button" data-bs-toggle="modal" data-bs-target="#modal-add" class="btn btn-primary"><i
+                            class="bi bi-plus"></i><span>Thêm</span></button>
+                        </div>
+                        <table id="results" class="table table-hover table-bordered">
+                            <thead class="table">
+                                <tr>
+                                    <th class="text-center">Id</th>
+                                    <th class="text-center">First name</th>
+                                    <th class="text-center">Last name</th>
+                                    <th class="text-center">Email</th>
+                                    <th class="text-center"></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @if (Model.Contacts != null && Model.Contacts.Any())
+                                {
+                                    foreach (var contact in Model.Contacts)
+                                    {
+                                        <tr class="contact-@contact.Id">
+                                            <td class="text-center">@contact.Id</td>
+                                            <td class="text-center">@contact.FirstName</td>
+                                            <td class="text-center">@contact.LastName</td>
+                                            <td class="text-center">@contact.Email</td>
+                                            <td class="text-center">
+                                                <button type="button" class="btn btn-sm btn-danger" onclick="deleteContact(@contact.Id, @Model.Id)">
+                                                    <i class="bi bi-trash"></i>
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    }
+                                }
+                                else
+                                {
+                                    <tr>
+                                        <td colspan="3" class="text-center">Chưa có liên hệ nào</td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="row pt-2">
+                        <div class="text-end">
+                            <button type="submit" class="btn btn-primary btn-search">Save</button>
+                        </div>
+                    </div>
+
+                </div>
+            </form>
+            <div class="modal" tabindex="-1" role="dialog" id="modal-add">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title">Thêm liên hệ</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <form id="addContactForm">
+                                <div class="form-group">
+                                    <label for="firstName">First Name</label>
+                                    <input type="text" class="form-control" id="firstName" name="FirstName" required />
+                                </div>
+                                <div class="form-group">
+                                    <label for="lastName">Last Name</label>
+                                    <input type="text" class="form-control" id="lastName" name="LastName" required />
+                                </div>
+                                <div class="form-group">
+                                    <label for="email">Email</label>
+                                    <input type="email" class="form-control" id="email" name="Email" required />
+                                </div>
+                                <div id="formError" class="text-danger" style="display:none; font-size: 13px;"></div>
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
+                            <button type="button" data-id="@Model.Id" class="btn btn-primary" id="submitContactBtn">Lưu</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="loading" style="display: none;">
+            <div class="loading-overlay">
+                <div class="spinner"></div>
+            </div>
+        </div>
+        @section Scripts {
+            <script src="~/js/contact.js" asp-append-version="true"></script>
+            <style>
+                [data-bs-toggle="tooltip"] {
+                cursor: pointer;
+                }
+            </style>
+        }

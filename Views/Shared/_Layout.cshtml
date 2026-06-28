@@ -180,6 +180,10 @@
                 timepicker: false,
                 format: 'd/m/Y'
             });
+            $('.dateptimeicker').datetimepicker({
+                timepicker: true,
+                format: 'Y-m-d H:i'
+            });
         });
         function parseDate(dateStr) {
             if (!dateStr) return null;

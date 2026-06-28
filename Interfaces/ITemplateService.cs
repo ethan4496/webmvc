@@ -14,7 +14,9 @@ namespace WebMVC.Interfaces
         Task<List<EmailTemplate>> GetAll();
         Task CreateAsync(CreateTemplateRequest request);
         Task SaveAsync(int id, CreateTemplateRequest request);
+        Task saveSignature(CreateSignatureRequest request);
         Task<EmailTemplate> GetTemplateById(int id);
+        Task<AccountSignature> GetSignature();
         Task DeleteAsync(int id);
 
     }

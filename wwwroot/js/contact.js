@@ -72,11 +72,10 @@ function loadPage(page) {
     const fromDate = fromDateInput ? parseDate(fromDateInput) : null;
     const toDate = toDateInput ? parseDate(toDateInput) : null;
     const name = $('#name').val();
-    const status = $('#status').val();
+
     const filters = {
         'PageIndex': page > 1 ? page : 1,
         'PageSize': 20,
-        'Status': $('#status').val(),
         'FromDate': fromDate ? fromDate : '',
         'ToDate': toDate ? toDate : '',
     };
@@ -87,7 +86,7 @@ function loadPage(page) {
     });
 
     $.ajax({
-        url: '/Template/GetTemplatePaging',
+        url: '/Contact/GetContactListPaging',
         data: params,
         type: 'GET',
         beforeSend: function () {
@@ -101,26 +100,18 @@ function loadPage(page) {
             }
             let html = ``;
             data.items.forEach((item) => {
-                html += `<div class="card card-email ${'email-' + item.Id}">
-                    <div class="card-body">
-                        <div class="email-header">
-                            <h5 class="card-title">${item.Name}</h5>
-                            <h6 class="card-subtitle mb-2 text-muted">${item.Subject}</h6>
-                            <p class="card-text mail-content">
-                                ${item.Body}
-                            </p>
-                        </div>
-                        <div class="card-actions">
-                            <span>
-                                ID: ${item.Id}
-                            </span>
-                            <a class="btn email-edit" href="/edit-template/${item.Id}"><i class="bi bi-pencil"></i></a>
-                            <button class="btn email-remove" onclick="removeTempalte(${item.Id})"><i class="bi bi-x-circle"></i></button>
-                        </div>
-                    </div>
-                </div>`
+                html += `<tr class="contact-${item.Id}">
+                    <td>${item.Id}</td>
+                    <td>
+                        ${item.Name}
+                    </td>
+                    <td>
+                        <a class="btn btn-primary" href="/contact-detail/${item.Id}" target="_blank">Chi tiết</a>
+                        <button class="btn btn-danger" onclick="removeList(${item.Id})" target="_blank">Xóa</button>
+                    </td>
+                </tr>`
             })
-            $('#results').html(html);
+            $('#results tbody').html(html);
         },
         complete: function () {
             hideLoading();
@@ -130,12 +121,12 @@ function loadPage(page) {
         }
     });
 }
-const removeTempalte = (id) => {
+const removeList = (id) => {
     const isConfirm = confirm(`Bạn có chắc chắn muốn xóa dòng này`);
-    const parent = $('.email-' + id);
+    const parent = $('.contact-' + id);
     if (isConfirm) {
         $.ajax({
-            url: '/Template/Delete',
+            url: '/Contact/Delete',
             type: 'DELETE',
             data: { Id: id },
             success: function (response) {
@@ -151,6 +142,79 @@ const removeTempalte = (id) => {
         });
     }
 }
+function deleteContact(id, contactListId) {
+    const isConfirm = confirm(`Bạn có chắc chắn muốn xóa dòng này`);
+    const parent = $('.contact-' + id);
+    if (isConfirm) {
+        $.ajax({
+            url: '/Contact/DeleteContact',
+            type: 'DELETE',
+            data: { Id: id, ContactListId: contactListId },
+            success: function (response) {
+                showToast(response.Message, response.Type, false);
+                parent.fadeOut(300);
+            },
+            error: function (response) {
+                showToast(response.responseJSON.Message, response.responseJSON.Type, false);
+            },
+            complete: function () {
+                hideLoading();
+            }
+        });
+    }
+}
+function addMoreContact(id) {
+
+    const firstName = $('#firstName').val();
+    const lastName = $('#lastName').val();
+    const email = $('#email').val();
+    $('#formError').hide()
+    if (!firstName || !lastName || !email) {
+        $('#formError').html(`Vui lòng nhập đủ thông tin`)
+        $('#formError').show()
+        return;
+    }
+    const data = {
+        Id: id,
+        FirstName: firstName,
+        LastName: lastName,
+        Email: email,
+    }
+    $.ajax({
+        url: '/Contact/AddContact',
+        data: data,
+        type: 'POST',
+        beforeSend: function () {
+            showLoading();
+        },
+        success: function (data) {
+            if (data.success) {
+                const contact = data.data
+                const html = `<tr class="contact-${contact.id}">
+                    <td class="text-center">${contact.id}</td>
+                    <td class="text-center">${contact.firstName}</td>
+                    <td class="text-center">${contact.lastName}</td>
+                    <td class="text-center">${contact.email}</td>
+                    <td class="text-center">
+                        <button type="button" class="btn btn-sm btn-danger" onclick="deleteContact(${contact.id} , ${id})">
+                            <i class="bi bi-trash"></i>
+                        </button>
+                    </td>
+                </tr>`
+                $('#results tbody').prepend(html);
+                $('#addContactForm')[0].reset();
+                bootstrap.Modal.getInstance(document.getElementById('modal-add')).hide();
+            }
+            hideLoading();
+        },
+        complete: function () {
+            hideLoading();
+        },
+        error: function () {
+            alert('Lỗi khi tải dữ liệu');
+        }
+    });
+}
 function showLoading() {
     $('#loading').show();
 }
@@ -158,6 +222,80 @@ function showLoading() {
 function hideLoading() {
     $('#loading').hide();
 }
+const dropzone = document.getElementById('dropzone');
+const fileInput = document.getElementById('fileInput');
+const dropContent = document.getElementById('dropContent');
+const fileInfo = document.getElementById('fileInfo');
+const fileName = document.getElementById('fileName');
+const fileSize = document.getElementById('fileSize');
+const browseBtn = document.getElementById('browseBtn');
+const removeBtn = document.getElementById('removeBtn');
+const errorMsg = document.getElementById('errorMsg');
+
+function formatSize(bytes) {
+    if (bytes < 1024) return bytes + ' B';
+    if (bytes < 1024 * 1024) return (bytes / 1024).toFixed(1) + ' KB';
+    return (bytes / (1024 * 1024)).toFixed(2) + ' MB';
+}
+
+function showFile(file) {
+    const validExt = /\.(xlsx|xls)$/i.test(file.name);
+    if (!validExt) {
+        errorMsg.textContent = 'Chỉ hỗ trợ file .xlsx hoặc .xls';
+        errorMsg.style.display = 'block';
+        return;
+    }
+    errorMsg.style.display = 'none';
+    fileName.textContent = file.name;
+    fileSize.textContent = formatSize(file.size);
+    dropContent.style.display = 'none';
+    fileInfo.style.display = 'flex';
+}
+
+if (dropzone) {
+    browseBtn.addEventListener('click', function (e) {
+        e.stopPropagation();
+        fileInput.click();
+    });
+
+    dropzone.addEventListener('click', function () {
+        if (fileInfo.style.display !== 'flex') fileInput.click();
+    });
+
+    fileInput.addEventListener('change', function () {
+        if (fileInput.files.length > 0) showFile(fileInput.files[0]);
+    });
+
+    dropzone.addEventListener('dragover', function (e) {
+        e.preventDefault();
+        dropzone.classList.add('dragover');
+    });
+
+    dropzone.addEventListener('dragleave', function () {
+        dropzone.classList.remove('dragover');
+    });
+
+    dropzone.addEventListener('drop', function (e) {
+        e.preventDefault();
+        dropzone.classList.remove('dragover');
+        const files = e.dataTransfer.files;
+        if (files.length > 0) {
+            fileInput.files = files;
+            showFile(files[0]);
+        }
+    });
+
+    removeBtn.addEventListener('click', function (e) {
+        e.stopPropagation();
+        fileInput.value = '';
+        fileInfo.style.display = 'none';
+        dropContent.style.display = 'block';
+        errorMsg.style.display = 'none';
+    });
+}
 $(document).ready(function () {
-    loadPage(1);
+    $('#submitContactBtn').on('click', function () {
+        var id = $(this).attr("data-id");
+        addMoreContact(id);
+    })
 })

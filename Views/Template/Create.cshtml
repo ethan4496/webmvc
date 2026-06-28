@@ -3,10 +3,13 @@
 @using WebMVC.Interfaces
 @using WebMVC.Models.Requests.Creates
 @using WebMVC.Ultilities.Enums
-@model CreateTemplateRequest
+@model AccountSignature
 @inject IHttpContextService _httpContextService;
+@inject Microsoft.AspNetCore.Hosting.IWebHostEnvironment _env
 @{
     var loggedModel = _httpContextService.GetLoggedModel();
+    var defaultLogo = System.IO.File.ReadAllText(System.IO.Path.Combine(_env.WebRootPath, "templates", "DefaultLogo.html"));
+    var defaultEmail = System.IO.File.ReadAllText(System.IO.Path.Combine(_env.WebRootPath, "templates", "EmailTemplate.html"));
 }
 
 <div class="container-fluid mt-4">
@@ -35,8 +38,21 @@
                         <input type="text" class="form-control" id="subject" name="Subject" placeholder="Subject">
                     </div>
                     <div class="col-md-6 col-xs-12 mb-3">
+
+                    </div>
+                    <div class="col-md-6 col-xs-12 mb-3">
                         <label for="toDate" class="form-label">Content</label>
-                        <textarea rows="10" class="form-control" id="body" name="Body" placeholder="Content"></textarea>
+                        @* <textarea rows="10" class="form-control" id="body" name="Body"
+                        placeholder="Content"></textarea> *@
+                        <div>
+                            <textarea id="body" name="Body"></textarea>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-xs-12 mb-3">
+                        <label for="toDate" class="form-label">Preview</label>
+                        <div id="preview-template">
+                            <iframe id="preview-iframe" style="width:100%;min-height:400px;border:1px solid #dee2e6;border-radius:4px;" frameborder="0"></iframe>
+                        </div>
                     </div>
                 </div>
                 <div class="row pt-2">
@@ -54,7 +70,45 @@
         </div>
     </div>
     @section Scripts {
+        <script src="~/lib/tinymce/js/tinymce/tinymce.min.js"></script>
         <script src="~/js/template.js" asp-append-version="true"></script>
+        <script>
+            var logoTemplate = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(defaultLogo));
+            var bodySignature = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Model?.Body));
+            var defaultEmail = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(defaultEmail));
+
+            function buildFooterHtml() {
+                var logoUrl = "@Model?.Logo";
+                var logoHtml = logoTemplate.replace('{{Logo}}', logoUrl);
+                return '<table border="0" cellpadding="0" cellspacing="0" role="presentation" width="100%">'
+                     + '<tr><td style="direction:ltr;font-size:0px;padding:0;text-align:center;">'
+                     + logoHtml + bodySignature
+                     + '</td></tr></table>';
+            }
+
+            function updatePreview(bodyContent) {
+                var iframe = document.getElementById('preview-iframe');
+                var doc = iframe.contentDocument || iframe.contentWindow.document;
+                var signature = buildFooterHtml(bodyContent);
+                var content = defaultEmail.replace('{content}', bodyContent).replace('{signature}', signature)
+                doc.open();
+                doc.write(content);
+                doc.close();
+            }
+
+            tinymce.init({
+                selector: '#body',
+                license_key: 'gpl',
+                setup: function(editor) {
+                    editor.on('init', function() {
+                        updatePreview(editor.getContent());
+                    });
+                    editor.on('input change keyup', function() {
+                        updatePreview(editor.getContent());
+                    });
+                }
+            });
+        </script>
         <style>
             [data-bs-toggle="tooltip"] {
             cursor: pointer;

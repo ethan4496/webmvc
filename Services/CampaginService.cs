@@ -80,11 +80,28 @@ namespace WebMVC.Services
             }
 
             var totalItems = await query.CountAsync();
-
+            var accountQuery = _unitOfWork.Repository<Account>().GetQueryable();
             var items = await query
                 .OrderByDescending(x => x.Created)
                 .Skip((search.PageIndex - 1) * search.PageSize)
                 .Take(search.PageSize)
+                .Join(accountQuery,
+                    campaign => campaign.CreatedBy,
+                    account => account.Id,
+                    (campaign, account) => new CampaignResponse
+                    {
+                        Id = campaign.Id,
+                        Name = campaign.Name,
+                        Subject = campaign.Subject,
+                        Status = campaign.Status,
+                        Body = campaign.Body,
+                        Created = campaign.Created,
+                        CreatedBy = campaign.CreatedBy,
+                        Updated = campaign.Updated,
+                        UpdateBy = campaign.UpdateBy,
+                        SendAt = campaign.SendAt,
+                        AccountName = account.FullName
+                    })
                 .ToListAsync();
             // Console.WriteLine(
             //     "items"
@@ -92,22 +109,10 @@ namespace WebMVC.Services
             // Console.WriteLine(
             //     JsonConvert.SerializeObject(items, Formatting.Indented)
             // );
-            var responseItems = items.Select(x => new CampaignResponse
-            {
-                Id = x.Id,
-                Name = x.Name,
-                Subject = x.Subject,
-                Status = x.Status,
-                Body = x.Body,
-                Created = x.Created,
-                CreatedBy = x.CreatedBy,
-                Updated = x.Updated,
-                UpdateBy = x.UpdateBy
-            }).ToList();
 
             return new PagedList<CampaignResponse>
             {
-                Items = responseItems,
+                Items = items,
                 PageIndex = search.PageIndex,
                 PageSize = search.PageSize,
                 TotalItem = totalItems
@@ -122,16 +127,32 @@ namespace WebMVC.Services
         {
             var currentDate = DateTime.Now;
             var currentAccount = await _httpContextService.GetCurrentAccount();
-            var template = new Campaign
+            Console.WriteLine(
+                "request"
+            );
+            Console.WriteLine(
+                JsonConvert.SerializeObject(request, Formatting.Indented)
+            );
+            var campagin = new Campaign
             {
                 Name = request.Name,
                 Subject = request.Subject,
                 Body = request.Body,
                 Status = request.Status,
+                TemplateId = request.TemplateId,
+                ContactId = request.ContactId,
+                SendAt = request.SendAt,
+                EmailSent = request.EmailSent,
                 Created = currentDate,
             };
+            // Console.WriteLine(
+            //     "campagin"
+            // );
+            // Console.WriteLine(
+            //     JsonConvert.SerializeObject(campagin, Formatting.Indented)
+            // );
 
-            await _unitOfWork.Repository<Campaign>().Add(template, currentDate, currentAccount.Id);
+            await _unitOfWork.Repository<Campaign>().Add(campagin, currentDate, currentAccount.Id);
 
             await _unitOfWork.SaveAsync();
         }
@@ -139,16 +160,20 @@ namespace WebMVC.Services
         {
             var currentDate = DateTime.Now;
             var currentAccount = await _httpContextService.GetCurrentAccount();
-            var template = new EmailTemplate
+            var campagin = new Campaign
             {
-                Id = id, 
+                Id = id,
                 Name = request.Name,
                 Subject = request.Subject,
                 Body = request.Body,
                 Status = request.Status,
-                Created = currentDate,
+                TemplateId = request.TemplateId,
+                ContactId = request.ContactId,
+                SendAt = request.SendAt,
+                EmailSent = request.EmailSent,
+                Updated = currentDate,
             };
-            _unitOfWork.Repository<EmailTemplate>().Update(template, currentDate, currentAccount.Id);
+            _unitOfWork.Repository<Campaign>().Update(campagin, currentDate, currentAccount.Id);
 
             await _unitOfWork.SaveAsync();
         }
@@ -167,6 +192,56 @@ namespace WebMVC.Services
 
             await _unitOfWork.SaveAsync();
         }
-        
+
+        public async Task<List<object>> GetAllCampaignNames()
+        {
+            return await _unitOfWork.Repository<Campaign>().GetQueryable()
+                .OrderByDescending(x => x.Id)
+                .Select(x => new { x.Id, x.Name })
+                .Cast<object>()
+                .ToListAsync();
+        }
+
+        public async Task<object> GetReportStats(int? campaignId)
+        {
+            var query = _unitOfWork.Repository<MailLog>().GetQueryable();
+            if (campaignId.HasValue)
+                query = query.Where(x => x.CampaignId == campaignId.Value);
+
+            var total = await query.CountAsync();
+            var success = await query.CountAsync(x => x.Status == "success");
+            var failed = await query.CountAsync(x => x.Status == "failed");
+
+            return new { total, success, failed };
+        }
+
+        public async Task<object> GetReportLogs(int? campaignId, int pageIndex, int pageSize)
+        {
+            var query = _unitOfWork.Repository<MailLog>().GetQueryable();
+            if (campaignId.HasValue)
+                query = query.Where(x => x.CampaignId == campaignId.Value);
+
+            var total = await query.CountAsync();
+            var items = await query
+                .OrderByDescending(x => x.SentAt)
+                .Skip((pageIndex - 1) * pageSize)
+                .Take(pageSize)
+                .Join(_unitOfWork.Repository<Contact>().GetQueryable(),
+                    log => log.ContactId, c => c.Id, (log, c) => new { log, c })
+                .Join(_unitOfWork.Repository<Campaign>().GetQueryable(),
+                    x => x.log.CampaignId, cam => cam.Id, (x, cam) => new
+                    {
+                        x.log.Status,
+                        x.log.ErrorMessage,
+                        x.log.SentAt,
+                        ContactName = x.c.FirstName + " " + x.c.LastName,
+                        ContactEmail = x.c.Email,
+                        CampaignName = cam.Name,
+                    })
+                .ToListAsync();
+
+            return new { items, total, pageIndex, pageSize };
+        }
+
     }
 }

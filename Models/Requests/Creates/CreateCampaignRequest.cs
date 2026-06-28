@@ -6,8 +6,6 @@ public class CreateCampaignRequest
     [Required]
     [MaxLength(255)]
     public string Name { get; set; }
-    [Required]
-    public int EmailTemplateId { get; set; }
 
     [Required]
     [MaxLength(500)]
@@ -15,8 +13,10 @@ public class CreateCampaignRequest
 
     [Required]
     public string Body { get; set; }
+    public string EmailSent { get; set; }
     [Required]
-    public DateTime SentAt { get; set; }
-
+    public DateTime SendAt { get; set; }
     public string Status { get; set; } = "active";
+    public int ContactId { get; set; }
+    public int TemplateId { get; set; }
 }

@@ -107,9 +107,22 @@ namespace WebMVC.Services
                 TotalItem = total
             };
         }
-        public async Task<Campaign> GetCampaignById(int id)
+        public async Task<ContactListResponse> GetContactById(int id)
         {
-            var template = await _unitOfWork.Repository<Campaign>().GetQueryable().FirstOrDefaultAsync(x => x.Id == id);
+            var template = await _unitOfWork.Repository<ContactList>().GetQueryable().Select(x => new ContactListResponse
+                {
+                    Id = x.Id,
+                    Name = x.Name,
+                    Contacts = x.ContactListContacts
+                        .Select(clc => new Contact
+                        {
+                            Id = clc.Contact.Id,
+                            FirstName = clc.Contact.FirstName,
+                            LastName = clc.Contact.LastName,
+                            Email = clc.Contact.Email
+                        })
+                        .ToList()
+                }).FirstOrDefaultAsync(x => x.Id == id);
             return template;
         }
         public async Task CreateAsync(CreateContactListRequest request)
@@ -148,14 +161,19 @@ namespace WebMVC.Services
                         continue;
                     }
 
-                    var contact = new Contact
-                    {
-                        FirstName = firstName,
-                        LastName = lastName,
-                        Email = email,
-                    };
+                    var contact = await _unitOfWork.Repository<Contact>().GetQueryable()
+                        .FirstOrDefaultAsync(x => x.Email == email);
 
-                    await _unitOfWork.Repository<Contact>().Add(contact, currentDate, currentAccount.Id);
+                    if (contact == null)
+                    {
+                        contact = new Contact
+                        {
+                            FirstName = firstName,
+                            LastName = lastName,
+                            Email = email,
+                        };
+                        await _unitOfWork.Repository<Contact>().Add(contact, currentDate, currentAccount.Id);
+                    }
 
                     var contactListContact = new ContactListContact
                     {
@@ -169,11 +187,33 @@ namespace WebMVC.Services
 
             await _unitOfWork.SaveAsync();
         }
-        public async Task addContact(int id, AddContactRequest request)
+        public async Task SaveAsync(int id, AddContactListRequest request)
         {
             var contactListExists = await _unitOfWork.Repository<ContactList>()
             .GetQueryable()
             .AnyAsync(x => x.Id == id);
+
+            if (!contactListExists)
+            {
+                throw new Exception("ContactList not found");
+            }
+            var currentDate = DateTime.Now;
+            var currentAccount = await _httpContextService.GetCurrentAccount();
+            var contact = new ContactList
+            {
+                Id = id,
+                Name = request.Name,
+            };
+
+            _unitOfWork.Repository<ContactList>().Update(contact, currentDate, currentAccount.Id);
+            await _unitOfWork.SaveAsync();
+        }
+
+        public async Task<Contact> addContact(AddContactRequest request)
+        {
+            var contactListExists = await _unitOfWork.Repository<ContactList>()
+            .GetQueryable()
+            .AnyAsync(x => x.Id == request.Id);
 
             if (!contactListExists)
             {
@@ -199,12 +239,28 @@ namespace WebMVC.Services
             await _unitOfWork.Repository<Contact>().Add(contact, currentDate, currentAccount.Id);
             var contactListContact = new ContactListContact
             {
-                ContactListId = id,
+                ContactListId = request.Id,
                 Contact = contact,
             };
             await _unitOfWork.PlainRepository<ContactListContact>().AddAsync(contactListContact);
 
             await _unitOfWork.SaveAsync();
+            return contact;
+        }
+
+        public async Task<List<ContactList>> GetAll()
+        {
+            var query = _unitOfWork.Repository<ContactList>().GetQueryable();
+            var items = await query
+                .AsNoTracking()
+                .OrderByDescending(x => x.Created)
+                .Select(x => new ContactList
+                {
+                    Id = x.Id,
+                    Name = x.Name
+                })
+                .ToListAsync();
+            return items;
         }
 
         public async Task DeleteAsync(int id)
@@ -221,6 +277,19 @@ namespace WebMVC.Services
 
             await _unitOfWork.SaveAsync();
         }
+        public async Task DeleteContact(int id, int ContactListId)
+        {
+            var entity = await _unitOfWork.PlainRepository<ContactListContact>().GetQueryable()
+                .FirstOrDefaultAsync(x => x.ContactId == id && x.ContactListId == ContactListId);
 
+            if (entity == null)
+            {
+                throw new Exception("Không tìm thấy dữ liệu");
+            }
+
+            _unitOfWork.PlainRepository<ContactListContact>().Remove(entity);
+
+            await _unitOfWork.SaveAsync();
+        }
     }
 }

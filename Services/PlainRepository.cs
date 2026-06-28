@@ -12,6 +12,11 @@ namespace WebMVC.Services
             _dbContext = dbContext;
         }
 
+        public IQueryable<T> GetQueryable()
+        {
+            return _dbContext.Set<T>().AsQueryable();
+        }
+
         public async Task AddAsync(T entity)
         {
             await _dbContext.Set<T>().AddAsync(entity);

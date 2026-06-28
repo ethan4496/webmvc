@@ -8,29 +8,34 @@ using WebMVC.Models.Requests.Creates;
 using WebMVC.Models.Requests.Searchs;
 using WebMVC.Models.Requests.Updates;
 using WebMVC.Models.Responses;
+using WebMVC.Models.ViewModels;
+using System.Text.Json;
 using WebMVC.Ultilities;
 using WebMVC.Ultilities.Enums;
 
 namespace WebMVC.Controllers
 {
     [Authorize]
-    
+
     public class CampaignController : Controller
     {
         private readonly ICampaignService _campaignService;
         private readonly ITemplateService _templateService;
-        public CampaignController(ICampaignService campaginService, ITemplateService templateService)
+        private readonly IContactService _contactService;
+
+        public CampaignController(ICampaignService campaginService, ITemplateService templateService, IContactService contactService)
         {
             _campaignService = campaginService;
             _templateService = templateService;
+            _contactService = contactService;
         }
 
         [Route("campagins")]
         [HttpGet]
         public async Task<IActionResult> Index()
         {
-            var templates = await _templateService.GetAll();
-            return View(templates);
+
+            return View();
         }
 
         [HttpGet]
@@ -47,14 +52,21 @@ namespace WebMVC.Controllers
             });
         }
 
-        
+
         [Route("create-campagin")]
         [HttpGet]
         public async Task<IActionResult> Create()
         {
-            return View();
+            var templates = await _templateService.GetAll();
+            var contacts = await _contactService.GetAll();
+            var viewModel = new CreateCampaignViewModel
+            {
+                Templates = templates,
+                ContactLists = contacts
+            };
+            return View(viewModel);
         }
-        
+
         [Route("campagins")]
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -66,13 +78,20 @@ namespace WebMVC.Controllers
 
                 TempData["SuccessMessage"] = "Tạo template thành công";
 
-                return Redirect("/templates");
+                return Redirect("/campagins");
             }
             catch (Exception ex)
             {
+                Console.WriteLine(ex.ToString());
                 ModelState.AddModelError(string.Empty, ex.Message);
-
-                return View(request);
+                var templates = await _templateService.GetAll();
+                var contacts = await _contactService.GetAll();
+                var viewModel = new CreateCampaignViewModel
+                {
+                    Templates = templates,
+                    ContactLists = contacts
+                };
+                return View(viewModel);
             }
         }
         [Route("edit-campaign/{id}")]
@@ -81,10 +100,18 @@ namespace WebMVC.Controllers
         {
             if (id <= 0)
                 return BadRequest();
-            var template = await _campaignService.GetCampaignById(id);
-            if (template == null)
+            var campaign = await _campaignService.GetCampaignById(id);
+            if (campaign == null)
                 return NotFound();
-            return View(template);
+            var templates = await _templateService.GetAll();
+            var contacts = await _contactService.GetAll();
+            var viewModel = new CreateCampaignViewModel
+            {
+                Campaign = campaign,
+                Templates = templates,
+                ContactLists = contacts
+            };
+            return View(viewModel);
         }
 
         [Route("edit-campaign/{id}")]
@@ -96,15 +123,48 @@ namespace WebMVC.Controllers
             {
                 await _campaignService.SaveAsync(id, request);
                 TempData["SuccessMessage"] = "Save template thành công";
-                return Redirect("/templates");
+                return Redirect("/campagins");
             }
             catch (Exception ex)
             {
                 ModelState.AddModelError(string.Empty, ex.Message);
-                var template = await _campaignService.GetCampaignById(id);
-                return View("Edit", template);
+                var campaign = await _campaignService.GetCampaignById(id);
+                var templates = await _templateService.GetAll();
+                var contacts = await _contactService.GetAll();
+                var viewModel = new CreateCampaignViewModel
+                {
+                    Campaign = campaign,
+                    Templates = templates,
+                    ContactLists = contacts
+                };
+                return View("Edit", viewModel);
             }
         }
+        [Route("campaign-report")]
+        [HttpGet]
+        public async Task<IActionResult> Report()
+        {
+            var campaigns = await _campaignService.GetAllCampaignNames();
+            ViewBag.Campaigns = campaigns;
+            return View();
+        }
+
+        [Route("campaign-report/stats")]
+        [HttpGet]
+        public async Task<IActionResult> ReportStats(int? campaignId)
+        {
+            var data = await _campaignService.GetReportStats(campaignId);
+            return Json(data);
+        }
+
+        [Route("campaign-report/logs")]
+        [HttpGet]
+        public async Task<IActionResult> ReportLogs(int? campaignId, int pageIndex = 1, int pageSize = 20)
+        {
+            var data = await _campaignService.GetReportLogs(campaignId, pageIndex, pageSize);
+            return Json(data);
+        }
+
         [HttpDelete]
         public async Task<ApiResponse> Delete(int id)
         {
