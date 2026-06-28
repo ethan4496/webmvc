@@ -1,0 +1,174 @@
+@{
+    ViewData["Title"] = "Mail Report";
+    var campaigns = ViewBag.Campaigns as IEnumerable<dynamic> ?? [];
+}
+
+<div class="container-fluid mt-4">
+    <div class="card mb-4">
+        <div class="card-header d-flex justify-content-between align-items-center">
+            <h2>Mail Report</h2>
+        </div>
+        <div class="card-body">
+            <div class="row mb-3">
+                <div class="col-md-4">
+                    <label class="form-label">Campaign</label>
+                    <select id="campaignFilter" class="form-select">
+                        <option value="">-- Tất cả --</option>
+                        @foreach (var c in campaigns)
+                        {
+                            <option value="@c.Id">@c.Name</option>
+                        }
+                    </select>
+                </div>
+            </div>
+
+            <div class="row mb-4">
+                <div class="col-md-4">
+                    <div class="card text-center border-secondary">
+                        <div class="card-body">
+                            <div class="fs-1 fw-bold" id="stat-total">--</div>
+                            <div class="text-muted">Tổng</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card text-center border-success">
+                        <div class="card-body">
+                            <div class="fs-1 fw-bold text-success" id="stat-success">--</div>
+                            <div class="text-muted">Thành công</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card text-center border-danger">
+                        <div class="card-body">
+                            <div class="fs-1 fw-bold text-danger" id="stat-failed">--</div>
+                            <div class="text-muted">Lỗi</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row mb-4">
+                <div class="col-md-4 offset-md-4">
+                    <canvas id="statsChart"></canvas>
+                </div>
+            </div>
+
+            <table class="table table-bordered table-hover">
+                <thead class="table-light">
+                    <tr>
+                        <th>Campaign</th>
+                        <th>Liên hệ</th>
+                        <th>Email</th>
+                        <th>Trạng thái</th>
+                        <th>Lỗi</th>
+                        <th>Thời gian gửi</th>
+                    </tr>
+                </thead>
+                <tbody id="log-body">
+                    <tr><td colspan="6" class="text-center text-muted">Đang tải...</td></tr>
+                </tbody>
+            </table>
+
+            <nav>
+                <ul class="pagination justify-content-center" id="pagination"></ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    var chart = null;
+    var currentPage = 1;
+
+    function getCampaignId() {
+        var v = $('#campaignFilter').val();
+        return v ? parseInt(v) : null;
+    }
+
+    function loadStats() {
+        var params = {};
+        var cid = getCampaignId();
+        if (cid) params.campaignId = cid;
+
+        $.get('/campaign-report/stats', params, function (data) {
+            $('#stat-total').text(data.total);
+            $('#stat-success').text(data.success);
+            $('#stat-failed').text(data.failed);
+            renderChart(data.success, data.failed);
+        });
+    }
+
+    function renderChart(success, failed) {
+        var ctx = document.getElementById('statsChart').getContext('2d');
+        if (chart) chart.destroy();
+        chart = new Chart(ctx, {
+            type: 'doughnut',
+            data: {
+                labels: ['Thành công', 'Lỗi'],
+                datasets: [{
+                    data: [success, failed],
+                    backgroundColor: ['#198754', '#dc3545']
+                }]
+            },
+            options: { plugins: { legend: { position: 'bottom' } } }
+        });
+    }
+
+    function loadLogs(page) {
+        currentPage = page || 1;
+        var params = { pageIndex: currentPage, pageSize: 20 };
+        var cid = getCampaignId();
+        if (cid) params.campaignId = cid;
+
+        $.get('/campaign-report/logs', params, function (data) {
+            var html = '';
+            if (!data.items || data.items.length === 0) {
+                html = '<tr><td colspan="6" class="text-center text-muted">Không có dữ liệu</td></tr>';
+            } else {
+                data.items.forEach(function (item) {
+                    var badge = item.Status === 'success'
+                        ? '<span class="badge bg-success">Thành công</span>'
+                        : '<span class="badge bg-danger">Lỗi</span>';
+                    html += `<tr>
+                        <td>${item.CampaignName ?? ''}</td>
+                        <td>${item.ContactName ?? ''}</td>
+                        <td>${item.ContactEmail ?? ''}</td>
+                        <td>${badge}</td>
+                        <td class="text-danger">${item.ErrorMessage ?? ''}</td>
+                        <td>${new Date(item.SentAt).toLocaleString('vi-VN')}</td>
+                    </tr>`;
+                });
+            }
+            $('#log-body').html(html);
+            renderPagination(currentPage, Math.ceil(data.total / data.pageSize));
+        });
+    }
+
+    function renderPagination(current, total) {
+        var html = '';
+        for (var i = 1; i <= total; i++) {
+            html += `<li class="page-item ${i === current ? 'active' : ''}">
+                <a class="page-link" href="#" data-page="${i}">${i}</a>
+            </li>`;
+        }
+        $('#pagination').html(html);
+    }
+
+    $(document).on('click', '#pagination .page-link', function (e) {
+        e.preventDefault();
+        loadLogs($(this).data('page'));
+    });
+
+    $('#campaignFilter').on('change', function () {
+        loadStats();
+        loadLogs(1);
+    });
+
+    loadStats();
+    loadLogs(1);
+</script>
+}

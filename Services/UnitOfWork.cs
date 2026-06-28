@@ -56,5 +56,10 @@ namespace WebMVC.Services
             return await _dbContext.Database.ExecuteSqlRawAsync(sql);
         }
 
+        public IPlainRepository<T> PlainRepository<T>() where T : class
+        {
+            return new PlainRepository<T>(_dbContext);
+        }
+
     }
 }

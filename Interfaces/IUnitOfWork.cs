@@ -7,6 +7,7 @@ namespace WebMVC.Interfaces
     public interface IUnitOfWork 
     {
         IGenericRepository<T> Repository<T>() where T : BaseEntity;
+        IPlainRepository<T> PlainRepository<T>() where T : class;
         Task<int> SaveAsync();
         Task BeginTransactionAsync();
         Task CommitAsync();

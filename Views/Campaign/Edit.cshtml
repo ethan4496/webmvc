@@ -1,0 +1,94 @@
+@using WebMVC.Entities
+@using WebMVC.Models.Responses
+@using WebMVC.Interfaces
+@using WebMVC.Models.Requests.Creates
+@using WebMVC.Ultilities.Enums
+@model WebMVC.Models.ViewModels.CreateCampaignViewModel
+@inject IHttpContextService _httpContextService;
+@{
+    var loggedModel = _httpContextService.GetLoggedModel();
+}
+
+<div class="container-fluid mt-4">
+    <div class="card mb-4">
+        <div class="card-header d-flex justify-content-between align-items-center">
+            <h2>Sửa campagin</h2>
+        </div>
+        <form action="/edit-campaign/@Model?.Campaign?.Id" method="post">
+            <div asp-validation-summary="All" class="text-danger"></div>
+            @Html.AntiForgeryToken()
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-6 col-xs-12 mb-3">
+                        <label for="barCode" class="form-label">Tên campaign</label>
+                        <input type="text" class="form-control" id="name" value="@Model?.Campaign?.Name" name="Name" placeholder="Tên campaign">
+                    </div>
+                    <div class="col-md-6 col-xs-12 mb-3">
+                        <label for="status" class="form-label">Trạng thái</label>
+                        <select id="status" class="form-select" name="Status">
+                            <option value="active" selected="@(Model?.Campaign?.Status == "active")">Active</option>
+                            <option value="pending" selected="@(Model?.Campaign?.Status == "pending")">Pending</option>
+                            <option value="inactive" selected="@(Model?.Campaign?.Status == "inactive")">Inactive</option>
+                        </select>
+                    </div>
+                    <div class="col-md-6 col-xs-12 mb-3">
+                        <label for="subject" class="form-label">Subject</label>
+                        <input type="text" class="form-control" value="@Model?.Campaign?.Subject" id="subject" name="Subject" placeholder="Subject">
+                    </div>
+                    <div class="col-md-6 col-xs-12 mb-3">
+                        <label for="toDate" class="form-label">Description</label>
+                        <textarea rows="10" class="form-control" id="body" name="Body" placeholder="Content">@Model?.Campaign?.Body</textarea>
+                    </div>
+                    <div class="col-md-6 col-xs-12 mb-3">
+                        <label for="SendAt" class="form-label">Sent At</label>
+                        <input type="text" class="form-control dateptimeicker" value="@Model?.Campaign?.SendAt" id="SendAt" name="SendAt" placeholder="">
+                    </div>
+                    <div class="col-md-6 col-xs-12 mb-3">
+                        <label for="EmailSent" class="form-label">Template</label>
+                        <select id="EmailSent" class="form-select" name="EmailSent">
+                            <option value="Linzy.nguyen@yiy-trans.com" selected="@(Model?.Campaign?.EmailSent == "Linzy.nguyen@yiy-trans.com")">Linzy.nguyen@yiy-trans.com</option>
+                            @* <option value="assistant01@yiy-trans.com">assistant01@yiy-trans.com</option> *@
+                        </select>
+                    </div>
+                    <div class="col-md-6 col-xs-12 mb-3">
+                        <label for="ContactId" class="form-label">Contact List</label>
+                        <select id="ContactId" class="form-select" name="ContactId">
+                            @foreach (var list in Model.ContactLists)
+                            {
+                                <option selected="@(Model?.Campaign?.ContactId == list.Id)" value="@list.Id" >@list.Name</option>
+                            }
+                        </select>
+                    </div>
+                    <div class="col-md-6 col-xs-12 mb-3">
+                        <label for="TemplateId" class="form-label">Template</label>
+                        <select id="TemplateId" class="form-select" name="TemplateId">
+                            @foreach (var temp in Model.Templates)
+                            {
+                                <option selected="@(Model?.Campaign?.TemplateId == temp.Id)" value="@temp.Id">@temp.Name</option>
+                            }
+                        </select>
+                    </div>
+                    
+                </div>
+                <div class="row pt-2">
+                    <div class="text-end">
+                        <button type="submit" class="btn btn-primary btn-search">Save</button>
+                    </div>
+                </div>
+
+            </div>
+        </form>
+    </div>
+    <div id="loading" style="display: none;">
+        <div class="loading-overlay">
+            <div class="spinner"></div>
+        </div>
+    </div>
+    @section Scripts {
+        <script src="~/js/campaign.js" asp-append-version="true"></script>
+        <style>
+            [data-bs-toggle="tooltip"] {
+            cursor: pointer;
+            }
+        </style>
+    }

@@ -31,6 +31,13 @@ namespace WebMVC.Data
         public DbSet<Warehouse> Warehouses { get; set; }
         public DbSet<ZaloAPI> ZaloAPIs { get; set; }
         public DbSet<WebConfiguration> WebConfigurations { get; set; }
+        public DbSet<EmailTemplate> EmailTemplates { get; set; }
+        public DbSet<Campaign> Campaigns { get; set; }
+        public DbSet<Contact> Contacts { get; set; }
+        public DbSet<ContactList> ContactLists { get; set; }
+        public DbSet<ContactListContact> ContactListContacts { get; set; }
+        public DbSet<MailLog> MailLogs { get; set; }
+        public DbSet<AccountSignature> AccountSignatures { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             // Cấu hình các bảng và khóa

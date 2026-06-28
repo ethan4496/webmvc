@@ -1,0 +1,81 @@
+@using WebMVC.Entities
+@using WebMVC.Models.Responses
+@using WebMVC.Interfaces
+@using WebMVC.Ultilities.Enums
+@inject IHttpContextService _httpContextService;
+@{
+    var loggedModel = _httpContextService.GetLoggedModel();
+}
+@{
+    ViewData["Title"] = "Danh sách đơn ký gửi";
+}
+
+<div class="container-fluid mt-4">
+    <div class="card mb-4">
+        <div class="card-header d-flex justify-content-between align-items-center">
+            <h2>Danh sách Template Email</h2>
+            <div class="d-flex gap-2">
+                <a href="/create-template" class="btn btn-primary">Tạo mới</a>
+            </div>
+        </div>
+        <div class="card-body" id="filterContainer">
+            <div class="row">
+                <div class="col-md-3">
+                    <label for="barCode" class="form-label">Tên template</label>
+                    <input type="text" class="form-control" id="name" name="name" placeholder="Tên template">
+                </div>
+                <div class="col-md-3">
+                    <label for="status" class="form-label">Trạng thái</label>
+                    <select id="status" class="form-select" name="Status">
+                        <option value="">Tất cả</option>
+                        <option value="active">Active</option>
+                        <option value="inactive">Inactive</option>
+                    </select>
+                </div>
+                <div class="col-md-3">
+                    <label for="fromDate" class="form-label">Từ ngày</label>
+                    <input type="text" class="form-control datepicker" id="fromDate" name="fromDate" placeholder="">
+                </div>
+                <div class="col-md-3">
+                    <label for="toDate" class="form-label">Đến ngày</label>
+                    <input type="text" class="form-control datepicker" id="toDate" name="toDate" placeholder="">
+                </div>
+            </div>
+            <div class="row pt-2">
+                <div class="text-end">
+                    <button type="button" class="btn btn-primary btn-search" onclick="loadPage(1)">Tìm kiếm</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <div id="table-container">
+        <div class="templates" id="results">
+
+        </div>
+    </div>
+    <nav aria-label="Page navigation example" class="mt-3">
+        <ul class="pagination">
+            <li class="page-item"><a class="page-link" href="#">Previous</a></li>
+            <li class="page-item"><a class="page-link" href="#">Next</a></li>
+        </ul>
+    </nav>
+</div>
+<div id="loading" style="display: none;">
+    <div class="loading-overlay">
+        <div class="spinner"></div>
+    </div>
+</div>
+@section Scripts {
+    <script src="~/js/template.js" asp-append-version="true"></script>
+    <script>
+        $(document).ready(function () {
+            loadPage(1);
+        })
+    </script>
+    <style>
+        [data-bs-toggle="tooltip"] {
+            cursor: pointer;
+        }
+    </style>
+}

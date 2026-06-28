@@ -25,6 +25,10 @@ namespace WebMVC.Services
             entity.CreatedBy = currentAccountId;
             await _dbContext.Set<T>().AddAsync(entity);
         }
+        public async Task AddPlain(T entity)
+        {
+            await _dbContext.Set<T>().AddAsync(entity);
+        }
         public async Task AddRange(List<T> entities, DateTime currentDate, int currentAccountId)
         {
             entities.ForEach(entity =>
