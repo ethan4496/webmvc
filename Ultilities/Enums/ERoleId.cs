@@ -8,6 +8,7 @@
         Sale = 4,
         TQWarehouseStaff = 5,
         VNWarehouseStaff = 6,
+        DocumentStaff = 7,
     }
 
     public class ERoleIdName
@@ -28,6 +29,8 @@
                     return "Kho TQ";
                 case (int)ERoleId.VNWarehouseStaff:
                     return "Kho VN";
+                case (int)ERoleId.DocumentStaff:
+                    return "Chứng từ";
                 default:
                     return "";
             }

@@ -277,6 +277,11 @@ namespace WebMVC.Services
         {
             var rs = new ResponseClass();
             var currentAccount = await GetSessionAsync(request);
+            Console.WriteLine(
+                "CreateSmallPackage"
+            );
+
+
             if (currentAccount == null)
             {
                 rs.Code = APIUtils.GetResponseCode(APIUtils.ResponseCode.NotFound);
@@ -351,6 +356,15 @@ namespace WebMVC.Services
                     ToId = 2,
                     ShipId = shipId,
                 };
+                Console.WriteLine(
+                    System.Text.Json.JsonSerializer.Serialize(
+                        transportation,
+                        new JsonSerializerOptions
+                        {
+                            WriteIndented = true
+                        }
+                    )
+                );
                 await _unitOfWork.Repository<Transportation>().Add(transportation, currentDate, currentAccount.Id);
                 await _unitOfWork.SaveAsync();
 
@@ -373,6 +387,7 @@ namespace WebMVC.Services
             catch (Exception ex)
             {
                 await _unitOfWork.RollbackAsync();
+                Log.Error(ex, "Lỗi khi lấy ContactList");
                 rs.Code = APIUtils.GetResponseCode(APIUtils.ResponseCode.NotFound);
                 rs.Status = APIUtils.ResponseMessage.Error.ToString();
                 rs.Message = ex.Message;
@@ -1600,10 +1615,52 @@ namespace WebMVC.Services
         public async Task<ResponseClass> UploadFile(IFormFile request)
         {
             var rs = new ResponseClass();
-            var fileUrl = await _uploadFileService.UploadFile(request);
-            rs.Message = fileUrl;
-            rs.Code = APIUtils.GetResponseCode(APIUtils.ResponseCode.SUCCESS);
-            rs.Status = APIUtils.ResponseMessage.Success.ToString();
+            try
+            {
+
+                var fileUrl = await _uploadFileService.UploadFile(request);
+                Console.WriteLine(
+                    "request"
+                );
+                Console.WriteLine(
+                    System.Text.Json.JsonSerializer.Serialize(
+                        request,
+                        new JsonSerializerOptions
+                        {
+                            WriteIndented = true
+                        }
+                    )
+                );
+                Console.WriteLine(
+                    System.Text.Json.JsonSerializer.Serialize(
+                        fileUrl,
+                        new JsonSerializerOptions
+                        {
+                            WriteIndented = true
+                        }
+                    )
+                );
+                rs.Message = fileUrl;
+                rs.Code = APIUtils.GetResponseCode(APIUtils.ResponseCode.SUCCESS);
+                rs.Status = APIUtils.ResponseMessage.Success.ToString();
+            }
+            catch (Exception ex)
+            {
+                var current = ex;
+                int level = 0;
+
+                while (current != null)
+                {
+                    Console.WriteLine($"===== Exception Level {level} =====");
+                    Console.WriteLine($"Type: {current.GetType().FullName}");
+                    Console.WriteLine($"Message: {current.Message}");
+                    Console.WriteLine(current.StackTrace);
+
+                    current = current.InnerException;
+                    level++;
+                }
+                Log.Error(ex, "Lỗi khi lấy ContactList");
+            }
             return rs;
         }
         public async Task<ResponseClass> UpdateAccountInfo(UpdateAccountInfoRequest request)
