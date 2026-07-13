@@ -1,0 +1,504 @@
+@using WebMVC.Interfaces
+@using WebMVC.Ultilities.Enums
+@inject IHttpContextService _httpContextService;
+@{
+    var loggedModel = await _httpContextService.GetCurrentAccount();
+}
+<!DOCTYPE html>
+<html lang="en">
+
+<head runat="server">
+    <meta charset="utf-8">
+    <title>TPK Express</title>
+    <meta name="robots" content="index, follow">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta property="fb:app_id" content="676758839172144" />
+    <meta name="google-site-verification" content="aZcoR9301-yojJzH9Tv-3BE_WFhhPClH0JCS_wJihU0" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
+        rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="/tpkexpress/assets/library/swiper/swiper-bundle.min.css">
+    <link rel="stylesheet" href="/tpkexpress/css/new-style.css">
+    <link rel="stylesheet" href="/tpkexpress/css/backdoor.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+    <link rel="icon" type="image/png" href="favicon.ico">
+    <div class="zalo-chat-widget" data-oaid="1299806935331929179" data-welcome-message="Rất vui khi được hỗ trợ bạn!"
+        data-autopopup="0" data-width="" data-height=""></div>
+
+    <script src="https://sp.zalo.me/plugins/sdk.js"></script>
+</head>
+
+<body>
+    <main>
+        <div class="site-header">
+            <div class="header-top">
+                <div class="container">
+                    <div class="d-flex justify-content-between full-width align-items-center">
+                        <div class="hotline">
+                            Hotline: <span class="text-white">0796 589 224<span class="d-none d-md-inline"> - 0338 964
+                                    163</span></span>
+                        </div>
+                        @if(loggedModel?.Id > 0){
+                            <div class="logged-in-buttons dropstart">
+                                <div class="dropdown">
+                                    <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownButtonUser"
+                                        data-bs-toggle="dropdown" aria-expanded="false">
+                                        <span>Xin chào, @loggedModel?.FullName</span>
+                                        <svg width="13" height="13" viewBox="0 0 13 13" fill="none"
+                                            xmlns="http://www.w3.org/2000/svg">
+                                            <path d="M3.24707 4.87109L6.49417 8.11819L9.74127 4.87109" stroke="white"
+                                                stroke-width="1.29884" stroke-linecap="round" stroke-linejoin="round" />
+                                        </svg>
+                                    </button>
+                                    <div class="dropdown-menu" aria-labelledby="dropdownButtonUser">
+                                        <div class="account-data">
+                                            <div class="account-name">@loggedModel?.FullName</div>
+                                        </div>
+                                        <ul>
+                                            <li>
+                                                <a class="dropdown-item" href="/Home/Staff">
+                                                    <img src="/tpkexpress/images/icon/Dashboard.svg" alt="Icon">
+                                                    <span>Quản trị</span>
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a class="dropdown-item" href="/transportation">
+                                                    <img src="/tpkexpress/images/icon/Transportation.svg" alt="Icon">
+                                                    <span>Đơn hàng của tôi</span>
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a class="dropdown-item" href="/profile">
+                                                    <img src="/tpkexpress/images/icon/Settings.svg" alt="Icon">
+                                                    <span>Cài đặt tài khoản</span>
+                                                </a>
+                                            </li>
+                                        </ul>
+                                        <a href="/Home/SignOff" class="logout-btn">
+                                            <img src="/tpkexpress/images/icon/Logout.svg" alt="Icon">
+                                            <span>Đăng xuất</span>
+                                        </a>
+                                    </div>
+
+                                </div>
+                            </div>
+                        }else{
+                            <div class="d-flex buttons-sign-in align-items-center">
+                                <a href="/dang-nhap">Đăng nhập</a>
+                                <span> | </span>
+                                <a class="btn btn-orange" href="/dang-ky">Đăng ký</a>
+                            </div>
+                        }
+                        
+                    </div>
+                </div>
+            </div>
+            <div class="container">
+                <header class="d-flex flex-wrap align-items-center justify-content-between justify-content-md-between">
+                    <a href="/" class="d-flex align-items-center col-md-3 text-dark text-decoration-none">
+                        <img src="/tpkexpress/images/logo.svg" alt="logo">
+                    </a>
+                    <nav class="navbar navbar-expand-lg" role="navigation">
+                        <div class="nav-bar-container">
+                            <button type="button" class="navbar-toggler" data-bs-toggle="collapse"
+                                data-bs-target="#navbar" aria-expanded="false" aria-controls="navbar"
+                                aria-label="Toggle navigation">
+                                <img src="/tpkexpress/images/icon/MenuMobileIcon.svg" alt="MenuMobileIcon">
+                            </button>
+                            <div id="navbar" class="collapse navbar-collapse">
+                                <ul class="navbar-nav">
+                                    <li class="nav-item active"><a class="nav-link" href="/gioi-thieu">Giới thiệu</a>
+                                    </li>
+                                    <li class="nav-item"><a class="nav-link" href="/huong-dan">Hướng dẫn</a></li>
+                                    <li class="nav-item">
+                                        <a href="/bieu-phi" class="nav-link">Biểu phí</a>
+                                    </li>
+                                    <li class="nav-item"><a class="nav-link" href="/chinh-sach">Chính sách</a></li>
+                                    <li class="nav-item"><a class="nav-link" href="/dich-vu">Dịch vụ</a></li>
+                                    <li class="nav-item"><a class="nav-link" href="/tin-tuc">Tin tức</a></li>
+                                </ul>
+                                <div class="navbar-mobile-actions d-lg-none">
+                                    <button type="button" class="btn btn-white">Đăng ký tư vấn</button>
+                                    <button type="button" class="btn btn-orange">
+                                        <img src="/tpkexpress/images/icon/Icon.svg" alt="Search">
+                                        <span>Tra cứu vận đơn</span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </nav>
+                    <div class="col-md-3 text-end d-none d-lg-flex">
+                        <button type="button" class="btn btn-white">Đăng ký tư vấn</button>
+                        <button type="button" class="btn btn-orange">
+                            <img src="/tpkexpress/images/icon/Icon.svg" alt="Search">
+                            <span>Tra cứu vận đơn</span>
+
+                        </button>
+                    </div>
+                </header>
+            </div>
+        </div>
+        @RenderBody()
+        <footer class="site-footer">
+            <div class="container">
+                <div class="footer-inner">
+                    <div class="footer-main">
+                        <div class="company-info">
+                            <div class="footer-logo">
+                                <img src="/tpkexpress/images/icon/FooterLogo.png" alt="Logo" />
+                                <div class="logo-text">Vận chuyển Trung – Việt</div>
+                            </div>
+                            <div class="company-des">
+                                Đối tác vận chuyển hàng Trung Quốc về Việt Nam uy tín, nhanh và minh bạch.
+                            </div>
+                            <div class="footer-hotline">
+                                <div class="footer-hotline-row">
+                                    <span class="label">Hotline:</span> 0796 589 224 - 0338 964 163
+                                </div>
+                                <div class="footer-hotline-row">
+                                    <span class="label">Address:</span> Cụm Công Nghiệp Phú Minh, Bắc Từ Liêm, Hà Nội
+                                </div>
+                            </div>
+                        </div>
+                        <div class="footer-menu">
+                            <div class="footer-menu-item">
+                                <div class="footer-menui-title">Menu</div>
+                                <ul>
+                                    <li>
+                                        <a href="">Giới thiệu</a>
+                                    </li>
+                                    <li>
+                                        <a href="">Hướng dẫn</a>
+                                    </li>
+                                    <li>
+                                        <a href="">Biểu phí</a>
+                                    </li>
+                                    <li>
+                                        <a href="">Chính sách</a>
+                                    </li>
+                                    <li>
+                                        <a href="">Tin tức</a>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="footer-menu-item">
+                                <div class="footer-menui-title">Dịch vụ</div>
+                                <ul>
+                                    <li>
+                                        <a href="">Mua hộ & tìm nguồn hàng</a>
+                                    </li>
+                                    <li>
+                                        <a href="">Ký gửi line TMĐT</a>
+                                    </li>
+                                    <li>
+                                        <a href="">Vận chuyển chính ngạch</a>
+                                    </li>
+                                    <li>
+                                        <a href="">Tư vấn nhập hàng</a>
+                                    </li>
+                                    <li>
+                                        <a href="">Tra cứu vận đơn</a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="footer-contact">
+                        <h3>Kết nối</h3>
+                        <ul class="socials">
+                            <li>
+                                <a href="https://www.facebook.com/profile.php?id=100064603496782&mibextid=ZbWKwL"
+                                    target="_blank">
+                                    <img src="/tpkexpress/images/icon/Facebook.svg" alt="Facebook">
+                                </a>
+                            </li>
+                            <li>
+                                <a href="https://tpkexpress.com.vn/#" target="_blank">
+                                    <img src="/tpkexpress/images/icon/Tiktok.svg" alt="Facebook">
+                                </a>
+                            </li>
+                            <li>
+                                <a href="https://tpkexpress.com.vn/#" target="_blank">
+                                    <img src="/tpkexpress/images/icon/Youtube.svg" alt="Facebook">
+                                </a>
+                            </li>
+                        </ul>
+                        <div class="footer-app">
+                            <h4>Tải ứng dụng</h4>
+                            <div class="footer-app-links">
+                                <a href="" target="_blank">
+                                    <img src="/tpkexpress/images/icon/FooterIOS.svg" alt="">
+                                    <span>App Store (iOS)</span>
+                                </a>
+                                <a href="" target="_blank">
+                                    <img src="/tpkexpress/images/icon/FooterAndroid.svg" alt="">
+                                    <span>Google Play (Android)</span>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="footer-bottom">
+                    <div>© 2024 TPK Express. Tất cả quyền được bảo lưu.</div>
+                    <ul>
+                        <li><a href="">Chính sách bảo mật</a></li>
+                        <li><a href="">Điều khoản sử dụng</a></li>
+                    </ul>
+                </div>
+            </div>
+        </footer>
+    </main>
+    <script src="/tpkexpress/assets/library/jquery/jquery.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@@popperjs/core@2.11.8/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.min.js"></script>
+    <script src="/tpkexpress/assets/library/swiper/swiper-bundle.min.js"></script>
+    <script src="/tpkexpress/assets/library/aos/aos.js"></script>
+    <script src="/tpkexpress/assets/library/select2/select2.min.js"></script>
+    <script src="/tpkexpress/assets/library/gallery/lightgallery-all.min.js"></script>
+    <script src="/tpkexpress/assets/library/jquery/jquery-migrate.js"></script>
+    <script src="/tpkexpress/assets/library/smoothscroll/SmoothScroll.min.js"></script>
+    <script src="/tpkexpress/assets/library/splitting/splitting.min.js"></script>
+    <script src="/tpkexpress/assets/library/fancybox/fancybox.umd.js"></script>
+    <script src="/tpkexpress/assets/library/gsap/gsap.min.js"></script>
+    <script src="/tpkexpress/assets/library/gsap/ScrollTrigger.min.js"></script>
+    <script src="/tpkexpress/js/main.js" type="module"></script>
+    <script src="/tpkexpress/js/home.js" type="module"></script>
+    <script>
+        $(document).ready(function () {
+            Slide();
+            $(".myIcon").on('click', function () {
+                $(".tooltips-mess").toggleClass("open-tool");
+            });
+            const $tool = $('.tooltips-mess')
+            $(document).mouseup(e => {
+                if (!$tool.is(e.target)
+                    && $tool.has(e.target).length === 0) {
+                    $tool.removeClass('open-tool');
+                }
+            });
+        })
+        function Slide() {
+            var swiper = new Swiper(".myIcon", {
+                spaceBetween: 30,
+                centeredSlides: true,
+                // allowTouchMove : false,
+                autoplay: {
+                    delay: 2500,
+                    disableOnInteraction: false,
+                },
+                pagination: {
+                    el: ".swiper-pagination",
+                    clickable: true,
+                },
+                navigation: {
+                    nextEl: ".swiper-button-next",
+                    prevEl: ".swiper-button-prev",
+                },
+            });
+        }
+    </script>
+    <style>
+        .mess-contact {
+            width: 80px;
+            border-radius: 50%;
+            height: 80px;
+            border: 10px solid #b92727;
+            position: fixed;
+            display: -webkit-box;
+            display: -ms-flexbox;
+            display: flex;
+            -webkit-box-pack: center;
+            -ms-flex-pack: center;
+            justify-content: center;
+            -webkit-box-align: center;
+            -ms-flex-align: center;
+            align-items: center;
+            font-size: 32px;
+            color: #b92727;
+            cursor: pointer;
+            bottom: 100px;
+            z-index: 1005;
+            right: 20px;
+            background: white;
+        }
+
+        .mess-contact img {
+            width: 36px !important
+        }
+
+        .mess-contact p {
+            display: -webkit-box;
+            display: -ms-flexbox;
+            display: flex;
+            -webkit-box-orient: vertical;
+            -webkit-box-direction: normal;
+            -ms-flex-direction: column;
+            flex-direction: column;
+            -webkit-box-align: center;
+            -ms-flex-align: center;
+            align-items: center;
+        }
+
+        .mess-contact p span {
+            font-weight: bold;
+            font-size: 20px;
+        }
+
+        .tooltips-mess {
+            position: fixed;
+            bottom: 220px;
+            right: 20px;
+            background-color: white;
+            border-radius: 5px;
+            padding: 15px 0;
+            -webkit-transition: 0.3s all;
+            transition: 0.3s all;
+            -webkit-transform: scale(0);
+            transform: scale(0);
+            -webkit-box-shadow: 0 0 10px rgba(0, 0, 0, 0.6);
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.6);
+        }
+
+        .tooltips-mess::before {
+            content: '';
+            position: absolute;
+            bottom: -13px;
+            right: 25px;
+            width: 0;
+            height: 0;
+            border-left: 10px solid transparent;
+            border-right: 10px solid transparent;
+            border-top: 15px solid white;
+        }
+
+        .tooltips-mess a {
+            display: -webkit-box;
+            display: -ms-flexbox;
+            display: flex;
+            padding: 5px 40px 5px 15px;
+            -webkit-box-align: center;
+            -ms-flex-align: center;
+            align-items: center;
+            font-size: 20px;
+            width: 100%;
+        }
+
+        .tooltips-mess a:hover {
+            background-color: #ccc;
+        }
+
+        .tooltips-mess .icon-ct {
+            width: 50px;
+            height: 50px;
+            background-color: red;
+            border-radius: 50%;
+            display: -webkit-box;
+            display: -ms-flexbox;
+            display: flex;
+            font-size: 28px;
+            color: white;
+            -webkit-box-pack: center;
+            -ms-flex-pack: center;
+            justify-content: center;
+            -webkit-box-align: center;
+            -ms-flex-align: center;
+            align-items: center;
+            margin-right: 15px;
+        }
+
+        .tooltips-mess .icon-ct b {
+            font-size: 18px;
+        }
+
+        .open-tool {
+            -webkit-transform: scale(1);
+            transform: scale(1);
+        }
+    </style>
+
+    <script>
+        function showToast(message, type, isReload) {
+            let bgColor = "green";
+            switch (type) {
+                case 1:
+                    bgColor = "red"
+                    break;
+                case 2:
+                    bgColor = "#ffc107"
+                    break;
+                case 3:
+                    bgColor = "blue"
+                    break;
+                default:
+                    bgColor = "green";
+                    break;
+            }
+            Toastify({
+                text: message,
+                duration: 3000,
+                gravity: "top", // Vị trí top
+                position: "right", // Hiển thị bên phải
+                backgroundColor: bgColor,
+            }).showToast();
+            if (isReload) {
+                setTimeout(
+                    function () {
+                        window.location.reload();
+                    },
+                    1000
+                );
+            }
+        }
+
+        function disableButton() {
+            // Chọn tất cả các button và link (a) trên trang
+            const elements = document.querySelectorAll('button, a');
+
+            elements.forEach(el => {
+                // Thêm lớp 'disabled' để hiển thị trạng thái không hoạt động
+                el.classList.add('disabled');
+
+                // Disable nút nếu là button
+                if (el.tagName.toLowerCase() === 'button') {
+                    el.disabled = true;
+                }
+
+                // Ngăn chặn hành động mặc định nếu là link (a)
+                if (el.tagName.toLowerCase() === 'a') {
+                    el.addEventListener('click', function (event) {
+                        event.preventDefault();
+                    });
+                }
+            });
+        }
+
+        function enableButton() {
+            // Chọn tất cả các button và link (a) có lớp 'disabled'
+            const elements = document.querySelectorAll('button, a');
+
+            elements.forEach(el => {
+                // Xóa lớp 'disabled' để khôi phục trạng thái hoạt động
+                el.classList.remove('disabled');
+
+                // Bật lại nút nếu là button
+                if (el.tagName.toLowerCase() === 'button') {
+                    el.disabled = false;
+                }
+
+                // Loại bỏ sự kiện 'click' ngăn hành động mặc định nếu là link (a)
+                if (el.tagName.toLowerCase() === 'a') {
+                    const newElement = el.cloneNode(true); // Tạo bản sao không có sự kiện
+                    el.replaceWith(newElement); // Thay thế thẻ hiện tại bằng bản sao
+                }
+            });
+        }
+    </script>
+</body>
+
+</html>

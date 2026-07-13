@@ -38,6 +38,7 @@ builder.Services.AddScoped<IZaloAPIService, ZaloAPIService>();
 builder.Services.AddScoped<IStaffTargetService, StaffTargetService>();
 builder.Services.AddScoped<IContactService, ContactService>();
 builder.Services.AddScoped<ICampaignService, CampaignService>();
+builder.Services.AddScoped<ICategoryService, CategoryService>();
 builder.Services.AddScoped<IEmailService, EmailService>();
 
 builder.Services.AddScoped<IAppApiService, AppApiService>();

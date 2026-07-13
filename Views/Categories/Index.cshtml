@@ -1,0 +1,253 @@
+@using WebMVC.Models.Responses
+@model List<CategoryResponse>
+@{
+    ViewData["Title"] = "Danh mục bài viết";
+}
+
+<div class="container-fluid mt-4">
+    <div class="card mb-4">
+        <div class="card-header d-flex justify-content-between align-items-center">
+            <h2>Danh mục bài viết</h2>
+            <div>
+                <button id="toggleFilterButton" class="btn btn-primary">Ẩn bộ lọc</button>
+                <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#addModal" onclick="openAddModal()">
+                    <i class="bi bi-plus"></i> Thêm mới
+                </button>
+            </div>
+        </div>
+        <div class="card-body" id="filterContainer">
+            <div class="row">
+                <div class="col-md-3">
+                    <label for="name" class="form-label">Tên</label>
+                    <input type="text" class="form-control" id="name" name="name" placeholder="Tên danh mục">
+                </div>
+                <div class="col-md-3 d-flex align-items-end">
+                    <button type="button" class="btn btn-primary btn-search" onclick="loadPage(1)">Tìm kiếm</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    @await Html.PartialAsync("_CategoryTable", Model)
+</div>
+
+<div class="modal fade" id="addModal" tabindex="-1" aria-labelledby="addModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Thêm danh mục</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="addForm">
+                    <div class="mb-3">
+                        <label for="addName" class="form-label">Tên</label>
+                        <input type="text" class="form-control" id="addName" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="addParent" class="form-label">Danh mục cha</label>
+                        <select id="addParent" class="form-select">
+                            <option value="">-- Không có --</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="addImage" class="form-label">Hình ảnh</label>
+                        <input type="file" class="form-control" id="addImage" accept="image/png, image/jpeg, image/jpg, image/gif">
+                    </div>
+                    <div class="mb-3">
+                        <label for="addDescription" class="form-label">Mô tả</label>
+                        <textarea class="form-control" id="addDescription" rows="3"></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-success">Lưu</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editModalLabel">Cập nhật danh mục</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="editForm">
+                    <div class="mb-3">
+                        <label for="editName" class="form-label">Tên</label>
+                        <input type="text" class="form-control" id="editName" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="editParent" class="form-label">Danh mục cha</label>
+                        <select id="editParent" class="form-select">
+                            <option value="">-- Không có --</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="editImage" class="form-label">Hình ảnh</label>
+                        <input type="file" class="form-control" id="editImage" accept="image/png, image/jpeg, image/jpg, image/gif">
+                        <img id="editImagePreview" class="img-fluid mt-2 border rounded" style="max-width: 100px; display: none;" />
+                    </div>
+                    <div class="mb-3">
+                        <label for="editDescription" class="form-label">Mô tả</label>
+                        <textarea class="form-control" id="editDescription" rows="3"></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-success">Lưu</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        function loadPage(page) {
+            const request = {
+                PageIndex: page,
+                Name: $('#name').val() || '',
+            };
+
+            $.ajax({
+                url: '/Categories/GetCategoryPaging',
+                data: request,
+                type: 'GET',
+                success: function (data) {
+                    $('#table-container').replaceWith(data);
+                },
+                error: function () {
+                    alert('Lỗi khi tải dữ liệu');
+                }
+            });
+        }
+
+        $('#toggleFilterButton').on('click', function () {
+            $('#filterContainer').toggle();
+            let isVisible = $('#filterContainer').is(':visible');
+            $(this).text(isVisible ? 'Ẩn bộ lọc' : 'Hiện bộ lọc');
+        });
+
+        function loadParentOptions(selectId, selectedId) {
+            $.ajax({
+                url: '/Categories/GetAllCategoryNames',
+                type: 'GET',
+                success: function (response) {
+                    const select = $('#' + selectId);
+                    select.find('option:not(:first)').remove();
+                    (response.Data || []).forEach(function (item) {
+                        if (selectedId && item.Id === selectedId) return;
+                        select.append(`<option value="${item.Id}">${item.Name}</option>`);
+                    });
+                    if (selectedId) {
+                        select.val(selectedId);
+                    }
+                }
+            });
+        }
+
+        function openAddModal() {
+            document.getElementById("addForm").reset();
+            loadParentOptions('addParent', null);
+        }
+
+        document.getElementById("addForm").addEventListener("submit", async function (event) {
+            event.preventDefault();
+
+            let formData = new FormData();
+            formData.append("Name", document.getElementById("addName").value);
+            formData.append("Description", document.getElementById("addDescription").value);
+            const parentId = document.getElementById("addParent").value;
+            if (parentId) {
+                formData.append("ParentId", parentId);
+            }
+            const imageInput = document.getElementById("addImage");
+            if (imageInput.files.length > 0) {
+                formData.append("Image", imageInput.files[0]);
+            }
+
+            disableButton();
+            $.ajax({
+                url: "/Categories/Create",
+                type: "POST",
+                data: formData,
+                contentType: false,
+                processData: false,
+                success: function (response) {
+                    showToast(response.Message, response.Type, true);
+                },
+                error: function (response) {
+                    showToast(response.responseJSON?.Message || "Lỗi không xác định", response.responseJSON?.Type || 2, false);
+                },
+                complete: function () {
+                    enableButton();
+                }
+            });
+        });
+
+        function editItem(category) {
+            $("#editName").val(category.Name);
+            $("#editDescription").val(category.Description);
+            loadParentOptions('editParent', category.ParentId);
+
+            if (category.Image) {
+                $("#editImagePreview").attr("src", category.Image).show();
+            } else {
+                $("#editImagePreview").hide();
+            }
+
+            $("#editForm").data("category-id", category.Id);
+        }
+
+        $("#editForm").submit(async function (event) {
+            event.preventDefault();
+
+            const categoryId = $(this).data("category-id");
+
+            let formData = new FormData();
+            formData.append("Name", $("#editName").val());
+            formData.append("Description", $("#editDescription").val());
+            const parentId = $("#editParent").val();
+            if (parentId) {
+                formData.append("ParentId", parentId);
+            }
+            const imageFile = $("#editImage")[0].files[0];
+            if (imageFile) {
+                formData.append("Image", imageFile);
+            }
+
+            disableButton();
+            $.ajax({
+                url: `/Categories/Update?id=${categoryId}`,
+                type: "PUT",
+                data: formData,
+                contentType: false,
+                processData: false,
+                success: function (response) {
+                    showToast(response.Message, response.Type, true);
+                },
+                error: function (response) {
+                    showToast(response.responseJSON?.Message || "Lỗi không xác định", response.responseJSON?.Type || 2, false);
+                },
+                complete: function () {
+                    enableButton();
+                }
+            });
+        });
+
+        function deleteCategory(id) {
+            const isConfirm = confirm(`Bạn có chắc chắn muốn xóa danh mục này`);
+            if (!isConfirm) return;
+
+            $.ajax({
+                url: '/Categories/Delete',
+                type: 'DELETE',
+                data: { id: id },
+                success: function (response) {
+                    showToast(response.Message, response.Type, true);
+                },
+                error: function (response) {
+                    showToast(response.responseJSON?.Message || "Lỗi không xác định", response.responseJSON?.Type || 2, false);
+                }
+            });
+        }
+    </script>
+}
