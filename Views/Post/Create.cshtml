@@ -1,0 +1,190 @@
+@using WebMVC.Interfaces
+@inject IHttpContextService _httpContextService;
+@{
+    ViewData["Title"] = "Tạo bài viết";
+    var loggedModel = _httpContextService.GetLoggedModel();
+}
+
+<div class="container-fluid mt-4">
+    <div class="card mb-4">
+        <div class="card-header d-flex justify-content-between align-items-center">
+            <h2>Thêm bài viết</h2>
+        </div>
+        <form action="/posts" method="post">
+            <div asp-validation-summary="All" class="text-danger"></div>
+            @Html.AntiForgeryToken()
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-6 col-xs-12 mb-3">
+                        <label for="barCode" class="form-label">Tiêu đề</label>
+                        <input type="text" class="form-control" id="Title" name="Title" placeholder="Tiêu đề bài viết">
+                    </div>
+                    <div class="col-md-6 col-xs-12 mb-3">
+                        <label for="barCode" class="form-label">Đường dẫn</label>
+                        <input type="text" class="form-control" id="Slug" name="Slug" placeholder="Đường dẫn">
+                    </div>
+                    @* <div class="col-md-6 col-xs-12 mb-3">
+                        <label for="status" class="form-label">Trạng thái</label>
+                        <select id="status" class="form-select" name="Status">
+                            <option value="active" selected>dr</option>
+                            <option value="pending">Pending</option>
+                            <option value="inactive">Inactive</option>
+                        </select>
+                    </div> *@
+                    <div class="col-md-6 col-xs-12 mb-3">
+                        <label for="Excerpt" class="form-label">Mô tả</label>
+                        <input type="text" class="form-control" id="Excerpt" name="Excerpt" placeholder="Mô tả">
+                    </div>
+                    <div class="col-md-6 col-xs-12 mb-3">
+                        <label for="CategoryIds" class="form-label">Danh mục</label>
+                        <select id="CategoryIds" class="form-select" style="width: 100%;" name="CategoryIds" multiple>
+                            @foreach (var category in (IEnumerable<dynamic>)ViewBag.Categories)
+                            {
+                                <option value="@category.Id">@category.Name</option>
+                            }
+                        </select>
+                    </div>
+                    <div class="col-xs-12 mb-3">
+                        <label for="Content" class="form-label">Content</label>
+                        <textarea id="html-source" name="Content" style="display:none;" readonly></textarea>
+                        <div id="editorjs"></div>
+                    </div>
+                </div>
+                <div class="row pt-2">
+                    <div class="text-end">
+                        <button type="submit" class="btn btn-primary btn-search">Save</button>
+                    </div>
+                </div>
+
+            </div>
+        </form>
+    </div>
+    <div id="loading" style="display: none;">
+        <div class="loading-overlay">
+            <div class="spinner"></div>
+        </div>
+    </div>
+    @section Scripts {
+        <script src="https://cdn.jsdelivr.net/npm/@@editorjs/editorjs@2.29.1"></script>
+        <script src="https://cdn.jsdelivr.net/npm/@@editorjs/header@2.8.1"></script>
+        <script src="https://cdn.jsdelivr.net/npm/@@editorjs/list@1.9.0"></script>
+        <script src="https://cdn.jsdelivr.net/npm/@@editorjs/image@2.9.3"></script>
+        <script src="https://cdn.jsdelivr.net/npm/@@editorjs/quote@2.6.0"></script>
+        <script src="https://cdn.jsdelivr.net/npm/@@editorjs/delimiter@1.4.2"></script>
+        <script src="https://cdn.jsdelivr.net/npm/@@editorjs/marker@1.4.0"></script>
+        <script src="https://cdn.jsdelivr.net/npm/@@editorjs/embed@2.7.6"></script>
+        <script>
+            function slugify(str) {
+                return str
+                    .normalize('NFD')
+                    .replace(new RegExp('[' + String.fromCharCode(0x0300) + '-' + String.fromCharCode(0x036f) + ']', 'g'), '')
+                    .replace(/đ/g, 'd')
+                    .replace(/Đ/g, 'D')
+                    .toLowerCase()
+                    .trim()
+                    .replace(/[^a-z0-9\s-]/g, '')
+                    .replace(/\s+/g, '-')
+                    .replace(/-+/g, '-')
+                    .replace(/^-|-$/g, '');
+            }
+
+            let slugManuallyEdited = false;
+            $("#Slug").on('input', function () {
+                slugManuallyEdited = true;
+            });
+            $("#Title").on('input', function () {
+                if (!slugManuallyEdited) {
+                    $("#Slug").val(slugify($(this).val()));
+                }
+            });
+
+            $("#CategoryIds").select2({
+                placeholder: "Chọn danh mục",
+                allowClear: true,
+                theme: "bootstrap-5",
+                width: "100%",
+            });
+
+            const editor = new EditorJS({
+                holder: 'editorjs',
+                tools: {
+                    header: {
+                        class: Header,
+                        inlineToolbar: true,
+                    },
+                    list: {
+                        class: List,
+                        inlineToolbar: true,
+                    },
+                    quote: {
+                        class: Quote,
+                        inlineToolbar: true,
+                    },
+                    delimiter: Delimiter,
+                    marker: Marker,
+                    embed: Embed,
+                    image: {
+                        class: ImageTool,
+                        config: {
+                            uploader: {
+                                uploadByFile(file) {
+                                    const formData = new FormData();
+                                    formData.append('file', file);
+
+                                    return fetch('/signature/upload-logo', { method: 'POST', body: formData })
+                                        .then((res) => res.json())
+                                        .then((data) => ({ success: 1, file: { url: data.path } }));
+                                },
+                                uploadByUrl(url) {
+                                    return Promise.resolve({ success: 1, file: { url } });
+                                },
+                            },
+                        },
+                    },
+                },
+                placeholder: 'Nhập nội dung bài viết...',
+                onChange: async (api, event) => {
+                    const outputData = await editor.save();
+                    document.getElementById('html-source').value = blocksToHtml(outputData);
+                },
+            });
+
+            function blockToHtml(block) {
+                const { type, data } = block;
+                switch (type) {
+                    case 'header':
+                        const id = slugify(data.text);
+                        return `<h${data.level} id="${id}">${data.text}</h${data.level}>`;
+                    case 'paragraph':
+                        return `<p>${data.text}</p>`;
+                    case 'list': {
+                        const tag = data.style === 'ordered' ? 'ol' : 'ul';
+                        const items = data.items.map((item) => `<li>${item}</li>`).join('');
+                        return `<${tag}>${items}</${tag}>`;
+                    }
+                    case 'quote':
+                        return `<blockquote><p>${data.text}</p>${data.caption ? `<cite>${data.caption}</cite>` : ''}</blockquote>`;
+                    case 'delimiter':
+                        return '<hr>';
+                    case 'image': {
+                        const caption = data.caption ? `<figcaption>${data.caption}</figcaption>` : '';
+                        return `<figure><img src="${data.file.url}" alt="${data.caption || ''}">${caption}</figure>`;
+                    }
+                    case 'embed':
+                        return `<div class="embed-wrap"><iframe src="${data.embed}" width="${data.width}" height="${data.height}" frameborder="0" allowfullscreen></iframe></div>`;
+                    default:
+                        console.warn('Chưa hỗ trợ chuyển đổi block type:', type);
+                        return '';
+                }
+            }
+
+            function blocksToHtml(outputData) {
+                return outputData.blocks.map(blockToHtml).join('\n');
+            }
+        </script>
+        <style>
+            [data-bs-toggle="tooltip"] {
+                cursor: pointer;
+            }
+        </style>
+    }

@@ -1,6 +1,9 @@
 ﻿@using WebMVC.Entities
 @using WebMVC.Models.Responses
 @using WebMVC.Ultilities.Enums
+@{
+    var warehouses = ViewBag.Warehouses as List<Warehouse> ?? new List<Warehouse>();
+}
 @model BigPackageResponse
 @{
     ViewData["Title"] = "Chi tiết bao hàng";
@@ -25,6 +28,17 @@
                         <div class="col-md-4">Đối tác: </div>
                         <div class="col-md-8">
                             <input value="@Model.Partner" type="text" class="form-control" id="partnerInfo" name="partnerInfo" placeholder="Nhập thông tin đối tác">
+                        </div>
+                    </div>
+                    <div class="row my-2">
+                        <div class="col-md-4">Hình thức vận chuyển: </div>
+                        <div class="col-md-8">
+                            <select id="shipId" class="form-select" name="ShipId">
+                                @foreach (var w in warehouses)
+                                {
+                                    <option value="@w.Id">@w.Name</option>
+                                }
+                            </select>
                         </div>
                     </div>
                     <div class="row my-2">
@@ -154,7 +168,8 @@
                 Quantity: parseInt($('#totalItems').val()) || 0,
                 Weight: parseFloat($('#totalWeight').val()) || 0,
                 Volume: parseFloat($('#totalVolume').val()) || 0,
-                Status: parseInt($('#status').val()) || 0
+                Status: parseInt($('#status').val()) || 0,
+                ShipId: parseInt($('#shipId').val()) || 0
             };
 
             if (!request.Name) {

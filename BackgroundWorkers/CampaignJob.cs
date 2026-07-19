@@ -2,6 +2,7 @@ using WebMVC.Data;
 using WebMVC.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using WebMVC.Entities;
+using Newtonsoft.Json;
 
 namespace WebMVC.BackgroundWorkers
 {
@@ -43,20 +44,26 @@ namespace WebMVC.BackgroundWorkers
                     {
                         var emailTemplate = await db.EmailTemplates.FindAsync([campaign.TemplateId], stoppingToken);
 
-                        var account = await db.Accounts.FirstOrDefaultAsync(x => x.Email == campaign.EmailSent, stoppingToken);
-                        var signature = account != null
-                            ? await db.AccountSignatures.FirstOrDefaultAsync(x => x.AccountId == account.Id, stoppingToken)
-                            : null;
+                        // var account = await db.Accounts.FirstOrDefaultAsync(x => x.Id == campaign.CreatedBy, stoppingToken);
+                        var signature = await db.AccountSignatures.FirstOrDefaultAsync(x => x.AccountId == campaign.CreatedBy, stoppingToken);
 
                         var signatureHtml = BuildSignatureHtml(signature, defaultLogoHtml);
-
                         var contacts = await db.ContactListContacts
                             .Where(x => x.ContactListId == campaign.ContactId)
                             .Join(db.Contacts, clc => clc.ContactId, c => c.Id, (clc, c) => c)
                             .ToListAsync(stoppingToken);
 
-                        foreach (var contact in contacts)
+                        const int batchSize = 30;
+                        for (int i = 0; i < contacts.Count; i++)
                         {
+                            if (i > 0 && i % batchSize == 0)
+                            {
+                                await db.SaveChangesAsync(stoppingToken);
+                                Console.WriteLine($"Đã gửi {i} mail, nghỉ 15 phút...");
+                                await Task.Delay(TimeSpan.FromMinutes(15), stoppingToken);
+                            }
+
+                            var contact = contacts[i];
                             var log = new MailLog
                             {
                                 CampaignId = campaign.Id,

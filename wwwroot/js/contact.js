@@ -106,6 +106,9 @@ function loadPage(page) {
                         ${item.Name}
                     </td>
                     <td>
+                        ${item.CreatedStr}
+                    </td>
+                    <td>
                         <a class="btn btn-primary" href="/contact-detail/${item.Id}" target="_blank">Chi tiết</a>
                         <button class="btn btn-danger" onclick="removeList(${item.Id})" target="_blank">Xóa</button>
                     </td>
@@ -163,6 +166,52 @@ function deleteContact(id, contactListId) {
         });
     }
 }
+function editContact(id) {
+    var row = $('.contact-' + id);
+    const firstName = row.find('td').eq(1).text().trim();
+    const lastName = row.find('td').eq(2).text().trim();
+    const email = row.find('td').eq(3).text().trim();
+    $('#contact-id').val(id);
+    $('#firstNameEdit').val(firstName);
+    $('#lastNameEdit').val(lastName);
+    $('#emailEdit').val(email);
+    new bootstrap.Modal(document.getElementById('modal-edit')).show();
+}
+function submitEdit() {
+    const id = $('#contact-id').val();
+    const firstName = $('#firstNameEdit').val();
+    const lastName = $('#lastNameEdit').val();
+    const email = $('#emailEdit').val();
+    const data = {
+        id: parseInt(id),
+        FirstName: firstName,
+        LastName: lastName,
+        Email: email,
+    }
+    $.ajax({
+        url: '/Contact/EditContact',
+        data: JSON.stringify(data),
+        contentType: 'application/json',
+        type: 'PUT',
+        beforeSend: function () {
+            showLoading();
+        },
+        success: function (data) {
+            if (data.success) {
+                showToast(data.success.Message, 'success', true);
+                bootstrap.Modal.getInstance(document.getElementById('modal-edit')).hide();
+            }
+            hideLoading();
+        },
+        complete: function () {
+            hideLoading();
+        },
+        error: function () {
+            alert('Lỗi khi tải dữ liệu');
+        }
+    });
+}
+
 function addMoreContact(id) {
 
     const firstName = $('#firstName').val();
@@ -190,14 +239,17 @@ function addMoreContact(id) {
         success: function (data) {
             if (data.success) {
                 const contact = data.data
-                const html = `<tr class="contact-${contact.id}">
-                    <td class="text-center">${contact.id}</td>
-                    <td class="text-center">${contact.firstName}</td>
-                    <td class="text-center">${contact.lastName}</td>
-                    <td class="text-center">${contact.email}</td>
+                const html = `<tr class="contact-${contact.Id}">
+                    <td class="text-center">${contact.Id}</td>
+                    <td class="text-center">${contact.FirstName}</td>
+                    <td class="text-center">${contact.LastName}</td>
+                    <td class="text-center">${contact.Email}</td>
                     <td class="text-center">
-                        <button type="button" class="btn btn-sm btn-danger" onclick="deleteContact(${contact.id} , ${id})">
+                        <button type="button" class="btn btn-sm btn-danger" onclick="deleteContact(${contact.Id} , ${id})">
                             <i class="bi bi-trash"></i>
+                        </button>
+                        <button type="button" class="btn btn-sm btn-primary" onclick="editContact(${contact.Id})">
+                            <i class="bi bi-pencil"></i>
                         </button>
                     </td>
                 </tr>`
@@ -297,5 +349,18 @@ $(document).ready(function () {
     $('#submitContactBtn').on('click', function () {
         var id = $(this).attr("data-id");
         addMoreContact(id);
+    })
+    $('#submitEditContact').on('click', function () {
+        submitEdit();
+    })
+    $('#contact-search').on('click', function(){
+        var email = $('#email-search').val().trim();
+        var url = new URL(window.location.href);
+        if (email) {
+            url.searchParams.set('email', email);
+        } else {
+            url.searchParams.delete('email');
+        }
+        window.location.href = url.toString();
     })
 })

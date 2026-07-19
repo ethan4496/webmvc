@@ -15,10 +15,12 @@ namespace WebMVC.Controllers
     public class BigPackageController : Controller
     {
         private readonly IBigPackageService _bigPackageService;
+        private readonly IWarehouseService _warehouseService;
         int pageSize = 20;
-        public BigPackageController(IBigPackageService bigPackageService)
+        public BigPackageController(IBigPackageService bigPackageService, IWarehouseService warehouseService)
         {
             _bigPackageService = bigPackageService;
+            _warehouseService = warehouseService;
         }
         [Route("big-package")]
         public async Task<IActionResult> Index()
@@ -46,6 +48,8 @@ namespace WebMVC.Controllers
         public async Task<IActionResult> Detail(int id)
         {
             var data = await _bigPackageService.GetById(id);
+            var warehouses = await _warehouseService.GetWarehousesByType((int)EWarehouseType.Shipping);
+            ViewBag.Warehouses = warehouses;
             return View(data);
         }
 

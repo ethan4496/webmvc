@@ -6,13 +6,14 @@ namespace WebMVC.Models.Responses
     public class CampaignResponse : Campaign
     {
         public string AccountName {get; set;}
+        public string ContactListName { get; set; }
         public string StatusBadge
         {
             get
             {
                 var (label, colorClass) = Status switch
                 {
-                    "pending" => ("Pending", "bg-warning"),
+                    "pending" => ("Pending", "bg-danger"),
                     "active" => ("Active", "bg-success"),
                     "inactive" => ("Inactive", "bg-danger"),
                     "sent" => ("Sent", "bg-success"),

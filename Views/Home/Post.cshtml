@@ -1,0 +1,55 @@
+@using WebMVC.Models.ViewModels
+@model PostDetailViewModel
+@{
+    Layout = "~/Views/Shared/_NewHomeLayout.cshtml";
+    ViewData["Title"] = Model.Post.Title;
+}
+<section class="page-breadcrumb">
+    <div class="container">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="/">Trang chủ</a></li>
+                <li class="breadcrumb-item active" aria-current="page">@Model.Post.Title</li>
+            </ol>
+        </nav>
+        <div class="breadcrumb-head">
+            <h1 class="section-title">@Model.Post.Title</h1>
+        </div>
+        <p class="description-lg mb-0">@Model.Post.Excerpt</p>
+    </div>
+</section>
+<div class="page-content">
+    <div class="container">
+        <div class="layout-content">
+            @if (Model.Post.TableOfContents.Count > 0)
+            {
+                <aside class="toc d-none d-xl-block">
+                    <div class="d-flex toc-title gap-1">
+                        <img src="/tpkexpress/images/icon/Paper.svg" alt="">
+                        <h3>
+                            Nội dung chính
+                        </h3>
+                    </div>
+                    <ul>
+                        @foreach (var t in Model.Post.TableOfContents)
+                        {
+                            <li>
+                                <a href="#@t.Id">
+                                    @t.Label
+                                </a>
+                            </li>
+                        }
+                    </ul>
+                </aside>
+            }
+            <div class="main-content">
+                <div class="chinh-sach">
+                    <h2 class="title-chinh-sach">@Model.Post.Title</h2>
+                    <div class="chinh-sach-content">
+                        @Html.Raw(Model.Post.Content)
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -56,14 +56,14 @@ namespace WebMVC.Controllers
 
         [Route("contact-detail/{id}")]
         [HttpGet]
-        public async Task<IActionResult> Detail(int id)
+        public async Task<IActionResult> Detail(int id, string email)
         {
              if (id <= 0)
                 return BadRequest();
-            var contact = await _contactService.GetContactById(id);
+            var contact = await _contactService.GetContactById(id, email);
             if (contact == null)
                 return NotFound();
-            
+
             return View(contact);
         }
         
@@ -112,9 +112,9 @@ namespace WebMVC.Controllers
         {
             try
             {
-                Console.WriteLine(
-                    "AddContact"
-                );
+                // Console.WriteLine(
+                //     "AddContact"
+                // );
                 var contact = await _contactService.addContact(request);
                 return Ok(new
                 {
@@ -125,12 +125,12 @@ namespace WebMVC.Controllers
             }
             catch (Exception ex)
             {
-                Console.WriteLine(
-                    "items"
-                );
-                Console.WriteLine(
-                    ex.ToString()
-                );
+                // Console.WriteLine(
+                //     "items"
+                // );
+                // Console.WriteLine(
+                //     ex.ToString()
+                // );
                 return BadRequest(new
                 {
                     success = false,
@@ -138,6 +138,20 @@ namespace WebMVC.Controllers
                 });
             }
         }
+        [HttpPut]
+        public async Task<IActionResult> EditContact( [FromBody] UpdateContactRequest request)
+        {
+            try
+            {
+                await _contactService.EditContactAsync(request);
+                return Ok(new { success = true, message = "Cập nhật liên hệ thành công" });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { success = false, message = ex.Message });
+            }
+        }
+
         [HttpDelete]
         public async Task<ApiResponse> Delete(int id)
         {

@@ -39,6 +39,7 @@ builder.Services.AddScoped<IStaffTargetService, StaffTargetService>();
 builder.Services.AddScoped<IContactService, ContactService>();
 builder.Services.AddScoped<ICampaignService, CampaignService>();
 builder.Services.AddScoped<ICategoryService, CategoryService>();
+builder.Services.AddScoped<IPostService, PostService>();
 builder.Services.AddScoped<IEmailService, EmailService>();
 
 builder.Services.AddScoped<IAppApiService, AppApiService>();

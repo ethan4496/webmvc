@@ -106,9 +106,9 @@ function loadPage(page) {
                         <div class="email-header">
                             <h5 class="card-title">${item.Name}</h5>
                             <h6 class="card-subtitle mb-2 text-muted">${item.Subject}</h6>
-                            <p class="card-text mail-content">
+                            <div class="card-text mail-content">
                                 ${item.Body}
-                            </p>
+                            </div>
                         </div>
                         <div class="card-actions">
                             <span>

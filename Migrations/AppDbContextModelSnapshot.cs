@@ -114,6 +114,40 @@ namespace WebMVC.Migrations
                     b.ToTable("Accounts");
                 });
 
+            modelBuilder.Entity("WebMVC.Entities.AccountSignature", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("AccountId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Body")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("Created")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("CreatedBy")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Logo")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("UpdateBy")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("Updated")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("AccountSignatures");
+                });
+
             modelBuilder.Entity("WebMVC.Entities.AccountWarehouseSupervisor", b =>
                 {
                     b.Property<int>("Id")
@@ -234,14 +268,17 @@ namespace WebMVC.Migrations
                     b.Property<string>("Body")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("ContactId")
+                        .HasColumnType("int");
+
                     b.Property<DateTime>("Created")
                         .HasColumnType("datetime2");
 
                     b.Property<int>("CreatedBy")
                         .HasColumnType("int");
 
-                    b.Property<int>("EmailTemplateId")
-                        .HasColumnType("int");
+                    b.Property<string>("EmailSent")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("FailedCount")
                         .HasColumnType("int");
@@ -249,7 +286,7 @@ namespace WebMVC.Migrations
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime>("SentAt")
+                    b.Property<DateTime>("SendAt")
                         .HasColumnType("datetime2");
 
                     b.Property<int>("SentCount")
@@ -261,7 +298,7 @@ namespace WebMVC.Migrations
                     b.Property<string>("Subject")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("TotalRecipients")
+                    b.Property<int>("TemplateId")
                         .HasColumnType("int");
 
                     b.Property<int?>("UpdateBy")
@@ -272,9 +309,48 @@ namespace WebMVC.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("EmailTemplateId");
+                    b.HasIndex("TemplateId");
 
                     b.ToTable("Campaigns");
+                });
+
+            modelBuilder.Entity("WebMVC.Entities.Category", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("Created")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("CreatedBy")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Image")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("ParentId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("UpdateBy")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("Updated")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ParentId");
+
+                    b.ToTable("Categories");
                 });
 
             modelBuilder.Entity("WebMVC.Entities.Contact", b =>
@@ -336,7 +412,7 @@ namespace WebMVC.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("ContacLists");
+                    b.ToTable("ContactLists");
                 });
 
             modelBuilder.Entity("WebMVC.Entities.ContactListContact", b =>
@@ -397,6 +473,46 @@ namespace WebMVC.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("EmailTemplates");
+                });
+
+            modelBuilder.Entity("WebMVC.Entities.MailLog", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("CampaignId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ContactId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("Created")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("CreatedBy")
+                        .HasColumnType("int");
+
+                    b.Property<string>("ErrorMessage")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("SentAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Status")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("UpdateBy")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("Updated")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("MailLogs");
                 });
 
             modelBuilder.Entity("WebMVC.Entities.Notification", b =>
@@ -510,6 +626,58 @@ namespace WebMVC.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("OutOfStocks");
+                });
+
+            modelBuilder.Entity("WebMVC.Entities.Post", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Content")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("Created")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("CreatedBy")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Excerpt")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Image")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Title")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("UpdateBy")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("Updated")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Posts");
+                });
+
+            modelBuilder.Entity("WebMVC.Entities.PostCategory", b =>
+                {
+                    b.Property<int>("PostId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("CategoryId")
+                        .HasColumnType("int");
+
+                    b.HasKey("PostId", "CategoryId");
+
+                    b.HasIndex("CategoryId");
+
+                    b.ToTable("PostCategories");
                 });
 
             modelBuilder.Entity("WebMVC.Entities.PriceImport", b =>
@@ -1398,11 +1566,20 @@ namespace WebMVC.Migrations
                 {
                     b.HasOne("WebMVC.Entities.EmailTemplate", "EmailTemplate")
                         .WithMany("Campaigns")
-                        .HasForeignKey("EmailTemplateId")
+                        .HasForeignKey("TemplateId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("EmailTemplate");
+                });
+
+            modelBuilder.Entity("WebMVC.Entities.Category", b =>
+                {
+                    b.HasOne("WebMVC.Entities.Category", "Parent")
+                        .WithMany("Children")
+                        .HasForeignKey("ParentId");
+
+                    b.Navigation("Parent");
                 });
 
             modelBuilder.Entity("WebMVC.Entities.ContactListContact", b =>
@@ -1424,6 +1601,32 @@ namespace WebMVC.Migrations
                     b.Navigation("ContactList");
                 });
 
+            modelBuilder.Entity("WebMVC.Entities.PostCategory", b =>
+                {
+                    b.HasOne("WebMVC.Entities.Category", "Category")
+                        .WithMany("PostCategories")
+                        .HasForeignKey("CategoryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("WebMVC.Entities.Post", "Post")
+                        .WithMany("PostCategories")
+                        .HasForeignKey("PostId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Category");
+
+                    b.Navigation("Post");
+                });
+
+            modelBuilder.Entity("WebMVC.Entities.Category", b =>
+                {
+                    b.Navigation("Children");
+
+                    b.Navigation("PostCategories");
+                });
+
             modelBuilder.Entity("WebMVC.Entities.Contact", b =>
                 {
                     b.Navigation("ContactListContacts");
@@ -1437,6 +1640,11 @@ namespace WebMVC.Migrations
             modelBuilder.Entity("WebMVC.Entities.EmailTemplate", b =>
                 {
                     b.Navigation("Campaigns");
+                });
+
+            modelBuilder.Entity("WebMVC.Entities.Post", b =>
+                {
+                    b.Navigation("PostCategories");
                 });
 #pragma warning restore 612, 618
         }

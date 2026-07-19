@@ -8,5 +8,6 @@
         public double Volume { get; set; }
         public int Quantity { get; set; }
         public int Status { get; set; }
+        public int ShipId {get; set; }
     }
 }

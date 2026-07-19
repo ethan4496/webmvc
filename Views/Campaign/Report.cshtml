@@ -60,7 +60,8 @@
                     <tr>
                         <th>Campaign</th>
                         <th>Liên hệ</th>
-                        <th>Email</th>
+                        <th>Email nhận</th>
+                        <th>Email gửi</th>
                         <th>Trạng thái</th>
                         <th>Lỗi</th>
                         <th>Thời gian gửi</th>
@@ -137,6 +138,7 @@
                         <td>${item.CampaignName ?? ''}</td>
                         <td>${item.ContactName ?? ''}</td>
                         <td>${item.ContactEmail ?? ''}</td>
+                        <td>${item.EmailSent ?? ''}</td>
                         <td>${badge}</td>
                         <td class="text-danger">${item.ErrorMessage ?? ''}</td>
                         <td>${new Date(item.SentAt).toLocaleString('vi-VN')}</td>
@@ -149,16 +151,45 @@
     }
 
     function renderPagination(current, total) {
-        var html = '';
-        for (var i = 1; i <= total; i++) {
-            html += `<li class="page-item ${i === current ? 'active' : ''}">
-                <a class="page-link" href="#" data-page="${i}">${i}</a>
+        if (total <= 0) {
+            $('#pagination').html('');
+            return;
+        }
+
+        function pageItem(page, label, active, disabled) {
+            return `<li class="page-item ${active ? 'active' : ''} ${disabled ? 'disabled' : ''}">
+                <a class="page-link" href="#" data-page="${page}">${label ?? page}</a>
             </li>`;
         }
+
+        function ellipsis() {
+            return '<li class="page-item disabled"><span class="page-link">…</span></li>';
+        }
+
+        var pages = [];
+        var delta = 1;
+        var range = [];
+
+        for (var i = Math.max(2, current - delta); i <= Math.min(total - 1, current + delta); i++) {
+            range.push(i);
+        }
+
+        pages.push(1);
+        if (range.length && range[0] > 2) pages.push('...');
+        pages = pages.concat(range);
+        if (range.length && range[range.length - 1] < total - 1) pages.push('...');
+        if (total > 1) pages.push(total);
+
+        var html = pageItem(current - 1, '&laquo;', false, current === 1);
+        pages.forEach(function (p) {
+            html += p === '...' ? ellipsis() : pageItem(p, p, p === current, false);
+        });
+        html += pageItem(current + 1, '&raquo;', false, current === total);
+
         $('#pagination').html(html);
     }
 
-    $(document).on('click', '#pagination .page-link', function (e) {
+    $(document).on('click', '#pagination .page-item:not(.disabled) .page-link', function (e) {
         e.preventDefault();
         loadLogs($(this).data('page'));
     });

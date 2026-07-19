@@ -575,7 +575,7 @@ namespace WebMVC.Services
               AND (@Type IS NULL OR t.Type = @Type)
               AND (@FromDate IS NULL OR t.{dateSearchField} >= @FromDate)
               AND (@ToDate IS NULL OR t.{dateSearchField} <= @ToDate)
-              AND (@PostOffice IS NULL OR t.PostOffice = @PostOffice) ";
+              AND (@PostOffice IS NULL OR t.PostOffice = @PostOffice)";
 
             string sqlTotal = $@"
                 SELECT COUNT(t.Id) FROM Transportations t
@@ -618,7 +618,7 @@ namespace WebMVC.Services
                 new SqlParameter("@Type", search.Type ?? (object)DBNull.Value),
                 new SqlParameter("@FromDate", search.FromDate ?? (object)DBNull.Value),
                 new SqlParameter("@ToDate", search.ToDate ?? (object)DBNull.Value),
-                new SqlParameter("@PostOffice", search.PostOffice ?? (object)DBNull.Value),
+                new SqlParameter("@PostOffice", System.Data.SqlDbType.NVarChar) { Value = search.PostOffice ?? (object)DBNull.Value },
                 new SqlParameter("@Offset", (search.PageIndex - 1) * search.PageSize),
                 new SqlParameter("@PageSize", search.PageSize),
                 new SqlParameter("@WarehouseFromType", (int)EWarehouseType.Reciever),

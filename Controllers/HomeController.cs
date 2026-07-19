@@ -9,7 +9,9 @@ using WebMVC.Interfaces;
 using WebMVC.Models;
 using WebMVC.Models.Requests.Creates;
 using WebMVC.Models.Responses;
+using WebMVC.Models.ViewModels;
 using WebMVC.Ultilities.Enums;
+using Newtonsoft.Json;
 
 namespace WebMVC.Controllers
 {
@@ -18,12 +20,16 @@ namespace WebMVC.Controllers
         private readonly IAccountService _accountService;
         private readonly IWebConfigurationService _webConfigurationService;
         private readonly ITrackingService _trackingService;
+        private readonly IPostService _postService;
+        private readonly ICategoryService _categoryService;
 
-        public HomeController(IAccountService accountService, IWebConfigurationService webConfigurationService, ITrackingService trackingService)
+        public HomeController(IAccountService accountService, IWebConfigurationService webConfigurationService, ITrackingService trackingService, IPostService postService, ICategoryService categoryService)
         {
             _accountService = accountService;
             _webConfigurationService = webConfigurationService;
             _trackingService = trackingService;
+            _postService = postService;
+            _categoryService = categoryService;
         }
 
         public async Task<IActionResult> IndexAsync()
@@ -224,6 +230,24 @@ namespace WebMVC.Controllers
         {
             var result = await _trackingService.GetInfo(ordecode);
             return Json(new { d = result });
+        }
+        [Route("bai-viet/{slug}")]
+        public async Task<IActionResult> Post(string slug)
+        {
+            if (string.IsNullOrWhiteSpace(slug))
+                return NotFound();
+            var post = await _postService.GetPostBySlug(slug);
+            if (post == null)
+                return NotFound();
+
+            var categories = await _categoryService.GetAllCategoryNames();
+            var model = new PostDetailViewModel
+            {
+                Post = post,
+                Categories = categories
+            };
+
+            return View(model);
         }
     }
 }

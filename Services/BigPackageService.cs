@@ -191,6 +191,11 @@ namespace WebMVC.Services
 
                 var bigPackage = await _unitOfWork.Repository<BigPackage>().GetQueryable().SingleOrDefaultAsync(x => x.Id == id);
                 int oldStatus = bigPackage.Status;
+                var transportations = await _unitOfWork.Repository<Transportation>().GetQueryable().Where(x => x.BigPackageId == id).ToListAsync();
+                foreach (var transportation in transportations)
+                {
+                    transportation.ShipId = request.ShipId;
+                }
                 if (request.Status == bigPackage.Status
                     && request.Quantity == bigPackage.Quantity
                     && request.Weight == bigPackage.Weight
@@ -199,7 +204,10 @@ namespace WebMVC.Services
                     && request.Partner == bigPackage.Partner
                     )
                 {
+                    await _unitOfWork.SaveAsync();
+                    await _unitOfWork.CommitAsync();
                     return true;
+                    
                 }
 
                 if (request.Quantity != bigPackage.Quantity
@@ -225,7 +233,7 @@ namespace WebMVC.Services
                         Content = string.Format(HistoryContent.DOI_TRANG_THAI_BAO, currentAccount.Username, bigPackage.Name, EBigPackageStatusName.GetStatusName(oldStatus), EBigPackageStatusName.GetStatusName(request.Status)),
 
                     }, currentDate, currentAccount.Id);
-                    var transportations = await _unitOfWork.Repository<Transportation>().GetQueryable().Where(x => x.BigPackageId == id).ToListAsync();
+                    
                     var transporationHistories = new List<TransportationHistory>();
                     switch (bigPackage.Status)
                     {

@@ -166,7 +166,7 @@ namespace WebMVC.Services
             }
 
             var hasPosts = await _unitOfWork.Repository<Post>().GetQueryable()
-                .AnyAsync(x => x.CategoryId == id);
+                .AnyAsync(x => x.PostCategories.Any(pc => pc.CategoryId == id));
             if (hasPosts)
             {
                 throw new Exception("Không thể xóa danh mục đang có bài viết");

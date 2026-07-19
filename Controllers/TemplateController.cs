@@ -123,6 +123,8 @@ namespace WebMVC.Controllers
             var template = await _templateService.GetTemplateById(id);
             if (template == null)
                 return NotFound();
+            var signature = await _templateService.GetSignature();
+            ViewBag.Signature = signature;
             return View(template);
         }
 

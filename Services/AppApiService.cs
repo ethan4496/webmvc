@@ -277,10 +277,6 @@ namespace WebMVC.Services
         {
             var rs = new ResponseClass();
             var currentAccount = await GetSessionAsync(request);
-            Console.WriteLine(
-                "CreateSmallPackage"
-            );
-
 
             if (currentAccount == null)
             {
@@ -1619,27 +1615,27 @@ namespace WebMVC.Services
             {
 
                 var fileUrl = await _uploadFileService.UploadFile(request);
-                Console.WriteLine(
-                    "request"
-                );
-                Console.WriteLine(
-                    System.Text.Json.JsonSerializer.Serialize(
-                        request,
-                        new JsonSerializerOptions
-                        {
-                            WriteIndented = true
-                        }
-                    )
-                );
-                Console.WriteLine(
-                    System.Text.Json.JsonSerializer.Serialize(
-                        fileUrl,
-                        new JsonSerializerOptions
-                        {
-                            WriteIndented = true
-                        }
-                    )
-                );
+                // Console.WriteLine(
+                //     "request"
+                // );
+                // Console.WriteLine(
+                //     System.Text.Json.JsonSerializer.Serialize(
+                //         request,
+                //         new JsonSerializerOptions
+                //         {
+                //             WriteIndented = true
+                //         }
+                //     )
+                // );
+                // Console.WriteLine(
+                //     System.Text.Json.JsonSerializer.Serialize(
+                //         fileUrl,
+                //         new JsonSerializerOptions
+                //         {
+                //             WriteIndented = true
+                //         }
+                //     )
+                // );
                 rs.Message = fileUrl;
                 rs.Code = APIUtils.GetResponseCode(APIUtils.ResponseCode.SUCCESS);
                 rs.Status = APIUtils.ResponseMessage.Success.ToString();

@@ -37,6 +37,17 @@ namespace WebMVC.Controllers
         }
 
         [HttpGet]
+        public async Task<IActionResult> GetTransportation(string Barcode)
+        {
+            var transportation = await _transportationService.GetByBarcode(Barcode);
+            return Json(new
+            {
+                data = transportation,
+                code = (int)HttpStatusCode.OK
+            });
+        }
+
+        [HttpGet]
         public async Task<IActionResult> GetTransportationPaging(TransportationSearch search)
         {
             search.PageSize = pageSize;

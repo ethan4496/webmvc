@@ -7,6 +7,15 @@
 @inject IHttpContextService _httpContextService;
 @{
     var loggedModel = _httpContextService.GetLoggedModel();
+    var emailSentOptions = new[] { 
+        "Linzy.nguyen@yiy-trans.com", 
+        "assistant01@yiy-trans.com", 
+        "salevn01@yiy-trans.net",
+        "sales02.vn01@yiy-trans.com",
+        "sales01.vn@yiy-trans.com",
+        "sales03.vn@yiy-trans.com",
+        "ops03.vn@yiy-trans.com",
+    };
 }
 
 <div class="container-fluid mt-4">
@@ -72,8 +81,10 @@
                     <div class="col-md-6 col-xs-12 mb-3">
                         <label for="EmailSent" class="form-label">Template</label>
                         <select id="EmailSent" class="form-select" name="EmailSent">
-                            <option value="Linzy.nguyen@yiy-trans.com">Linzy.nguyen@yiy-trans.com</option>
-                            <option value="assistant01@yiy-trans.com">assistant01@yiy-trans.com</option>
+                            @foreach (var email in emailSentOptions)
+                            {
+                                <option value="@email" selected="@(email == "salevn01@yiy-trans.net")">@email</option>
+                            }
                         </select>
                     </div>
                 </div>

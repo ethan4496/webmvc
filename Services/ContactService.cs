@@ -69,6 +69,7 @@ namespace WebMVC.Services
                 {
                     Id = x.Id,
                     Name = x.Name,
+                    Created = x.Created,
                     Contacts = x.ContactListContacts
                         .Select(clc => new Contact
                         {
@@ -107,13 +108,14 @@ namespace WebMVC.Services
                 TotalItem = total
             };
         }
-        public async Task<ContactListResponse> GetContactById(int id)
+        public async Task<ContactListResponse> GetContactById(int id, string email = null)
         {
             var template = await _unitOfWork.Repository<ContactList>().GetQueryable().Select(x => new ContactListResponse
                 {
                     Id = x.Id,
                     Name = x.Name,
                     Contacts = x.ContactListContacts
+                        .Where(clc => string.IsNullOrWhiteSpace(email) || clc.Contact.Email.Contains(email))
                         .Select(clc => new Contact
                         {
                             Id = clc.Contact.Id,
@@ -173,6 +175,12 @@ namespace WebMVC.Services
                             Email = email,
                         };
                         await _unitOfWork.Repository<Contact>().Add(contact, currentDate, currentAccount.Id);
+                    }
+                    else
+                    {
+                        contact.FirstName = firstName;
+                        contact.LastName = lastName;
+                        _unitOfWork.Repository<Contact>().Update(contact, currentDate, currentAccount.Id);
                     }
 
                     var contactListContact = new ContactListContact
@@ -277,6 +285,31 @@ namespace WebMVC.Services
 
             await _unitOfWork.SaveAsync();
         }
+        public async Task EditContactAsync(UpdateContactRequest request)
+        {
+            var entity = await _unitOfWork.Repository<Contact>().GetQueryable()
+                .FirstOrDefaultAsync(x => x.Id == request.Id);
+
+            if (entity == null)
+                throw new Exception("Không tìm thấy contact");
+
+            var emailTaken = await _unitOfWork.Repository<Contact>().GetQueryable()
+                .AnyAsync(x => x.Email == request.Email && x.Id != request.Id);
+
+            if (emailTaken)
+                throw new Exception("Email đã được sử dụng");
+
+            var currentDate = DateTime.Now;
+            var currentAccount = await _httpContextService.GetCurrentAccount();
+
+            entity.FirstName = request.FirstName;
+            entity.LastName = request.LastName;
+            entity.Email = request.Email;
+
+            _unitOfWork.Repository<Contact>().Update(entity, currentDate, currentAccount.Id);
+            await _unitOfWork.SaveAsync();
+        }
+
         public async Task DeleteContact(int id, int ContactListId)
         {
             var entity = await _unitOfWork.PlainRepository<ContactListContact>().GetQueryable()

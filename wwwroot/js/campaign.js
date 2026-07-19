@@ -102,13 +102,19 @@ function loadPage(page) {
             let html = ``;
             data.items.forEach((item) => {
                 
-                html += `<tr>
+                html += `<tr class="campaign-${item.Id}">
                     <td class="text-center">${item.Id}</td>
                     <td class="text-center">${item.Name}</td>
                     <td class="text-center">${item.StatusBadge}</td>
                     <td class="text-center">${item.AccountName}</td>
+                    <td class="text-center">${item.EmailSent}</td>
+                    <td class="text-center">${item.ContactListName}</td>
+                    <td class="text-center">${item.Subject}</td>
                     <td class="text-center">${item.SendAtStr}</td>
-                    <td class="text-center"><a class="btn btn-primary" href="/edit-campaign/${item.Id}">Chi tiết</a></td>
+                    <td class="text-center">
+                        <a class="btn btn-primary" href="/edit-campaign/${item.Id}">Chi tiết</a>
+                        <button class="btn btn-danger" onclick="removeCampagin(${item.Id})">Xóa</button>
+                    </td>
                 </tr>`
             })
             $('#results tbody').html(html);
@@ -121,16 +127,16 @@ function loadPage(page) {
         }
     });
 }
-const removeTempalte = (id) => {
+const removeCampagin = (id) => {
     const isConfirm = confirm(`Bạn có chắc chắn muốn xóa dòng này`);
-    const parent = $('.email-' + id);
+    const parent = $('.campaign-' + id);
     if (isConfirm) {
         $.ajax({
-            url: '/Template/Delete',
+            url: '/Campaign/Delete',
             type: 'DELETE',
             data: { Id: id },
             success: function (response) {
-                showToast(response.Message, response.Type, false);
+                showToast(response.Message, response.Type, true);
                 parent.fadeOut(300);
             },
             error: function (response) {

@@ -38,10 +38,14 @@ namespace WebMVC.Data
         public DbSet<ContactListContact> ContactListContacts { get; set; }
         public DbSet<MailLog> MailLogs { get; set; }
         public DbSet<AccountSignature> AccountSignatures { get; set; }
+        public DbSet<Category> Categories { get; set; }
+        public DbSet<Post> Posts { get; set; }
+        public DbSet<PostCategory> PostCategories { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             // Cấu hình các bảng và khóa
             modelBuilder.Entity<TransportationOutOfStock>().HasKey(x => new { x.TransportationId, x.OutOfStockId });
+            modelBuilder.Entity<PostCategory>().HasKey(x => new { x.PostId, x.CategoryId });
 
             // Tạo chỉ mục duy nhất
             modelBuilder.Entity<Transportation>().HasIndex(x => x.Barcode).IsUnique();

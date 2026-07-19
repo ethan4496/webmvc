@@ -96,6 +96,11 @@ namespace WebMVC.Services
                 from = dataDate.AddDays(DayOfWeek.Monday - dataDate.DayOfWeek).Date;
                 to = from.AddDays(6); // Cộng thêm 6 ngày để đến Chủ Nhật
             }
+            var currentAccount = _httpContextService.GetLoggedModel();
+            if (currentAccount.RoleId == (int)ERoleId.Sale)
+            {
+                id = currentAccount.Id;
+            }
 
             // Lọc các đơn hàng có DateCompleted nằm trong khoảng từ thứ Hai đến Chủ Nhật
             var query = _unitOfWork.Repository<Transportation>()
@@ -131,6 +136,11 @@ namespace WebMVC.Services
             }
 
             to = from.AddDays(6);
+            var currentAccount = _httpContextService.GetLoggedModel();
+            if (currentAccount.RoleId == (int)ERoleId.Sale)
+            {
+                id = currentAccount.Id;
+            }
 
             var query = await _unitOfWork.Repository<Transportation>()
                 .GetQueryable()
@@ -178,6 +188,12 @@ namespace WebMVC.Services
             DateTime from = new DateTime(dataDate.Year, dataDate.Month, 1); // Ngày đầu tháng
             DateTime to = from.AddMonths(1).AddDays(-1); // Ngày cuối tháng
 
+            var currentAccount = _httpContextService.GetLoggedModel();
+            if (currentAccount.RoleId == (int)ERoleId.Sale)
+            {
+                id = currentAccount.Id;
+            }
+
             // Lọc các đơn hàng có DateCompleted nằm trong tháng
             var query = _unitOfWork.Repository<Transportation>()
                 .GetQueryable()
@@ -204,6 +220,12 @@ namespace WebMVC.Services
 
             int totalDays = (to - from).Days + 1; // Số ngày trong tháng
             var response = new double[totalDays]; // Mảng kết quả theo từng ngày
+
+            var currentAccount = _httpContextService.GetLoggedModel();
+            if (currentAccount.RoleId == (int)ERoleId.Sale)
+            {
+                id = currentAccount.Id;
+            }
 
             // Lấy tất cả dữ liệu trong tháng một lần
             var query = await _unitOfWork.Repository<Transportation>()
@@ -251,7 +273,11 @@ namespace WebMVC.Services
             // Xác định ngày đầu và cuối năm
             DateTime from = new DateTime(dataDate.Year, 1, 1); // Ngày đầu năm
             DateTime to = new DateTime(dataDate.Year, 12, 31); // Ngày cuối năm
-
+            var currentAccount = _httpContextService.GetLoggedModel();
+            if (currentAccount.RoleId == (int)ERoleId.Sale)
+            {
+                id = currentAccount.Id;
+            }
             // Lọc các đơn hàng có DateCompleted nằm trong tháng
             var query = _unitOfWork.Repository<Transportation>()
                 .GetQueryable()
@@ -275,7 +301,11 @@ namespace WebMVC.Services
             // Xác định ngày đầu và cuối năm
             DateTime from = new DateTime(dataDate.Year, 1, 1); // Ngày đầu năm
             DateTime to = new DateTime(dataDate.Year, 12, 31); // Ngày cuối năm
-
+            var currentAccount = _httpContextService.GetLoggedModel();
+            if (currentAccount.RoleId == (int)ERoleId.Sale)
+            {
+                id = currentAccount.Id;
+            }
             var response = new double[12]; // Mảng kết quả cho 12 tháng
 
             // Lấy tất cả dữ liệu trong năm một lần
@@ -382,7 +412,11 @@ namespace WebMVC.Services
                 fromDate = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1);
             if (toDate == null)
                 toDate = fromDate.Value.AddMonths(1).AddDays(-1);
-
+            var currentAccount = _httpContextService.GetLoggedModel();
+            if (currentAccount.RoleId == (int)ERoleId.Sale)
+            {
+                id = currentAccount.Id;
+            }
             var query = from a in _unitOfWork.Repository<Account>().GetQueryable()
                         .Where(x => x.RoleId == (int)ERoleId.User && x.Created >= fromDate && x.Created <= toDate &&
                             (id == null || x.SaleId == id)
@@ -410,7 +444,11 @@ namespace WebMVC.Services
                 fromDate = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1);
             if (toDate == null)
                 toDate = fromDate.Value.AddMonths(1).AddDays(-1);
-
+            var currentAccount = _httpContextService.GetLoggedModel();
+            if (currentAccount.RoleId == (int)ERoleId.Sale)
+            {
+                id = currentAccount.Id;
+            }
             var query = from t in _unitOfWork.Repository<Transportation>().GetQueryable()
                         join a in _unitOfWork.Repository<Account>().GetQueryable().Where(x => x.RoleId == (int)ERoleId.User &&
                             (id == null || x.SaleId == id)
@@ -437,6 +475,12 @@ namespace WebMVC.Services
             var response = new List<StatisticTabl56Response>();
 
             var sixMonthsAgo = DateTime.Now.AddMonths(-6);
+
+            var currentAccount = _httpContextService.GetLoggedModel();
+            if (currentAccount.RoleId == (int)ERoleId.Sale)
+            {
+                id = currentAccount.Id;
+            }
 
             var query =
                 from a in _unitOfWork.Repository<Account>().GetQueryable()
@@ -477,7 +521,11 @@ namespace WebMVC.Services
             var response = new List<StatisticTabl56Response>();
 
             var threeMonthsAgo = DateTime.Now.AddMonths(-3);
-
+            var currentAccount = _httpContextService.GetLoggedModel();
+            if (currentAccount.RoleId == (int)ERoleId.Sale)
+            {
+                id = currentAccount.Id;
+            }
             var query =
                 from a in _unitOfWork.Repository<Account>().GetQueryable()
                 .Where(x => x.RoleId == (int)ERoleId.User &&

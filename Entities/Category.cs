@@ -13,6 +13,6 @@ namespace WebMVC.Entities
         [ForeignKey(nameof(ParentId))]
         public virtual Category Parent { get; set; }
         public virtual ICollection<Category> Children { get; set; }
-        public virtual ICollection<Post> Posts { get; set; }
+        public virtual ICollection<PostCategory> PostCategories { get; set; }
     }
 }

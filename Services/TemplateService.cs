@@ -171,7 +171,7 @@ namespace WebMVC.Services
                 Subject = request.Subject,
                 Body = request.Body,
                 Status = request.Status,
-                Created = currentDate,
+                CreatedBy = currentAccount.Id,
             };
             _unitOfWork.Repository<EmailTemplate>().Update(template, currentDate, currentAccount.Id);
 
