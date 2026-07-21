@@ -111,81 +111,146 @@
                         <a href="/campaign-report"><i class="bi bi-dot"></i>Report</a>
                     </div>
                     
-                <a href="#" onclick="toggleDropdown('fromWarehouseDropdown')">
-                    <div class="d-flex gap-3">
-                        <i class="bi bi-box-seam"></i> <span>Kiểm hàng Kho TQ</span>
+                    <a href="#" onclick="toggleDropdown('fromWarehouseDropdown')">
+                        <div class="d-flex gap-3">
+                            <i class="bi bi-box-seam"></i> <span>Kiểm hàng Kho TQ</span>
+                        </div>
+                        <i class="bi bi-chevron-down dropdown-icon"></i>
+                    </a>
+                    <div id="fromWarehouseDropdown" class="dropdown-content">
+                        <a href="/receive-warehouse/@((int)ETransportationType.HangLe1)"><i class="bi bi-dot"></i>@ETransportationTypeName.GetTypeName((int)ETransportationType.HangLe1)</a>
+                        <a href="/receive-warehouse/@((int)ETransportationType.HangLe2)"><i class="bi bi-dot"></i>@ETransportationTypeName.GetTypeName((int)ETransportationType.HangLe2)</a>
+                        <a href="/receive-warehouse/@((int)ETransportationType.HangLo)"><i class="bi bi-dot"></i>@ETransportationTypeName.GetTypeName((int)ETransportationType.HangLo)</a>
+                        <a href="/receive-warehouse/@((int)ETransportationType.ChinhNgach)"><i class="bi bi-dot"></i>@ETransportationTypeName.GetTypeName((int)ETransportationType.ChinhNgach)</a>
+                        <a href="/receive-warehouse/@((int)ETransportationType.Khac)"><i class="bi bi-dot"></i>@ETransportationTypeName.GetTypeName((int)ETransportationType.Khac)</a>
                     </div>
-                    <i class="bi bi-chevron-down dropdown-icon"></i>
-                </a>
-                <div id="fromWarehouseDropdown" class="dropdown-content">
-                    <a href="/receive-warehouse/@((int)ETransportationType.HangLe1)"><i class="bi bi-dot"></i>@ETransportationTypeName.GetTypeName((int)ETransportationType.HangLe1)</a>
-                    <a href="/receive-warehouse/@((int)ETransportationType.HangLe2)"><i class="bi bi-dot"></i>@ETransportationTypeName.GetTypeName((int)ETransportationType.HangLe2)</a>
-                    <a href="/receive-warehouse/@((int)ETransportationType.HangLo)"><i class="bi bi-dot"></i>@ETransportationTypeName.GetTypeName((int)ETransportationType.HangLo)</a>
-                    <a href="/receive-warehouse/@((int)ETransportationType.ChinhNgach)"><i class="bi bi-dot"></i>@ETransportationTypeName.GetTypeName((int)ETransportationType.ChinhNgach)</a>
-                    <a href="/receive-warehouse/@((int)ETransportationType.Khac)"><i class="bi bi-dot"></i>@ETransportationTypeName.GetTypeName((int)ETransportationType.Khac)</a>
-                </div>
-                <a href="#" onclick="toggleDropdown('importExcelDropdown')">
-                    <div class="d-flex gap-3">
-                        <i class="bi bi-box-seam"></i> <span>Import Excel</span>
+                    <a href="#" onclick="toggleDropdown('importExcelDropdown')">
+                        <div class="d-flex gap-3">
+                            <i class="bi bi-box-seam"></i> <span>Import Excel</span>
+                        </div>
+                        <i class="bi bi-chevron-down dropdown-icon"></i>
+                    </a>
+                    <div id="importExcelDropdown" class="dropdown-content">
+                        <a href="/import-excel/@((int)ETransportationStatus.ArrivedAtTQWarehouse)"><i class="bi bi-dot"></i>Excel Kho TQ</a>
+                        <a href="/import-excel/@((int)ETransportationStatus.ExitedFromTQWarehouse)"><i class="bi bi-dot"></i>Excel xuất kho TQ</a>
+                        <a href="/import-excel/@((int)ETransportationStatus.CustomsInspectedGoods)"><i class="bi bi-dot"></i>Excel Kiểm hóa</a>
+                        <a href="/import-excel/@((int)ETransportationStatus.ReturningToVNWarehouse)"><i class="bi bi-dot"></i>Excel đang về VN</a>
+                        <a href="/import-excel/@((int)ETransportationStatus.ArrivedAtVNWarehouse)"><i class="bi bi-dot"></i>Excel kho VN</a>
                     </div>
-                    <i class="bi bi-chevron-down dropdown-icon"></i>
-                </a>
-                <div id="importExcelDropdown" class="dropdown-content">
-                    <a href="/import-excel/@((int)ETransportationStatus.ArrivedAtTQWarehouse)"><i class="bi bi-dot"></i>Excel Kho TQ</a>
-                    <a href="/import-excel/@((int)ETransportationStatus.ExitedFromTQWarehouse)"><i class="bi bi-dot"></i>Excel xuất kho TQ</a>
-                    <a href="/import-excel/@((int)ETransportationStatus.CustomsInspectedGoods)"><i class="bi bi-dot"></i>Excel Kiểm hóa</a>
-                    <a href="/import-excel/@((int)ETransportationStatus.ReturningToVNWarehouse)"><i class="bi bi-dot"></i>Excel đang về VN</a>
-                    <a href="/import-excel/@((int)ETransportationStatus.ArrivedAtVNWarehouse)"><i class="bi bi-dot"></i>Excel kho VN</a>
-                </div>
-                <a href="#" onclick="toggleDropdown('emailService')">
-                    <div class="d-flex gap-3">
-                        <i class="bi bi-envelope-at"></i> <span>Email Service</span>
+                    <a href="#" onclick="toggleDropdown('emailService')">
+                        <div class="d-flex gap-3">
+                            <i class="bi bi-envelope-at"></i> <span>Email Service</span>
+                        </div>
+                        <i class="bi bi-chevron-down dropdown-icon"></i>
+                    </a>
+                    <div id="emailService" class="dropdown-content">
+                        <a href="/templates"><i class="bi bi-dot"></i>Templates</a>
+                        <a href="/signature"><i class="bi bi-dot"></i>Signature</a>
+                        <a href="/campagins"><i class="bi bi-dot"></i>Campaigns</a>
+                        <a href="/contact-lists"><i class="bi bi-dot"></i>Contact List</a>
+                        <a href="/campaign-report"><i class="bi bi-dot"></i>Report</a>
                     </div>
-                    <i class="bi bi-chevron-down dropdown-icon"></i>
-                </a>
-                <div id="emailService" class="dropdown-content">
-                    <a href="/templates"><i class="bi bi-dot"></i>Templates</a>
-                    <a href="/signature"><i class="bi bi-dot"></i>Signature</a>
-                    <a href="/campagins"><i class="bi bi-dot"></i>Campaigns</a>
-                    <a href="/contact-lists"><i class="bi bi-dot"></i>Contact List</a>
-                    <a href="/campaign-report"><i class="bi bi-dot"></i>Report</a>
-                </div>
-                <a href="#" onclick="toggleDropdown('posts')">
-                    <div class="d-flex gap-3">
-                        <i class="bi bi-envelope-at"></i> <span>Bài viết</span>
+                    <a href="#" onclick="toggleDropdown('posts')">
+                        <div class="d-flex gap-3">
+                            <i class="bi bi-envelope-at"></i> <span>Bài viết</span>
+                        </div>
+                        <i class="bi bi-chevron-down dropdown-icon"></i>
+                    </a>
+                    <div id="posts" class="dropdown-content">
+                        <a href="/categories"><i class="bi bi-dot"></i>Danh mục</a>
+                        <a href="/posts"><i class="bi bi-dot"></i>Bài viết</a>
                     </div>
-                    <i class="bi bi-chevron-down dropdown-icon"></i>
-                </a>
-                <div id="posts" class="dropdown-content">
-                    <a href="/categories"><i class="bi bi-dot"></i>Danh mục</a>
-                    <a href="/posts"><i class="bi bi-dot"></i>Bài viết</a>
-                </div>
-                <a href="/destination-warehouse">
-                    <div class="d-flex gap-3">
-                        <i class="bi bi-truck"></i> <span>Kiểm hàng Kho VN</span>
-                    </div>
-                </a>
-                <a href="/create-out-of-stock">
-                    <div class="d-flex gap-3">
-                        <i class="bi bi-truck"></i> <span>Xuất kho</span>
-                    </div>
-                </a>
-                <a href="/out-of-stock-manage">
-                    <div class="d-flex gap-3">
-                        <i class="bi bi-truck"></i> <span>Phiên xuất kho</span>
-                    </div>
-                </a>
-                <a href="#" onclick="toggleDropdown('statisticDropdown')">
-                    <div class="d-flex gap-3">
-                        <i class="bi bi-bar-chart-line"></i> <span>Thống kê</span>
-                    </div>
-                    <i class="bi bi-chevron-down dropdown-icon"></i>
-                </a>
-                <div id="statisticDropdown" class="dropdown-content">
-                    <div>
-                        <a class="d-flex gap-3" href="#" onclick="toggleDropdown('statisticAllDropdown')">
-                            <div class="d-flex gap-3">
-                                <i class="bi bi-bar-chart-line"></i> <span>Tất cả bưu cục</span>
+                    <a href="/destination-warehouse">
+                        <div class="d-flex gap-3">
+                            <i class="bi bi-truck"></i> <span>Kiểm hàng Kho VN</span>
+                        </div>
+                    </a>
+                    <a href="/create-out-of-stock">
+                        <div class="d-flex gap-3">
+                            <i class="bi bi-truck"></i> <span>Xuất kho</span>
+                        </div>
+                    </a>
+                    <a href="/out-of-stock-manage">
+                        <div class="d-flex gap-3">
+                            <i class="bi bi-truck"></i> <span>Phiên xuất kho</span>
+                        </div>
+                    </a>
+                    <a href="#" onclick="toggleDropdown('statisticDropdown')">
+                        <div class="d-flex gap-3">
+                            <i class="bi bi-bar-chart-line"></i> <span>Thống kê</span>
+                        </div>
+                        <i class="bi bi-chevron-down dropdown-icon"></i>
+                    </a>
+                    <div id="statisticDropdown" class="dropdown-content">
+                        <div>
+                            <a class="d-flex gap-3" href="#" onclick="toggleDropdown('statisticAllDropdown')">
+                                <div class="d-flex gap-3">
+                                    <i class="bi bi-bar-chart-line"></i> <span>Tất cả bưu cục</span>
+                                </div>
+                                <i class="bi bi-chevron-down dropdown-icon"></i>
+                            </a>
+                            <div id="statisticAllDropdown" class="dropdown-content">
+                                <a href="/report-chart"><i class="bi bi-dot"></i>Biểu đồ</a>
+                                <a href="/report-revenue"><i class="bi bi-dot"></i>Doanh số</a>
+                                <a href="/report-fixed-fee"><i class="bi bi-dot"></i>Phí cố định</a>
+                                <a href="/report-partner-fee"><i class="bi bi-dot"></i>Chi phí đối tác</a>
+                                <a href="/report-other-fee"><i class="bi bi-dot"></i>Chi phí khác</a>
+                            </div>
+                        </div>
+                        <div>
+                            <a class="d-flex gap-3" href="#" onclick="toggleDropdown('statistic1Dropdown')">
+                                <div class="d-flex gap-3">
+                                    <i class="bi bi-bar-chart-line"></i> <span>Bắc Từ Liêm</span>
+                                </div>
+                                <i class="bi bi-chevron-down dropdown-icon"></i>
+                            </a>
+                            <div id="statistic1Dropdown" class="dropdown-content">
+                                <a href="/report-revenue?type=1"><i class="bi bi-dot"></i>Doanh số</a>
+                                <a href="/report-fixed-fee?type=1"><i class="bi bi-dot"></i>Phí cố định</a>
+                                <a href="/report-partner-fee?type=1"><i class="bi bi-dot"></i>Chi phí đối tác</a>
+                                <a href="/report-other-fee?type=1"><i class="bi bi-dot"></i>Chi phí khác</a>
+                            </div>
+                        </div>
+                        <div>
+                            <a class="d-flex gap-3" href="#" onclick="toggleDropdown('statistic2Dropdown')">
+                                <div class="d-flex gap-3">
+                                    <i class="bi bi-bar-chart-line"></i> <span>Thanh Trì</span>
+                                </div>
+                                <i class="bi bi-chevron-down dropdown-icon"></i>
+                            </a>
+                            <div id="statistic2Dropdown" class="dropdown-content">
+                                <a href="/report-revenue?type=2"><i class="bi bi-dot"></i>Doanh số</a>
+                                <a href="/report-fixed-fee?type=2"><i class="bi bi-dot"></i>Phí cố định</a>
+                                <a href="/report-partner-fee?type=2"><i class="bi bi-dot"></i>Chi phí đối tác</a>
+                                <a href="/report-other-fee?type=2"><i class="bi bi-dot"></i>Chi phí khác</a>
+                            </div>
+                        </div>
+                        <div>
+                            <a class="d-flex gap-3" href="#" onclick="toggleDropdown('statistic3Dropdown')">
+                                <div class="d-flex gap-3">
+                                    <i class="bi bi-bar-chart-line"></i> <span>Cầu Giấy</span>
+                                </div>
+                                <i class="bi bi-chevron-down dropdown-icon"></i>
+                            </a>
+                            <div id="statistic3Dropdown" class="dropdown-content">
+                                <a href="/report-revenue?type=3"><i class="bi bi-dot"></i>Doanh số</a>
+                                <a href="/report-fixed-fee?type=3"><i class="bi bi-dot"></i>Phí cố định</a>
+                                <a href="/report-partner-fee?type=3"><i class="bi bi-dot"></i>Chi phí đối tác</a>
+                                <a href="/report-other-fee?type=3"><i class="bi bi-dot"></i>Chi phí khác</a>
+                            </div>
+                        </div>
+                        <div>
+                            <a class="d-flex gap-3" href="#" onclick="toggleDropdown('statistic4Dropdown')">
+                                <div class="d-flex gap-3">
+                                    <i class="bi bi-bar-chart-line"></i> <span>Hà Đông</span>
+                                </div>
+                                <i class="bi bi-chevron-down dropdown-icon"></i>
+                            </a>
+                            <div id="statistic4Dropdown" class="dropdown-content">
+                                <a href="/report-revenue?type=4"><i class="bi bi-dot"></i>Doanh số</a>
+                                <a href="/report-fixed-fee?type=4"><i class="bi bi-dot"></i>Phí cố định</a>
+                                <a href="/report-partner-fee?type=4"><i class="bi bi-dot"></i>Chi phí đối tác</a>
+                                <a href="/report-other-fee?type=4"><i class="bi bi-dot"></i>Chi phí khác</a>
                             </div>
                         </div>
                     </div>

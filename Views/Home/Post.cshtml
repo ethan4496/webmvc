@@ -21,27 +21,24 @@
 <div class="page-content">
     <div class="container">
         <div class="layout-content">
-            @if (Model.Post.TableOfContents.Count > 0)
-            {
-                <aside class="toc d-none d-xl-block">
-                    <div class="d-flex toc-title gap-1">
-                        <img src="/tpkexpress/images/icon/Paper.svg" alt="">
-                        <h3>
-                            Nội dung chính
-                        </h3>
-                    </div>
-                    <ul>
-                        @foreach (var t in Model.Post.TableOfContents)
-                        {
-                            <li>
-                                <a href="#@t.Id">
-                                    @t.Label
-                                </a>
-                            </li>
-                        }
-                    </ul>
-                </aside>
-            }
+            <aside class="toc d-none d-xl-block">
+                <div class="d-flex toc-title gap-1">
+                    <img src="/tpkexpress/images/icon/Paper.svg" alt="">
+                    <h3>
+                        Nội dung chính
+                    </h3>
+                </div>
+                <ul>
+                    @foreach (var t in Model.Post.TableOfContents)
+                    {
+                        <li>
+                            <a href="#@t.Id">
+                                @t.Label
+                            </a>
+                        </li>
+                    }
+                </ul>
+            </aside>
             <div class="main-content">
                 <div class="chinh-sach">
                     <h2 class="title-chinh-sach">@Model.Post.Title</h2>

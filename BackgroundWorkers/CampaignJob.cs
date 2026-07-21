@@ -53,14 +53,14 @@ namespace WebMVC.BackgroundWorkers
                             .Join(db.Contacts, clc => clc.ContactId, c => c.Id, (clc, c) => c)
                             .ToListAsync(stoppingToken);
 
-                        const int batchSize = 30;
+                        const int batchSize = 50;
                         for (int i = 0; i < contacts.Count; i++)
                         {
                             if (i > 0 && i % batchSize == 0)
                             {
                                 await db.SaveChangesAsync(stoppingToken);
-                                Console.WriteLine($"Đã gửi {i} mail, nghỉ 15 phút...");
-                                await Task.Delay(TimeSpan.FromMinutes(15), stoppingToken);
+                                Console.WriteLine($"Đã gửi {i} mail, nghỉ 10 phút...");
+                                await Task.Delay(TimeSpan.FromMinutes(10), stoppingToken);
                             }
 
                             var contact = contacts[i];

@@ -181,6 +181,7 @@ namespace WebMVC.Services
                 SendAt = request.SendAt,
                 EmailSent = request.EmailSent,
                 Updated = currentDate,
+                CreatedBy = currentAccount.Id
             };
             _unitOfWork.Repository<Campaign>().Update(campagin, currentDate, currentAccount.Id);
 

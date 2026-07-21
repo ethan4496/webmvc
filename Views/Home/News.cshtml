@@ -1,3 +1,5 @@
+@using WebMVC.Models.ViewModels
+@model NewsViewModel
 @{
     Layout = "~/Views/Shared/_NewHomeLayout.cshtml";
     ViewData["Title"] = "Tin tức";
@@ -30,11 +32,11 @@
     <div class="container">
         <div class="categories">
             <ul class="d-flex ">
-                <li class="active">Tất cả</li>
-                <li>Tin công ty</li>
-                <li>Hướng dẫn</li>
-                <li>Công nghệ</li>
-                <li>Chính sách</li>
+                <li class="active" data-id="">Tất cả</li>
+                @foreach (var category in (IEnumerable<dynamic>)Model.Categories)
+                {
+                    <li data-id="@category.Id">@category.Name</li>
+                }
             </ul>
         </div>
     </div>
@@ -48,28 +50,27 @@
                 </div>
                 <div class="article">
                     <div class="image-article">
-                        <img src="/tpkexpress/images/post/PrimaryArticle.jpg" alt="PrimaryArticle" />
+                        <img src="@Model.PrimaryPost.Image" alt="PrimaryArticle" />
                     </div>
                     <div class="article-info">
                         <div class="article-heading">
                             <div class="article-tag">
                                 <div class="status-tag badge-progress">
-                                    Tin công ty
+                                    @Model.PrimaryPost.Categories.FirstOrDefault()?.Name
                                 </div>
                                 <div class="d-flex align-items-center gap-1 time-read">
                                     <img src="/tpkexpress/images/icon/Clock.svg" alt="">
-                                    <span>3 phút đọc</span>
+                                    <span>@Model.PrimaryPost.ReadingTimeMinutes</span>
                                 </div>
                                 <div class="article-created-at">
-                                    15/11/2024
+                                    @Model.PrimaryPost.Created.ToString("dd/MM/yyyy")
                                 </div>
                             </div>
-                            <h3>TPK Express mở tuyến mới từ Thâm Quyến, rút ngắn thời gian còn 3–5 ngày</h3>
-                            <p>Chính thức vận hành tuyến vận chuyển trực tiếp từ Thâm Quyến về Hà Nội & TP.HCM,
-                                tốc độ nhanh hơn 40% so với tuyến cũ.</p>
+                            <h3>@Model.PrimaryPost.Title</h3>
+                            <p>@Model.PrimaryPost.Excerpt</p>
                         </div>
                         <div class="article-readmore">
-                            <a href="/gioi-thieu" class="btn read-nore">
+                            <a href="/tin-tuc/@Model.PrimaryPost.Slug" class="btn read-nore">
                                 <span>Đọc thêm </span>
                                 <img src="/tpkexpress/images/icon/ArrowRight.svg" alt="ArrowRight">
                             </a>
@@ -78,153 +79,43 @@
                 </div>
             </div>
             <div class="other-article">
-                <div class="result-search">5 bài viết khác</div>
+                @{
+                    var otherPosts = Model.Posts.Where(x => x.Id != Model.PrimaryPost?.Id).ToList();
+                }
+                <div class="result-search">@otherPosts.Count bài viết khác</div>
                 <div class="list-articles">
-                    <div class="article">
-                        <div class="image-article">
-                            <img src="/tpkexpress/images/post/Post1.jpg" alt="PrimaryArticle" />
-                        </div>
-                        <div class="article-info">
-                            <div class="article-heading">
-                                <div class="article-tag">
-                                    <div class="status-tag badge-progress">
-                                        Hướng dẫn
+                    @foreach (var post in otherPosts)
+                    {
+                        <div class="article">
+                            <div class="image-article">
+                                <img src="@post.Image" alt="@post.Title" />
+                            </div>
+                            <div class="article-info">
+                                <div class="article-heading">
+                                    <div class="article-tag">
+                                        <div class="status-tag badge-progress">
+                                            @post.Categories.FirstOrDefault()?.Name
+                                        </div>
+                                        <div class="d-flex align-items-center gap-1 time-read">
+                                            <img src="/tpkexpress/images/icon/Clock.svg" alt="">
+                                            <span>@post.ReadingTimeMinutes phút đọc</span>
+                                        </div>
+                                        <div class="article-created-at">
+                                            @post.Created.ToString("dd/MM/yyyy")
+                                        </div>
                                     </div>
-                                    <div class="d-flex align-items-center gap-1 time-read">
-                                        <img src="/tpkexpress/images/icon/Clock.svg" alt="">
-                                        <span>8 phút đọc</span>
-                                    </div>
-                                    <div class="article-created-at">
-                                        08/11/2024
-                                    </div>
+                                    <h3>@post.Title</h3>
+                                    <p>@post.Excerpt</p>
                                 </div>
-                                <h3>Hướng dẫn nhập hàng Taobao từ A đến Z cho người mới bắt đầu</h3>
-                                <p>Toàn bộ quy trình nhập hàng từ Taobao, 1688 về Việt Nam — từ tìm nguồn hàng, đặt hàng đến vận chuyển và thông quan.</p>
-                            </div>
-                            <div class="article-readmore">
-                                <a href="/gioi-thieu" class="btn read-nore">
-                                    <span>Đọc thêm </span>
-                                    <img src="/tpkexpress/images/icon/ArrowRight.svg" alt="ArrowRight">
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="article">
-                        <div class="image-article">
-                            <img src="/tpkexpress/images/post/Post2.jpg" alt="PrimaryArticle" />
-                        </div>
-                        <div class="article-info">
-                            <div class="article-heading">
-                                <div class="article-tag">
-                                    <div class="status-tag badge-completed">
-                                        Công nghệ
-                                    </div>
-                                    <div class="d-flex align-items-center gap-1 time-read">
-                                        <img src="/tpkexpress/images/icon/Clock.svg" alt="">
-                                        <span>4 phút đọc</span>
-                                    </div>
-                                    <div class="article-created-at">
-                                        01/11/2024
-                                    </div>
+                                <div class="article-readmore">
+                                    <a href="/tin-tuc/@post.Slug" class="btn read-nore">
+                                        <span>Đọc thêm </span>
+                                        <img src="/tpkexpress/images/icon/ArrowRight.svg" alt="ArrowRight">
+                                    </a>
                                 </div>
-                                <h3>TPK app 2.0 ra mắt: theo dõi đơn hàng real-time, nhận thông báo tức thì</h3>
-                                <p>Phiên bản app mới tích hợp GPS tracking và push notification, khách hàng nắm bắt vị trí hàng hóa bất cứ lúc nào.</p>
-                            </div>
-                            <div class="article-readmore">
-                                <a href="/gioi-thieu" class="btn read-nore">
-                                    <span>Đọc thêm </span>
-                                    <img src="/tpkexpress/images/icon/ArrowRight.svg" alt="ArrowRight">
-                                </a>
                             </div>
                         </div>
-                    </div>
-                    <div class="article">
-                        <div class="image-article">
-                            <img src="/tpkexpress/images/post/Post3.jpg" alt="PrimaryArticle" />
-                        </div>
-                        <div class="article-info">
-                            <div class="article-heading">
-                                <div class="article-tag">
-                                    <div class="status-tag badge-purple">
-                                        Chính sách
-                                    </div>
-                                    <div class="d-flex align-items-center gap-1 time-read">
-                                        <img src="/tpkexpress/images/icon/Clock.svg" alt="">
-                                        <span>5 phút đọc</span>
-                                    </div>
-                                    <div class="article-created-at">
-                                        22/10/2024
-                                    </div>
-                                </div>
-                                <h3>TPK Express cập nhật chính sách bảo hiểm hàng hóa — đền bù tối đa 100%</h3>
-                                <p>Từ tháng 11/2024, TPK Express áp dụng chính sách bảo hiểm hàng hóa mới với mức đền bù cao hơn và quy trình khiếu nại đơn giản hơn.</p>
-                            </div>
-                            <div class="article-readmore">
-                                <a href="/gioi-thieu" class="btn read-nore">
-                                    <span>Đọc thêm </span>
-                                    <img src="/tpkexpress/images/icon/ArrowRight.svg" alt="ArrowRight">
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="article">
-                        <div class="image-article">
-                            <img src="/tpkexpress/images/post/Post4.jpg" alt="PrimaryArticle" />
-                        </div>
-                        <div class="article-info">
-                            <div class="article-heading">
-                                <div class="article-tag">
-                                    <div class="status-tag badge-progress">
-                                        Hướng dẫn
-                                    </div>
-                                    <div class="d-flex align-items-center gap-1 time-read">
-                                        <img src="/tpkexpress/images/icon/Clock.svg" alt="">
-                                        <span>6 phút đọc</span>
-                                    </div>
-                                    <div class="article-created-at">
-                                        14/10/2024
-                                    </div>
-                                </div>
-                                <h3>5 mẹo tìm nhà cung cấp uy tín trên 1688 để tránh bị lừa</h3>
-                                <p>Kinh nghiệm xương máu khi tìm nguồn hàng 1688: cách nhận biết nhà cung cấp uy tín, tránh hàng kém chất lượng và rủi ro giao dịch.</p>
-                            </div>
-                            <div class="article-readmore">
-                                <a href="/gioi-thieu" class="btn read-nore">
-                                    <span>Đọc thêm </span>
-                                    <img src="/tpkexpress/images/icon/ArrowRight.svg" alt="ArrowRight">
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="article">
-                        <div class="image-article">
-                            <img src="/tpkexpress/images/post/Post5.jpg" alt="PrimaryArticle" />
-                        </div>
-                        <div class="article-info">
-                            <div class="article-heading">
-                                <div class="article-tag">
-                                    <div class="status-tag badge-info">
-                                        Tin công ty
-                                    </div>
-                                    <div class="d-flex align-items-center gap-1 time-read">
-                                        <img src="/tpkexpress/images/icon/Clock.svg" alt="">
-                                        <span>3 phút đọc</span>
-                                    </div>
-                                    <div class="article-created-at">
-                                        05/10/2024
-                                    </div>
-                                </div>
-                                <h3>TPK Express được bình chọn Top 1 dịch vụ vận chuyển Trung–Việt uy tín 2024</h3>
-                                <p>Với hơn 10.000 khách hàng và tỷ lệ hài lòng 98%, TPK Express nhận danh hiệu Top 1 dịch vụ vận chuyển Trung–Việt uy tín do cộng đồng chủ shop Việt bình chọn.</p>
-                            </div>
-                            <div class="article-readmore">
-                                <a href="/gioi-thieu" class="btn read-nore">
-                                    <span>Đọc thêm </span>
-                                    <img src="/tpkexpress/images/icon/ArrowRight.svg" alt="ArrowRight">
-                                </a>
-                            </div>
-                        </div>
-                    </div>
+                    }
                 </div>
             </div>
         </div>

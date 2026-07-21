@@ -13,7 +13,8 @@
         <div class="card-header d-flex justify-content-between align-items-center">
             <h2>Sửa bài viết</h2>
         </div>
-        <form action="/post/@Model.Id" method="post">
+        <form action="/post/@Model.Id" method="post" id="form-post" enctype="multipart/form-data">
+            <button type="submit" disabled style="display:none" aria-hidden="true"></button>
             <div asp-validation-summary="All" class="text-danger"></div>
             @Html.AntiForgeryToken()
             <div class="card-body">
@@ -39,6 +40,14 @@
                         <input type="text" class="form-control" id="Excerpt" value="@Model.Excerpt" name="Excerpt" placeholder="Mô tả">
                     </div>
                     <div class="col-md-6 col-xs-12 mb-3">
+                        <label for="Image" class="form-label">Ảnh đại diện</label>
+                        <input type="file" class="form-control" id="Image" name="Image" accept="image/*">
+                        @if (!string.IsNullOrWhiteSpace(Model.Image))
+                        {
+                            <img src="@Model.Image" alt="@Model.Title" class="mt-2" style="max-height:120px" />
+                        }
+                    </div>
+                    <div class="col-md-6 col-xs-12 mb-3">
                         <label for="CategoryIds" class="form-label">Danh mục</label>
                         <select id="CategoryIds" class="form-select" style="width: 100%;" name="CategoryIds" multiple>
                             @{
@@ -58,7 +67,7 @@
                 </div>
                 <div class="row pt-2">
                     <div class="text-end">
-                        <button type="submit" class="btn btn-primary btn-search">Save</button>
+                        <button type="button" id="save" class="btn btn-primary">Save</button>
                     </div>
                 </div>
 
@@ -80,6 +89,10 @@
         <script src="https://cdn.jsdelivr.net/npm/@@editorjs/marker@1.4.0"></script>
         <script src="https://cdn.jsdelivr.net/npm/@@editorjs/embed@2.7.6"></script>
         <script>
+            $('#save').on('click', function(){
+                $('#form-post').submit()
+            })
+
             function slugify(str) {
                 return str
                     .normalize('NFD')
@@ -183,6 +196,7 @@
 
             const editor = new EditorJS({
                 holder: 'editorjs',
+                inlineToolbar: true,
                 data: { blocks: htmlToBlocks(initialContent) },
                 tools: {
                     header: {

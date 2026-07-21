@@ -1891,6 +1891,10 @@ a {
     
     .news-list{
         flex-direction: row;
+        width: 100%;
+    }
+    .new-card{
+        flex: 1;
     }
     .service-inner{
         flex-direction: row;

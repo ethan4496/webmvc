@@ -8,6 +8,7 @@ using WebMVC.Extensions;
 using WebMVC.Interfaces;
 using WebMVC.Models;
 using WebMVC.Models.Requests.Creates;
+using WebMVC.Models.Requests.Searchs;
 using WebMVC.Models.Responses;
 using WebMVC.Models.ViewModels;
 using WebMVC.Ultilities.Enums;
@@ -35,7 +36,15 @@ namespace WebMVC.Controllers
         public async Task<IActionResult> IndexAsync()
         {
             var webConfiguration = await _webConfigurationService.GetById();
-            return View(model: webConfiguration.AppNotiImage);
+            var latestPosts = await _postService.GetPaging(new PostSearch { PageIndex = 1, PageSize = 3 });
+
+            var model = new HomeViewModel
+            {
+                AppNotiImage = webConfiguration.AppNotiImage,
+                LatestPosts = latestPosts.Items.ToList()
+            };
+
+            return View(model: model);
         }
 
 
@@ -76,10 +85,38 @@ namespace WebMVC.Controllers
         }
 
         [Route("tin-tuc")]
-        public IActionResult News()
+        public async Task<IActionResult> NewsAsync()
         {
-            return View();
+            var categories = await _categoryService.GetAllCategoryNames();
+            var posts = await _postService.GetPaging(new PostSearch { PageIndex = 1, PageSize = 5 });
+
+            var model = new NewsViewModel
+            {
+                Categories = categories,
+                Posts = posts.Items.ToList(),
+                PrimaryPost = posts.Items.FirstOrDefault()
+            };
+
+            return View(model);
         }
+        [HttpGet]
+        [Route("api/tin-tuc")]
+        public async Task<ApiResponse> GetNewsAsync(int? categoryId)
+        {
+            var posts = await _postService.GetPaging(new PostSearch { PageIndex = 1, PageSize = 5, CategoryId = categoryId });
+
+            return new ApiResponse
+            {
+                StatusCode = (int)HttpStatusCode.OK,
+                Type = (int)EApiResponseType.Success,
+                Data = new
+                {
+                    PrimaryPost = posts.Items.FirstOrDefault(),
+                    Posts = posts.Items
+                }
+            };
+        }
+
         [Route("dang-ky")]
         public async Task<IActionResult> SignUpAsync()
         {
@@ -231,7 +268,7 @@ namespace WebMVC.Controllers
             var result = await _trackingService.GetInfo(ordecode);
             return Json(new { d = result });
         }
-        [Route("bai-viet/{slug}")]
+        [Route("tin-tuc/{slug}")]
         public async Task<IActionResult> Post(string slug)
         {
             if (string.IsNullOrWhiteSpace(slug))

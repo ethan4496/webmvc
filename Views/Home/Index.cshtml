@@ -2,7 +2,8 @@
     Layout = "~/Views/Shared/_NewHomeLayout.cshtml";
     ViewData["Title"] = "Trang chủ";
 }
-@model string;
+@using WebMVC.Models.ViewModels
+@model HomeViewModel
 <section class="banner">
     <div class="swiper" id="banner">
         <div class="swiper-wrapper">
@@ -53,645 +54,598 @@
         <h2 class="section-title-extra text-center">Tin tức TPK Express</h2>
         <p class="description-lg text-center">Cập nhật mới nhất từ đội ngũ TPK Express</p>
         <div class="news-list">
-            <div class="new-card">
-                <div class="new-img">
-                    <img src="/tpkexpress/images/home/News1.png" alt="News">
-                </div>
-                <div class="new-content-inner">
-                    <div class="new-content">
-                        <div class="new-created">
-                            <div class="status-tag badge-progress">Tin công ty</div>
-                            <span>15/11/2024</span>
-                        </div>
-                        <div class="new-title">
-                            <a href="/gioi-thieu">TPK Express mở tuyến mới từ Thâm Quyến, rút ngắn thời gian còn
-                                3–5 ngày</a>
+            @foreach (var post in Model.LatestPosts)
+            {
+                <div class="new-card">
+                    <div class="new-img">
+                        <img src="@post.Image" alt="News">
+                    </div>
+                    <div class="new-content-inner">
+                        <div class="new-content">
+                            <div class="new-created">
+                                <div class="status-tag badge-progress">@post.Categories.FirstOrDefault()?.Name</div>
+                                <span>@post.Created.ToString("dd/MM/yyyy")</span>
+                            </div>
+                            <div class="new-title">
+                                <a href="/tin-tuc/@post.Slug">
+                                    @post.Title
+                                </a>
                             </div>
                             <div class="new-description">
-                                Chính thức vận hành tuyến vận chuyển trực tiếp từ Thâm Quyến về Hà Nội & TP.HCM, tốc
-                                độ nhanh hơn 40% so với tuyến cũ.
+                                @post.Excerpt
                             </div>
                         </div>
-                        <a href="/gioi-thieu" class="btn read-nore">
+                        <a href="/tin-tuc/@post.Slug" class="btn read-nore">
                             <span>Đọc thêm </span>
                             <img src="/tpkexpress/images/icon/ArrowRight.svg" alt="ArrowRight">
                         </a>
                     </div>
                 </div>
-                <div class="new-card">
-                    <div class="new-img">
-                        <img src="/tpkexpress/images/home/News2.png" alt="News">
-                    </div>
-                    <div class="new-content-inner">
-                        <div class="new-content">
-                            <div class="new-created">
-                                <div class="status-tag badge-delivered">Hướng dẫn</div>
-                                <span>08/11/2024</span>
-                            </div>
-                            <div class="new-title">
-                                <a href="/gioi-thieu">Hướng dẫn nhập hàng Taobao từ A đến Z cho người mới bắt
-                                    đầu</a>
-                                </div>
-                                <div class="new-description">
-                                    Toàn bộ quy trình nhập hàng từ Taobao, 1688 về Việt Nam — từ tìm nguồn hàng, đặt
-                                    hàng đến vận chuyển và thông quan.
-                                </div>
-                            </div>
-                            <a href="/gioi-thieu" class="btn read-nore">
-                                <span>Đọc thêm </span>
-                                <img src="/tpkexpress/images/icon/ArrowRight.svg" alt="ArrowRight">
-                            </a>
+            }
+        </div>
+        <div class="view-all">
+            <a href="/tin-tuc" class="btn btn-border-orrange">
+                <span>Xem tất cả tin tức</span>
+                <img src="/tpkexpress/images/icon/ArrowRight.svg" alt="ArrowRight">
+            </a>
+        </div>
+    </div>
+</section>
+<section class="services">
+<div class="container">
+<div class="text-heading text-center">Dịch vụ</div>
+<h2 class="section-title-extra text-center">Dịch vụ dành cho người nhập hàng Trung Quốc</h2>
+<p class="description-lg text-center mb-0">Từ mua hộ, ký gửi đến vận chuyển chính ngạch — TPK Express
+giúp chủ shop và doanh nghiệp Việt nhập hàng dễ hơn, rõ phí hơn và theo dõi đơn thuận tiện hơn.</p>
+<div class="service-inner">
+<div class="service-order">
+<div class="circle-blur">
+<picture>
+<source media="(min-width: 1025px)" srcset="/tpkexpress/images/home/CircleLg.png">
+<source media="(min-width: 768px)" srcset="/tpkexpress/images/home/CircleTablet.png">
+<img src="/tpkexpress/images/home/Circle.png" alt="Circle">
+</picture>
+</div>
+<div class="rect-blur">
+
+</div>
+<div class="service-tag">
+<ul>
+<li>Taobao / 1688 / Tmall</li>
+<li class="hightlight">3-5 ngày</li>
+<li>Theo dõi đơn</li>
+</ul>
+</div>
+<div class="service-column">
+<div class="img-delivery">
+<img src="/tpkexpress/images/icon/Deliveried.svg" alt="Service">
+</div>
+<h3>Ký gửi hàng TMĐT Trung Quốc</h3>
+<p>Nhận hàng từ Taobao, 1688, Tmall về kho Trung Quốc, gom hàng và vận chuyển về Việt Nam
+theo tuyến phù hợp.</p>
+</div>
+<div class="warehouse-box">
+<div class="warehouse">
+<div class="warehouse-title">
+<img src="/tpkexpress/images/icon/Warehouse.svg" alt="Warehouse">
+<h4>Kho Trung Quốc</h4>
+</div>
+<div class="warehouse-des">
+Nhận hàng, kiểm mã, gom kiện
+</div>
+</div>
+<div class="sperate-warehouse">
+<div class="line">
+</div>
+<div class="icon-sperate">
+<img src="/tpkexpress/images/icon/TruckOrange.svg" alt="Delivery">
+</div>
+</div>
+<div class="warehouse">
+<div class="warehouse-title">
+<img src="/tpkexpress/images/icon/WarehouseVN.svg" alt="Warehouse">
+<h4>Kho Việt Nam</h4>
+</div>
+<div class="warehouse-des">
+Cập nhật đơn, giao nhận rõ ràng
+</div>
+</div>
+</div>
+</div>
+<div class="services-list">
+<div class="service-item">
+<div class="service-item-inner">
+<div class="service-item-icon">
+<img src="/tpkexpress/images/icon/Search2.svg" alt="Search" />
+</div>
+<div class="service-content">
+<h3>Mua hộ & tìm nguồn hàng</h3>
+<p>Hỗ trợ tìm nhà cung cấp, đặt hàng, thanh toán và cập nhật trạng thái đơn cho
+khách chưa có tài khoản mua hàng Trung Quốc.</p>
+<ul class="service-tags">
+<li>Tư vấn 1:1</li>
+<li>Hỗ trợ thanh toán</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="service-item">
+<div class="service-item-inner">
+<div class="service-item-icon">
+<img src="/tpkexpress/images/icon/Truck.svg" alt="Search" />
+</div>
+<div class="service-content">
+<h3>Vận chuyển chính ngạch</h3>
+<p>Phù hợp với doanh nghiệp cần nhập hàng minh bạch, có chứng từ rõ ràng và quy
+trình ổn định lâu dài.</p>
+<ul class="service-tags">
+<li>Hải quan</li>
+<li>Chứng từ rõ ràng</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="service-item">
+<div class="service-item-inner">
+<div class="service-item-icon">
+<img src="/tpkexpress/images/icon/Messenger.svg" alt="Search" />
+</div>
+<div class="service-content">
+<h3>Tư vấn nhập hàng miễn phí</h3>
+<p>Đội ngũ TPK tư vấn tuyến vận chuyển, chi phí, thời gian và phương án phù hợp với
+từng loại hàng.</p>
+<ul class="service-tags">
+    <li>Hotline / Zalo</li>
+    <li>8h-21h</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section class="reviews">
+<div class="container">
+<div class="text-heading text-center">Đánh giá</div>
+<h2 class="section-title-extra text-center mb-0">Khách hàng nói gì về TPK Express</h2>
+<div class="reviews-inner">
+<div class="reviews-list">
+<div class="review-item">
+<div class="review-item-inner">
+<div class="review-item-title">
+<div class="stars-review">
+    <img src="/tpkexpress/images/icon/Star.svg" alt="Star" />
+    <img src="/tpkexpress/images/icon/Star.svg" alt="Star" />
+    <img src="/tpkexpress/images/icon/Star.svg" alt="Star" />
+    <img src="/tpkexpress/images/icon/Star.svg" alt="Star" />
+    <img src="/tpkexpress/images/icon/Star.svg" alt="Star" />
+</div>
+<div class="review-tag">
+    Mua hộ
+</div>
+</div>
+<div class="review-content">
+"TPK Express giúp mình nhập hàng từ Trung Quốc rất nhanh và an toàn. Quy trình rõ
+ràng, nhân viên nhiệt tình."
+</div>
+<div class="author-review">
+<div class="avatar">
+    <img src="/tpkexpress/images/home/Lan.jpg" />
+</div>
+<div class="author-data">
+    <h4>Nguyễn Thị Lan</h4>
+    <div class="author-des">Chủ shop thời trang, Hà Nội</div>
+</div>
+</div>
+</div>
+</div>
+<div class="review-item">
+<div class="review-item-inner">
+<div class="review-item-title">
+<div class="stars-review">
+    <img src="/tpkexpress/images/icon/Star.svg" alt="Star" />
+    <img src="/tpkexpress/images/icon/Star.svg" alt="Star" />
+    <img src="/tpkexpress/images/icon/Star.svg" alt="Star" />
+    <img src="/tpkexpress/images/icon/Star.svg" alt="Star" />
+    <img src="/tpkexpress/images/icon/Star.svg" alt="Star" />
+</div>
+<div class="review-tag">
+    Chính ngạch
+</div>
+</div>
+<div class="review-content">
+"Chính ngạch rõ ràng, hải quan không vấn đề. Tư vấn chi phí rất chi tiết, không lo
+phí phát sinh."
+</div>
+<div class="author-review">
+<div class="avatar">
+    <img src="/tpkexpress/images/home/Duc.jpg" />
+</div>
+<div class="author-data">
+    <h4>Trần Minh Đức</h4>
+    <div class="author-des">Nhà nhập khẩu điện tử, TP.HCM</div>
+</div>
+</div>
+</div>
+</div>
+<div class="review-item">
+<div class="review-item-inner">
+<div class="review-item-title">
+<div class="stars-review">
+    <img src="/tpkexpress/images/icon/Star.svg" alt="Star" />
+    <img src="/tpkexpress/images/icon/Star.svg" alt="Star" />
+    <img src="/tpkexpress/images/icon/Star.svg" alt="Star" />
+    <img src="/tpkexpress/images/icon/Star.svg" alt="Star" />
+    <img src="/tpkexpress/images/icon/Star.svg" alt="Star" />
+</div>
+<div class="review-tag">
+    Ký gửi TMĐT
+</div>
+</div>
+<div class="review-content">
+"Đã dùng TPK Express 3 năm, chưa có gì phàn nàn. Cảm giác như có người quen làm
+logistics cho mình vậy!"
+</div>
+<div class="author-review">
+<div class="avatar">
+    <img src="/tpkexpress/images/home/Huong.jpg" />
+</div>
+<div class="author-data">
+    <h4>Phạm Thu Hương</h4>
+    <div class="author-des">Kinh doanh mỹ phẩm online</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section class="why-us">
+<div class="container">
+<div class="benefit-inner">
+<div class="benefit-main">
+<div class="text-heading">Tại sao chọn chúng tôi</div>
+<h2 class="section-title-extra">QUYỀN LỢI KHÁCH HÀNG</h2>
+<p class="description-lg mb-0">Chúng tôi không chỉ vận chuyển hàng hóa — chúng tôi xây dựng sự
+tin
+tưởng
+qua từng đơn hàng.</p>
+<div class="benefit-list">
+<div class="benefit-item">
+<div class="benefit-icon">
+    <img src="/tpkexpress/images/icon/TruckOrange.svg" />
+</div>
+<div class="benefit-data">
+    <h4>Vận chuyển nhanh và an toàn</h4>
+    <div class="benefit-des">Đảm bảo hàng hóa được giao đúng hẹn, nguyên vẹn đến tay
+        bạn.
+    </div>
+</div>
+</div>
+<div class="benefit-item">
+<div class="benefit-icon">
+    <img src="/tpkexpress/images/icon/Shield.svg" />
+</div>
+<div class="benefit-data">
+    <h4>Quy trình minh bạch từ A-Z</h4>
+    <div class="benefit-des">Mọi bước đều rõ ràng, không phát sinh chi phí ẩn.</div>
+</div>
+</div>
+<div class="benefit-item">
+<div class="benefit-icon">
+    <img src="/tpkexpress/images/icon/Lighting.svg" />
+</div>
+<div class="benefit-data">
+    <h4>Dịch vụ linh hoạt theo nhu cầu</h4>
+    <div class="benefit-des">Giải pháp từ cá nhân, chủ shop đến doanh nghiệp lớn.</div>
+</div>
+</div>
+<div class="benefit-item">
+<div class="benefit-icon">
+    <img src="/tpkexpress/images/icon/Mobile.svg" />
+</div>
+<div class="benefit-data">
+    <h4>Hỗ trợ theo dõi đơn hàng</h4>
+    <div class="benefit-des">Cập nhật trạng thái qua website, app và Zalo dễ dàng.</div>
+</div>
+</div>
+</div>
+</div>
+<div class="benefit-image">
+<img src="/tpkexpress/images/home/Logistics.png" />
+</div>
+</div>
+</div>
+</section>
+<section class="procedure">
+<div class="container">
+<div class="text-heading text-center">QUY TRÌNH</div>
+<h2 class="section-title-extra text-center">Quy trình nhập hàng rõ ràng qua từng chặng</h2>
+<p class="description-lg text-center mb-0">Từ lúc gửi yêu cầu đến khi nhận hàng, TPK Express cập nhật
+trạng thái minh bạch để bạn dễ theo dõi và chủ động kế hoạch kinh doanh.</p>
+<div class="procedure-inner">
+<div class="procedure-list d-flex d-lg-none">
+<div class="procedure-item highlight">
+<div class="procedure-icon">
+    <img src="/tpkexpress/images/home/procedure/Link.svg" />
+</div>
+<div class="procedure-data">
+    <div class="procedure-number">01</div>
+    <h4>Gửi yêu cầu</h4>
+    <div class="procedure-des">Gửi link sản phẩm, thông tin kiện hàng hoặc nhu cầu vận
+        chuyển.</div>
+    </div>
+</div>
+<div class="procedure-item">
+    <div class="procedure-icon">
+        <img src="/tpkexpress/images/home/procedure/Headphone.svg" />
+    </div>
+    <div class="procedure-data">
+        <div class="procedure-number">02</div>
+        <h4>Tư vấn tuyến & chi phí</h4>
+        <div class="procedure-des">TPK đề xuất phương án phù hợp theo loại hàng, thời gian và
+            ngân sách.</div>
+        </div>
+    </div>
+    <div class="procedure-item">
+        <div class="procedure-icon">
+            <img src="/tpkexpress/images/home/procedure/Visa.svg" />
+        </div>
+        <div class="procedure-data">
+            <div class="procedure-number">03</div>
+            <h4>Tạo đơn & thanh toán</h4>
+            <div class="procedure-des">Xác nhận đơn hàng, chi phí và hoàn tất thanh toán theo quy
+                trình.</div>
+            </div>
+        </div>
+        <div class="procedure-item">
+            <div class="procedure-icon">
+                <img src="/tpkexpress/images/home/procedure/Homepage.svg" />
+            </div>
+            <div class="procedure-data">
+                <div class="procedure-number">04</div>
+                <h4>Nhận hàng tại kho Trung Quốc</h4>
+                <div class="procedure-des">Hàng được tiếp nhận, kiểm tra và gom tại kho Trung Quốc.
+                </div>
+            </div>
+        </div>
+        <div class="procedure-item">
+            <div class="procedure-icon">
+                <img src="/tpkexpress/images/home/procedure/Truck.svg" />
+            </div>
+            <div class="procedure-data">
+                <div class="procedure-number">05</div>
+                <h4>Vận chuyển về Việt Nam</h4>
+                <div class="procedure-des">Đơn hàng được cập nhật trạng thái trong quá trình vận chuyển.
+                </div>
+            </div>
+        </div>
+        <div class="procedure-item highlight">
+            <div class="procedure-icon">
+                <img src="/tpkexpress/images/home/procedure/Messenger.svg" />
+            </div>
+            <div class="procedure-data">
+                <div class="procedure-number">06</div>
+                <h4>Giao hàng & hỗ trợ</h4>
+                <div class="procedure-des">Thông báo nhận hàng, bàn giao và hỗ trợ xử lý sau giao dịch.
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="procedure-image d-none d-lg-block">
+        <img src="/tpkexpress/images/home/Container.png" />
+    </div>
+    <div class="you-ready">
+        <div class="you-ready-typo">
+            <h4>Bạn đã sẵn sàng?</h4>
+            <div class="ready-des">Đội ngũ tư vấn miễn phí hoạt động 24/7.</div>
+        </div>
+        <button id="to-advise-form" class="btn btn-orange">
+            <span>Đăng ký tư vấn miễn phí </span>
+            <img src="/tpkexpress/images/icon/ArrowRightWhite.svg" alt="IconButton" />
+        </button>
+    </div>
+</div>
+</div>
+</section>
+<section class="achievement">
+<div class="container">
+<div class="text-heading text-center">THÀNH TỰU</div>
+<h2 class="section-title-extra text-center">Những cột mốc đáng nhớ</h2>
+<p class="description-lg text-center mb-0">Những con số phản ánh quy mô vận hành, kinh nghiệm tuyến hàng
+    và mức độ hài lòng của khách hàng.</p>
+    <div class="achievement-list">
+        <div class="achievement-item">
+            <div class="achievement-icon">
+                <img src="/tpkexpress/images/icon/Customer.svg" alt="Icon" />
+            </div>
+            <div class="achievement-number">10.000+</div>
+            <h4>Khách hàng</h4>
+            <div class="achievement-des">
+                Cá nhân, chủ shop và doanh nghiệp đã sử dụng dịch vụ.
+            </div>
+        </div>
+        <div class="achievement-item">
+            <div class="achievement-icon">
+                <img src="/tpkexpress/images/icon/Certification.svg" alt="Icon" />
+            </div>
+            <div class="achievement-number">8+</div>
+            <h4>Năm kinh nghiệm</h4>
+            <div class="achievement-des">
+                Đồng hành cùng tuyến vận chuyển Trung Quốc - Việt Nam.
+            </div>
+        </div>
+        <div class="achievement-item">
+            <div class="achievement-icon">
+                <img src="/tpkexpress/images/icon/Done.svg" alt="Icon" />
+            </div>
+            <div class="achievement-number">98%</div>
+            <h4>Hài lòng</h4>
+            <div class="achievement-des">
+                Khách hàng đánh giá tốt và tiếp tục quay lại sử dụng.
+            </div>
+        </div>
+    </div>
+</div>
+</section>
+<section class="application">
+<div class="container">
+    <div class="application-inner">
+        <div class="application-main">
+            <div class="text-heading">ỨNG DỤNG</div>
+            <h2 class="section-title-extra">Quản lý đơn hàng dễ dàng trên ứng dụng TPK Express</h2>
+            <p class="description-lg mb-0">Tra cứu, theo dõi và cập nhật trạng thái đơn hàng mọi lúc mọi nơi
+                trên điện thoại.</p>
+                <div class="images-app">
+                    <a href="https://apps.apple.com/us/app/tpk-express/id6472759285" target="_blank" class="app-link">
+                        <img src="/tpkexpress/images/icon/AppStore.svg" alt="App">
+                        <div class="app-link-text">
+                            <div class="download-now">Tải ngay trên</div>
+                            <div class="app-name">App Store</div>
                         </div>
-                    </div>
-                    <div class="new-card">
-                        <div class="new-img">
-                            <img src="/tpkexpress/images/home/News3.png" alt="News">
+                    </a>
+                    <a href="https://github.com/TPKExppress/app/raw/main/tpk-express.apk" target="_blank"
+                        class="app-link">
+                        <img src="/tpkexpress/images/icon/CHPlay.svg" alt="App">
+                        <div class="app-link-text">
+                            <div class="download-now">Tải ngay trên</div>
+                            <div class="app-name">Google Play</div>
                         </div>
-                        <div class="new-content-inner">
-                            <div class="new-content">
-                                <div class="new-created">
-                                    <div class="status-tag badge-completed">Công nghệ</div>
-                                    <span>01/11/2024</span>
-                                </div>
-                                <div class="new-title">
-                                    <a href="/gioi-thieu">TPK app 2.0 ra mắt: theo dõi đơn hàng real-time, nhận thông
-                                        báo tức thì</a>
-                                    </div>
-                                    <div class="new-description">
-                                        Phiên bản app mới tích hợp GPS tracking và push notification, khách hàng nắm bắt vị
-                                        trí hàng hóa bất cứ lúc nào.
-                                    </div>
-                                </div>
-                                <a href="/gioi-thieu" class="btn read-nore">
-                                    <span>Đọc thêm </span>
-                                    <img src="/tpkexpress/images/icon/ArrowRight.svg" alt="ArrowRight">
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="view-all">
-                        <a href="/tin-tuc" class="btn btn-border-orrange">
-                            <span>Xem tất cả tin tức</span>
-                            <img src="/tpkexpress/images/icon/ArrowRight.svg" alt="ArrowRight">
-                        </a>
+                    </a>
+                </div>
+            </div>
+            <div class="image-applicaton d-none d-md-block">
+                <img src="/tpkexpress/images/home/TPKExpressApp.png" />
+            </div>
+        </div>
+    </div>
+</section>
+<section class="tpk-images">
+    <div class="container">
+        <div class="tpk-images-inner">
+            <div class="text-heading">HÌNH ẢNH</div>
+            <h2 class="section-title-extra">Hình ảnh về TPK Express</h2>
+            <p class="description-lg mb-0">Những khoảnh khắc đáng nhớ của đội ngũ TPK Express.</p>
+            <div class="tag-images">
+                <ul>
+                    <li class="active">Tất cả</li>
+                    <li>Du lịch team</li>
+                    <li>Văn phòng & sự kiện</li>
+                    <li>Kho vận</li>
+                </ul>
+            </div>
+            <div class="list-images">
+                <div class="item-image">
+                    <img src="/tpkexpress/images/home/TiecCuoiNam2024.png" />
+                    <div class="bg-blur"></div>
+                    <div class="image-name">
+                        Tiệc cuối năm 2024
                     </div>
                 </div>
-            </section>
-            <section class="services">
-                <div class="container">
-                    <div class="text-heading text-center">Dịch vụ</div>
-                    <h2 class="section-title-extra text-center">Dịch vụ dành cho người nhập hàng Trung Quốc</h2>
-                    <p class="description-lg text-center mb-0">Từ mua hộ, ký gửi đến vận chuyển chính ngạch — TPK Express
-                        giúp chủ shop và doanh nghiệp Việt nhập hàng dễ hơn, rõ phí hơn và theo dõi đơn thuận tiện hơn.</p>
-                        <div class="service-inner">
-                            <div class="service-order">
-                                <div class="circle-blur">
-                                    <picture>
-                                        <source media="(min-width: 1025px)" srcset="/tpkexpress/images/home/CircleLg.png">
-                                        <source media="(min-width: 768px)" srcset="/tpkexpress/images/home/CircleTablet.png">
-                                        <img src="/tpkexpress/images/home/Circle.png" alt="Circle">
-                                    </picture>
-                                </div>
-                                <div class="rect-blur">
+                <div class="item-image">
+                    <img src="/tpkexpress/images/home/TeamBuilding2024.png" />
+                    <div class="bg-blur"></div>
+                    <div class="image-name">
+                        Team building Đà Lạt 2024
+                    </div>
+                </div>
+                <div class="item-image">
+                    <img src="/tpkexpress/images/home/DulichPhuQuoc2023.png" />
+                    <div class="bg-blur"></div>
+                    <div class="image-name">
+                        Du lịch Phú Quốc 2023
+                    </div>
+                </div>
+                <div class="item-image">
+                    <img src="/tpkexpress/images/home/NgayLamViecTaiVanPhong.png" />
+                    <div class="bg-blur"></div>
+                    <div class="image-name">
+                        Ngày làm việc tại văn phòng
+                    </div>
+                </div>
+                <div class="item-image">
+                    <img src="/tpkexpress/images/home/SinhNhatCongTy.png" />
+                    <div class="bg-blur"></div>
+                    <div class="image-name">
+                        Sinh nhật công ty lần thứ 8
+                    </div>
+                </div>
+                <div class="item-image">
+                    <img src="/tpkexpress/images/home/KhohangHN.png" />
+                    <div class="bg-blur"></div>
+                    <div class="image-name">
+                        Kho hàng Hà Nội
+                    </div>
+                </div>
+                <div class="item-image">
+                    <img src="/tpkexpress/images/home/HopMatDoiNgu.png" />
+                    <div class="bg-blur"></div>
+                    <div class="image-name">
+                        Họp mặt toàn bộ đội ngũ
+                    </div>
+                </div>
+                <div class="item-image">
+                    <img src="/tpkexpress/images/home/Xulydonhang.png" />
+                    <div class="bg-blur"></div>
+                    <div class="image-name">
+                        Xử lý đơn hàng xuất kho
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<section class="revise-section">
+    <div class="container">
+        <div class="revise-inner">
+            <div class="revise-heading">
+                <div class="text-heading">TƯ VẤN MIỄN PHÍ</div>
+                <h2 class="section-title-extra">Đăng ký tư vấn miễn phí</h2>
+                <p class="description-lg mb-0">Đội ngũ chuyên gia TPK Express sẵn sàng tư vấn phương án phù hợp
+                    nhất — hoàn toàn miễn phí.</p>
+                    <div class="image-revise">
+                        <img src="/tpkexpress/images/home/Revise.png" alt="Revise">
+                    </div>
+                </div>
+                <div class="revise-form">
+                    <form action="" id="revise-form">
+                        <h3>Để lại thông tin — TPK gọi lại ngay!</h3>
+                        <div class="input-group">
+                            <div class="input-item">
+                                <label for="name" class="form-label">Họ tên *</label>
+                                <input type="text" class="form-control" id="name" placeholder="Nguyễn Văn A">
+                            </div>
+                            <div class="input-item">
+                                <label for="phone_number" class="form-label">Số điện thoại *</label>
+                                <input type="tel" class="form-control" id="phone_number" placeholder="0901 234 567">
+                            </div>
+                        </div>
+                        <div class="input-item">
+                            <label for="name" class="form-label">Bạn là</label>
+                            <input type="text" class="form-control" id="name" placeholder="">
+                        </div>
+                        <div class="input-item">
+                            <label for="email" class="form-label">Email (tuỳ chọn)</label>
+                            <input type="text" class="form-control" name="email" id="email" placeholder="email@example.com">
+                        </div>
+                        <div class="input-item">
+                            <label for="content" class="form-label">Nội dung cần tư vấn</label>
+                            <textarea name="content" class="form-control" id="content"
+                                        placeholder="VD: Muốn nhập quần áo từ Taobao, 30–50 kg/tháng...">
 
-                                </div>
-                                <div class="service-tag">
-                                    <ul>
-                                        <li>Taobao / 1688 / Tmall</li>
-                                        <li class="hightlight">3-5 ngày</li>
-                                        <li>Theo dõi đơn</li>
-                                    </ul>
-                                </div>
-                                <div class="service-column">
-                                    <div class="img-delivery">
-                                        <img src="/tpkexpress/images/icon/Deliveried.svg" alt="Service">
-                                    </div>
-                                    <h3>Ký gửi hàng TMĐT Trung Quốc</h3>
-                                    <p>Nhận hàng từ Taobao, 1688, Tmall về kho Trung Quốc, gom hàng và vận chuyển về Việt Nam
-                                        theo tuyến phù hợp.</p>
-                                    </div>
-                                    <div class="warehouse-box">
-                                        <div class="warehouse">
-                                            <div class="warehouse-title">
-                                                <img src="/tpkexpress/images/icon/Warehouse.svg" alt="Warehouse">
-                                                <h4>Kho Trung Quốc</h4>
-                                            </div>
-                                            <div class="warehouse-des">
-                                                Nhận hàng, kiểm mã, gom kiện
-                                            </div>
-                                        </div>
-                                        <div class="sperate-warehouse">
-                                            <div class="line">
-                                            </div>
-                                            <div class="icon-sperate">
-                                                <img src="/tpkexpress/images/icon/TruckOrange.svg" alt="Delivery">
-                                            </div>
-                                        </div>
-                                        <div class="warehouse">
-                                            <div class="warehouse-title">
-                                                <img src="/tpkexpress/images/icon/WarehouseVN.svg" alt="Warehouse">
-                                                <h4>Kho Việt Nam</h4>
-                                            </div>
-                                            <div class="warehouse-des">
-                                                Cập nhật đơn, giao nhận rõ ràng
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="services-list">
-                                    <div class="service-item">
-                                        <div class="service-item-inner">
-                                            <div class="service-item-icon">
-                                                <img src="/tpkexpress/images/icon/Search2.svg" alt="Search" />
-                                            </div>
-                                            <div class="service-content">
-                                                <h3>Mua hộ & tìm nguồn hàng</h3>
-                                                <p>Hỗ trợ tìm nhà cung cấp, đặt hàng, thanh toán và cập nhật trạng thái đơn cho
-                                                    khách chưa có tài khoản mua hàng Trung Quốc.</p>
-                                                    <ul class="service-tags">
-                                                        <li>Tư vấn 1:1</li>
-                                                        <li>Hỗ trợ thanh toán</li>
-                                                    </ul>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="service-item">
-                                            <div class="service-item-inner">
-                                                <div class="service-item-icon">
-                                                    <img src="/tpkexpress/images/icon/Truck.svg" alt="Search" />
-                                                </div>
-                                                <div class="service-content">
-                                                    <h3>Vận chuyển chính ngạch</h3>
-                                                    <p>Phù hợp với doanh nghiệp cần nhập hàng minh bạch, có chứng từ rõ ràng và quy
-                                                        trình ổn định lâu dài.</p>
-                                                        <ul class="service-tags">
-                                                            <li>Hải quan</li>
-                                                            <li>Chứng từ rõ ràng</li>
-                                                        </ul>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="service-item">
-                                                <div class="service-item-inner">
-                                                    <div class="service-item-icon">
-                                                        <img src="/tpkexpress/images/icon/Messenger.svg" alt="Search" />
-                                                    </div>
-                                                    <div class="service-content">
-                                                        <h3>Tư vấn nhập hàng miễn phí</h3>
-                                                        <p>Đội ngũ TPK tư vấn tuyến vận chuyển, chi phí, thời gian và phương án phù hợp với
-                                                            từng loại hàng.</p>
-                                                            <ul class="service-tags">
-                                                                <li>Hotline / Zalo</li>
-                                                                <li>8h-21h</li>
-                                                            </ul>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </section>
-                                <section class="reviews">
-                                    <div class="container">
-                                        <div class="text-heading text-center">Đánh giá</div>
-                                        <h2 class="section-title-extra text-center mb-0">Khách hàng nói gì về TPK Express</h2>
-                                        <div class="reviews-inner">
-                                            <div class="reviews-list">
-                                                <div class="review-item">
-                                                    <div class="review-item-inner">
-                                                        <div class="review-item-title">
-                                                            <div class="stars-review">
-                                                                <img src="/tpkexpress/images/icon/Star.svg" alt="Star" />
-                                                                <img src="/tpkexpress/images/icon/Star.svg" alt="Star" />
-                                                                <img src="/tpkexpress/images/icon/Star.svg" alt="Star" />
-                                                                <img src="/tpkexpress/images/icon/Star.svg" alt="Star" />
-                                                                <img src="/tpkexpress/images/icon/Star.svg" alt="Star" />
-                                                            </div>
-                                                            <div class="review-tag">
-                                                                Mua hộ
-                                                            </div>
-                                                        </div>
-                                                        <div class="review-content">
-                                                            "TPK Express giúp mình nhập hàng từ Trung Quốc rất nhanh và an toàn. Quy trình rõ
-                                                            ràng, nhân viên nhiệt tình."
-                                                        </div>
-                                                        <div class="author-review">
-                                                            <div class="avatar">
-                                                                <img src="/tpkexpress/images/home/Lan.jpg" />
-                                                            </div>
-                                                            <div class="author-data">
-                                                                <h4>Nguyễn Thị Lan</h4>
-                                                                <div class="author-des">Chủ shop thời trang, Hà Nội</div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="review-item">
-                                                    <div class="review-item-inner">
-                                                        <div class="review-item-title">
-                                                            <div class="stars-review">
-                                                                <img src="/tpkexpress/images/icon/Star.svg" alt="Star" />
-                                                                <img src="/tpkexpress/images/icon/Star.svg" alt="Star" />
-                                                                <img src="/tpkexpress/images/icon/Star.svg" alt="Star" />
-                                                                <img src="/tpkexpress/images/icon/Star.svg" alt="Star" />
-                                                                <img src="/tpkexpress/images/icon/Star.svg" alt="Star" />
-                                                            </div>
-                                                            <div class="review-tag">
-                                                                Chính ngạch
-                                                            </div>
-                                                        </div>
-                                                        <div class="review-content">
-                                                            "Chính ngạch rõ ràng, hải quan không vấn đề. Tư vấn chi phí rất chi tiết, không lo
-                                                            phí phát sinh."
-                                                        </div>
-                                                        <div class="author-review">
-                                                            <div class="avatar">
-                                                                <img src="/tpkexpress/images/home/Duc.jpg" />
-                                                            </div>
-                                                            <div class="author-data">
-                                                                <h4>Trần Minh Đức</h4>
-                                                                <div class="author-des">Nhà nhập khẩu điện tử, TP.HCM</div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="review-item">
-                                                    <div class="review-item-inner">
-                                                        <div class="review-item-title">
-                                                            <div class="stars-review">
-                                                                <img src="/tpkexpress/images/icon/Star.svg" alt="Star" />
-                                                                <img src="/tpkexpress/images/icon/Star.svg" alt="Star" />
-                                                                <img src="/tpkexpress/images/icon/Star.svg" alt="Star" />
-                                                                <img src="/tpkexpress/images/icon/Star.svg" alt="Star" />
-                                                                <img src="/tpkexpress/images/icon/Star.svg" alt="Star" />
-                                                            </div>
-                                                            <div class="review-tag">
-                                                                Ký gửi TMĐT
-                                                            </div>
-                                                        </div>
-                                                        <div class="review-content">
-                                                            "Đã dùng TPK Express 3 năm, chưa có gì phàn nàn. Cảm giác như có người quen làm
-                                                            logistics cho mình vậy!"
-                                                        </div>
-                                                        <div class="author-review">
-                                                            <div class="avatar">
-                                                                <img src="/tpkexpress/images/home/Huong.jpg" />
-                                                            </div>
-                                                            <div class="author-data">
-                                                                <h4>Phạm Thu Hương</h4>
-                                                                <div class="author-des">Kinh doanh mỹ phẩm online</div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </section>
-                                <section class="why-us">
-                                    <div class="container">
-                                        <div class="benefit-inner">
-                                            <div class="benefit-main">
-                                                <div class="text-heading">Tại sao chọn chúng tôi</div>
-                                                <h2 class="section-title-extra">QUYỀN LỢI KHÁCH HÀNG</h2>
-                                                <p class="description-lg mb-0">Chúng tôi không chỉ vận chuyển hàng hóa — chúng tôi xây dựng sự
-                                                    tin
-                                                    tưởng
-                                                    qua từng đơn hàng.</p>
-                                                    <div class="benefit-list">
-                                                        <div class="benefit-item">
-                                                            <div class="benefit-icon">
-                                                                <img src="/tpkexpress/images/icon/TruckOrange.svg" />
-                                                            </div>
-                                                            <div class="benefit-data">
-                                                                <h4>Vận chuyển nhanh và an toàn</h4>
-                                                                <div class="benefit-des">Đảm bảo hàng hóa được giao đúng hẹn, nguyên vẹn đến tay
-                                                                    bạn.
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                        <div class="benefit-item">
-                                                            <div class="benefit-icon">
-                                                                <img src="/tpkexpress/images/icon/Shield.svg" />
-                                                            </div>
-                                                            <div class="benefit-data">
-                                                                <h4>Quy trình minh bạch từ A-Z</h4>
-                                                                <div class="benefit-des">Mọi bước đều rõ ràng, không phát sinh chi phí ẩn.</div>
-                                                            </div>
-                                                        </div>
-                                                        <div class="benefit-item">
-                                                            <div class="benefit-icon">
-                                                                <img src="/tpkexpress/images/icon/Lighting.svg" />
-                                                            </div>
-                                                            <div class="benefit-data">
-                                                                <h4>Dịch vụ linh hoạt theo nhu cầu</h4>
-                                                                <div class="benefit-des">Giải pháp từ cá nhân, chủ shop đến doanh nghiệp lớn.</div>
-                                                            </div>
-                                                        </div>
-                                                        <div class="benefit-item">
-                                                            <div class="benefit-icon">
-                                                                <img src="/tpkexpress/images/icon/Mobile.svg" />
-                                                            </div>
-                                                            <div class="benefit-data">
-                                                                <h4>Hỗ trợ theo dõi đơn hàng</h4>
-                                                                <div class="benefit-des">Cập nhật trạng thái qua website, app và Zalo dễ dàng.</div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="benefit-image">
-                                                    <img src="/tpkexpress/images/home/Logistics.png" />
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </section>
-                                    <section class="procedure">
-                                        <div class="container">
-                                            <div class="text-heading text-center">QUY TRÌNH</div>
-                                            <h2 class="section-title-extra text-center">Quy trình nhập hàng rõ ràng qua từng chặng</h2>
-                                            <p class="description-lg text-center mb-0">Từ lúc gửi yêu cầu đến khi nhận hàng, TPK Express cập nhật
-                                                trạng thái minh bạch để bạn dễ theo dõi và chủ động kế hoạch kinh doanh.</p>
-                                                <div class="procedure-inner">
-                                                    <div class="procedure-list d-flex d-lg-none">
-                                                        <div class="procedure-item highlight">
-                                                            <div class="procedure-icon">
-                                                                <img src="/tpkexpress/images/home/procedure/Link.svg" />
-                                                            </div>
-                                                            <div class="procedure-data">
-                                                                <div class="procedure-number">01</div>
-                                                                <h4>Gửi yêu cầu</h4>
-                                                                <div class="procedure-des">Gửi link sản phẩm, thông tin kiện hàng hoặc nhu cầu vận
-                                                                    chuyển.</div>
-                                                                </div>
-                                                            </div>
-                                                            <div class="procedure-item">
-                                                                <div class="procedure-icon">
-                                                                    <img src="/tpkexpress/images/home/procedure/Headphone.svg" />
-                                                                </div>
-                                                                <div class="procedure-data">
-                                                                    <div class="procedure-number">02</div>
-                                                                    <h4>Tư vấn tuyến & chi phí</h4>
-                                                                    <div class="procedure-des">TPK đề xuất phương án phù hợp theo loại hàng, thời gian và
-                                                                        ngân sách.</div>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="procedure-item">
-                                                                    <div class="procedure-icon">
-                                                                        <img src="/tpkexpress/images/home/procedure/Visa.svg" />
-                                                                    </div>
-                                                                    <div class="procedure-data">
-                                                                        <div class="procedure-number">03</div>
-                                                                        <h4>Tạo đơn & thanh toán</h4>
-                                                                        <div class="procedure-des">Xác nhận đơn hàng, chi phí và hoàn tất thanh toán theo quy
-                                                                            trình.</div>
-                                                                        </div>
-                                                                    </div>
-                                                                    <div class="procedure-item">
-                                                                        <div class="procedure-icon">
-                                                                            <img src="/tpkexpress/images/home/procedure/Homepage.svg" />
-                                                                        </div>
-                                                                        <div class="procedure-data">
-                                                                            <div class="procedure-number">04</div>
-                                                                            <h4>Nhận hàng tại kho Trung Quốc</h4>
-                                                                            <div class="procedure-des">Hàng được tiếp nhận, kiểm tra và gom tại kho Trung Quốc.
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-                                                                    <div class="procedure-item">
-                                                                        <div class="procedure-icon">
-                                                                            <img src="/tpkexpress/images/home/procedure/Truck.svg" />
-                                                                        </div>
-                                                                        <div class="procedure-data">
-                                                                            <div class="procedure-number">05</div>
-                                                                            <h4>Vận chuyển về Việt Nam</h4>
-                                                                            <div class="procedure-des">Đơn hàng được cập nhật trạng thái trong quá trình vận chuyển.
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-                                                                    <div class="procedure-item highlight">
-                                                                        <div class="procedure-icon">
-                                                                            <img src="/tpkexpress/images/home/procedure/Messenger.svg" />
-                                                                        </div>
-                                                                        <div class="procedure-data">
-                                                                            <div class="procedure-number">06</div>
-                                                                            <h4>Giao hàng & hỗ trợ</h4>
-                                                                            <div class="procedure-des">Thông báo nhận hàng, bàn giao và hỗ trợ xử lý sau giao dịch.
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="procedure-image d-none d-lg-block">
-                                                                    <img src="/tpkexpress/images/home/Container.png" />
-                                                                </div>
-                                                                <div class="you-ready">
-                                                                    <div class="you-ready-typo">
-                                                                        <h4>Bạn đã sẵn sàng?</h4>
-                                                                        <div class="ready-des">Đội ngũ tư vấn miễn phí hoạt động 24/7.</div>
-                                                                    </div>
-                                                                    <button id="to-advise-form" class="btn btn-orange">
-                                                                        <span>Đăng ký tư vấn miễn phí </span>
-                                                                        <img src="/tpkexpress/images/icon/ArrowRightWhite.svg" alt="IconButton" />
-                                                                    </button>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </section>
-                                                    <section class="achievement">
-                                                        <div class="container">
-                                                            <div class="text-heading text-center">THÀNH TỰU</div>
-                                                            <h2 class="section-title-extra text-center">Những cột mốc đáng nhớ</h2>
-                                                            <p class="description-lg text-center mb-0">Những con số phản ánh quy mô vận hành, kinh nghiệm tuyến hàng
-                                                                và mức độ hài lòng của khách hàng.</p>
-                                                                <div class="achievement-list">
-                                                                    <div class="achievement-item">
-                                                                        <div class="achievement-icon">
-                                                                            <img src="/tpkexpress/images/icon/Customer.svg" alt="Icon" />
-                                                                        </div>
-                                                                        <div class="achievement-number">10.000+</div>
-                                                                        <h4>Khách hàng</h4>
-                                                                        <div class="achievement-des">
-                                                                            Cá nhân, chủ shop và doanh nghiệp đã sử dụng dịch vụ.
-                                                                        </div>
-                                                                    </div>
-                                                                    <div class="achievement-item">
-                                                                        <div class="achievement-icon">
-                                                                            <img src="/tpkexpress/images/icon/Certification.svg" alt="Icon" />
-                                                                        </div>
-                                                                        <div class="achievement-number">8+</div>
-                                                                        <h4>Năm kinh nghiệm</h4>
-                                                                        <div class="achievement-des">
-                                                                            Đồng hành cùng tuyến vận chuyển Trung Quốc - Việt Nam.
-                                                                        </div>
-                                                                    </div>
-                                                                    <div class="achievement-item">
-                                                                        <div class="achievement-icon">
-                                                                            <img src="/tpkexpress/images/icon/Done.svg" alt="Icon" />
-                                                                        </div>
-                                                                        <div class="achievement-number">98%</div>
-                                                                        <h4>Hài lòng</h4>
-                                                                        <div class="achievement-des">
-                                                                            Khách hàng đánh giá tốt và tiếp tục quay lại sử dụng.
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </section>
-                                                        <section class="application">
-                                                            <div class="container">
-                                                                <div class="application-inner">
-                                                                    <div class="application-main">
-                                                                        <div class="text-heading">ỨNG DỤNG</div>
-                                                                        <h2 class="section-title-extra">Quản lý đơn hàng dễ dàng trên ứng dụng TPK Express</h2>
-                                                                        <p class="description-lg mb-0">Tra cứu, theo dõi và cập nhật trạng thái đơn hàng mọi lúc mọi nơi
-                                                                            trên điện thoại.</p>
-                                                                            <div class="images-app">
-                                                                                <a href="https://apps.apple.com/us/app/tpk-express/id6472759285" target="_blank" class="app-link">
-                                                                                    <img src="/tpkexpress/images/icon/AppStore.svg" alt="App">
-                                                                                    <div class="app-link-text">
-                                                                                        <div class="download-now">Tải ngay trên</div>
-                                                                                        <div class="app-name">App Store</div>
-                                                                                    </div>
-                                                                                </a>
-                                                                                <a href="https://github.com/TPKExppress/app/raw/main/tpk-express.apk" target="_blank"
-                                                                                   class="app-link">
-                                                                                    <img src="/tpkexpress/images/icon/CHPlay.svg" alt="App">
-                                                                                    <div class="app-link-text">
-                                                                                        <div class="download-now">Tải ngay trên</div>
-                                                                                        <div class="app-name">Google Play</div>
-                                                                                    </div>
-                                                                                </a>
-                                                                            </div>
-                                                                        </div>
-                                                                        <div class="image-applicaton d-none d-md-block">
-                                                                            <img src="/tpkexpress/images/home/TPKExpressApp.png" />
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                            </section>
-                                                            <section class="tpk-images">
-                                                                <div class="container">
-                                                                    <div class="tpk-images-inner">
-                                                                        <div class="text-heading">HÌNH ẢNH</div>
-                                                                        <h2 class="section-title-extra">Hình ảnh về TPK Express</h2>
-                                                                        <p class="description-lg mb-0">Những khoảnh khắc đáng nhớ của đội ngũ TPK Express.</p>
-                                                                        <div class="tag-images">
-                                                                            <ul>
-                                                                                <li class="active">Tất cả</li>
-                                                                                <li>Du lịch team</li>
-                                                                                <li>Văn phòng & sự kiện</li>
-                                                                                <li>Kho vận</li>
-                                                                            </ul>
-                                                                        </div>
-                                                                        <div class="list-images">
-                                                                            <div class="item-image">
-                                                                                <img src="/tpkexpress/images/home/TiecCuoiNam2024.png" />
-                                                                                <div class="bg-blur"></div>
-                                                                                <div class="image-name">
-                                                                                    Tiệc cuối năm 2024
-                                                                                </div>
-                                                                            </div>
-                                                                            <div class="item-image">
-                                                                                <img src="/tpkexpress/images/home/TeamBuilding2024.png" />
-                                                                                <div class="bg-blur"></div>
-                                                                                <div class="image-name">
-                                                                                    Team building Đà Lạt 2024
-                                                                                </div>
-                                                                            </div>
-                                                                            <div class="item-image">
-                                                                                <img src="/tpkexpress/images/home/DulichPhuQuoc2023.png" />
-                                                                                <div class="bg-blur"></div>
-                                                                                <div class="image-name">
-                                                                                    Du lịch Phú Quốc 2023
-                                                                                </div>
-                                                                            </div>
-                                                                            <div class="item-image">
-                                                                                <img src="/tpkexpress/images/home/NgayLamViecTaiVanPhong.png" />
-                                                                                <div class="bg-blur"></div>
-                                                                                <div class="image-name">
-                                                                                    Ngày làm việc tại văn phòng
-                                                                                </div>
-                                                                            </div>
-                                                                            <div class="item-image">
-                                                                                <img src="/tpkexpress/images/home/SinhNhatCongTy.png" />
-                                                                                <div class="bg-blur"></div>
-                                                                                <div class="image-name">
-                                                                                    Sinh nhật công ty lần thứ 8
-                                                                                </div>
-                                                                            </div>
-                                                                            <div class="item-image">
-                                                                                <img src="/tpkexpress/images/home/KhohangHN.png" />
-                                                                                <div class="bg-blur"></div>
-                                                                                <div class="image-name">
-                                                                                    Kho hàng Hà Nội
-                                                                                </div>
-                                                                            </div>
-                                                                            <div class="item-image">
-                                                                                <img src="/tpkexpress/images/home/HopMatDoiNgu.png" />
-                                                                                <div class="bg-blur"></div>
-                                                                                <div class="image-name">
-                                                                                    Họp mặt toàn bộ đội ngũ
-                                                                                </div>
-                                                                            </div>
-                                                                            <div class="item-image">
-                                                                                <img src="/tpkexpress/images/home/Xulydonhang.png" />
-                                                                                <div class="bg-blur"></div>
-                                                                                <div class="image-name">
-                                                                                    Xử lý đơn hàng xuất kho
-                                                                                </div>
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                            </section>
-                                                            <section class="revise-section">
-                                                                <div class="container">
-                                                                    <div class="revise-inner">
-                                                                        <div class="revise-heading">
-                                                                            <div class="text-heading">TƯ VẤN MIỄN PHÍ</div>
-                                                                            <h2 class="section-title-extra">Đăng ký tư vấn miễn phí</h2>
-                                                                            <p class="description-lg mb-0">Đội ngũ chuyên gia TPK Express sẵn sàng tư vấn phương án phù hợp
-                                                                                nhất — hoàn toàn miễn phí.</p>
-                                                                                <div class="image-revise">
-                                                                                    <img src="/tpkexpress/images/home/Revise.png" alt="Revise">
-                                                                                </div>
-                                                                            </div>
-                                                                            <div class="revise-form">
-                                                                                <form action="" id="revise-form">
-                                                                                    <h3>Để lại thông tin — TPK gọi lại ngay!</h3>
-                                                                                    <div class="input-group">
-                                                                                        <div class="input-item">
-                                                                                            <label for="name" class="form-label">Họ tên *</label>
-                                                                                            <input type="text" class="form-control" id="name" placeholder="Nguyễn Văn A">
-                                                                                        </div>
-                                                                                        <div class="input-item">
-                                                                                            <label for="phone_number" class="form-label">Số điện thoại *</label>
-                                                                                            <input type="tel" class="form-control" id="phone_number" placeholder="0901 234 567">
-                                                                                        </div>
-                                                                                    </div>
-                                                                                    <div class="input-item">
-                                                                                        <label for="name" class="form-label">Bạn là</label>
-                                                                                        <input type="text" class="form-control" id="name" placeholder="">
-                                                                                    </div>
-                                                                                    <div class="input-item">
-                                                                                        <label for="email" class="form-label">Email (tuỳ chọn)</label>
-                                                                                        <input type="text" class="form-control" name="email" id="email" placeholder="email@example.com">
-                                                                                    </div>
-                                                                                    <div class="input-item">
-                                                                                        <label for="content" class="form-label">Nội dung cần tư vấn</label>
-                                                                                        <textarea name="content" class="form-control" id="content"
-                                                                                                  placeholder="VD: Muốn nhập quần áo từ Taobao, 30–50 kg/tháng...">
+</textarea>
+                        </div>
+                        <div class="input-item">
+                            <button class="btn btn-orange" type="submit">
+                                Đăng ký ngay
+                            </button>
+                        </div>
 
-                                </textarea>
-                                                                                    </div>
-                                                                                    <div class="input-item">
-                                                                                        <button class="btn btn-orange" type="submit">
-                                                                                            Đăng ký ngay
-                                                                                        </button>
-                                                                                    </div>
-
-                                                                                    <p class="form-note text-center">TPK sẽ liên hệ trong vòng 24 giờ làm việc.</p>
-                                                                                </form>
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-                                                                </section>
+                        <p class="form-note text-center">TPK sẽ liên hệ trong vòng 24 giờ làm việc.</p>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>

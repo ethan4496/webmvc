@@ -31,6 +31,10 @@ namespace WebMVC.Services
             {
                 query = query.Where(x => x.Title.Contains(search.Title));
             }
+            if (search.CategoryId.HasValue)
+            {
+                query = query.Where(x => x.PostCategories.Any(pc => pc.CategoryId == search.CategoryId.Value));
+            }
 
             var total = await query.CountAsync();
 
@@ -50,6 +54,7 @@ namespace WebMVC.Services
             {
                 Id = x.Id,
                 Title = x.Title,
+                Slug = x.Slug,
                 Excerpt = x.Excerpt,
                 Content = x.Content,
                 Image = x.Image,
