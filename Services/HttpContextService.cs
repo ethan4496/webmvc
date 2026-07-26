@@ -31,6 +31,12 @@ namespace WebMVC.Services
             }
         }
 
+        public async Task<Account> GetSessionAsync(string key, int userId)
+        {
+            return await _unitOfWork.Repository<Account>().GetQueryable().FirstOrDefaultAsync(x => x.Id == userId && x.AppToken == key);
+        }
+
+
         public LoggedModel GetLoggedModel()
         {
             var accountId = Convert.ToInt32(_httpContextAccessor.HttpContext.User.Claims.FirstOrDefault(c => c.Type == "Id")?.Value ?? "0");

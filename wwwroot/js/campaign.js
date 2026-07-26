@@ -109,9 +109,14 @@ function loadPage(page) {
                     <td class="text-center">${item.AccountName}</td>
                     <td class="text-center">${item.EmailSent}</td>
                     <td class="text-center">${item.ContactListName}</td>
+                    <td class="text-center">${item.ContactEmailCount}</td>
+                    <td class="text-center">${item.EmailTrackingCount}</td>
                     <td class="text-center">${item.Subject}</td>
                     <td class="text-center">${item.SendAtStr}</td>
                     <td class="text-center">
+                        ${
+                            item.Status == 'sent' ? `<button class="btn btn-sm btn-secondary" onclick="exportOpen(${item.Id})">Tải file</button>` : ''
+                        }
                         <a class="btn btn-primary" href="/edit-campaign/${item.Id}">Chi tiết</a>
                         <button class="btn btn-danger" onclick="removeCampagin(${item.Id})">Xóa</button>
                     </td>
@@ -124,6 +129,35 @@ function loadPage(page) {
         },
         error: function () {
             alert('Lỗi khi tải dữ liệu');
+        }
+    });
+}
+const exportOpen = (id) => {
+    $.ajax({
+        url: '/campaign-report/export-tracking',
+        type: 'GET',
+        data: { campaignId: id },
+        xhrFields: {
+            responseType: 'blob'
+        },
+        beforeSend: function () {
+            showLoading();
+        },
+        success: function (blob) {
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `email-tracking-campaign-${id}.xlsx`;
+            document.body.appendChild(a);
+            a.click();
+            a.remove();
+            window.URL.revokeObjectURL(url);
+        },
+        complete: function () {
+            hideLoading();
+        },
+        error: function () {
+            alert('Lỗi khi tải file excel');
         }
     });
 }

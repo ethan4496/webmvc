@@ -1,0 +1,135 @@
+@{
+    ViewData["Title"] = "Email Tracking";
+    var campaigns = ViewBag.Campaigns as IEnumerable<dynamic> ?? [];
+}
+
+<div class="container-fluid mt-4">
+    <div class="card mb-4">
+        <div class="card-header d-flex justify-content-between align-items-center">
+            <h2>Email Tracking</h2>
+        </div>
+        <div class="card-body">
+            <div class="row mb-3">
+                <div class="col-md-4">
+                    <label class="form-label">Campaign</label>
+                    <select id="campaignFilter" class="form-select">
+                        <option value="">-- Tất cả --</option>
+                        @foreach (var c in campaigns)
+                        {
+                            <option value="@c.Id">@c.Name</option>
+                        }
+                    </select>
+                </div>
+                <div class="col-md-2 d-flex align-items-end">
+                    <button type="button" id="searchBtn" class="btn btn-primary w-100">Tìm kiếm</button>
+                </div>
+            </div>
+
+            <table class="table table-bordered table-hover">
+                <thead class="table-light">
+                    <tr>
+                        <th>STT</th>
+                        <th>Campaign</th>
+                        <th>Email</th>
+                        <th>Tạo lúc</th>
+                    </tr>
+                </thead>
+                <tbody id="tracking-body">
+                    <tr><td colspan="4" class="text-center text-muted">Đang tải...</td></tr>
+                </tbody>
+            </table>
+
+            <nav>
+                <ul class="pagination justify-content-center" id="pagination"></ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+<script>
+    var currentPage = 1;
+
+    function getCampaignId() {
+        var v = $('#campaignFilter').val();
+        return v ? parseInt(v) : null;
+    }
+
+    function loadTracking(page) {
+        currentPage = page || 1;
+        var params = { pageIndex: currentPage, pageSize: 20 };
+        var cid = getCampaignId();
+        if (cid) params.campaignId = cid;
+
+        $.get('/email-tracking/list', params, function (data) {
+            var html = '';
+            if (!data.items || data.items.length === 0) {
+                html = '<tr><td colspan="4" class="text-center text-muted">Không có dữ liệu</td></tr>';
+            } else {
+                var stt = (currentPage - 1) * 20;
+                data.items.forEach(function (item) {
+                    stt++;
+                    html += `<tr>
+                        <td class="text-center">${stt}</td>
+                        <td>${item.CampaignName ?? ''}</td>
+                        <td>${item.RecipientEmail ?? ''}</td>
+                        <td>${new Date(item.CreatedAt).toLocaleString('vi-VN')}</td>
+                    </tr>`;
+                });
+            }
+            $('#tracking-body').html(html);
+            renderPagination(currentPage, Math.ceil(data.total / data.pageSize));
+        });
+    }
+
+    function renderPagination(current, total) {
+        if (total <= 0) {
+            $('#pagination').html('');
+            return;
+        }
+
+        function pageItem(page, label, active, disabled) {
+            return `<li class="page-item ${active ? 'active' : ''} ${disabled ? 'disabled' : ''}">
+                <a class="page-link" href="#" data-page="${page}">${label ?? page}</a>
+            </li>`;
+        }
+
+        function ellipsis() {
+            return '<li class="page-item disabled"><span class="page-link">…</span></li>';
+        }
+
+        var pages = [];
+        var delta = 1;
+        var range = [];
+
+        for (var i = Math.max(2, current - delta); i <= Math.min(total - 1, current + delta); i++) {
+            range.push(i);
+        }
+
+        pages.push(1);
+        if (range.length && range[0] > 2) pages.push('...');
+        pages = pages.concat(range);
+        if (range.length && range[range.length - 1] < total - 1) pages.push('...');
+        if (total > 1) pages.push(total);
+
+        var html = pageItem(current - 1, '&laquo;', false, current === 1);
+        pages.forEach(function (p) {
+            html += p === '...' ? ellipsis() : pageItem(p, p, p === current, false);
+        });
+        html += pageItem(current + 1, '&raquo;', false, current === total);
+
+        $('#pagination').html(html);
+    }
+
+    $(document).on('click', '#pagination .page-item:not(.disabled) .page-link', function (e) {
+        e.preventDefault();
+        loadTracking($(this).data('page'));
+    });
+
+    $('#searchBtn').on('click', function () {
+        loadTracking(1);
+    });
+
+    loadTracking(1);
+</script>
+}

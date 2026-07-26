@@ -45,12 +45,33 @@ namespace WebMVC.Services
         public async Task<PagedList<CampaignResponse>> GetPaging(CampaignSearch search)
         {
             var loggedModel = _httpContextService.GetLoggedModel();
-            return await GetPagingForAPI(search, loggedModel);
+            return await GetPagingForAPI(search, loggedModel.Id);
 
         }
+        public async Task<ResponseClass> GetPagingApi(CampaignSearchApi search)
+        {
+            var rs = new ResponseClass();
+            var currentAccount = await _httpContextService.GetSessionAsync(search.user.Key, (int) search.user.UserId);
+            if (currentAccount == null)
+            {
+                rs.Code = APIUtils.GetResponseCode(APIUtils.ResponseCode.NotFound);
+                rs.Status = APIUtils.ResponseMessage.Error.ToString();
+                rs.Logout = "1";
+                return rs;
+            }
+            var request = new CampaignSearch
+            {
+                Name = search.Name,
+                Status = search.Status,
+                PageIndex = search.PageIndex,
+                PageSize = search.PageSize,
+            };
+            rs.data = await GetPagingForAPI(request, currentAccount.Id);
+            return rs;
+        }
+        
 
-
-        public async Task<PagedList<CampaignResponse>> GetPagingForAPI(CampaignSearch search, LoggedModel loggedModel)
+        public async Task<PagedList<CampaignResponse>> GetPagingForAPI(CampaignSearch search, int accountId)
         {
             var query = _unitOfWork.Repository<Campaign>().GetQueryable();
             if (!string.IsNullOrWhiteSpace(search.Name))
@@ -79,13 +100,15 @@ namespace WebMVC.Services
                     x.Created < toDate);
             }
 
-            query = query.Where(x => x.CreatedBy == loggedModel.Id);
+            query = query.Where(x => x.CreatedBy == accountId);
 
             var totalItems = await query.CountAsync();
             var accountQuery = _unitOfWork.Repository<Account>().GetQueryable();
             var contactListQuery = _unitOfWork.Repository<ContactList>().GetQueryable();
+            var emailTrackingQuery = _unitOfWork.PlainRepository<EmailTracking>().GetQueryable();
+
             var items = await query
-                .OrderBy(x => x.Id)
+                .OrderByDescending(x => x.Id)
                 .Skip((search.PageIndex - 1) * search.PageSize)
                 .Take(search.PageSize)
                 .Join(accountQuery,
@@ -109,7 +132,9 @@ namespace WebMVC.Services
                         SendAt = x.campaign.SendAt,
                         AccountName = x.account.FullName,
                         EmailSent = x.campaign.EmailSent,
-                        ContactListName = cl.Name
+                        ContactListName = cl.Name,
+                        ContactEmailCount = cl.ContactListContacts.Count(),
+                        EmailTrackingCount = emailTrackingQuery.Count(et => et.CampaignId == x.campaign.Id)
                     })
                 .ToListAsync();
             // Console.WriteLine(
@@ -131,6 +156,21 @@ namespace WebMVC.Services
         {
             var template = await _unitOfWork.Repository<Campaign>().GetQueryable().FirstOrDefaultAsync(x => x.Id == id);
             return template;
+        }
+        public async Task<ResponseClass> GetCampaign(int id, AppUser appUser)
+        {
+            var rs = new ResponseClass();
+            var currentAccount = await _httpContextService.GetSessionAsync(appUser.Key, appUser.UserId);
+            if (currentAccount == null)
+            {
+                rs.Code = APIUtils.GetResponseCode(APIUtils.ResponseCode.NotFound);
+                rs.Status = APIUtils.ResponseMessage.Error.ToString();
+                rs.Logout = "1";
+                return rs;
+            }
+            var campaign = await _unitOfWork.Repository<Campaign>().GetQueryable().FirstOrDefaultAsync(x => x.Id == id);
+            rs.data = campaign;
+            return rs;
         }
         public async Task CreateAsync(CreateCampaignRequest request)
         {
@@ -188,6 +228,40 @@ namespace WebMVC.Services
             await _unitOfWork.SaveAsync();
         }
 
+        public async Task<ResponseClass> SaveApiAsync(int id, CreateCampaignApiRequest body)
+        {
+            var rs = new ResponseClass();
+            var currentAccount = await _httpContextService.GetSessionAsync(body.Key, body.UserId);
+            if (currentAccount == null)
+            {
+                rs.Code = APIUtils.GetResponseCode(APIUtils.ResponseCode.NotFound);
+                rs.Status = APIUtils.ResponseMessage.Error.ToString();
+                rs.Logout = "1";
+                return rs;
+            }
+            var currentDate = DateTime.Now;
+            var request = body.request;
+            var campagin = new Campaign
+            {
+                Id = id,
+                Name = request.Name,
+                Subject = request.Subject,
+                Body = request.Body,
+                Status = request.Status,
+                TemplateId = request.TemplateId,
+                ContactId = request.ContactId,
+                SendAt = request.SendAt,
+                EmailSent = request.EmailSent,
+                Updated = currentDate,
+                CreatedBy = currentAccount.Id
+            };
+            _unitOfWork.Repository<Campaign>().Update(campagin, currentDate, currentAccount.Id);
+
+            await _unitOfWork.SaveAsync();
+            rs.data = campagin;
+            return rs;
+        }
+
         public async Task DeleteAsync(int id)
         {
             var entity = await _unitOfWork.Repository<Campaign>().GetQueryable()
@@ -203,6 +277,32 @@ namespace WebMVC.Services
             await _unitOfWork.SaveAsync();
         }
 
+        public async Task<ResponseClass> DeleteApiAsync(int id, AppUser appUser)
+        {
+            var rs = new ResponseClass();
+            var currentAccount = await _httpContextService.GetSessionAsync(appUser.Key, appUser.UserId);
+            if (currentAccount == null)
+            {
+                rs.Code = APIUtils.GetResponseCode(APIUtils.ResponseCode.NotFound);
+                rs.Status = APIUtils.ResponseMessage.Error.ToString();
+                rs.Logout = "1";
+                return rs;
+            }
+            var entity = await _unitOfWork.Repository<Campaign>().GetQueryable()
+                .FirstOrDefaultAsync(x => x.Id == id);
+
+            if (entity == null)
+            {
+                throw new Exception("Không tìm thấy dữ liệu");
+            }
+
+            _unitOfWork.Repository<Campaign>().Delete(entity);
+
+            await _unitOfWork.SaveAsync();
+            return rs;
+        }
+        
+
         public async Task<List<object>> GetAllCampaignNames()
         {
             return await _unitOfWork.Repository<Campaign>().GetQueryable()
@@ -210,6 +310,83 @@ namespace WebMVC.Services
                 .Select(x => new { x.Id, x.Name })
                 .Cast<object>()
                 .ToListAsync();
+        }
+
+        public async Task<ResponseClass> GetReportStatsApi(ReportStatistic body)
+        {
+            var rs = new ResponseClass();
+            var currentAccount = await _httpContextService.GetSessionAsync(body.Key, body.UserId);
+            if (currentAccount == null)
+            {
+                rs.Code = APIUtils.GetResponseCode(APIUtils.ResponseCode.NotFound);
+                rs.Status = APIUtils.ResponseMessage.Error.ToString();
+                rs.Logout = "1";
+                return rs;
+            }
+            int campaignId = (int) body?.CampaignId;
+            var campaignIds = _unitOfWork.Repository<Campaign>().GetQueryable()
+                .Where(c => c.CreatedBy == currentAccount.Id)
+                .Select(c => c.Id);
+
+            var query = _unitOfWork.Repository<MailLog>().GetQueryable()
+                .Where(x => campaignIds.Contains(x.CampaignId));
+            if (campaignId > 0)
+                query = query.Where(x => x.CampaignId == campaignId);
+
+            var total = await query.CountAsync();
+            var success = await query.CountAsync(x => x.Status == "success");
+            var failed = await query.CountAsync(x => x.Status == "failed");
+
+            var trackingQuery = _unitOfWork.PlainRepository<EmailTracking>().GetQueryable()
+                .Where(x => campaignIds.Contains(x.CampaignId));
+            if (campaignId > 0)
+                trackingQuery = trackingQuery.Where(x => x.CampaignId == campaignId);
+
+            var trackingCount = await trackingQuery.CountAsync();
+
+            rs.data = new { total, success, failed, trackingCount };
+            return rs;
+        }
+
+        public async Task<ResponseClass> GetMonthData(AppUser body)
+        {
+            var rs = new ResponseClass();
+            var currentAccount = await _httpContextService.GetSessionAsync(body.Key, body.UserId);
+            if (currentAccount == null)
+            {
+                rs.Code = APIUtils.GetResponseCode(APIUtils.ResponseCode.NotFound);
+                rs.Status = APIUtils.ResponseMessage.Error.ToString();
+                rs.Logout = "1";
+                return rs;
+            }
+
+            var campaignIds = _unitOfWork.Repository<Campaign>().GetQueryable()
+                .Where(c => c.CreatedBy == currentAccount.Id)
+                .Select(c => c.Id);
+
+            var currentYear = DateTime.Now.Year;
+            var query = _unitOfWork.Repository<MailLog>().GetQueryable()
+                .Where(x => campaignIds.Contains(x.CampaignId) && x.SentAt.Year == currentYear);
+
+            var grouped = await query
+                .GroupBy(x => new { x.SentAt.Year, x.SentAt.Month })
+                .Select(g => new
+                {
+                    g.Key.Year,
+                    g.Key.Month,
+                    Success = g.Count(x => x.Status == "success"),
+                    Failed = g.Count(x => x.Status == "failed")
+                })
+                .OrderBy(x => x.Month)
+                .ToListAsync();
+
+            rs.data = grouped.Select(x => new
+            {
+                Label = $"{x.Month:D2}/{x.Year}",
+                x.Success,
+                x.Failed
+            });
+            return rs;
         }
 
         public async Task<object> GetReportStats(int? campaignId)
@@ -259,6 +436,78 @@ namespace WebMVC.Services
                 .OrderByDescending(x => x.SentAt)
                 .Skip((pageIndex - 1) * pageSize)
                 .Take(pageSize)
+                .ToListAsync();
+
+            return new { items, total, pageIndex, pageSize };
+        }
+
+        public async Task<ResponseClass> GetApiLogs(ReportLogs body)
+        {
+            var rs = new ResponseClass();
+            var currentAccount = await _httpContextService.GetSessionAsync(body.Key, body.UserId);
+            if (currentAccount == null)
+            {
+                rs.Code = APIUtils.GetResponseCode(APIUtils.ResponseCode.NotFound);
+                rs.Status = APIUtils.ResponseMessage.Error.ToString();
+                rs.Logout = "1";
+                return rs;
+            }
+            var query = _unitOfWork.Repository<MailLog>().GetQueryable();
+            if (body?.campaignId.HasValue == true)
+                query = query.Where(x => x.CampaignId == body.campaignId.Value);
+
+            var joinedQuery = query
+                .Join(_unitOfWork.Repository<Contact>().GetQueryable(),
+                    log => log.ContactId, c => c.Id, (log, c) => new { log, c })
+                .Join(_unitOfWork.Repository<Campaign>().GetQueryable()
+                        .Where(cam => cam.CreatedBy == currentAccount.Id),
+                    x => x.log.CampaignId, cam => cam.Id, (x, cam) => new
+                    {
+                        x.log.Status,
+                        x.log.ErrorMessage,
+                        x.log.SentAt,
+                        ContactName = x.c.FirstName + " " + x.c.LastName,
+                        ContactEmail = x.c.Email,
+                        EmailSent = cam.EmailSent,
+                        CampaignName = cam.Name,
+                    });
+
+            var total = await joinedQuery.CountAsync();
+            var items = await joinedQuery
+                .OrderByDescending(x => x.SentAt)
+                .Skip((body.pageIndex - 1) * body.pageSize)
+                .Take(body.pageSize)
+                .ToListAsync();
+            rs.data = new { items, total, body.pageIndex, body.pageSize };
+            return rs;
+        }
+
+        public async Task<object> GetEmailTrackingList(int? campaignId, int pageIndex, int pageSize)
+        {
+            var currentAccount = await _httpContextService.GetCurrentAccount();
+
+            var query = _unitOfWork.PlainRepository<EmailTracking>().GetQueryable()
+                .Join(_unitOfWork.Repository<Campaign>().GetQueryable()
+                        .Where(c => c.CreatedBy == currentAccount.Id),
+                    et => et.CampaignId, c => c.Id, (et, c) => new { et, c });
+
+            if (campaignId.HasValue)
+                query = query.Where(x => x.et.CampaignId == campaignId.Value);
+
+            var total = await query.CountAsync();
+            var items = await query
+                .OrderByDescending(x => x.et.CreatedAt)
+                .Skip((pageIndex - 1) * pageSize)
+                .Take(pageSize)
+                .Select(x => new
+                {
+                    x.et.Id,
+                    x.et.CampaignId,
+                    CampaignName = x.c.Name,
+                    x.et.RecipientEmail,
+                    x.et.OpenCount,
+                    x.et.CreatedAt
+                })
                 .ToListAsync();
 
             return new { items, total, pageIndex, pageSize };

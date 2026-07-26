@@ -3,6 +3,9 @@ using WebMVC.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using WebMVC.Entities;
 using Newtonsoft.Json;
+using Microsoft.AspNetCore.DataProtection;
+using Microsoft.AspNetCore.WebUtilities;
+using System.Text;
 
 namespace WebMVC.BackgroundWorkers
 {
@@ -11,12 +14,14 @@ namespace WebMVC.BackgroundWorkers
         private readonly IConfiguration _config;
         private readonly IServiceScopeFactory _scopeFactory;
         private readonly IWebHostEnvironment _env;
+        private readonly IDataProtector _trackingProtector;
 
-        public CampaignJob(IConfiguration config, IServiceScopeFactory scopeFactory, IWebHostEnvironment env)
+        public CampaignJob(IConfiguration config, IServiceScopeFactory scopeFactory, IWebHostEnvironment env, IDataProtectionProvider dataProtectionProvider)
         {
             _config = config;
             _scopeFactory = scopeFactory;
             _env = env;
+            _trackingProtector = dataProtectionProvider.CreateProtector("EmailTracking.Open");
         }
 
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
@@ -43,7 +48,20 @@ namespace WebMVC.BackgroundWorkers
                     foreach (var campaign in campaigns)
                     {
                         var emailTemplate = await db.EmailTemplates.FindAsync([campaign.TemplateId], stoppingToken);
-
+                        // var emailTracking = await db.EmailTrackings.FirstOrDefaultAsync(
+                        //     x => x.CampaignId == campaign.Id , stoppingToken);
+                        // if (emailTracking == null)
+                        // {
+                        //     emailTracking = new EmailTracking
+                        //     {
+                        //         CampaignId = campaign.Id,
+                        //         RecipientEmail = campaign.EmailSent,
+                        //         OpenCount = 0,
+                        //     };
+                        //     db.EmailTrackings.Add(emailTracking);
+                        //     await db.SaveChangesAsync(stoppingToken);
+                        // }
+                        
                         // var account = await db.Accounts.FirstOrDefaultAsync(x => x.Id == campaign.CreatedBy, stoppingToken);
                         var signature = await db.AccountSignatures.FirstOrDefaultAsync(x => x.AccountId == campaign.CreatedBy, stoppingToken);
 
@@ -75,9 +93,11 @@ namespace WebMVC.BackgroundWorkers
                             {
                                 if (string.IsNullOrEmpty(contact.Email))
                                     continue;
-
+                                var trackingToken = WebEncoders.Base64UrlEncode(_trackingProtector.Protect(Encoding.UTF8.GetBytes($"{campaign.Id}:{contact.Email}")));
+                                var bodyMail = (emailTemplate?.Body ?? "")
+                                    + $"<img src=\"https://tpkexpress.com.vn/api/track/open/{trackingToken}\" width=\"1\" height=\"1\" style=\"display:none;\" />";
                                 var body = emailTemplateHtml
-                                    .Replace("{content}", emailTemplate?.Body ?? "")
+                                    .Replace("{content}", bodyMail)
                                     .Replace("{signature}", signatureHtml)
                                     .Replace("{first_name}", contact.FirstName ?? "")
                                     .Replace("{last_name}", contact.LastName ?? "");

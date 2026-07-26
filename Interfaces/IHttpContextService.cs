@@ -7,5 +7,6 @@ namespace WebMVC.Interfaces
     {
         Task<Account> GetCurrentAccount();
         LoggedModel GetLoggedModel();
+        Task<Account> GetSessionAsync(string key, int userId);
     }
 }

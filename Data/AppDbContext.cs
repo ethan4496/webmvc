@@ -37,6 +37,7 @@ namespace WebMVC.Data
         public DbSet<ContactList> ContactLists { get; set; }
         public DbSet<ContactListContact> ContactListContacts { get; set; }
         public DbSet<MailLog> MailLogs { get; set; }
+        public DbSet<EmailTracking> EmailTrackings { get; set; }
         public DbSet<AccountSignature> AccountSignatures { get; set; }
         public DbSet<Category> Categories { get; set; }
         public DbSet<Post> Posts { get; set; }

@@ -1,6 +1,7 @@
 using AutoMapper;
 using Azure.Core;
 using DocumentFormat.OpenXml.Office2010.Excel;
+using DocumentFormat.OpenXml.Office2013.PowerPoint.Roaming;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
@@ -27,6 +28,7 @@ namespace WebMVC.Services
         private readonly INotificationService _notificationService;
         private readonly IZaloAPIService _zaloAPIService;
         private readonly IUploadFileService _uploadFileService;
+        private readonly IAppApiService _appApiService;
 
         public TemplateService(IUnitOfWork unitOfWork, IMapper mapper,
             IHttpContextService httpContextService, ISignalRService signalRService,
@@ -44,9 +46,22 @@ namespace WebMVC.Services
 
         public async Task<PagedList<TemplateResponse>> GetPaging(TemplateSearch search)
         {
-            var loggedModel = _httpContextService.GetLoggedModel();
-            return await GetPagingForAPI(search, loggedModel);
-
+            var currentAccount = await _httpContextService.GetCurrentAccount();
+            return await GetPagingForAPI(search, currentAccount.Id);
+        }
+        public async Task<ResponseClass> GetPagingApi(TemplateSearch search)
+        {
+            var rs = new ResponseClass();
+            var currentAccount = await _httpContextService.GetSessionAsync(search.Key, (int) search.UserId);
+            if (currentAccount == null)
+            {
+                rs.Code = APIUtils.GetResponseCode(APIUtils.ResponseCode.NotFound);
+                rs.Status = APIUtils.ResponseMessage.Error.ToString();
+                rs.Logout = "1";
+                return rs;
+            }
+            rs.data = await GetPagingForAPI(search, currentAccount.Id);
+            return rs;
         }
 
         public async Task<List<EmailTemplate>> GetAll()
@@ -67,10 +82,10 @@ namespace WebMVC.Services
         }
 
 
-        public async Task<PagedList<TemplateResponse>> GetPagingForAPI(TemplateSearch search, LoggedModel loggedModel)
+        public async Task<PagedList<TemplateResponse>> GetPagingForAPI(TemplateSearch search, int accountId)
         {
-            var currentAccount = await _httpContextService.GetCurrentAccount();
-            var query = _unitOfWork.Repository<EmailTemplate>().GetQueryable().Where(x => x.CreatedBy == currentAccount.Id);
+           
+            var query = _unitOfWork.Repository<EmailTemplate>().GetQueryable().Where(x => x.CreatedBy == accountId);
             if (!string.IsNullOrWhiteSpace(search.Name))
             {
                 query = query.Where(x =>
@@ -136,9 +151,33 @@ namespace WebMVC.Services
             var template = await _unitOfWork.Repository<EmailTemplate>().GetQueryable().FirstOrDefaultAsync(x => x.Id == id);
             return template;
         }
+        public async Task<ResponseClass> GetTemplate(int id, AppUser appUser)
+        {
+            var rs = new ResponseClass();
+            var currentAccount = await _httpContextService.GetSessionAsync(appUser.Key, appUser.UserId);
+            if (currentAccount == null)
+            {
+                rs.Code = APIUtils.GetResponseCode(APIUtils.ResponseCode.NotFound);
+                rs.Status = APIUtils.ResponseMessage.Error.ToString();
+                rs.Logout = "1";
+                return rs;
+            }
+            var template = await _unitOfWork.Repository<EmailTemplate>().GetQueryable().FirstOrDefaultAsync(x => x.Id == id);
+            rs.data = template;
+            return rs;
+            
+        }
+
         public async Task<AccountSignature> GetSignature()
         {
             var currentAccount = await _httpContextService.GetCurrentAccount();
+            var signature = await _unitOfWork.Repository<AccountSignature>().GetQueryable().FirstOrDefaultAsync(x => x.AccountId == currentAccount.Id);
+            return signature;
+        }
+
+        public async Task<AccountSignature> GetSignatureApi(AppUser request)
+        {
+            var currentAccount = await _httpContextService.GetSessionAsync(request.Key, request.UserId);
             var signature = await _unitOfWork.Repository<AccountSignature>().GetQueryable().FirstOrDefaultAsync(x => x.AccountId == currentAccount.Id);
             return signature;
         }
@@ -160,6 +199,64 @@ namespace WebMVC.Services
 
             await _unitOfWork.SaveAsync();
         }
+
+        public async Task<ResponseClass> CreateApi(CreateTemplateApiRequest body)
+        {
+            var rs = new ResponseClass();
+            var currentAccount = await _httpContextService.GetSessionAsync(body.Key, body.UserId);
+            if (currentAccount == null)
+            {
+                rs.Code = APIUtils.GetResponseCode(APIUtils.ResponseCode.NotFound);
+                rs.Status = APIUtils.ResponseMessage.Error.ToString();
+                rs.Logout = "1";
+                return rs;
+            }
+            
+            var currentDate = DateTime.Now;
+            var request = body.request;
+            var template = new EmailTemplate
+            {
+                Name = request.Name,
+                Subject = request.Subject,
+                Body = request.Body,
+                Status = request.Status,
+                Created = currentDate,
+            };
+
+            await _unitOfWork.Repository<EmailTemplate>().Add(template, currentDate, currentAccount.Id);
+            await _unitOfWork.SaveAsync();
+            rs.data = template;
+            return rs;
+        }
+        
+        public async Task<ResponseClass> SaveApiAsync(int id, CreateTemplateApiRequest body)
+        {
+            var rs = new ResponseClass();
+            var currentAccount = await _httpContextService.GetSessionAsync(body.Key, body.UserId);
+            if (currentAccount == null)
+            {
+                rs.Code = APIUtils.GetResponseCode(APIUtils.ResponseCode.NotFound);
+                rs.Status = APIUtils.ResponseMessage.Error.ToString();
+                rs.Logout = "1";
+                return rs;
+            }
+            var request = body.request;
+            var currentDate = DateTime.Now;
+            var template = new EmailTemplate
+            {
+                Id = id,
+                Name = request.Name,
+                Subject = request.Subject,
+                Body = request.Body,
+                Status = request.Status,
+                CreatedBy = currentAccount.Id,
+            };
+            _unitOfWork.Repository<EmailTemplate>().Update(template, currentDate, currentAccount.Id);
+
+            await _unitOfWork.SaveAsync();
+            rs.data = template;
+            return rs;
+        }
         public async Task SaveAsync(int id, CreateTemplateRequest request)
         {
             var currentDate = DateTime.Now;
@@ -174,6 +271,34 @@ namespace WebMVC.Services
                 CreatedBy = currentAccount.Id,
             };
             _unitOfWork.Repository<EmailTemplate>().Update(template, currentDate, currentAccount.Id);
+
+            await _unitOfWork.SaveAsync();
+        }
+
+        public async Task saveSignatureApi(CreateSignatureApiRequest body)
+        {
+            var currentDate = DateTime.Now;
+            var currentAccount = await _httpContextService.GetSessionAsync(body.Key, body.UserId);
+            var signature = await _unitOfWork.Repository<AccountSignature>().GetQueryable().FirstOrDefaultAsync(x => x.AccountId == currentAccount.Id);
+            var request = body.request;
+            if (signature != null)
+            {
+                signature.Body = request.Body;
+                if (!string.IsNullOrEmpty(request.LogoPath))
+                    signature.Logo = request.LogoPath;
+                _unitOfWork.Repository<AccountSignature>().Update(signature, currentDate, currentAccount.Id);
+            }
+            else
+            {
+                var template = new AccountSignature
+                {
+                    AccountId = currentAccount.Id,
+                    Body = request.Body,
+                    Logo = request.LogoPath,
+                };
+
+                await _unitOfWork.Repository<AccountSignature>().Add(template, currentDate, currentAccount.Id);
+            }
 
             await _unitOfWork.SaveAsync();
         }
@@ -203,6 +328,20 @@ namespace WebMVC.Services
             }
 
             await _unitOfWork.SaveAsync();
+        }
+        public async Task<ResponseClass> DeleteApiAsync(int id, AppUser appUser)
+        {
+            var rs = new ResponseClass();
+            var currentAccount = await _httpContextService.GetSessionAsync(appUser.Key, appUser.UserId);
+            if (currentAccount == null)
+            {
+                rs.Code = APIUtils.GetResponseCode(APIUtils.ResponseCode.NotFound);
+                rs.Status = APIUtils.ResponseMessage.Error.ToString();
+                rs.Logout = "1";
+                return rs;
+            }
+            await DeleteAsync(id);
+            return rs;
         }
 
         public async Task DeleteAsync(int id)
