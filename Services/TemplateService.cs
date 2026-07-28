@@ -80,7 +80,31 @@ namespace WebMVC.Services
                 .ToListAsync();
             return items;
         }
-
+        public async Task<ResponseClass> GetAllApi(AppUser appUser)
+        {
+            var rs = new ResponseClass();
+            var currentAccount = await _httpContextService.GetSessionAsync(appUser.Key,  appUser.UserId);
+            if (currentAccount == null)
+            {
+                rs.Code = APIUtils.GetResponseCode(APIUtils.ResponseCode.NotFound);
+                rs.Status = APIUtils.ResponseMessage.Error.ToString();
+                rs.Logout = "1";
+                return rs;
+            }
+            var query = _unitOfWork.Repository<EmailTemplate>().GetQueryable().Where(x => x.CreatedBy == currentAccount.Id);
+            var items = await query
+                .AsNoTracking()
+                .OrderByDescending(x => x.Created)
+                .Where(x => x.Status == "active")
+                .Select(x => new EmailTemplate
+                {
+                    Id = x.Id,
+                    Name = x.Name
+                })
+                .ToListAsync();
+            rs.data = items;
+            return rs;
+        }
 
         public async Task<PagedList<TemplateResponse>> GetPagingForAPI(TemplateSearch search, int accountId)
         {
@@ -114,8 +138,14 @@ namespace WebMVC.Services
 
             var totalItems = await query.CountAsync();
 
+            query = search.SortBy switch
+            {
+                "name" => query.OrderBy(x => x.Name),
+                "date" => query.OrderByDescending(x => x.Created),
+                _ => query.OrderByDescending(x => x.Created)
+            };
+
             var items = await query
-                .OrderByDescending(x => x.Created)
                 .Skip((search.PageIndex - 1) * search.PageSize)
                 .Take(search.PageSize)
                 .ToListAsync();
@@ -242,6 +272,13 @@ namespace WebMVC.Services
             }
             var request = body.request;
             var currentDate = DateTime.Now;
+            var existing = await _unitOfWork.Repository<EmailTemplate>().GetQueryable()
+                .AsNoTracking()
+                .FirstOrDefaultAsync(x => x.Id == id);
+            if(existing == null)
+            {
+                throw new Exception("Không tồn tại");
+            }
             var template = new EmailTemplate
             {
                 Id = id,
@@ -249,7 +286,9 @@ namespace WebMVC.Services
                 Subject = request.Subject,
                 Body = request.Body,
                 Status = request.Status,
-                CreatedBy = currentAccount.Id,
+                CreatedBy = existing.CreatedBy,
+                Created = existing?.Created ?? currentDate,
+                Updated = currentDate,
             };
             _unitOfWork.Repository<EmailTemplate>().Update(template, currentDate, currentAccount.Id);
 
@@ -261,6 +300,9 @@ namespace WebMVC.Services
         {
             var currentDate = DateTime.Now;
             var currentAccount = await _httpContextService.GetCurrentAccount();
+            var existing = await _unitOfWork.Repository<EmailTemplate>().GetQueryable()
+                .AsNoTracking()
+                .FirstOrDefaultAsync(x => x.Id == id);
             var template = new EmailTemplate
             {
                 Id = id,
@@ -268,7 +310,9 @@ namespace WebMVC.Services
                 Subject = request.Subject,
                 Body = request.Body,
                 Status = request.Status,
-                CreatedBy = currentAccount.Id,
+                CreatedBy = existing.CreatedBy,
+                Created = existing?.Created ?? currentDate,
+                Updated = currentDate,
             };
             _unitOfWork.Repository<EmailTemplate>().Update(template, currentDate, currentAccount.Id);
 

@@ -5,5 +5,5 @@ public class CreateCampaignApiRequest
 {
     public int UserId { get; set; }
     public string Key { get; set; }
-    public CreateCampaignRequest request;
+    public CreateCampaignRequest request { get; set; }
 }

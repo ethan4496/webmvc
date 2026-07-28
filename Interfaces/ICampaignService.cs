@@ -13,6 +13,7 @@ namespace WebMVC.Interfaces
         Task<PagedList<CampaignResponse>> GetPaging(CampaignSearch search);
         Task<ResponseClass> GetPagingApi(CampaignSearchApi search);
         Task CreateAsync(CreateCampaignRequest request);
+        Task<ResponseClass> CreateApiAsync(CreateCampaignApiRequest request);
         Task SaveAsync(int id, CreateCampaignRequest request);
         Task<ResponseClass> SaveApiAsync(int id, CreateCampaignApiRequest request);
         Task<Campaign> GetCampaignById(int id);

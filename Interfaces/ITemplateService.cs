@@ -13,6 +13,7 @@ namespace WebMVC.Interfaces
         Task<PagedList<TemplateResponse>> GetPaging(TemplateSearch search);
         Task<ResponseClass> GetPagingApi(TemplateSearch search);
         Task<List<EmailTemplate>> GetAll();
+        Task<ResponseClass> GetAllApi(AppUser appUser);
         Task CreateAsync(CreateTemplateRequest request);
         Task<ResponseClass> CreateApi(CreateTemplateApiRequest request);
         Task SaveAsync(int id, CreateTemplateRequest request);

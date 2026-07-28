@@ -43,6 +43,19 @@ namespace WebMVC.Controllers
             };
         }
 
+        [Route("all-templates")]
+        [HttpPost]
+        public async Task<ApiResponse> GetAllTemplates(AppUser appUser)
+        {
+            var data = await _templateService.GetAllApi(appUser);
+            return new ApiResponse
+            {
+                Data = data,
+                StatusCode = (int)HttpStatusCode.OK,
+                Type = (int)EApiResponseType.Success
+            };
+        }
+
         [Route("create-templates")]
         [HttpPost]
         public async Task<ApiResponse> Create(CreateTemplateApiRequest request)
@@ -213,6 +226,32 @@ namespace WebMVC.Controllers
                 StatusCode = (int)HttpStatusCode.OK,
                 Type = (int)EApiResponseType.Success
             };
+        }
+        [Route("create-campaign")]
+        [HttpPost]
+        public async Task<ApiResponse> CreateCampaign(CreateCampaignApiRequest body)
+        {
+            try
+            {
+                var data = await _campaignService.CreateApiAsync(body);
+                return new ApiResponse()
+                {
+                    Data = data,
+                    StatusCode = (int)HttpStatusCode.OK,
+                    Message = "Thêm thành công",
+                    Type = (int)EApiResponseType.Success,
+                };
+            }
+            catch (Exception ex)
+            {
+                return new ApiResponse
+                {
+                    Data = null,
+                    StatusCode = (int)HttpStatusCode.BadGateway,
+                    Type = (int)EApiResponseType.Error,
+                    Message = ex.ToString(),
+                };
+            }
         }
         [Route("campaign/{id}")]
         [HttpGet]

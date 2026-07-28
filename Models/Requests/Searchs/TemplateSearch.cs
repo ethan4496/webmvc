@@ -6,6 +6,7 @@ namespace WebMVC.Models.Requests.Searchs
         public string? Status { get; set; }
         public string? Key { get; set;}
         public int? UserId { get; set;}
+        public string? SortBy { get; set;}
         
     }
 }

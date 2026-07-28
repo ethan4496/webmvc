@@ -5,5 +5,5 @@ public class CreateSignatureApiRequest
 {
     public int UserId { get; set; }
     public string Key { get; set; }
-    public CreateSignatureRequest request;
+    public CreateSignatureRequest request { get; set; }
 }

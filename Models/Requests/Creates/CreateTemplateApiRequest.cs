@@ -5,5 +5,5 @@ public class CreateTemplateApiRequest
 {
     public int UserId { get; set; }
     public string Key { get; set; }
-    public CreateTemplateRequest request;
+    public CreateTemplateRequest request { get; set; }
 }

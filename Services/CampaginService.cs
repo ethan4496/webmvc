@@ -102,15 +102,11 @@ namespace WebMVC.Services
 
             query = query.Where(x => x.CreatedBy == accountId);
 
-            var totalItems = await query.CountAsync();
             var accountQuery = _unitOfWork.Repository<Account>().GetQueryable();
             var contactListQuery = _unitOfWork.Repository<ContactList>().GetQueryable();
             var emailTrackingQuery = _unitOfWork.PlainRepository<EmailTracking>().GetQueryable();
 
-            var items = await query
-                .OrderByDescending(x => x.Id)
-                .Skip((search.PageIndex - 1) * search.PageSize)
-                .Take(search.PageSize)
+            var joinedQuery = query
                 .Join(accountQuery,
                     campaign => campaign.CreatedBy,
                     account => account.Id,
@@ -118,7 +114,21 @@ namespace WebMVC.Services
                 .Join(contactListQuery,
                     x => x.campaign.ContactId,
                     cl => cl.Id,
-                    (x, cl) => new CampaignResponse
+                    (x, cl) => new { x.campaign, x.account, cl });
+
+            var totalItems = await joinedQuery.CountAsync();
+
+            joinedQuery = search.SortBy switch
+            {
+                "name" => joinedQuery.OrderBy(x => x.campaign.Name),
+                "date" => joinedQuery.OrderByDescending(x => x.campaign.Created),
+                _ => joinedQuery.OrderByDescending(x => x.campaign.Id)
+            };
+
+            var items = await joinedQuery
+                .Skip((search.PageIndex - 1) * search.PageSize)
+                .Take(search.PageSize)
+                .Select(x => new CampaignResponse
                     {
                         Id = x.campaign.Id,
                         Name = x.campaign.Name,
@@ -132,8 +142,10 @@ namespace WebMVC.Services
                         SendAt = x.campaign.SendAt,
                         AccountName = x.account.FullName,
                         EmailSent = x.campaign.EmailSent,
-                        ContactListName = cl.Name,
-                        ContactEmailCount = cl.ContactListContacts.Count(),
+                        ContactId = x.campaign.ContactId,
+                        TemplateId = x.campaign.TemplateId,
+                        ContactListName = x.cl.Name,
+                        ContactEmailCount = x.cl.ContactListContacts.Count(),
                         EmailTrackingCount = emailTrackingQuery.Count(et => et.CampaignId == x.campaign.Id)
                     })
                 .ToListAsync();
@@ -205,6 +217,40 @@ namespace WebMVC.Services
 
             await _unitOfWork.SaveAsync();
         }
+
+        public async Task<ResponseClass> CreateApiAsync(CreateCampaignApiRequest body)
+        {
+            var currentDate = DateTime.Now;
+            var rs = new ResponseClass();
+            var currentAccount = await _httpContextService.GetSessionAsync(body.Key, body.UserId);
+            if (currentAccount == null)
+            {
+                rs.Code = APIUtils.GetResponseCode(APIUtils.ResponseCode.NotFound);
+                rs.Status = APIUtils.ResponseMessage.Error.ToString();
+                rs.Logout = "1";
+                return rs;
+            }
+            var request = body.request;
+            var campagin = new Campaign
+            {
+                Name = request.Name,
+                Subject = request.Subject,
+                Body = request.Body,
+                Status = request.Status,
+                TemplateId = request.TemplateId,
+                ContactId = request.ContactId,
+                SendAt = request.SendAt,
+                EmailSent = request.EmailSent,
+                Created = currentDate,
+            };
+
+            await _unitOfWork.Repository<Campaign>().Add(campagin, currentDate, currentAccount.Id);
+
+            await _unitOfWork.SaveAsync();
+            rs.data = campagin;
+            return rs;
+        }
+        
         public async Task SaveAsync(int id, CreateCampaignRequest request)
         {
             var currentDate = DateTime.Now;

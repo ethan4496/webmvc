@@ -5,5 +5,5 @@ public class CreateContactListApiRequest
 {
     public int UserId { get; set; }
     public string Key { get; set; }
-    public CreateContactListRequest request;
+    public CreateContactListRequest request { get; set; }
 }

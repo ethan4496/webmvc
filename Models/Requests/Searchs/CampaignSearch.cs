@@ -4,6 +4,7 @@ namespace WebMVC.Models.Requests.Searchs
     {
         public string? Name { get; set; }
         public string? Status { get; set; }
-        
+        public string? SortBy { get; set; }
+
     }
 }
