@@ -1,21 +1,26 @@
+@using Microsoft.AspNetCore.Identity
 @using WebMVC.Entities
-@using WebMVC.Models.Responses
 @using WebMVC.Interfaces
 @using WebMVC.Models.Requests.Creates
+@using WebMVC.Models.Responses
 @using WebMVC.Ultilities.Enums
 @model WebMVC.Models.ViewModels.CreateCampaignViewModel
 @inject IHttpContextService _httpContextService;
 @{
     var loggedModel = _httpContextService.GetLoggedModel();
-    var emailSentOptions = new[] { 
-        "Linzy.nguyen@yiy-trans.com", 
-        "assistant01@yiy-trans.com", 
-        "salevn01@yiy-trans.net",
-        "sales02.vn01@yiy-trans.com",
-        "sales01.vn@yiy-trans.com",
-        "sales03.vn@yiy-trans.com",
-        "ops03.vn@yiy-trans.com",
-    };
+    var emailSentOptions = new[] {
+        new { Email = "Linzy.nguyen@yiy-trans.com", AllowIds = new int[] { 27} },
+        new { Email = "assistant01@yiy-trans.com", AllowIds = new int[] { 27} },
+        new { Email = "salevn01@yiy-trans.net", AllowIds = new int[] {  20768} },
+        new { Email = "salevn02@yiy-trans.net", AllowIds = new int[] { 20768} },
+        new { Email = "sales02.vn01@yiy-trans.com", AllowIds = new int[] {27} },
+        new { Email = "sales01.vn@yiy-trans.com", AllowIds = new int[] {27 } },
+        new { Email = "sales03.vn@yiy-trans.com", AllowIds = new int[] {27 } },
+        new { Email = "ops03.vn@yiy-trans.com", AllowIds = new int[] {27} },
+        new { Email = "ops03.vn@yiy-trans.com", AllowIds = new int[] {27} },
+        new { Email = "suli.cao@tpk-hn.com", AllowIds = new int[] { 21851} },
+        new { Email = "kelly.hoang@tpk-hn.com", AllowIds = new int[] { 21851} },
+    }.Where(o => o.AllowIds.Length == 0 || loggedModel.RoleId == (int) ERoleId.Admin || o.AllowIds.Contains(loggedModel.Id));
 }
 
 <div class="container-fluid mt-4">
@@ -83,7 +88,7 @@
                         <select id="EmailSent" class="form-select" name="EmailSent">
                             @foreach (var email in emailSentOptions)
                             {
-                                <option value="@email" selected="@(email == "salevn01@yiy-trans.net")">@email</option>
+                                <option value="@email.Email" selected="@(email.Email == "salevn01@yiy-trans.net")">@email.Email</option>
                             }
                         </select>
                     </div>

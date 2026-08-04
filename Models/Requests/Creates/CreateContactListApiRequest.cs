@@ -5,5 +5,8 @@ public class CreateContactListApiRequest
 {
     public int UserId { get; set; }
     public string Key { get; set; }
-    public CreateContactListRequest request { get; set; }
+    // public CreateContactListRequest request { get; set; }
+    public string Name { get; set; }
+
+    public IFormFile? File { get; set; }
 }

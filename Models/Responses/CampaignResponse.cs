@@ -7,6 +7,7 @@ namespace WebMVC.Models.Responses
     {
         public string AccountName {get; set;}
         public string ContactListName { get; set; }
+        public string TemplateName { get; set; }
         public int ContactEmailCount { get; set; }
         public int EmailTrackingCount { get; set; }
         public string StatusBadge

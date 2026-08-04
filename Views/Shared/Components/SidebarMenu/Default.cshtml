@@ -1,6 +1,8 @@
 ﻿@using WebMVC.Ultilities.Enums
 @model LoggedModel
-
+@{
+    var isEmailAccount = ERoleConstants.allowEmailIds.Contains(Model.Id);
+}
 @if (Model.IsStaff == 1)
 {
     <aside class="sidebar collapsed-sidebar" id="sidebar">
@@ -15,7 +17,7 @@
                 <i class="bi bi-house"></i> <span>Bảng điều khiển</span>
             </div>
         </a>
-        @if(Model.Id == 27 || Model.Id == 20768){
+        @if(isEmailAccount){
             <a href="#" onclick="toggleDropdown('emailService')">
                 <div class="d-flex gap-3">
                     <i class="bi bi-envelope-at"></i> <span>Email Service</span>

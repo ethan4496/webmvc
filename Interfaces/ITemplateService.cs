@@ -21,6 +21,8 @@ namespace WebMVC.Interfaces
         Task saveSignature(CreateSignatureRequest request);
         Task saveSignatureApi(CreateSignatureApiRequest request);
         Task<EmailTemplate> GetTemplateById(int id);
+        Task<TemplateStatusCountResponse> GetStatusCount();
+        Task<ResponseClass> GetStatusCountApi(TemplateSearch appUser);
         Task<ResponseClass> GetTemplate(int id, AppUser appUser);
         Task<AccountSignature> GetSignature();
         Task<AccountSignature> GetSignatureApi(AppUser request);

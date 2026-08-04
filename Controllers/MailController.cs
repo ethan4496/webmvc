@@ -43,6 +43,19 @@ namespace WebMVC.Controllers
             };
         }
 
+        [Route("templates-status")]
+        [HttpPost]
+        public async Task<ApiResponse> GetStatusCountApi(TemplateSearch appUser)
+        {
+            var data = await _templateService.GetStatusCountApi(appUser);
+            return new ApiResponse
+            {
+                Data = data,
+                StatusCode = (int)HttpStatusCode.OK,
+                Type = (int)EApiResponseType.Success
+            };
+        }
+
         [Route("all-templates")]
         [HttpPost]
         public async Task<ApiResponse> GetAllTemplates(AppUser appUser)
@@ -227,6 +240,31 @@ namespace WebMVC.Controllers
                 Type = (int)EApiResponseType.Success
             };
         }
+        [Route("campaigns-status")]
+        [HttpPost]
+        public async Task<ApiResponse> GetStatusCampaignCountApi(AppUser appUser)
+        {
+            var data = await _campaignService.GetStatusCampaignCountApi(appUser);
+            return new ApiResponse
+            {
+                Data = data,
+                StatusCode = (int)HttpStatusCode.OK,
+                Type = (int)EApiResponseType.Success
+            };
+        }
+        [Route("all-campaigns")]
+        [HttpPost]
+        public async Task<ApiResponse> GetAllCampaign(AppUser request)
+        {
+            var data = await _campaignService.GetAllCampaigns(request);
+            return new ApiResponse
+            {
+                Data = data,
+                StatusCode = (int)HttpStatusCode.OK,
+                Type = (int)EApiResponseType.Success
+            };
+        }
+
         [Route("create-campaign")]
         [HttpPost]
         public async Task<ApiResponse> CreateCampaign(CreateCampaignApiRequest body)
@@ -428,7 +466,7 @@ namespace WebMVC.Controllers
         }
         [Route("save-contact-lists")]
         [HttpPost]
-        public async Task<ApiResponse> SaveContactLists(CreateContactListApiRequest request)
+        public async Task<ApiResponse> SaveContactLists([FromForm] CreateContactListApiRequest request)
         {
             try
             {
@@ -477,7 +515,7 @@ namespace WebMVC.Controllers
         }
         [Route("update-list/{id}")]
         [HttpPut]
-        public async Task<ApiResponse> UpdateList(int id, CreateContactListApiRequest request)
+        public async Task<ApiResponse> UpdateList(int id, [FromForm] CreateContactListApiRequest request)
         {
             try
             {

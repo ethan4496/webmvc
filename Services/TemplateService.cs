@@ -176,6 +176,62 @@ namespace WebMVC.Services
                 TotalItem = totalItems
             };
         }
+        public async Task<TemplateStatusCountResponse> GetStatusCount()
+        {
+            var currentAccount = await _httpContextService.GetCurrentAccount();
+            var query = _unitOfWork.Repository<EmailTemplate>().GetQueryable()
+                .Where(x => x.CreatedBy == currentAccount.Id);
+
+            return new TemplateStatusCountResponse
+            {
+                active = await query.CountAsync(x => x.Status == "active"),
+                inactive = await query.CountAsync(x => x.Status == "inactive")
+            };
+        }
+
+        public async Task<ResponseClass> GetStatusCountApi(TemplateSearch body)
+        {
+            var rs = new ResponseClass();
+            var currentAccount = await _httpContextService.GetSessionAsync(body.Key, (int)body.UserId);
+            if (currentAccount == null)
+            {
+                rs.Code = APIUtils.GetResponseCode(APIUtils.ResponseCode.NotFound);
+                rs.Status = APIUtils.ResponseMessage.Error.ToString();
+                rs.Logout = "1";
+                return rs;
+            }
+
+            var query = _unitOfWork.Repository<EmailTemplate>().GetQueryable()
+                .Where(x => x.CreatedBy == currentAccount.Id);
+
+            if (!string.IsNullOrWhiteSpace(body.Name))
+            {
+                query = query.Where(x =>
+                    x.Name.Contains(body.Name));
+            }
+
+            if (body.FromDate.HasValue)
+            {
+                query = query.Where(x =>
+                    x.Created >= body.FromDate.Value);
+            }
+
+            if (body.ToDate.HasValue)
+            {
+                var toDate = body.ToDate.Value.Date.AddDays(1);
+
+                query = query.Where(x =>
+                    x.Created < toDate);
+            }
+
+            rs.data = new TemplateStatusCountResponse
+            {
+                active = await query.CountAsync(x => x.Status == "active"),
+                inactive = await query.CountAsync(x => x.Status == "inactive")
+            };
+            return rs;
+        }
+
         public async Task<EmailTemplate> GetTemplateById(int id)
         {
             var template = await _unitOfWork.Repository<EmailTemplate>().GetQueryable().FirstOrDefaultAsync(x => x.Id == id);

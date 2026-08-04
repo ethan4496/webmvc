@@ -292,7 +292,13 @@ namespace WebMVC.Services
         public async Task<ResponseClass> CreateApiAsync(CreateContactListApiRequest body)
         {
             var rs = new ResponseClass();
-            var currentAccount = await _httpContextService.GetSessionAsync(body.Key, (int) body.UserId);
+            var currentAccount = await _httpContextService.GetSessionAsync(body.Key, body.UserId);
+            Console.WriteLine(
+                "body"
+            );
+            Console.WriteLine(
+                JsonConvert.SerializeObject(body, Formatting.Indented)
+            );
             if (currentAccount == null)
             {
                 rs.Code = APIUtils.GetResponseCode(APIUtils.ResponseCode.NotFound);
@@ -300,7 +306,12 @@ namespace WebMVC.Services
                 rs.Logout = "1";
                 return rs;
             }
-            await CreateList(body.request, currentAccount);
+            var request = new CreateContactListRequest
+            {
+                Name =  body.Name,
+                File = body.File  
+            };
+            await CreateList(request, currentAccount);
             rs.Code = APIUtils.GetResponseCode(APIUtils.ResponseCode.SUCCESS);
             return rs;
         }
@@ -329,7 +340,13 @@ namespace WebMVC.Services
         public async Task<ResponseClass> UpdateContactList(int id, CreateContactListApiRequest body)
         {
             var rs = new ResponseClass();
-            var currentAccount = await _httpContextService.GetSessionAsync(body.Key, (int) body.UserId);
+            var currentAccount = await _httpContextService.GetSessionAsync(body.Key, body.UserId);
+            Console.WriteLine(
+                "body"
+            );
+            Console.WriteLine(
+                JsonConvert.SerializeObject(body, Formatting.Indented)
+            );
             if (currentAccount == null)
             {
                 rs.Code = APIUtils.GetResponseCode(APIUtils.ResponseCode.NotFound);
@@ -337,12 +354,13 @@ namespace WebMVC.Services
                 rs.Logout = "1";
                 return rs;
             }
-            var request = body.request;
-            var contactListExists = await _unitOfWork.Repository<ContactList>()
+            
+            var existingContactList = await _unitOfWork.Repository<ContactList>()
             .GetQueryable()
-            .AnyAsync(x => x.Id == id);
+            .AsNoTracking()
+            .FirstOrDefaultAsync(x => x.Id == id);
 
-            if (!contactListExists)
+            if (existingContactList == null)
             {
                 throw new Exception("ContactList not found");
             }
@@ -350,7 +368,9 @@ namespace WebMVC.Services
             var contact = new ContactList
             {
                 Id = id,
-                Name = request.Name,
+                Name = body.Name,
+                Created = existingContactList.Created,
+                CreatedBy = existingContactList.CreatedBy,
             };
 
             _unitOfWork.Repository<ContactList>().Update(contact, currentDate, currentAccount.Id);
@@ -450,10 +470,12 @@ namespace WebMVC.Services
 
         public async Task<List<ContactList>> GetAll()
         {
+            var currentAccount = await _httpContextService.GetCurrentAccount();
             var query = _unitOfWork.Repository<ContactList>().GetQueryable();
             var items = await query
                 .AsNoTracking()
                 .OrderByDescending(x => x.Created)
+                .Where(x => x.CreatedBy == currentAccount.Id)
                 .Select(x => new ContactList
                 {
                     Id = x.Id,

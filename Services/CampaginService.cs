@@ -69,7 +69,69 @@ namespace WebMVC.Services
             rs.data = await GetPagingForAPI(request, currentAccount.Id);
             return rs;
         }
+
+        public async Task<ResponseClass> GetAllCampaigns(AppUser request)
+        {
+            var rs = new ResponseClass();
+            var currentAccount = await _httpContextService.GetSessionAsync(request.Key, request.UserId);
+            if (currentAccount == null)
+            {
+                rs.Code = APIUtils.GetResponseCode(APIUtils.ResponseCode.NotFound);
+                rs.Status = APIUtils.ResponseMessage.Error.ToString();
+                rs.Logout = "1";
+                return rs;
+            }
+            
+            var query = _unitOfWork.Repository<Campaign>().GetQueryable().Where(x => x.CreatedBy == currentAccount.Id);
+            var items = await query.Select(x => new
+            {
+                Name = x.Name,
+                Id = x.Id
+            }).ToListAsync();
+
+            rs.data = items;
+            return rs;
+        }
         
+
+        public async Task<ResponseClass> GetStatusCampaignCountApi(AppUser appUser)
+        {
+            var rs = new ResponseClass();
+            var currentAccount = await _httpContextService.GetSessionAsync(appUser.Key, appUser.UserId);
+            if (currentAccount == null)
+            {
+                rs.Code = APIUtils.GetResponseCode(APIUtils.ResponseCode.NotFound);
+                rs.Status = APIUtils.ResponseMessage.Error.ToString();
+                rs.Logout = "1";
+                return rs;
+            }
+
+            var query = _unitOfWork.Repository<Campaign>().GetQueryable()
+                .Where(x => x.CreatedBy == currentAccount.Id);
+
+            var accountQuery = _unitOfWork.Repository<Account>().GetQueryable();
+            var contactListQuery = _unitOfWork.Repository<ContactList>().GetQueryable();
+
+            var joinedQuery = query
+                .Join(accountQuery,
+                    campaign => campaign.CreatedBy,
+                    account => account.Id,
+                    (campaign, account) => new { campaign, account })
+                .Join(contactListQuery,
+                    x => x.campaign.ContactId,
+                    cl => cl.Id,
+                    (x, cl) => x.campaign);
+
+            rs.data = new CampaignStatusCountResponse
+            {
+                active = await joinedQuery.CountAsync(x => x.Status == "active"),
+                inactive = await joinedQuery.CountAsync(x => x.Status == "inactive"),
+                pending = await joinedQuery.CountAsync(x => x.Status == "pending"),
+                failed = await joinedQuery.CountAsync(x => x.Status == "failed"),
+                sent = await joinedQuery.CountAsync(x => x.Status == "sent")
+            };
+            return rs;
+        }
 
         public async Task<PagedList<CampaignResponse>> GetPagingForAPI(CampaignSearch search, int accountId)
         {
@@ -105,6 +167,7 @@ namespace WebMVC.Services
             var accountQuery = _unitOfWork.Repository<Account>().GetQueryable();
             var contactListQuery = _unitOfWork.Repository<ContactList>().GetQueryable();
             var emailTrackingQuery = _unitOfWork.PlainRepository<EmailTracking>().GetQueryable();
+            var templateQuery = _unitOfWork.Repository<EmailTemplate>().GetQueryable();
 
             var joinedQuery = query
                 .Join(accountQuery,
@@ -114,7 +177,14 @@ namespace WebMVC.Services
                 .Join(contactListQuery,
                     x => x.campaign.ContactId,
                     cl => cl.Id,
-                    (x, cl) => new { x.campaign, x.account, cl });
+                    (x, cl) => new { x.campaign, x.account, cl })
+                .GroupJoin(templateQuery,
+                    x => x.campaign.TemplateId,
+                    t => t.Id,
+                    (x, templates) => new { x.campaign, x.account, x.cl, templates })
+                .SelectMany(
+                    x => x.templates.DefaultIfEmpty(),
+                    (x, template) => new { x.campaign, x.account, x.cl, template });
 
             var totalItems = await joinedQuery.CountAsync();
 
@@ -145,6 +215,7 @@ namespace WebMVC.Services
                         ContactId = x.campaign.ContactId,
                         TemplateId = x.campaign.TemplateId,
                         ContactListName = x.cl.Name,
+                        TemplateName = x.template != null ? x.template.Name : null,
                         ContactEmailCount = x.cl.ContactListContacts.Count(),
                         EmailTrackingCount = emailTrackingQuery.Count(et => et.CampaignId == x.campaign.Id)
                     })
@@ -188,6 +259,11 @@ namespace WebMVC.Services
         {
             var currentDate = DateTime.Now;
             var currentAccount = await _httpContextService.GetCurrentAccount();
+            var existedCampaign = await _unitOfWork.Repository<Campaign>().GetQueryable().AnyAsync(x => x.Name == request.Name);
+            if (existedCampaign)
+            {
+                throw new AppException("Tên campaign đã tồn tại");
+            }
             // Console.WriteLine(
             //     "request"
             // );
@@ -231,6 +307,11 @@ namespace WebMVC.Services
                 return rs;
             }
             var request = body.request;
+            var existedCampaign = await _unitOfWork.Repository<Campaign>().GetQueryable().AnyAsync(x => x.Name == request.Name);
+            if (existedCampaign)
+            {
+                throw new AppException("Tên campaign đã tồn tại");
+            }
             var campagin = new Campaign
             {
                 Name = request.Name,
@@ -351,7 +432,9 @@ namespace WebMVC.Services
 
         public async Task<List<object>> GetAllCampaignNames()
         {
+            var currentAccount = await _httpContextService.GetCurrentAccount();
             return await _unitOfWork.Repository<Campaign>().GetQueryable()
+                .Where(x => x.CreatedBy == currentAccount.Id)
                 .OrderByDescending(x => x.Id)
                 .Select(x => new { x.Id, x.Name })
                 .Cast<object>()
@@ -375,9 +458,14 @@ namespace WebMVC.Services
                 .Select(c => c.Id);
 
             var query = _unitOfWork.Repository<MailLog>().GetQueryable()
-                .Where(x => campaignIds.Contains(x.CampaignId));
+                .Where(x => campaignIds.Contains(x.CampaignId))
+                .Where(x => string.IsNullOrWhiteSpace(body.Status) || x.Status == body.Status);
             if (campaignId > 0)
                 query = query.Where(x => x.CampaignId == campaignId);
+            if (body.FromDate.HasValue)
+                query = query.Where(x => x.SentAt >= body.FromDate.Value);
+            if (body.ToDate.HasValue)
+                query = query.Where(x => x.SentAt < body.ToDate.Value.Date.AddDays(1));
 
             var total = await query.CountAsync();
             var success = await query.CountAsync(x => x.Status == "success");
@@ -387,6 +475,10 @@ namespace WebMVC.Services
                 .Where(x => campaignIds.Contains(x.CampaignId));
             if (campaignId > 0)
                 trackingQuery = trackingQuery.Where(x => x.CampaignId == campaignId);
+            if (body.FromDate.HasValue)
+                trackingQuery = trackingQuery.Where(x => x.CreatedAt >= body.FromDate.Value);
+            if (body.ToDate.HasValue)
+                trackingQuery = trackingQuery.Where(x => x.CreatedAt < body.ToDate.Value.Date.AddDays(1));
 
             var trackingCount = await trackingQuery.CountAsync();
 
@@ -501,12 +593,19 @@ namespace WebMVC.Services
             var query = _unitOfWork.Repository<MailLog>().GetQueryable();
             if (body?.campaignId.HasValue == true)
                 query = query.Where(x => x.CampaignId == body.campaignId.Value);
+            query = query.Where(x => string.IsNullOrWhiteSpace(body.Status) || x.Status == body.Status);
+
+            var campaignQuery = _unitOfWork.Repository<Campaign>().GetQueryable()
+                .Where(cam => cam.CreatedBy == currentAccount.Id);
+            if (body.FromDate.HasValue)
+                campaignQuery = campaignQuery.Where(cam => cam.SendAt >= body.FromDate.Value);
+            if (body.ToDate.HasValue)
+                campaignQuery = campaignQuery.Where(cam => cam.SendAt < body.ToDate.Value.Date.AddDays(1));
 
             var joinedQuery = query
                 .Join(_unitOfWork.Repository<Contact>().GetQueryable(),
                     log => log.ContactId, c => c.Id, (log, c) => new { log, c })
-                .Join(_unitOfWork.Repository<Campaign>().GetQueryable()
-                        .Where(cam => cam.CreatedBy == currentAccount.Id),
+                .Join(campaignQuery,
                     x => x.log.CampaignId, cam => cam.Id, (x, cam) => new
                     {
                         x.log.Status,

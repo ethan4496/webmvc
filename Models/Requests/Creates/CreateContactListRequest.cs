@@ -8,6 +8,5 @@ public class CreateContactListRequest
     [MaxLength(255)]
     public string Name { get; set; }
 
-    [Required]
-    public IFormFile File { get; set; }
+    public IFormFile? File { get; set; }
 }

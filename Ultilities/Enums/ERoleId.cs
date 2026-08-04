@@ -11,6 +11,11 @@
         DocumentStaff = 7,
     }
 
+    public static class ERoleConstants
+    {
+        public static readonly int[] allowEmailIds = { 27, 21851, 21852, 20768 };
+    }
+
     public class ERoleIdName
     {
         public static string GetRoleName(int role)
