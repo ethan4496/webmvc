@@ -657,6 +657,42 @@ namespace WebMVC.Services
 
             return new { items, total, pageIndex, pageSize };
         }
+        public async Task<ResponseClass> GetEmailTrackingApi(EmailTrackingApiSearch request)
+        {
+            var rs = new ResponseClass();
+            var currentAccount = await _httpContextService.GetSessionAsync(request.Key, request.UserId);
+            if (currentAccount == null)
+            {
+                rs.Code = APIUtils.GetResponseCode(APIUtils.ResponseCode.NotFound);
+                rs.Status = APIUtils.ResponseMessage.Error.ToString();
+                rs.Logout = "1";
+                return rs;
+            }
+            var query = _unitOfWork.PlainRepository<EmailTracking>().GetQueryable()
+                .Join(_unitOfWork.Repository<Campaign>().GetQueryable()
+                        .Where(c => c.CreatedBy == currentAccount.Id),
+                    et => et.CampaignId, c => c.Id, (et, c) => new { et, c });
 
+            if (request.CampaignId > 0)
+                query = query.Where(x => x.et.CampaignId == request.CampaignId);
+
+            var total = await query.CountAsync();
+            var items = await query
+                .OrderByDescending(x => x.et.CreatedAt)
+                .Skip((request.PageIndex - 1) * request.PageSize)
+                .Take(request.PageSize)
+                .Select(x => new
+                {
+                    x.et.Id,
+                    x.et.CampaignId,
+                    CampaignName = x.c.Name,
+                    x.et.RecipientEmail,
+                    x.et.OpenCount,
+                    x.et.CreatedAt
+                })
+                .ToListAsync();
+            rs.data = new { items, total,PageIndex = request.PageIndex, PageSize = request.PageSize, TotalPages = (int)Math.Ceiling((double)total / request.PageSize) };
+            return rs;
+        }
     }
 }

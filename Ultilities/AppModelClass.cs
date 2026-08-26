@@ -480,6 +480,7 @@ namespace WebMVC.Ultilities
     {
         public int ID { get; set; }
         public string Username { get; set; }
+        public string FullName { get; set; }
         public string SpecialShipId { get; set; }
         public int Role { get; set; }
         public int PostOffice { get; set; }

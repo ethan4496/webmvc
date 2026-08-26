@@ -5,6 +5,7 @@ using WebMVC.Models;
 using WebMVC.Models.Requests.Creates;
 using WebMVC.Models.Requests.Updates;
 using WebMVC.Models.Responses;
+using WebMVC.Ultilities;
 
 namespace WebMVC.Mappers
 {
@@ -26,6 +27,7 @@ namespace WebMVC.Mappers
             CreateMap<Account, AccountResponse>();
             CreateMap<CreateAccountRequest, Account>();
             CreateMap<UpdateAccountRequest, Account>();
+            CreateMap<SignUpRequest, Account>();
 
             CreateMap<OutOfStock, ManageOutOfStockResponse>();
             CreateMap<OutOfStock, OutOfStockResponse>().ReverseMap();

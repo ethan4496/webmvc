@@ -2260,6 +2260,7 @@ namespace WebMVC.Services
                 ID = account.Id,
                 Role = account.RoleId,
                 Username = account.Username,
+                FullName = account.FullName,
                 SpecialShipId = account.SpecialShipId,
             };
             rs.Key = accessToken;

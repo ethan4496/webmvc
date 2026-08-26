@@ -148,15 +148,21 @@ namespace WebMVC.Services
                         && x.AccountId == currentAccount.Id
                         && x.StartDate.Date <= currentDate.Date && x.EndDate.Date >= currentDate.Date
                     );
-                    if (transportations.Any(t => t.Barcode == item.Barcode))
+                    var Barcode = item.Barcode
+                    .Trim()
+                    .Replace("\u200B", "")
+                    .Replace("\u200C", "")
+                    .Replace("\u200D", "")
+                    .Replace("\uFEFF", "");
+                    if (transportations.Any(t => t.Barcode == Barcode))
                     {
-                        throw new AppException($"Lỗi đã tồn tại mã {item.Barcode}");
+                        throw new AppException($"Lỗi đã tồn tại mã {Barcode}");
                     }
                     if (voucherAccount != null)
                     {
                         var voucher = await _unitOfWork.Repository<Voucher>().GetQueryable().FirstOrDefaultAsync(x => x.Id == voucherAccount.VoucherId && x.Status == (int)EVoucherStatus.Active);
                         if (voucher == null)
-                            throw new AppException($"Lỗi sử dụng voucher của đơn {item.Barcode}");
+                            throw new AppException($"Lỗi sử dụng voucher của đơn {Barcode}");
                         voucherAccount.Status = (int)EVoucherAccountStatus.Used;
                         _unitOfWork.Repository<VoucherAccount>().Update(voucherAccount, currentDate, currentAccount.Id);
                     }
@@ -174,7 +180,7 @@ namespace WebMVC.Services
                     if (transportation != null)
                     {
                         if (transportation.AccountId > 0)
-                            throw new AppException($"Đơn hàng #{item.Barcode} đã tồn tại");
+                            throw new AppException($"Đơn hàng #{Barcode} đã tồn tại");
                         transportation.AccountId = currentAccount.Id;
                         transportation.UserNote = item.Note;
                         // transportation.hscode = item.hscode;

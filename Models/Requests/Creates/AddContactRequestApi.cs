@@ -5,5 +5,5 @@ public class AddContactRequestApi
 {
     public int UserId { get; set; }
     public string Key { get; set; }
-    public AddContactRequest request;
+    public AddContactRequest request { get; set; }
 }

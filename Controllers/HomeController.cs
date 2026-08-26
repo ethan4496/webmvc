@@ -23,14 +23,16 @@ namespace WebMVC.Controllers
         private readonly ITrackingService _trackingService;
         private readonly IPostService _postService;
         private readonly ICategoryService _categoryService;
+        private readonly ITransportationService _transportationService;
 
-        public HomeController(IAccountService accountService, IWebConfigurationService webConfigurationService, ITrackingService trackingService, IPostService postService, ICategoryService categoryService)
+        public HomeController(IAccountService accountService, IWebConfigurationService webConfigurationService, ITrackingService trackingService, IPostService postService, ICategoryService categoryService, ITransportationService transportationService)
         {
             _accountService = accountService;
             _webConfigurationService = webConfigurationService;
             _trackingService = trackingService;
             _postService = postService;
             _categoryService = categoryService;
+            _transportationService = transportationService;
         }
 
         public async Task<IActionResult> IndexAsync()
@@ -58,6 +60,13 @@ namespace WebMVC.Controllers
         public IActionResult Introduce()
         {
             return View();
+        }
+
+        [Route("tra-cuu")]
+        public async Task<IActionResult> TraCuu(string Barcode)
+        {
+            var transportation = await _transportationService.GetByBarcode(Barcode);
+            return View(transportation);
         }
 
         [Route("huong-dan")]

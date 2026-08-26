@@ -25,7 +25,7 @@ namespace WebMVC.Interfaces
         Task DeleteAsync(int id);
         Task<ResponseClass> DeleteApiAsync(int id, AppUser appUser);
         Task DeleteContact(int id, int ContactListId);
-        Task<ResponseClass> DeleteContactApi(int id, int ContactListId, AppUser appUser);
+        Task<ResponseClass> DeleteContactApi(int id,  DeleteContactApi appUser);
         Task EditContactAsync(UpdateContactRequest request);
         Task<ResponseClass> UpdateContactApi(int id, UpdateContactRequestApi request);
 

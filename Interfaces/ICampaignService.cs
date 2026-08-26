@@ -28,6 +28,7 @@ namespace WebMVC.Interfaces
         Task<object> GetReportLogs(int? campaignId, int pageIndex, int pageSize);
         Task<ResponseClass> GetApiLogs(ReportLogs body);
         Task<object> GetEmailTrackingList(int? campaignId, int pageIndex, int pageSize);
+        Task<ResponseClass> GetEmailTrackingApi(EmailTrackingApiSearch request);
         Task<ResponseClass> GetMonthData(AppUser request);
     }
 }

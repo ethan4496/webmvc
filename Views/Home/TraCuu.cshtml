@@ -1,0 +1,318 @@
+@using System.Linq
+@using WebMVC.Entities
+@using WebMVC.Models.ViewModels
+@using WebMVC.Ultilities
+@model Transportation
+@{
+    Layout = "~/Views/Shared/_NewHomeLayout.cshtml";
+    ViewData["Title"] = "Tra cứu";
+    var barcode = Context.Request.Query["Barcode"].ToString();
+    var StatusList = Model == null ? new List<dynamic>() : new List<dynamic>
+    {
+        new {
+            Value = (int)WebMVC.Ultilities.Enums.ETransportationStatus.ArrivedAtTQWarehouse,
+            Label = "Nhập kho TQ",
+            Icon = "/tpkexpress/images/tra-cuu/NhapkhoWhite.svg",
+            IconActive = "/tpkexpress/images/tra-cuu/NhapKho.svg",
+            Date = FormatDate.FormatDateTraCuu(Model.DateArrivedAtTQWarehouse),
+            DateAndTime = FormatDate.FormatNullDate(Model.DateArrivedAtTQWarehouse),
+            isComplete = Model.Status >= (int)WebMVC.Ultilities.Enums.ETransportationStatus.ArrivedAtTQWarehouse,
+            isActive = Model.Status == (int)WebMVC.Ultilities.Enums.ETransportationStatus.ArrivedAtTQWarehouse,
+            Address = "Bằng Tường, Trung Quốc",
+            StatusLabel = "Đã nhập kho Trung Quốc",
+            Note = "Hàng của bạn đã được nhập kho Trung Quốc"
+        },
+        new {
+            Value = (int)WebMVC.Ultilities.Enums.ETransportationStatus.ExitedFromTQWarehouse,
+            Label = "Đã phát hàng",
+            Icon = "/tpkexpress/images/tra-cuu/PhatHangWhite.svg",
+            IconActive = "/tpkexpress/images/tra-cuu/PhatHang.svg",
+            Date = FormatDate.FormatDateTraCuu(Model.DateExitedFromTQWarehouse),
+            DateAndTime = FormatDate.FormatNullDate(Model.DateExitedFromTQWarehouse),
+            isComplete = Model.Status >= (int)WebMVC.Ultilities.Enums.ETransportationStatus.ExitedFromTQWarehouse,
+            isActive = Model.Status == (int)WebMVC.Ultilities.Enums.ETransportationStatus.ExitedFromTQWarehouse,
+            Address = "Bằng Tường, Trung Quốc",
+            StatusLabel = "Đã được xếp xe chờ vận chuyển",
+            Note = "Hàng của bạn đã được xếp xe chờ vận chuyển"
+        },
+        new {
+            Value = (int)WebMVC.Ultilities.Enums.ETransportationStatus.CustomsInspectedGoods,
+            Label = "Kiểm hóa",
+            Icon = "/tpkexpress/images/tra-cuu/KiemHoaWhite.svg",
+            IconActive = "/tpkexpress/images/tra-cuu/KiemHoa.svg",
+            Date = FormatDate.FormatDateTraCuu(Model.DateCustomsInspectedGoods),
+            DateAndTime = FormatDate.FormatNullDate(Model.DateCustomsInspectedGoods),
+            isComplete = Model.Status >= (int)WebMVC.Ultilities.Enums.ETransportationStatus.CustomsInspectedGoods,
+            isActive = Model.Status == (int)WebMVC.Ultilities.Enums.ETransportationStatus.CustomsInspectedGoods,
+            Address = "Cửa khẩu Hữu Nghị",
+            StatusLabel = "Đang trong quá trình kiểm hóa",
+            Note = "Đơn hàng của bạn đang trong quá trình kiểm hóa"
+        },
+        new {
+            Value = (int)WebMVC.Ultilities.Enums.ETransportationStatus.ReturningToVNWarehouse,
+            Label = "Đang nhập khẩu",
+            Icon = "/tpkexpress/images/tra-cuu/NhapKhauWhite.svg",
+            IconActive = "/tpkexpress/images/tra-cuu/NhapKhau.svg",
+            Date = FormatDate.FormatDateTraCuu(Model.DateReturningToVNWarehouse),
+            DateAndTime = FormatDate.FormatNullDate(Model.DateReturningToVNWarehouse),
+            isComplete = Model.Status >= (int)WebMVC.Ultilities.Enums.ETransportationStatus.ReturningToVNWarehouse,
+            isActive = Model.Status == (int)WebMVC.Ultilities.Enums.ETransportationStatus.ReturningToVNWarehouse,
+            Address = "Cửa khẩu Hữu Nghị",
+            StatusLabel = "Đang làm thủ tục nhập khẩu",
+            Note = "Hàng đang trong quá trình thông quan và nhập khẩu"
+        },
+        new {
+            Value = (int)WebMVC.Ultilities.Enums.ETransportationStatus.ArrivedAtVNWarehouse,
+            Label = "Nhập kho HN",
+            Icon = "/tpkexpress/images/tra-cuu/HomeWhite.svg",
+            IconActive = "/tpkexpress/images/tra-cuu/Home.svg",
+            Date = FormatDate.FormatDateTraCuu(Model.DateArrivedAtVNWarehouse),
+            DateAndTime = FormatDate.FormatNullDate(Model.DateArrivedAtVNWarehouse),
+            isComplete = Model.Status >= (int)WebMVC.Ultilities.Enums.ETransportationStatus.ArrivedAtVNWarehouse,
+            isActive = Model.Status == (int)WebMVC.Ultilities.Enums.ETransportationStatus.ArrivedAtVNWarehouse,
+            Address = "Kho TPK Hà Nội",
+            StatusLabel = "Đã về kho Hà Nội",
+            Note = "Đơn hàng của bạn đã nhập kho Hà Nội"
+        },
+        new {
+            Value = (int)WebMVC.Ultilities.Enums.ETransportationStatus.Completed,
+            Label = "Đã xuất kho",
+            Icon = "/tpkexpress/images/tra-cuu/CompleteWhite.svg",
+            IconActive = "/tpkexpress/images/tra-cuu/Complete.svg",
+            Date = FormatDate.FormatDateTraCuu(Model.DateCompleted),
+            DateAndTime = FormatDate.FormatNullDate(Model.DateCompleted),
+            isComplete = Model.Status >= (int)WebMVC.Ultilities.Enums.ETransportationStatus.Completed,
+            isActive = Model.Status == (int)WebMVC.Ultilities.Enums.ETransportationStatus.Completed,
+            Address = "Kho TPK Hà Nội",
+            StatusLabel = "Đã xuất kho",
+            Note = "Đơn hàng đã được gửi tới địa chỉ của bạn"
+        },
+    };
+    var statusMap = StatusList.FirstOrDefault(s => s.isActive);
+}
+<section class="banner">
+    <div class="swiper" id="banner">
+        <div class="swiper-wrapper">
+            <div class="swiper-slide">
+                <img src="tpkexpress/images/home/Banner1.png" alt="Banner">
+            </div>
+            <div class="swiper-slide">
+                <img src="tpkexpress/images/home/Banner8.png" alt="Banner">
+            </div>
+        </div>
+        <div class="swiper-pagination"></div>
+    </div>
+</section>
+<section class="find-transportation">
+    <div class="container">
+        <h2 class="section-title text-center">
+            Tra cứu mã vận đơn
+        </h2>
+        <p class="mb-0 text-center description">
+            Cập nhật trạng thái đơn hàng nhanh chóng qua website, app và Zalo.
+        </p>
+        <div class="form-transportation">
+            <form action="/tra-cuu" method="get">
+                <div class="form-container d-flex flex-column flex-md-row">
+                    <div class="input-search-transportation">
+                        <img src="/tpkexpress/images/icon/Search.svg" alt="Search">
+                        <input name="Barcode" id="Barcode" value="@barcode" placeholder="Nhập mã vận đơn (VD: TPK-2024-12345)">
+                    </div>
+                    <button class="btn btn-orange" type="submit">Tra cúu ngay</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</section>
+<section class="section-result" id="result">
+    @if(Model == null){
+        <div class="no-exists">
+            <div class="no-exists-content">
+                <h2 class="text-center">Rất tiếc, đơn hàng không tồn tại</h2>
+                <p class="text-center">Chúng tôi không tìm thấy đơn hàng nào khớp với thông tin bạn vừa nhập. Bạn
+                    vui lòng kiểm tra lại mã đơn hàng nhé.</p>
+                <img src="/tpkexpress//images/tra-cuu/NoExists.png" alt="NoExists" loading="lazy">
+            </div>
+            <a href="/" class="btn-orange btn">
+                Về trang chủ
+            </a>
+        </div>
+    }else{
+        <div class="content-result">
+            <div class="result-transportation">
+                <div class="transportation">
+                    <div class="transportation-info">
+                        <div class="img-product">
+                            <img src="/tpkexpress/images/tra-cuu/Product.svg" alt="Product" loading="lazy" />
+                        </div>
+                        <div class="transportation-info-detail">
+                            <div class="font-normal">Mã vận đơn</div>
+                            <div class="transportation-barcode">
+                                <span>@Model.Barcode</span>
+                                <button type="button" class="btn transportation-barcode-copy">
+                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
+                                        xmlns="http://www.w3.org/2000/svg">
+                                        <path
+                                            d="M19.9302 1.62012H7.27467C5.92737 1.62012 4.83132 2.71947 4.83132 4.07082V4.82959H4.06444C2.71714 4.82959 1.62109 5.92894 1.62109 7.28104V19.9293C1.62109 21.2806 2.71714 22.38 4.06444 22.38H16.7203C18.072 22.38 19.1714 21.2806 19.1714 19.9293V19.1705H19.9302C21.2818 19.1705 22.3816 18.0711 22.3816 16.719V4.07074C22.3815 2.71947 21.2818 1.62012 19.9302 1.62012ZM17.6714 19.9292C17.6714 20.4536 17.2448 20.8799 16.7203 20.8799H4.06444C3.54439 20.8799 3.12109 20.4536 3.12109 19.9292V7.28097C3.12109 6.75657 3.54447 6.32952 4.06444 6.32952H5.58132H16.7203C17.2447 6.32952 17.6714 6.75649 17.6714 7.28097V18.4203V19.9292ZM20.8815 16.719C20.8815 17.2434 20.4549 17.6704 19.9301 17.6704H19.1713V7.28097C19.1713 5.92894 18.072 4.82952 16.7202 4.82952H6.33124V4.07074C6.33124 3.54634 6.75462 3.12004 7.27459 3.12004H19.9301C20.4549 3.12004 20.8815 3.54634 20.8815 4.07074V16.719Z"
+                                            fill="#667085" />
+                                    </svg>
+                                </button>
+                            </div>
+                            <div class="badge-status">
+                                @WebMVC.Ultilities.Enums.ETransportationStatusName.GetStatusName(Model.Status)
+                            </div>
+                            <div class="transportation-updated">Cập nhật lúc: @FormatDate.FormatNullDate(Model.Updated)</div>
+                        </div>
+                    </div>
+                    <div class="line-transportation"></div>
+                    <div class="tracking-status-transportation">
+                        @foreach(var status in StatusList){
+                            <div class="status-item @(status.isComplete ? "status-complete" : "") @(status.isActive ? "status-active" : "")">
+                                <div class="icon-status">
+                                    <img src="@(status.isComplete ? status.Icon : status.IconActive)" alt="Nhap kho" />
+                                </div>
+                                @if(status.isComplete){
+                                    <div class="data-status">
+                                        <div>
+                                            <div class="status-name">@status.Label</div>
+                                            <div class="status-change-date">
+                                                @status.Date
+                                            </div>
+                                        </div>
+                                        <div class="icon-track">
+                                            @if(status.isActive){
+                                                <img src="/tpkexpress/images/tra-cuu/StatusCircle.svg" alt="Icon" loading="lazy">
+                                            }else{
+                                                if(status.isComplete){
+                                                    <img src="/tpkexpress/images/tra-cuu/StatusCheck.svg" alt="Icon" loading="lazy">
+                                                }
+                                            }
+                                            
+                                        </div>
+                                    </div>
+                                }
+                            </div>
+                        }
+                    </div>
+                </div>
+                <div class="information-transportation">
+                    <div class="delivery-transportation">
+                        <div class="current-status">
+                            <div class="label">TRẠNG THÁI HIỆN TẠI</div>
+                            <h3>@statusMap?.Label</h3>
+                            <p>@statusMap?.DateAndTime</p>
+                        </div>
+                        <div class="address-nhapkho">
+                            <div class="address-nhapkho-item">
+                                <div class="icon-address">
+                                    <img src="/tpkexpress/images/tra-cuu/Location.svg" alt="Location">
+                                </div>
+                                <p>Địa điểm</p>
+                                <h3>@statusMap?.Address</h3>
+                            </div>
+                            <div class="address-diviver"></div>
+                            <div class="address-nhapkho-item">
+                                <div class="icon-address">
+                                    <img src="/tpkexpress/images/tra-cuu/Target.svg" alt="Location">
+                                </div>
+                                <p>Trạng thái</p>
+                                <h3>@statusMap?.StatusLabel</h3>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="content-transportation">
+                        <h3>THÔNG TIN ĐƠN HÀNG</h3>
+                        <div class="transportation-warehouse-box">
+                            <div class="warehouse-card">
+                                <div class="icon-warehouse">
+                                    <img src="/tpkexpress/images/tra-cuu/WareHouseStart.svg" alt="" />
+                                </div>
+                                <div class="warehouse-text">
+                                    <p>Kho xuất phát</p>
+                                    <h4>Kho Trung Quốc</h4>
+                                </div>
+                            </div>
+                            <div class="warehouse-diviver">
+                            </div>
+                            <div class="warehouse-card">
+                                <div class="icon-warehouse">
+                                    <img src="/tpkexpress/images/tra-cuu/WareHouseEnd.svg" alt="" />
+                                </div>
+                                <div class="warehouse-text">
+                                    <p>Kho đích</p>
+                                    <h4>Kho Hà Nội</h4>
+                                </div>
+                            </div>
+                            <div class="warehouse-diviver">
+                            </div>
+                            <div class="warehouse-card">
+                                <div class="icon-warehouse">
+                                    <img src="/tpkexpress/images/tra-cuu/Clock.svg" alt="" />
+                                </div>
+                                <div class="warehouse-text">
+                                    <p>Cập nhật cuối</p>
+                                    <h4>@FormatDate.FormatNullDate(Model.Updated)</h4>
+                                </div>
+                            </div>
+                            <div class="transportation-note">
+                                <p>Ghi chú đơn hàng</p>
+                                <h4>@statusMap?.Note</h4>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="need-support">
+                    <div class="box-support">
+                        <div class="support-icon">
+                            <img src="/tpkexpress/images/tra-cuu/Support.svg" />
+                        </div>
+                        <div class="support-text">
+                            <h3>Cần hỗ trợ?</h3>
+                            <p>Liên hệ đội ngũ chăm sóc khách hàng để được hỗ trợ nhanh chóng.</p>
+                        </div>
+                    </div>
+                    <div class="btn-support">
+                        <a href="tel: 0338964163" class="btn btn-hotline">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
+                                xmlns="http://www.w3.org/2000/svg">
+                                <path
+                                    d="M22.5128 17.249C22.3392 16.8635 22.0611 16.5343 21.71 16.2988L18.3888 13.9414C18.1264 13.757 17.8452 13.6008 17.5499 13.4756C17.2394 13.3365 16.9001 13.2739 16.5604 13.2931C16.2207 13.3123 15.8906 13.4127 15.5977 13.5859C15.2649 13.7695 14.9617 14.0023 14.6983 14.2764L13.9776 14.9473C13.5638 14.712 13.1759 14.4338 12.8204 14.1172C12.3644 13.7305 11.8722 13.2754 11.2813 12.6943C10.8194 12.2236 10.3556 11.7187 9.86826 11.1543C9.56357 10.8102 9.28973 10.44 9.0499 10.0479C9.04306 10.0274 9.03427 10.0049 9.02451 9.97952L9.70615 9.27052C9.96589 9.01805 10.1912 8.73238 10.3761 8.42091C10.5829 8.09093 10.6935 7.70975 10.6954 7.32032C10.691 7.01205 10.6246 6.70782 10.5001 6.42579C10.3737 6.12415 10.2114 5.83888 10.0167 5.57618L7.70126 2.31153C7.45867 1.96047 7.12608 1.68117 6.73837 1.50294C6.38425 1.33552 5.99727 1.24911 5.60558 1.25001C5.11858 1.25796 4.6381 1.36332 4.19247 1.55989C3.74683 1.75646 3.34506 2.04025 3.01083 2.39454C2.42898 2.9333 1.97432 3.59479 1.67983 4.33106C1.40209 5.0342 1.26152 5.78401 1.26572 6.54001C1.28558 7.76819 1.55052 8.98004 2.04501 10.1045C2.5945 11.361 3.2799 12.5537 4.08896 13.6611C4.95967 14.8522 5.91876 15.9762 6.9581 17.0234C8.00738 18.0632 9.13255 19.0235 10.3243 19.8964C11.4384 20.7175 12.642 21.4094 13.9122 21.9589C15.0312 22.4599 16.2401 22.7289 17.4659 22.7499C18.2322 22.7538 18.9916 22.6058 19.7003 22.3144C20.4335 22.0089 21.0871 21.5399 21.6114 20.9433C21.9377 20.5848 22.208 20.1792 22.4132 19.7401C22.6245 19.3 22.7346 18.8182 22.7354 18.33C22.7327 17.9586 22.657 17.5913 22.5128 17.249ZM21.0567 19.0996C20.9146 19.4049 20.7269 19.6867 20.5001 19.9355C20.1241 20.3663 19.6549 20.7056 19.128 20.9277C18.3724 21.1816 17.5736 21.2815 16.7788 21.2216C15.9839 21.1617 15.2091 20.9433 14.5001 20.5791C13.3347 20.074 12.2303 19.4384 11.2081 18.6846C10.079 17.8576 9.01287 16.9479 8.01864 15.9629C7.03558 14.9722 6.1284 13.909 5.30478 12.7822C4.56119 11.7667 3.93143 10.6726 3.42685 9.51954C3.01078 8.58012 2.78603 7.56723 2.76572 6.54001C2.76183 5.97328 2.86658 5.41106 3.07431 4.88376C3.29124 4.34739 3.62482 3.86603 4.05087 3.47458C4.24797 3.25546 4.48725 3.07836 4.75439 2.95386C5.02152 2.82936 5.31102 2.76003 5.60558 2.75001C5.77708 2.74947 5.94656 2.78717 6.10167 2.86036C6.25215 2.92908 6.3811 3.03744 6.47472 3.17384L8.79794 6.44923C8.92579 6.62112 9.03267 6.80766 9.1163 7.00489C9.16194 7.10423 9.18876 7.21119 9.1954 7.32032C9.19067 7.44221 9.15175 7.56031 9.0831 7.66114C8.95856 7.86629 8.80788 8.05439 8.63486 8.22071L7.88779 8.99801C7.76447 9.11942 7.66706 9.26458 7.60143 9.42471C7.5358 9.58484 7.50332 9.75661 7.50595 9.92965C7.50794 10.0979 7.53426 10.265 7.58408 10.4257L7.70808 10.7216C8.00244 11.2226 8.34417 11.6942 8.72858 12.1299C9.24225 12.7236 9.72658 13.252 10.2198 13.7549C10.8477 14.3721 11.3663 14.8506 11.8506 15.2617C12.2892 15.647 12.7664 15.986 13.2745 16.2734L13.5401 16.3906C13.7858 16.4816 14.0521 16.502 14.3088 16.4498C14.5656 16.3975 14.8026 16.2745 14.9932 16.0947L15.7559 15.3408C15.9248 15.1627 16.1197 15.0113 16.334 14.8916C16.4239 14.8163 16.536 14.7728 16.6531 14.7678C16.7702 14.7629 16.8857 14.7968 16.9815 14.8643C17.175 14.9473 17.3593 15.0504 17.5313 15.1719L20.8487 17.5273C20.9687 17.6002 21.0661 17.705 21.1299 17.8301C21.1981 17.988 21.234 18.1581 21.2354 18.3301C21.2343 18.5968 21.1733 18.8597 21.0567 19.0996Z"
+                                    fill="#0B2D5C" />
+                            </svg>
+                            <span>0338.964.163</span>
+                        </a>
+                        <a href="tel: 0338964163" class="btn btn-chatnow">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
+                                xmlns="http://www.w3.org/2000/svg">
+                                <g clip-path="url(#clip0_2192_342)">
+                                    <path
+                                        d="M1.05652 23.5314L2.56567 17.4944C0.90802 15.6392 0 13.3367 0 10.9688C0 8.13373 1.25555 5.47375 3.53522 3.479C5.78815 1.50751 8.77771 0.421875 11.9531 0.421875C15.1328 0.421875 18.1379 1.50659 20.415 3.47644C22.7269 5.47632 24 8.13721 24 10.9688C24 13.8003 22.7269 16.4612 20.415 18.4611C18.1379 20.4309 15.1328 21.5156 11.9531 21.5156C10.2365 21.5156 8.57208 21.1941 7.00067 20.5593L1.05652 23.5314ZM11.9531 1.82812C6.13751 1.82812 1.40625 5.92859 1.40625 10.9688C1.40625 13.0959 2.27307 15.1699 3.84723 16.8087L4.11658 17.0891L3.16223 20.9061L6.95325 19.0107L7.25409 19.1409C8.73724 19.7836 10.3184 20.1094 11.9531 20.1094C17.8204 20.1094 22.5938 16.0089 22.5938 10.9688C22.5938 5.92859 17.8204 1.82812 11.9531 1.82812Z"
+                                        fill="white" />
+                                    <path
+                                        d="M7.03125 12.375C6.2558 12.375 5.625 11.7442 5.625 10.9688C5.625 10.1933 6.2558 9.5625 7.03125 9.5625C7.8067 9.5625 8.4375 10.1933 8.4375 10.9688C8.4375 11.7442 7.8067 12.375 7.03125 12.375ZM7.03125 10.9678V10.9688C7.03125 10.9682 7.03125 10.9678 7.03125 10.9678Z"
+                                        fill="white" />
+                                    <path
+                                        d="M11.9531 12.375C11.1777 12.375 10.5469 11.7442 10.5469 10.9688C10.5469 10.1933 11.1777 9.5625 11.9531 9.5625C12.7286 9.5625 13.3594 10.1933 13.3594 10.9688C13.3594 11.7442 12.7286 12.375 11.9531 12.375ZM11.9531 10.9678V10.9688C11.9531 10.9682 11.9531 10.9678 11.9531 10.9678Z"
+                                        fill="white" />
+                                    <path
+                                        d="M16.875 12.375C16.0995 12.375 15.4688 11.7442 15.4688 10.9688C15.4688 10.1933 16.0995 9.5625 16.875 9.5625C17.6505 9.5625 18.2812 10.1933 18.2812 10.9688C18.2812 11.7442 17.6505 12.375 16.875 12.375ZM16.875 10.9678V10.9688C16.875 10.9682 16.875 10.9678 16.875 10.9678Z"
+                                        fill="white" />
+                                </g>
+                                <defs>
+                                    <clipPath id="clip0_2192_342">
+                                        <rect width="24" height="24" fill="white" />
+                                    </clipPath>
+                                </defs>
+                            </svg>
+                            <span>Chat ngay</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <a href="/" class="btn-orange btn">
+                Về trang chủ
+            </a>
+        </div>
+    }
+    
+</section>

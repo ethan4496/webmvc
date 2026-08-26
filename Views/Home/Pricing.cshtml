@@ -1,228 +1,349 @@
-﻿@{ Layout = "~/Views/Shared/_HomeLayout.cshtml"; ViewData["Title"] = "Biểu phí";
+@{
+    Layout = "~/Views/Shared/_NewHomeLayout.cshtml";
+    ViewData["Title"] = "Biểu phí";
 }
-<main class="main page-news">
-  <div class="hero">
-    <div class="hero-cuved">
-      <img src="/tpkexpress/assets/images/hero-cuved.svg" alt="" />
-    </div>
+<section class="page-breadcrumb">
     <div class="container">
-      <div class="hero-content">
-        <h1 class="hero-title">BIỂU PHÍ</h1>
-        <div class="breadcrumb">
-          <div class="container">
-            <ul class="breadcrumb-list">
-              <li
-                class="breadcrumb-item aos-init aos-animate"
-                data-aos="fade-right"
-              >
-                <a class="breadcrumb-link" href="/">Trang chủ</a>
-              </li>
-              <li
-                class="breadcrumb-item aos-init aos-animate"
-                data-aos="fade-right"
-              >
-                <a class="breadcrumb-link" href="/bieu-phi">BIỂU PHÍ</a>
-              </li>
-            </ul>
-          </div>
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="/">Trang chủ</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Biểu phí</li>
+            </ol>
+        </nav>
+        <div class="breadcrumb-head">
+            <h1 class="section-title">Biểu phí vận chuyển TPK Express</h1>
         </div>
-      </div>
+        <p class="description-lg mb-0">Chi tiết biểu phí vận chuyển Trung - Việt tại TPK Express</p>
     </div>
-  </div>
-  <section class="sec-news">
-    <div class="news">
-      <div class="container">
-        <div class="news-side row">
-          <div class="news-left col">
-            <div class="side-fixed">
-              <div class="side-fixed-wrap">
-                <div class="news-top"><span class="txt">DANH MỤC</span></div>
-                <div class="news-sidebar">
-                  <div class="news-sidebar-block">
-                    <div class="re-menu">
-                      <ul>
-                        <li class="active">
-                          <a href="/gioi-thieu"
-                            ><span class="txt"></span>GIỚI THIỆU</a
-                          >
-                        </li>
-                        <li class="active">
-                          <a href="/huong-dan"
-                            ><span class="txt"></span>HƯỚNG DẪN</a
-                          >
-                        </li>
-                        <li class="active">
-                          <a href="/bieu-phi"
-                            ><span class="txt"></span>BIỂU PHÍ</a
-                          >
-                        </li>
-                        <li class="active">
-                          <a href="/chinh-sach"
-                            ><span class="txt"></span>CHÍNH SÁCH</a
-                          >
-                        </li>
-                        <li class="active">
-                          <a href="/dich-vu"
-                            ><span class="txt"></span>DỊCH VỤ</a
-                          >
-                        </li>
-                        <li class="active">
-                          <a href="/tin-tuc"
-                            ><span class="txt"></span>TIN TỨC</a
-                          >
-                        </li>
-                      </ul>
+</section>
+<div class="page-content page-huong-dan">
+    <div class="container">
+        <div class="layout-content">
+            <aside class="toc d-xl-block">
+                <div class="d-flex align-items-center justify-content-between toc-head">
+                    <div class="d-flex toc-title gap-1">
+                        <img src="/tpkexpress/images/icon/Paper.svg" alt="" Paper loading="lazy">
+                        <h3>
+                            Danh mục biểu phí
+                        </h3>
                     </div>
-                  </div>
+                    <svg class="toc-toggle d-block d-xl-none" width="24" height="24" viewBox="0 0 24 24"
+                        fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path fill-rule="evenodd" clip-rule="evenodd"
+                            d="M5.29289 8.29289C4.90237 8.68342 4.90237 9.31658 5.29289 9.70711L11.2929 15.7071C11.6834 16.0976 12.3166 16.0976 12.7071 15.7071L18.7071 9.70711C19.0976 9.31658 19.0976 8.68342 18.7071 8.29289C18.3166 7.90237 17.6834 7.90237 17.2929 8.29289L12 13.5858L6.70711 8.29289C6.31658 7.90237 5.68342 7.90237 5.29289 8.29289Z"
+                            fill="#667085" />
+                    </svg>
                 </div>
-              </div>
-              <div class="side-top">
-                <span class="text">DANH MỤC</span>
-                <div class="side-close"><i class="far fa-arrow-right"></i></div>
-              </div>
+                <ul>
+                    <li>
+                        <a href="#chinh-ngach">
+                            <span>Chính ngạch Bằng Tường - VN</span>
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
+                                xmlns="http://www.w3.org/2000/svg">
+                                <g clip-path="url(#clip0_2077_26459)">
+                                    <path
+                                        d="M16.4935 6.34528C16.0279 5.8745 15.2693 5.86857 14.7964 6.33205L5.92643 15.0986L2.07056 11.1068C1.61067 10.6275 0.849313 10.6118 0.370044 11.0717C-0.109276 11.5315 -0.125009 12.2929 0.334881 12.7722C0.336964 12.7743 0.338996 12.7764 0.34108 12.7786L5.0425 17.6508C5.26749 17.8803 5.57501 18.0103 5.89643 18.0116H5.90966C6.22499 18.0106 6.52734 17.8858 6.75156 17.664L16.4826 8.04231C16.9528 7.57606 16.9576 6.81752 16.4935 6.34528Z"
+                                        fill="#FF6A00" />
+                                    <path
+                                        d="M12.2591 17.6508C12.4835 17.8798 12.79 18.0097 13.1106 18.0116H13.1239C13.4392 18.0107 13.7415 17.8858 13.9658 17.6641L23.6969 8.04239C24.138 7.54572 24.0929 6.78556 23.5963 6.34448C23.146 5.9446 22.4695 5.93934 22.0131 6.33213L13.1467 15.0987L12.8304 14.7703C12.3705 14.291 11.6092 14.2752 11.1298 14.7351C10.6505 15.195 10.6347 15.9563 11.0946 16.4356C11.0967 16.4378 11.0988 16.44 11.1009 16.4421L12.2591 17.6508Z"
+                                        fill="#FF6A00" />
+                                </g>
+                                <defs>
+                                    <clipPath id="clip0_2077_26459">
+                                        <rect width="24" height="24" fill="white" />
+                                    </clipPath>
+                                </defs>
+                            </svg>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#van-chuyen-hn">
+                            <span>Vận chuyển Bằng Tường - HN</span>
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
+                                xmlns="http://www.w3.org/2000/svg">
+                                <g clip-path="url(#clip0_2077_26459)">
+                                    <path
+                                        d="M16.4935 6.34528C16.0279 5.8745 15.2693 5.86857 14.7964 6.33205L5.92643 15.0986L2.07056 11.1068C1.61067 10.6275 0.849313 10.6118 0.370044 11.0717C-0.109276 11.5315 -0.125009 12.2929 0.334881 12.7722C0.336964 12.7743 0.338996 12.7764 0.34108 12.7786L5.0425 17.6508C5.26749 17.8803 5.57501 18.0103 5.89643 18.0116H5.90966C6.22499 18.0106 6.52734 17.8858 6.75156 17.664L16.4826 8.04231C16.9528 7.57606 16.9576 6.81752 16.4935 6.34528Z"
+                                        fill="#FF6A00" />
+                                    <path
+                                        d="M12.2591 17.6508C12.4835 17.8798 12.79 18.0097 13.1106 18.0116H13.1239C13.4392 18.0107 13.7415 17.8858 13.9658 17.6641L23.6969 8.04239C24.138 7.54572 24.0929 6.78556 23.5963 6.34448C23.146 5.9446 22.4695 5.93934 22.0131 6.33213L13.1467 15.0987L12.8304 14.7703C12.3705 14.291 11.6092 14.2752 11.1298 14.7351C10.6505 15.195 10.6347 15.9563 11.0946 16.4356C11.0967 16.4378 11.0988 16.44 11.1009 16.4421L12.2591 17.6508Z"
+                                        fill="#FF6A00" />
+                                </g>
+                                <defs>
+                                    <clipPath id="clip0_2077_26459">
+                                        <rect width="24" height="24" fill="white" />
+                                    </clipPath>
+                                </defs>
+                            </svg>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#van-chuyen-hcm">
+                            <span>Vận chuyển Bằng Tường - HCM</span>
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
+                                xmlns="http://www.w3.org/2000/svg">
+                                <g clip-path="url(#clip0_2077_26459)">
+                                    <path
+                                        d="M16.4935 6.34528C16.0279 5.8745 15.2693 5.86857 14.7964 6.33205L5.92643 15.0986L2.07056 11.1068C1.61067 10.6275 0.849313 10.6118 0.370044 11.0717C-0.109276 11.5315 -0.125009 12.2929 0.334881 12.7722C0.336964 12.7743 0.338996 12.7764 0.34108 12.7786L5.0425 17.6508C5.26749 17.8803 5.57501 18.0103 5.89643 18.0116H5.90966C6.22499 18.0106 6.52734 17.8858 6.75156 17.664L16.4826 8.04231C16.9528 7.57606 16.9576 6.81752 16.4935 6.34528Z"
+                                        fill="#FF6A00" />
+                                    <path
+                                        d="M12.2591 17.6508C12.4835 17.8798 12.79 18.0097 13.1106 18.0116H13.1239C13.4392 18.0107 13.7415 17.8858 13.9658 17.6641L23.6969 8.04239C24.138 7.54572 24.0929 6.78556 23.5963 6.34448C23.146 5.9446 22.4695 5.93934 22.0131 6.33213L13.1467 15.0987L12.8304 14.7703C12.3705 14.291 11.6092 14.2752 11.1298 14.7351C10.6505 15.195 10.6347 15.9563 11.0946 16.4356C11.0967 16.4378 11.0988 16.44 11.1009 16.4421L12.2591 17.6508Z"
+                                        fill="#FF6A00" />
+                                </g>
+                                <defs>
+                                    <clipPath id="clip0_2077_26459">
+                                        <rect width="24" height="24" fill="white" />
+                                    </clipPath>
+                                </defs>
+                            </svg>
+                        </a>
+                    </li>
+                </ul>
+            </aside>
+            <div class="main-content">
+                <div class="main-heading">
+                    <h2>BIỂU PHÍ</h2>
+                    <div class="bold-text">Bảng giá dịch vụ vận chuyển Trung - Việt</div>
+                    <p>Chúng tôi mang đến giải pháp vận chuyển tối ưu, giúp quý khách nhập hàng từ Trung Quốc
+                        một cách nhanh chóng và hiệu quả. Tham khảo bảng giá bên dưới và liên hệ ngay để được hỗ
+                        trợ!</p>
+                </div>
+                <div class="box-huong-dan" id="van-chuy">
+                    <div class="bieu-phi">
+                        <div
+                            class="d-flex flex-column flex-md-row align-items-md-center justify-content-md-between gap-2">
+                            <div class="logo-tpk">
+                                <img src="/tpkexpress/images/bieu-phi/SiteLayout.png" alt="SiteLayout"
+                                    loading="lazy">
+                            </div>
+                            <h3>
+                                BẢNG GIÁ CƯỚC VẬN CHUYỂN BẰNG TƯỜNG - HÀ NỘI
+                            </h3>
+                        </div>
+                        <div class="bieu-phi-table">
+                            <table class="table table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th>STT</th>
+                                        <th>Trọng lượng (kg)</th>
+                                        <th>Hà Nội</th>
+                                        <th>Hồ Chí Minh</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>1</td>
+                                        <td>20kg - 50kg</td>
+                                        <td>12.000</td>
+                                        <td>12.000 + Phí Viettel</td>
+                                    </tr>
+                                    <tr>
+                                        <td>2</td>
+                                        <td>51kg -100kg</td>
+                                        <td>10.000</td>
+                                        <td>10.000 + Phí Viettel</td>
+                                    </tr>
+                                    <tr>
+                                        <td>3</td>
+                                        <td>Từ 101kg -200kg</td>
+                                        <td>8.000</td>
+                                        <td>10.000</td>
+                                    </tr>
+                                    <tr>
+                                        <td>4</td>
+                                        <td>Từ 201kg -2000kg</td>
+                                        <td>7.000</td>
+                                        <td>9.000</td>
+                                    </tr>
+                                    <tr>
+                                        <td>5</td>
+                                        <td>Từ 2001kg -5000kg</td>
+                                        <td>6.000</td>
+                                        <td>8.000</td>
+                                    </tr>
+                                    <tr>
+                                        <td>6</td>
+                                        <td>Trên 5000kg</td>
+                                        <td>Liên hệ</td>
+                                        <td>Liên hệ</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="bieuphi-des d-flex flex-column gap-1">
+                            <p class="mb-0">PHÍ UỶ THÁC NHẬP KHẨU 1.5% GIÁ TRỊ KHAI BÁO</p>
+                            <p class="mb-0">CHÍ PHÍ NHẬP KHẨU = CƯỚC VẬN CHUYỂN + THUẾ VAT + THUẾ NK ( nếu có )
+                                + PHÍ UTNK</p>
+                        </div>
+                        <div class="bieu-phi-luuy">
+                            <p>Lưu ý:</p>
+                            <ol>
+                                <li>Chi phí chưa bao gồm thuế nhập khẩu (nếu có) , VAT và các loại thuế đối với
+                                    hàng đặc biệt khác</li>
+                                <li>Một số mặt hàng phải làm hợp quy, kiểm định, công bố ,...</li>
+                                <li>Hàng về xuất hoá đơn đầy đủ</li>
+                                <li>Khách hàng cần dịch vụ door to door liên hệ trực tiếp để được tư vấn</li>
+                            </ol>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="box-huong-dan" id="van-chuyen-hn">
+                    <div class="bieu-phi">
+                        <div
+                            class="d-flex flex-column flex-md-row align-items-md-center justify-content-md-between gap-2">
+                            <div class="logo-tpk">
+                                <img src="/tpkexpress/images/bieu-phi/SiteLayout.png" alt="SiteLayout"
+                                    loading="lazy">
+                            </div>
+                            <h3>
+                                BẢNG GIÁ CHÍNH NGẠCH BẰNG TƯỜNG - VIỆT NAM
+                            </h3>
+                        </div>
+                        <div class="bieu-phi-table">
+                            <table class="table table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th>STT</th>
+                                        <th>Đơn giá</th>
+                                        <th>Hàng siêu nặng (Trên 5 tấn)</th>
+                                        <th>Hàng phổ thông (>50kg , >0.3 khối) (VND)</th>
+                                        <th>Thực phẩm, thời trang,túi xách, mỹ phẩm, điện tử (VND)</th>
+                                        <th class="dark-head">Hàng hỏa tốc (2-3 ngày) (VND)</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>1</td>
+                                        <td>Đơn giá cân (VND/kg)</td>
+                                        <td>5.000</td>
+                                        <td>12.000</td>
+                                        <td>14.000</td>
+                                        <td>25.000</td>
+                                    </tr>
+                                    <tr>
+                                        <td>2</td>
+                                        <td>Đơn giá cân (VND/khối)</td>
+                                        <td>-</td>
+                                        <td>1.950.000</td>
+                                        <td>2.600.000</td>
+                                        <td>-</td>
+                                    </tr>
+
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="bieuphi-des d-flex flex-column gap-1">
+                            <p class="mb-0">ĐƠN HÀNG TRÊN 500KG HOẶC TRÊN 5 KHỐI SẼ MIỄN PHÍ CƯỚC VẬN CHUYỂN NỘI
+                                THÀNH HÀ NỘI, BÁN KÍNH KHÔNG QUÁ 15KM</p>
+
+                        </div>
+
+                    </div>
+
+                </div>
+                <div class="box-huong-dan" id="van-chuyen-hcm">
+                    <div class="bieu-phi">
+                        <div
+                            class="d-flex flex-column flex-md-row align-items-md-center justify-content-md-between gap-2">
+                            <div class="logo-tpk">
+                                <img src="/tpkexpress/images/bieu-phi/SiteLayout.png" alt="SiteLayout"
+                                    loading="lazy">
+                            </div>
+                            <h3>
+                                BẢNG GIÁ CƯỚC VẬN CHUYỂN BẰNG TƯỜNG - HCM
+                            </h3>
+                        </div>
+                        <div class="bieu-phi-table">
+                            <table class="table table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th>STT</th>
+                                        <th>Đơn giá</th>
+                                        <th>Hàng siêu nặng (Trên 5 tấn)</th>
+                                        <th>Hàng phổ thông (>50kg , >0.3 khối) (VND)</th>
+                                        <th>Thực phẩm, thời trang,túi xách, mỹ phẩm, điện tử (VND)</th>
+                                        <th class="dark-head">Hàng hỏa tốc (2-3 ngày) (VND)</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>1</td>
+                                        <td>Đơn giá cân (VND/kg)</td>
+                                        <td>7.000</td>
+                                        <td>15.000</td>
+                                        <td>17.000</td>
+                                        <td>25.000 + cước Viettelpost</td>
+                                    </tr>
+                                    <tr>
+                                        <td>2</td>
+                                        <td>Đơn giá cân (VND/khối)</td>
+                                        <td>-</td>
+                                        <td>2.450.000</td>
+                                        <td>3.100.000</td>
+                                        <td>-</td>
+                                    </tr>
+
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="bieuphi-des d-flex flex-column gap-1">
+                            <p class="mb-0">ĐƠN HÀNG TRÊN 500KG HOẶC TRÊN 5 KHỐI SẼ MIỄN PHÍ CƯỚC VẬN CHUYỂN NỘI
+                                THÀNH HÀ NỘI, BÁN KÍNH KHÔNG QUÁ 15KM</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="box-huong-dan">
+                    <div class="about-customer">
+                        <div class="bold-text">
+                            Quý khách vui lòng chủ động cập nhật thông tin vận đơn & lựa chọn hình thức vận chuyển trên app hoặc web ngay sau khi có mã vận đơn
+                        </div>
+                        <div class="about-customer-des">
+                            <h4>Đối với hàng hóa đã về đến kho Trung Quốc, nếu:</h4>
+                            <ul>
+                                <li>Khách hàng không cập nhật mã vận đơn</li>
+                                <li>Không lựa chọn phương thức vận chuyển</li>
+                            </ul>
+                        </div>
+                        <div class="about-customer-des">
+                            <h4>Kho Trung Quốc sẽ tự động xếp xe theo quy định như sau:</h4>
+                            <ul>
+                                <li>Hàng dưới 50kg: Tự động xếp đi Line Hoả Tốc</li>
+                                <li>Hàng từ 50kg trở lên: Tự động xếp đi Line Thường</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="address-note">
+                    <h3>Lưu ý</h3>
+                    <ul>
+                        <li>
+                            <b>Bảng giá:</b> Áp dụng với hàng hoá phổ thông trên một đơn hàng, nhỏ nhất của một đơn hàng là 01 kg, TPK bồi thường 5-7 lần cước vận chuyển, trong trường hợp hàng hoá thất lạc, không vượt quá giá trị hàng hoá ( không bồi thường với chất lượng hàng hoá). Hàng hoá giá trị cao xin liên hệ để được tư vấn trực tiếp.
+                        </li>
+                        <li>
+                            <b>Những hàng dễ gây cháy nổ:</b> Pin, ắc quy, hoá chất, chất lỏng Quý khách vui long liên hệ để được tư vấn.
+                        </li>
+                        <li>
+                            <b>Line hoả tốc:</b> Quy cách đóng gói tối đa 20-30kg trên 1 kiện hàng, Quý khách đi hàng vui lòng liên hệ nhà cung cấp nhờ tách kiện nếu kiện hàng nặng trên 40kg. Line hoả tốc không đi được với những mặt hàng đóng gỗ, hàng fake, hàng hoá gây cháy nổ, hoá chất, chất lỏng, điện thoại, laptop. Hàng đặc biệt Quý khách vui lòng liên hệ TPK để biết thêm chi tiết.
+                        </li>
+                        <li>
+                            <b>Line thường:</b> Chỉ nhận đơn hàng trên 50kg và trên 0.3 khối, dưới 50kg hàng hoá tự động đi line TMDT
+                        </li>
+                        <li>
+                            <b>Hàng ghép cont chính ngạch:</b> Ổn định 5-7 ngày hàng về, giá vận chuyển chưa bao gồm VAT và thuế nhập khẩu
+                        </li>
+                    </ul>
+                </div>
+                <div class="box-info">
+                    <div class="icon-info">
+                        <img src="/tpkexpress/images/bieu-phi/Call.png" alt="Call">
+                    </div>
+                    <div class="content-info">
+                        <p class="bold-text">Hotline: 0796589224 - 0338964163</p>
+                        <p>Cảm ơn quý khách đã tham khảo bảng giá dịch vụ của chúng tôi! Nếu có bất kỳ thắc mắc nào hoặc cần hỗ trợ thêm, đừng ngần ngại liên hệ ngay. Chúng tôi luôn sẵn sàng đồng hành cùng quý khách trên từng đơn hàng.</p>
+                    </div>
+                </div>
             </div>
-            <div class="side-overlay"></div>
-          </div>
-          <div class="news-right col">
-            <div class="news-top">
-              <span class="txt">BIỂU PHÍ</span>
-              <div class="news-open side-open no-style">DANH MỤC</div>
-            </div>
-            <div class="mona-content">
-              <p style="text-align: left" data-mce-style="text-align: left;">
-                <strong>Bảng giá dịch vụ vận chuyển Trung - Việt</strong
-                ><br />Chúng tôi mang đến giải pháp vận chuyển tối ưu, giúp quý
-                khách nhập hàng từ Trung Quốc một cách nhanh chóng và hiệu
-                quả.<br />Tham khảo bảng giá bên dưới và liên hệ ngay để được hỗ
-                trợ!
-              </p>
-              <p style="text-align: left" data-mce-style="text-align: left;">
-                <img
-                  src="/tpkexpress/assets/menu/bieu-phi-3.png"
-                  data-mce-src="/tpkexpress/assets/menu/bieu-phi-3.png"
-                />
-              </p>
-              <p style="text-align: left" data-mce-style="text-align: left;">
-                <img
-                  src="/tpkexpress/assets/menu/bieu-phi-1.png"
-                  data-mce-src="/tpkexpress/assets/menu/bieu-phi-1.png"
-                />
-              </p>
-              <p>
-                <img
-                  src="/tpkexpress/assets/menu/bieu-phi-2.png"
-                  data-mce-src="/tpkexpress/assets/menu/bieu-phi-2.png"
-                />
-              </p>
-              <p>
-                Quý khách vui lòng chủ động cập nhật thông tin vận đơn &amp; lựa
-                chọn hình thức vận chuyển trên app hoặc web ngay sau khi có mã
-                vận đơn
-              </p>
-              <p>
-                <em
-                  ><strong
-                    >- Đối với hàng hóa đã về đến kho Trung Quốc, nếu:</strong
-                  ></em
-                >
-              </p>
-              <p>+ Khách hàng không cập nhật mã vận đơn</p>
-              <p>+ Không lựa chọn phương thức vận chuyển</p>
-              <p>
-                <em
-                  ><strong
-                    >- Kho Trung Quốc sẽ tự động xếp xe theo quy định như
-                    sau:</strong
-                  ></em
-                >
-              </p>
-              <p>+ Hàng dưới 50kg: Tự động xếp đi Line Hoả Tốc</p>
-              <p>+ Hàng từ 50kg trở lên: Tự động xếp đi Line Thường</p>
-              <p>
-                <strong><br />Chú ý:</strong>
-              </p>
-              <p
-                style="padding-left: 40px"
-                data-mce-style="padding-left: 40px;"
-              >
-                <strong>-&nbsp; &nbsp;Bảng giá:</strong> Áp dụng với hàng hoá
-                phổ thông trên một đơn hàng, nhỏ nhất của một đơn hàng là 01 kg,
-                TPK bồi thường 5-7 lần cước vận chuyển, trong trường hợp hàng
-                hoá thất lạc, không vượt quá giá trị hàng hoá ( không bồi thường
-                với chất lượng hàng hoá). Hàng hoá giá trị cao xin liên hệ để
-                được tư vấn trực tiếp.
-              </p>
-              <p
-                style="padding-left: 40px"
-                data-mce-style="padding-left: 40px;"
-              >
-                <strong>-&nbsp; &nbsp;Những hàng dễ gây cháy nổ:</strong> Pin,
-                ắc quy, hoá chất, chất lỏng Quý khách vui long liên hệ để được
-                tư vấn.
-              </p>
-              <p
-                style="padding-left: 40px"
-                data-mce-style="padding-left: 40px;"
-              >
-                <strong>-&nbsp; &nbsp;Line hoả tốc:</strong> Quy cách đóng gói
-                tối đa 20-30kg trên 1 kiện hàng, Quý khách đi hàng vui lòng liên
-                hệ nhà cung cấp nhờ tách kiện nếu kiện hàng nặng trên 40kg. Line
-                hoả tốc không đi được với những mặt hàng đóng gỗ, hàng fake,
-                hàng hoá gây cháy nổ, hoá chất, chất lỏng, điện thoại, laptop.
-                Hàng đặc biệt Quý khách vui lòng liên hệ TPK để biết thêm chi
-                tiết.
-              </p>
-              <p
-                style="padding-left: 40px"
-                data-mce-style="padding-left: 40px;"
-              >
-                <strong>-&nbsp; &nbsp;Line thường:</strong> Chỉ nhận đơn hàng
-                trên 50kg và trên 0.3 khối, dưới 50kg hàng hoá tự động đi line
-                TMDT
-              </p>
-              <p
-                style="padding-left: 40px"
-                data-mce-style="padding-left: 40px;"
-              >
-                <strong>-&nbsp; &nbsp;Hàng ghép cont chính ngạch:</strong> Ổn
-                định 5-7 ngày hàng về, nhận khối lượng từ 200kg trở lên hoặc 2
-                khối trở lên, giá vận chuyển chưa bao gồm VAT và thuế nhập khẩu
-              </p>
-              <p
-                style="padding-left: 40px"
-                data-mce-style="padding-left: 40px;"
-              >
-                -&nbsp; &nbsp;<strong
-                  >Cảm ơn quý khách đã tham khảo bảng giá dịch vụ của chúng
-                  tôi!</strong
-                >
-              </p>
-              <p
-                style="padding-left: 40px"
-                data-mce-style="padding-left: 40px;"
-              >
-                &nbsp; &nbsp; Nếu có bất kỳ thắc mắc nào hoặc cần hỗ trợ thêm,
-                đừng ngần ngại liên hệ ngay.
-              </p>
-              <p
-                style="padding-left: 40px"
-                data-mce-style="padding-left: 40px;"
-              >
-                <strong
-                  >&nbsp; &nbsp; Chúng tôi luôn sẵn sàng đồng hành cùng quý
-                  khách trên từng đơn hàng.</strong
-                >
-              </p>
-              <p
-                style="padding-left: 40px"
-                data-mce-style="padding-left: 40px;"
-              >
-                -&nbsp; &nbsp;Hotline: 19008006
-              </p>
-            </div>
-          </div>
         </div>
-      </div>
     </div>
-  </section>
-</main>
+</div>

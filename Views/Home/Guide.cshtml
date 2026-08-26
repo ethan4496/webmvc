@@ -1,69 +1,432 @@
-﻿@{
-    Layout = "~/Views/Shared/_HomeLayout.cshtml";
+@{
+    Layout = "~/Views/Shared/_NewHomeLayout.cshtml";
     ViewData["Title"] = "Hướng dẫn";
 }
-<main class="main page-news">
-    <div class="hero">
-        <div class="hero-cuved">
-            <img src="/tpkexpress/assets/images/hero-cuved.svg" alt="">
+<section class="page-breadcrumb">
+    <div class="container">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="/">Trang chủ</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Hướng dẫn</li>
+            </ol>
+        </nav>
+        <div class="breadcrumb-head">
+            <h1 class="section-title">Hướng dẫn sử dụng TPK Express</h1>
         </div>
-        <div class="container">
-            <div class="hero-content">
-                <h1 class="hero-title">HƯỚNG DẪN</h1>
-                <div class="breadcrumb">
-                    <div class="container">
-                        <ul class="breadcrumb-list">
-                            <li class="breadcrumb-item aos-init aos-animate" data-aos="fade-right"><a class="breadcrumb-link" href="/">Trang chủ</a></li>
-                            <li class="breadcrumb-item aos-init aos-animate" data-aos="fade-right"><a class="breadcrumb-link" href="/huong-dan">HƯỚNG DẪN</a></li>
-                        </ul>
+        <p class="description-lg mb-0">Hướng dẫn chi tiết cách sử dụng dịch vụ tại TPK Express</p>
+    </div>
+</section>
+<div class="page-content page-huong-dan">
+    <div class="container">
+        <div class="layout-content">
+            <aside class="toc d-xl-block">
+                <div class="d-flex align-items-center justify-content-between toc-head">
+                    <div class="d-flex toc-title gap-1">
+                        <img src="/tpkexpress/images/icon/Paper.svg" alt="" Paper loading="lazy">
+                        <h3>
+                            Danh mục hướng dẫn
+                        </h3>
+                    </div>
+                    <svg class="toc-toggle d-block d-xl-none" width="24" height="24" viewBox="0 0 24 24"
+                        fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path fill-rule="evenodd" clip-rule="evenodd"
+                            d="M5.29289 8.29289C4.90237 8.68342 4.90237 9.31658 5.29289 9.70711L11.2929 15.7071C11.6834 16.0976 12.3166 16.0976 12.7071 15.7071L18.7071 9.70711C19.0976 9.31658 19.0976 8.68342 18.7071 8.29289C18.3166 7.90237 17.6834 7.90237 17.2929 8.29289L12 13.5858L6.70711 8.29289C6.31658 7.90237 5.68342 7.90237 5.29289 8.29289Z"
+                            fill="#667085" />
+                    </svg>
+                </div>
+                <ul>
+                    <li>
+                        <a href="#cach-tinh-cuoc-van-chuyen">
+                            <span>Cách tính cước vận chuyển</span>
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
+                                xmlns="http://www.w3.org/2000/svg">
+                                <g clip-path="url(#clip0_2077_26459)">
+                                    <path
+                                        d="M16.4935 6.34528C16.0279 5.8745 15.2693 5.86857 14.7964 6.33205L5.92643 15.0986L2.07056 11.1068C1.61067 10.6275 0.849313 10.6118 0.370044 11.0717C-0.109276 11.5315 -0.125009 12.2929 0.334881 12.7722C0.336964 12.7743 0.338996 12.7764 0.34108 12.7786L5.0425 17.6508C5.26749 17.8803 5.57501 18.0103 5.89643 18.0116H5.90966C6.22499 18.0106 6.52734 17.8858 6.75156 17.664L16.4826 8.04231C16.9528 7.57606 16.9576 6.81752 16.4935 6.34528Z"
+                                        fill="#FF6A00" />
+                                    <path
+                                        d="M12.2591 17.6508C12.4835 17.8798 12.79 18.0097 13.1106 18.0116H13.1239C13.4392 18.0107 13.7415 17.8858 13.9658 17.6641L23.6969 8.04239C24.138 7.54572 24.0929 6.78556 23.5963 6.34448C23.146 5.9446 22.4695 5.93934 22.0131 6.33213L13.1467 15.0987L12.8304 14.7703C12.3705 14.291 11.6092 14.2752 11.1298 14.7351C10.6505 15.195 10.6347 15.9563 11.0946 16.4356C11.0967 16.4378 11.0988 16.44 11.1009 16.4421L12.2591 17.6508Z"
+                                        fill="#FF6A00" />
+                                </g>
+                                <defs>
+                                    <clipPath id="clip0_2077_26459">
+                                        <rect width="24" height="24" fill="white" />
+                                    </clipPath>
+                                </defs>
+                            </svg>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#cai-dat-dia-chi-kho">
+                            <span>Cài đặt địa chỉ kho TQ</span>
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
+                                xmlns="http://www.w3.org/2000/svg">
+                                <g clip-path="url(#clip0_2077_26459)">
+                                    <path
+                                        d="M16.4935 6.34528C16.0279 5.8745 15.2693 5.86857 14.7964 6.33205L5.92643 15.0986L2.07056 11.1068C1.61067 10.6275 0.849313 10.6118 0.370044 11.0717C-0.109276 11.5315 -0.125009 12.2929 0.334881 12.7722C0.336964 12.7743 0.338996 12.7764 0.34108 12.7786L5.0425 17.6508C5.26749 17.8803 5.57501 18.0103 5.89643 18.0116H5.90966C6.22499 18.0106 6.52734 17.8858 6.75156 17.664L16.4826 8.04231C16.9528 7.57606 16.9576 6.81752 16.4935 6.34528Z"
+                                        fill="#FF6A00" />
+                                    <path
+                                        d="M12.2591 17.6508C12.4835 17.8798 12.79 18.0097 13.1106 18.0116H13.1239C13.4392 18.0107 13.7415 17.8858 13.9658 17.6641L23.6969 8.04239C24.138 7.54572 24.0929 6.78556 23.5963 6.34448C23.146 5.9446 22.4695 5.93934 22.0131 6.33213L13.1467 15.0987L12.8304 14.7703C12.3705 14.291 11.6092 14.2752 11.1298 14.7351C10.6505 15.195 10.6347 15.9563 11.0946 16.4356C11.0967 16.4378 11.0988 16.44 11.1009 16.4421L12.2591 17.6508Z"
+                                        fill="#FF6A00" />
+                                </g>
+                                <defs>
+                                    <clipPath id="clip0_2077_26459">
+                                        <rect width="24" height="24" fill="white" />
+                                    </clipPath>
+                                </defs>
+                            </svg>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#uy-quyen-thanh-toan-ho">
+                            <span>Ủy quyền thanh toán hộ</span>
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
+                                xmlns="http://www.w3.org/2000/svg">
+                                <g clip-path="url(#clip0_2077_26459)">
+                                    <path
+                                        d="M16.4935 6.34528C16.0279 5.8745 15.2693 5.86857 14.7964 6.33205L5.92643 15.0986L2.07056 11.1068C1.61067 10.6275 0.849313 10.6118 0.370044 11.0717C-0.109276 11.5315 -0.125009 12.2929 0.334881 12.7722C0.336964 12.7743 0.338996 12.7764 0.34108 12.7786L5.0425 17.6508C5.26749 17.8803 5.57501 18.0103 5.89643 18.0116H5.90966C6.22499 18.0106 6.52734 17.8858 6.75156 17.664L16.4826 8.04231C16.9528 7.57606 16.9576 6.81752 16.4935 6.34528Z"
+                                        fill="#FF6A00" />
+                                    <path
+                                        d="M12.2591 17.6508C12.4835 17.8798 12.79 18.0097 13.1106 18.0116H13.1239C13.4392 18.0107 13.7415 17.8858 13.9658 17.6641L23.6969 8.04239C24.138 7.54572 24.0929 6.78556 23.5963 6.34448C23.146 5.9446 22.4695 5.93934 22.0131 6.33213L13.1467 15.0987L12.8304 14.7703C12.3705 14.291 11.6092 14.2752 11.1298 14.7351C10.6505 15.195 10.6347 15.9563 11.0946 16.4356C11.0967 16.4378 11.0988 16.44 11.1009 16.4421L12.2591 17.6508Z"
+                                        fill="#FF6A00" />
+                                </g>
+                                <defs>
+                                    <clipPath id="clip0_2077_26459">
+                                        <rect width="24" height="24" fill="white" />
+                                    </clipPath>
+                                </defs>
+                            </svg>
+                        </a>
+                    </li>
+                </ul>
+            </aside>
+            <div class="main-content">
+                <div class="box-huong-dan" id="cach-tinh-cuoc-van-chuyen">
+                    <h2>Hướng dẫn cách tính cước phí vận chuyển</h2>
+                    <div class="d-flex flex-column huong-dan-column">
+                        <div class="box-line d-flex flex-column box-line-orange">
+                            <div class="box-line-head">
+                                <span>1</span>
+                                <h3>Line Hỏa Tốc</h3>
+                            </div>
+                            <p>Đối với dịch vụ vận chuyển <b>line hỏa tốc</b>, cước sẽ được tính <b>theo trọng
+                                    lượng thực tế</b> của hàng hóa, không quy đổi sang trọng lượng khối.</p>
+                            <ul class="">
+                                <li>
+                                    <div class="d-flex gap-1">
+                                        <div class="flex-shrink-1 text-nowrap">
+                                            Cách tính:
+                                        </div>
+                                        <span class="text-normal flex-shrink-1">Cân trọng lượng thực tế của hàng
+                                            hóa và
+                                            tính cước theo giá cước cho 1kg (hoặc đơn vị khác tùy dịch vụ).
+                                        </span>
+                                    </div>
+                                </li>
+                                <li>
+                                    Ví dụ:
+                                    <ul>
+                                        <li>Trọng lượng thực tế: 10kg</li>
+                                        <li>Cước vận chuyển cho 1kg: 22.000 VND</li>
+                                        <li>Cước vận chuyển = 10kg × 22.000 VND = 220.000 VND</li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="box-line d-flex flex-column">
+                            <div class="box-line-head">
+                                <span>2</span>
+                                <h3>Line Thường</h3>
+                            </div>
+                            <p>Đối với dịch vụ vận chuyển <b>line thường</b>, nếu hàng hóa có kích thước lớn
+                                hoặc cồng kềnh, cước sẽ được tính theo <b>số khối (thể tích)</b> thay vì trọng
+                                lượng thực tế. Nếu hàng hóa có kích thước nhỏ, cước sẽ tính theo trọng lượng
+                                thực tế.</p>
+                            <ul class="">
+                                <li>Cách tính số khối: Số khối = (Dài x Rộng x Cao)/1.000.000</li>
+                                <li>
+                                    Trong đó:
+                                    <ul>
+                                        <li>Dài, Rộng, Cao tính bằng cm.</li>
+                                        <li> 1,000,000 là hệ số quy đổi từ cm³ sang m³ (số khối).</li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="text-summary">
+                            Tóm tắt
+                        </div>
+                        <div class="huong-dan-summary">
+                            <ul>
+                                <li>
+                                    <div class="d-flex gap-1">
+                                        <b class="text-nowrap">Line hỏa tốc:</b> <span>Tính theo trọng lượng
+                                            thực tế, không quy đổi sang trọng
+                                            lượng khối.</span>
+                                    </div>
+
+                                </li>
+                                <li>
+                                    <b>Line thường:</b>
+                                    <ul>
+                                        <li>
+                                            Tính theo <b>số khối</b> nếu hàng hóa cồng kềnh (số khối > trọng
+                                            lượng thực tế).
+                                        </li>
+                                        <li>
+                                            Tính theo <b>trọng lượng thực tế</b> nếu trọng lượng thực tế lớn hơn
+                                            số khối.
+                                        </li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="box-huong-dan" id="cai-dat-dia-chi-kho">
+                    <h2>Hướng dẫn cài đặt địa chỉ kho Trung Quốc</h2>
+                    <div class="d-flex flex-column huong-dan-column">
+                        <div class="box-line flex flex-column">
+                            <div class="box-line-head">
+                                <h3>Địa chỉ kho Trung Quốc của TPK EXPRESS</h3>
+                            </div>
+                            <div class="d-flex flex-column address-column">
+                                <div class="d-flex justify-content-between align-items-start gap-3">
+                                    <div class="d-flex align-items-center adress-icon-column">
+                                        <img src="/tpkexpress/images/huong-dan/icons/User.svg" alt="Icons"
+                                            loading="lazy" />
+                                        <span>
+                                            联系人 (tên người nhận)
+                                        </span>
+                                    </div>
+                                    <div class="address-text-right">
+                                        成秀-mã khách hàng
+                                    </div>
+                                </div>
+                                <div class="d-flex justify-content-between align-items-start gap-3">
+                                    <div class="d-flex align-items-center adress-icon-column">
+                                        <img src="/tpkexpress/images/huong-dan/icons/Map.svg" alt="Icons"
+                                            loading="lazy" />
+                                        <span>
+                                            收货地址 (khu vực)
+                                        </span>
+                                    </div>
+                                    <div class="address-text-right">
+                                        广西壮族自治区//崇左市//凭祥市//凭祥镇//
+                                    </div>
+                                </div>
+                                <div class="d-flex justify-content-between align-items-start gap-3">
+                                    <div class="d-flex align-items-center adress-icon-column">
+                                        <img src="/tpkexpress/images/huong-dan/icons/Home.svg" alt="Icons"
+                                            loading="lazy" />
+                                        <span>
+                                            地址 (địa chỉ chi tiết)
+                                        </span>
+                                    </div>
+                                    <div class="address-text-right">
+                                        南大路373广越物流市场 ( mã Khách Hàng-SDT ) 成秀物流,三栋27-28号
+                                    </div>
+                                </div>
+                                <div class="d-flex justify-content-between align-items-start gap-3">
+                                    <div class="d-flex align-items-center adress-icon-column">
+                                        <img src="/tpkexpress/images/huong-dan/icons/Phone.svg" alt="Icons"
+                                            loading="lazy" />
+                                        <span>
+                                            电话 (điện thoại)
+                                        </span>
+                                    </div>
+                                    <div class="address-text-right">
+                                        18154748869
+                                    </div>
+                                </div>
+                                <div class="d-flex justify-content-between align-items-start gap-3">
+                                    <div class="d-flex align-items-center adress-icon-column">
+                                        <img src="/tpkexpress/images/huong-dan/icons/Postal.svg" alt="Icons"
+                                            loading="lazy" />
+                                        <span>
+                                            Mã bưu chính
+                                        </span>
+                                    </div>
+                                    <div class="address-text-right">
+                                        532600
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="address-note">
+                            <h3>Lưu ý</h3>
+                            <div class="address-note-column d-flex flex-column">
+                                <div class="address-note-text">
+                                    Mã khách hàng là tên đăng nhập TPK của anh chị, anh chị tải app TPK EXPRESS
+                                    trên chợ ứng dụng để đăng ký hoặc đăng ký trên website của TPK
+                                </div>
+                                <div class="note-video">
+                                    <p>Video hướng dẫn cài địa chỉ kho TQ</p>
+                                    <a href="" class="btn btn-video" target="_blank">
+                                        <span>Xem video hướng dẫn</span>
+                                        <svg width="20" height="20" viewBox="0 0 20 20" fill="none"
+                                            xmlns="http://www.w3.org/2000/svg">
+                                            <g clip-path="url(#clip0_2011_3313)">
+                                                <path
+                                                    d="M10 0C4.48566 0 0 4.48609 0 10C0 15.5139 4.48566 20 10 20C15.5143 20 20 15.5139 20 10C20 4.48609 15.5143 0 10 0ZM13.9754 10.3504L8.14211 14.1004C8.07375 14.1447 7.9948 14.1667 7.91668 14.1667C7.84832 14.1667 7.77914 14.1496 7.7173 14.1158C7.58301 14.0426 7.5 13.9026 7.5 13.75V6.25C7.5 6.09742 7.58301 5.95742 7.7173 5.88418C7.84914 5.81176 8.01434 5.81621 8.14211 5.89965L13.9754 9.64965C14.0943 9.72613 14.1667 9.8584 14.1667 10C14.1667 10.1416 14.0943 10.2738 13.9754 10.3504Z"
+                                                    fill="#FF6A00" />
+                                            </g>
+                                            <defs>
+                                                <clipPath id="clip0_2011_3313">
+                                                    <rect width="20" height="20" fill="white" />
+                                                </clipPath>
+                                            </defs>
+                                        </svg>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="box-huong-dan" id="uy-quyen-thanh-toan-ho">
+                    <h2>Hướng dẫn uỷ quyền thanh toán hộ</h2>
+                    <div class="d-flex flex-column huong-dan-column">
+                        <div class="box-line flex flex-column">
+                            <p>Với những khách hàng không có hộ chiếu hoặc chưa thể xác thực tài khoản Alipay cá
+                                nhân, chúng tôi cung cấp dịch vụ ủy quyền thanh toán hộ, giúp bạn dễ dàng nạp tệ
+                                và thanh toán trên các nền tảng thương mại điện tử như Taobao, Tmall, 1688,...
+                                một cách nhanh chóng và thuận tiện.</p>
+                            <div class="box-line-head">
+                                <h3>Quy Trình Thực Hiện Ủy Quyền Thanh Toán Hộ</h3>
+                            </div>
+                            <div class="box-uy-quyen">
+                                <picture>
+                                    <source media="(min-width: 1200px)"
+                                        srcset="/tpkexpress/images/huong-dan/StepLarge.png">
+                                    <source media="(min-width: 768px)"
+                                        srcset="/tpkexpress/images/huong-dan/StepMedium.png"
+                                        >
+                                    <img src="/tpkexpress/images/huong-dan/Step.png" fetchpriority="high" decoding="async" alt="">
+                                </picture>
+                                <div class="note-video">
+                                    <p>Video hướng dẫn cài địa chỉ kho TQ</p>
+                                    <a href="" class="btn btn-video" target="_blank">
+                                        <span>Xem video hướng dẫn</span>
+                                        <svg width="20" height="20" viewBox="0 0 20 20" fill="none"
+                                            xmlns="http://www.w3.org/2000/svg">
+                                            <g clip-path="url(#clip0_2011_3313)">
+                                                <path
+                                                    d="M10 0C4.48566 0 0 4.48609 0 10C0 15.5139 4.48566 20 10 20C15.5143 20 20 15.5139 20 10C20 4.48609 15.5143 0 10 0ZM13.9754 10.3504L8.14211 14.1004C8.07375 14.1447 7.9948 14.1667 7.91668 14.1667C7.84832 14.1667 7.77914 14.1496 7.7173 14.1158C7.58301 14.0426 7.5 13.9026 7.5 13.75V6.25C7.5 6.09742 7.58301 5.95742 7.7173 5.88418C7.84914 5.81176 8.01434 5.81621 8.14211 5.89965L13.9754 9.64965C14.0943 9.72613 14.1667 9.8584 14.1667 10C14.1667 10.1416 14.0943 10.2738 13.9754 10.3504Z"
+                                                    fill="#FF6A00" />
+                                            </g>
+                                            <defs>
+                                                <clipPath id="clip0_2011_3313">
+                                                    <rect width="20" height="20" fill="white" />
+                                                </clipPath>
+                                            </defs>
+                                        </svg>
+                                    </a>
+                                </div>
+                            </div>
+                            <!-- <div class="d-flex flex-column box-uy-quyen">
+                                <div class="step-uy-quyen">
+                                    <div class="item-uy-quyen">
+                                        <div class="image-step-uy-quyen">
+                                            <img src="/tpkexpress/images/huong-dan/uy-quyen/User.svg" alt="Icon"
+                                                loading="lazy" />
+                                            <div class="horizon-arrow-uy-quyen">
+                                                <img src="/tpkexpress/images/huong-dan/uy-quyen/Arrow.svg"
+                                                    alt="Arrow" loading="lazy" />
+                                            </div>
+                                        </div>
+                                        <div class="vertical-arrow-uy-quyen">
+                                            <img src="/tpkexpress/images/huong-dan/uy-quyen/VerticalArrow.svg"
+                                                alt="Arrow" loading="lazy" />
+                                        </div>
+                                        <div class="content-step-uy-quyen">
+                                            <div class="number-step-uy-quyen">
+                                                <div class="number">
+                                                    01
+                                                </div>
+                                            </div>
+                                            <div class="column-content-uy-quyen">
+                                                <h4>Cung Cấp Thông Tin </h4>
+                                                <p>Gửi số tiền cần thanh toán (tệ) qua Zalo của chúng tôi.</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="item-uy-quyen">
+                                        <div class="image-step-uy-quyen">
+                                            <img src="/tpkexpress/images/huong-dan/uy-quyen/Wallet.svg"
+                                                alt="Icon" loading="lazy" />
+                                            <div class="horizon-arrow-uy-quyen">
+                                                <img src="/tpkexpress/images/huong-dan/uy-quyen/Arrow.svg"
+                                                    alt="Arrow" loading="lazy" />
+                                            </div>
+                                        </div>
+                                        <div class="vertical-arrow-uy-quyen">
+                                            <img src="/tpkexpress/images/huong-dan/uy-quyen/VerticalArrow.svg"
+                                                alt="Arrow" loading="lazy" />
+                                        </div>
+                                        <div class="content-step-uy-quyen">
+                                            <div class="number-step-uy-quyen">
+                                                <div class="number">
+                                                    02
+                                                </div>
+                                            </div>
+                                            <div class="column-content-uy-quyen">
+                                                <h4>Thanh Toán Tiền VND</h4>
+                                                <p>Chuyển khoản số tiền VND tương ứng với giá trị đơn hàng sang
+                                                    tài khoản của chúng tôi.</p>
+                                                <p>Tỷ giá và phí dịch vụ sẽ được thông báo rõ ràng trước khi
+                                                    thanh toán.</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="item-uy-quyen">
+                                        <div class="image-step-uy-quyen">
+                                            <img src="/tpkexpress/images/huong-dan/uy-quyen/Wallet.svg"
+                                                alt="Icon" loading="lazy" />
+                                        </div>
+                                        <div class="vertical-arrow-uy-quyen">
+                                            <img src="/tpkexpress/images/huong-dan/uy-quyen/VerticalArrow.svg"
+                                                alt="Arrow" loading="lazy" />
+                                        </div>
+                                        <div class="content-step-uy-quyen">
+                                            <div class="number-step-uy-quyen">
+                                                <div class="number">
+                                                    03
+                                                </div>
+                                            </div>
+                                            <div class="column-content-uy-quyen">
+                                                <h4>Xác Nhận Thanh Toán</h4>
+                                                <p>Sau khi nhận được tiền, chúng tôi sẽ tiến hành thanh toán hộ
+                                                    đơn hàng cho bạn.</p>
+                                                <p>Bạn sẽ nhận được xác nhận hoàn tất thanh toán từ phía chúng
+                                                    tôi.</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="note-video">
+                                    <p>Video hướng dẫn uỷ quyền thanh toán hộ</p>
+                                    <a href="" class="btn btn-video" target="_blank">
+                                        <span>Xem video hướng dẫn</span>
+                                        <svg width="20" height="20" viewBox="0 0 20 20" fill="none"
+                                            xmlns="http://www.w3.org/2000/svg">
+                                            <g clip-path="url(#clip0_2011_3313)">
+                                                <path
+                                                    d="M10 0C4.48566 0 0 4.48609 0 10C0 15.5139 4.48566 20 10 20C15.5143 20 20 15.5139 20 10C20 4.48609 15.5143 0 10 0ZM13.9754 10.3504L8.14211 14.1004C8.07375 14.1447 7.9948 14.1667 7.91668 14.1667C7.84832 14.1667 7.77914 14.1496 7.7173 14.1158C7.58301 14.0426 7.5 13.9026 7.5 13.75V6.25C7.5 6.09742 7.58301 5.95742 7.7173 5.88418C7.84914 5.81176 8.01434 5.81621 8.14211 5.89965L13.9754 9.64965C14.0943 9.72613 14.1667 9.8584 14.1667 10C14.1667 10.1416 14.0943 10.2738 13.9754 10.3504Z"
+                                                    fill="#FF6A00" />
+                                            </g>
+                                            <defs>
+                                                <clipPath id="clip0_2011_3313">
+                                                    <rect width="20" height="20" fill="white" />
+                                                </clipPath>
+                                            </defs>
+                                        </svg>
+                                    </a>
+                                </div>
+                            </div> -->
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-    <section class="sec-news">
-        <div class="news">
-
-            <div class="container">
-                <div class="news-side row">
-                    <div class="news-left col">
-                        <div class="side-fixed">
-                            <div class="side-fixed-wrap">
-                                <div class="news-top"><span class="txt">DANH MỤC</span></div>
-                                <div class="news-sidebar">
-                                    <div class="news-sidebar-block">
-                                        <div class="re-menu">
-                                            <ul>
-                                                <li class="active"><a href="/gioi-thieu"><span class="txt"></span>GIỚI THIỆU</a></li>
-                                                <li class="active"><a href="/huong-dan"><span class="txt"></span>HƯỚNG DẪN</a></li>
-                                                <li class="active"><a href="/bieu-phi"><span class="txt"></span>BIỂU PHÍ</a></li>
-                                                <li class="active"><a href="/chinh-sach"><span class="txt"></span>CHÍNH SÁCH</a></li>
-                                                <li class="active"><a href="/dich-vu"><span class="txt"></span>DỊCH VỤ</a></li>
-                                                <li class="active"><a href="/tin-tuc"><span class="txt"></span>TIN TỨC</a></li>
-                                            </ul>
-                                        </div>
-                                    </div>
-
-                                </div>
-                            </div>
-                            <div class="side-top">
-                                <span class="text">DANH MỤC</span>
-                                <div class="side-close"><i class="far fa-arrow-right"></i></div>
-                            </div>
-                        </div>
-                        <div class="side-overlay"></div>
-                    </div>
-                    <div class="news-right col">
-                        <div class="news-top">
-                            <span class="txt">HƯỚNG DẪN</span>
-                            <div class="news-open side-open no-style">DANH MỤC</div>
-                        </div>
-                        <div class="mona-content">
-                            <h1 data-mce-style="text-align: center;" style="text-align: center;"><strong>Hướng dẫn cách tính cước vận chuyển</strong></h1><p><strong>1. Line Hỏa Tốc</strong></p><p>Đối với dịch vụ vận chuyển <strong>line hỏa tốc</strong>, cước sẽ được tính <strong>theo trọng lượng thực tế</strong> của hàng hóa, không quy đổi sang trọng lượng khối.</p><p style="text-align: left; padding-left: 40px;" data-mce-style="text-align: left; padding-left: 40px;"><strong>- Cách tính:</strong> Cân trọng lượng thực tế của hàng hóa và tính cước theo giá cước cho 1kg (hoặc đơn vị khác tùy dịch vụ).<br><strong>- Ví dụ:</strong></p><p style="text-align: left; padding-left: 80px;" data-mce-style="text-align: left; padding-left: 80px;">+ Trọng lượng thực tế: 10kg<br>+ Cước vận chuyển cho 1kg: 22.000 VND<br>+ Cước vận chuyển = 10kg × 22.000 VND = 220.000 VND</p><p style="text-align: left;" data-mce-style="text-align: left;"><strong>2. Line Thường</strong></p><p>Đối với dịch vụ vận chuyển <strong>line thường</strong>, nếu hàng hóa có kích thước lớn hoặc cồng kềnh, cước sẽ được tính theo <strong>số khối</strong> (thể tích) thay vì trọng lượng thực tế. Nếu hàng hóa có kích thước nhỏ, cước sẽ tính theo trọng lượng thực tế.</p><p style="padding-left: 40px;" data-mce-style="padding-left: 40px;"><strong>- Cách tính số khối</strong>:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Số khối = (Dài x Rộng x Cao)/1.000.000</p><p style="padding-left: 40px;" data-mce-style="padding-left: 40px;"><strong>- Trong đó:</strong></p><p style="padding-left: 80px;" data-mce-style="padding-left: 80px;">+ Dài, Rộng, Cao tính bằng cm.<br>+ 1,000,000 là hệ số quy đổi từ cm³ sang m³ (số khối).</p><p><br><strong>Tóm tắt</strong></p><p><strong>- Line hỏa tốc:</strong> Tính theo <strong>trọng lượng thực tế</strong>, không quy đổi sang trọng lượng khối.<br><strong>- Line thường:</strong></p><p style="padding-left: 40px;" data-mce-style="padding-left: 40px;">+ Tính theo <strong>số khối</strong> nếu hàng hóa cồng kềnh (số khối &gt; trọng lượng thực tế).<br>+ Tính theo t<strong>rọng lượng thực tế</strong> nếu trọng lượng thực tế lớn hơn số khối.</p><h1 data-mce-style="text-align: center;" style="text-align: center;"><br><strong>Hướng dẫn cài địa chỉ kho TQ</strong></h1><p><em><strong>-&nbsp; &nbsp; &nbsp;Dưới đây là địa chỉ kho TQ của TPK EXPRESS</strong></em></p><p>收货人( người nhận)：<strong>金陈秀 (mã khách hàng )</strong></p><p>收货地址(địa chỉ): <strong>广西壮族自治区//崇左市//凭祥市//凭祥镇//</strong></p><p>Chi tiết : <strong>南大路373广越物流市场 ( mã Khách Hàng-SDT ) 成秀物流,三栋27-28号</strong></p><p>电话(điện thoại) : <strong>18154748869</strong></p><p>*** Lưu ý: Mã khách hàng là tên đăng nhập TPK của anh chị, anh chị tải app TPK EXPRESS trên chợ ứng dụng để đăng ký hoặc đăng ký trên website của TPK</p><p>-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Video hướng dẫn cài địa chỉ kho TQ</p><p><span style="background-color: rgb(255, 255, 255); color: rgb(53, 152, 219);" data-mce-style="background-color: #ffffff; color: #3598db;"><a data-mce-href="https://youtube.com/shorts/y4KK-hakp5U?si=xHyS26zFmHdhBp0v" href="https://youtube.com/shorts/y4KK-hakp5U?si=xHyS26zFmHdhBp0v" style="background-color: rgb(255, 255, 255); color: rgb(53, 152, 219);" data-mce-style="background-color: #ffffff; color: #3598db;">https://youtube.com/shorts/y4KK-hakp5U?si=xHyS26zFmHdhBp0v﻿</a></span></p><h1 data-mce-style="text-align: center;" style="text-align: center;"><strong>Hướng dẫn uỷ quyền thanh toán hộ</strong></h1><p>Với những khách hàng không có hộ chiếu hoặc chưa thể xác thực tài khoản Alipay cá nhân, chúng tôi cung cấp dịch vụ ủy quyền thanh toán hộ, giúp bạn dễ dàng nạp tệ và thanh toán trên các nền tảng thương mại điện tử như Taobao, Tmall, 1688,... một cách nhanh chóng và thuận tiện.</p><p><strong>Quy Trình Thực Hiện Ủy Quyền Thanh Toán Hộ</strong></p><p><strong>Bước 1: Cung Cấp Thông Tin Cần Thiết</strong></p><p style="padding-left: 40px;" data-mce-style="padding-left: 40px;">- Gửi số tiền cần thanh toán (tệ) qua Zalo của chúng tôi.<br></p><p><strong>Bước 2: Thanh Toán Tiền VND</strong></p><p style="padding-left: 40px;" data-mce-style="padding-left: 40px;">- Chuyển khoản số tiền VND tương ứng với giá trị đơn hàng sang tài khoản của chúng tôi.<br>- Tỷ giá và phí dịch vụ sẽ được thông báo rõ ràng trước khi thanh toán.<br></p><p><strong>Bước 3: Xác Nhận Thanh Toán</strong></p><p style="padding-left: 40px;" data-mce-style="padding-left: 40px;">- Sau khi nhận được tiền, chúng tôi sẽ tiến hành thanh toán hộ đơn hàng cho bạn.<br>- Bạn sẽ nhận được xác nhận hoàn tất thanh toán từ phía chúng tôi.<br></p><p>Video hướng dẫn uỷ quyền thanh toán hộ</p><p><span style="color: rgb(53, 152, 219);" data-mce-style="color: #3598db;"><a data-mce-href="https://youtu.be/XS0PRNvT3qw?si=CqAJc6TPPlZxkmo3" href="https://youtu.be/XS0PRNvT3qw?si=CqAJc6TPPlZxkmo3" style="color: rgb(53, 152, 219);" data-mce-style="color: #3598db;">https://youtu.be/XS0PRNvT3qw?si=CqAJc6TPPlZxkmo3﻿</a></span></p><p><br></p><p><br data-mce-bogus="1"></p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-</main>
+</div>

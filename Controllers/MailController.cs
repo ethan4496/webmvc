@@ -1,6 +1,7 @@
 using ClosedXML.Excel;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System.Net;
 using WebMVC.Extensions;
 using WebMVC.Interfaces;
@@ -10,6 +11,9 @@ using WebMVC.Models.Requests.Updates;
 using WebMVC.Models.Responses;
 using WebMVC.Ultilities;
 using WebMVC.Ultilities.Enums;
+using WebMVC.Data;
+using Newtonsoft.Json;
+using Microsoft.AspNetCore.DataProtection;
 
 namespace WebMVC.Controllers
 {
@@ -22,12 +26,14 @@ namespace WebMVC.Controllers
         private readonly ICampaignService _campaignService;
         private readonly IContactService _contactService;
         private readonly IUploadFileService _uploadFileService;
-        public MailController(ITemplateService templateService, ICampaignService campaignService, IContactService contactService, IUploadFileService uploadFileService)
+        private readonly IServiceScopeFactory _scopeFactory;
+        public MailController(ITemplateService templateService, ICampaignService campaignService, IContactService contactService, IUploadFileService uploadFileService, IServiceScopeFactory scopeFactory)
         {
             _templateService = templateService;
             _campaignService = campaignService;
             _contactService = contactService;
             _uploadFileService = uploadFileService;
+            _scopeFactory = scopeFactory;
         }
 
         [Route("templates")]
@@ -333,7 +339,7 @@ namespace WebMVC.Controllers
                 return new ApiResponse
                 {
                     Data = null,
-                    StatusCode = (int)HttpStatusCode.BadGateway,
+                    StatusCode = (int)HttpStatusCode.BadRequest,
                     Type = (int)EApiResponseType.Error,
                     Message = ex.ToString(),
                 };
@@ -360,7 +366,7 @@ namespace WebMVC.Controllers
                 return new ApiResponse
                 {
                     Data = null,
-                    StatusCode = (int)HttpStatusCode.BadGateway,
+                    StatusCode = (int)HttpStatusCode.BadRequest,
                     Type = (int)EApiResponseType.Error,
                     Message = ex.ToString(),
                 };
@@ -384,7 +390,7 @@ namespace WebMVC.Controllers
                 return new ApiResponse
                 {
                     Data = null,
-                    StatusCode = (int)HttpStatusCode.BadGateway,
+                    StatusCode = (int)HttpStatusCode.BadRequest,
                     Type = (int)EApiResponseType.Error,
                     Message = ex.ToString(),
                 };
@@ -408,7 +414,7 @@ namespace WebMVC.Controllers
                 return new ApiResponse
                 {
                     Data = null,
-                    StatusCode = (int)HttpStatusCode.BadGateway,
+                    StatusCode = (int)HttpStatusCode.BadRequest,
                     Type = (int)EApiResponseType.Error,
                     Message = ex.ToString(),
                 };
@@ -433,7 +439,7 @@ namespace WebMVC.Controllers
                 return new ApiResponse
                 {
                     Data = null,
-                    StatusCode = (int)HttpStatusCode.BadGateway,
+                    StatusCode = (int)HttpStatusCode.BadRequest,
                     Type = (int)EApiResponseType.Error,
                     Message = ex.ToString(),
                 };
@@ -458,7 +464,7 @@ namespace WebMVC.Controllers
                 return new ApiResponse
                 {
                     Data = null,
-                    StatusCode = (int)HttpStatusCode.BadGateway,
+                    StatusCode = (int)HttpStatusCode.BadRequest,
                     Type = (int)EApiResponseType.Error,
                     Message = ex.ToString(),
                 };
@@ -482,7 +488,7 @@ namespace WebMVC.Controllers
                 return new ApiResponse
                 {
                     Data = null,
-                    StatusCode = (int)HttpStatusCode.BadGateway,
+                    StatusCode = (int)HttpStatusCode.BadRequest,
                     Type = (int)EApiResponseType.Error,
                     Message = ex.ToString(),
                 };
@@ -507,7 +513,7 @@ namespace WebMVC.Controllers
                 return new ApiResponse
                 {
                     Data = null,
-                    StatusCode = (int)HttpStatusCode.BadGateway,
+                    StatusCode = (int)HttpStatusCode.BadRequest,
                     Type = (int)EApiResponseType.Error,
                     Message = ex.ToString(),
                 };
@@ -531,7 +537,7 @@ namespace WebMVC.Controllers
                 return new ApiResponse
                 {
                     Data = null,
-                    StatusCode = (int)HttpStatusCode.BadGateway,
+                    StatusCode = (int)HttpStatusCode.BadRequest,
                     Type = (int)EApiResponseType.Error,
                     Message = ex.ToString(),
                 };
@@ -556,7 +562,7 @@ namespace WebMVC.Controllers
                 return new ApiResponse
                 {
                     Data = null,
-                    StatusCode = (int)HttpStatusCode.BadGateway,
+                    StatusCode = (int)HttpStatusCode.BadRequest,
                     Type = (int)EApiResponseType.Error,
                     Message = ex.ToString(),
                 };
@@ -580,9 +586,9 @@ namespace WebMVC.Controllers
                 return new ApiResponse
                 {
                     Data = null,
-                    StatusCode = (int)HttpStatusCode.BadGateway,
+                    StatusCode = (int)HttpStatusCode.BadRequest,
                     Type = (int)EApiResponseType.Error,
-                    Message = ex.ToString(),
+                    Message = ex.Message,
                 };
             }   
         }
@@ -606,7 +612,7 @@ namespace WebMVC.Controllers
                 return new ApiResponse
                 {
                     Data = null,
-                    StatusCode = (int)HttpStatusCode.BadGateway,
+                    StatusCode = (int)HttpStatusCode.BadRequest,
                     Type = (int)EApiResponseType.Error,
                     Message = ex.ToString(),
                 };
@@ -614,11 +620,11 @@ namespace WebMVC.Controllers
         }
         [Route("contact/{id}")]
         [HttpDelete]
-        public async Task<ApiResponse> DeleteContact(int id, int ContactListId, AppUser request)
+        public async Task<ApiResponse> DeleteContact(int id, DeleteContactApi request)
         {
             try
             {
-                var rs = await _contactService.DeleteContactApi(id, ContactListId, request);
+                var rs = await _contactService.DeleteContactApi(id, request);
                 return new ApiResponse()
                 {
                     Data = rs,
@@ -632,7 +638,7 @@ namespace WebMVC.Controllers
                 return new ApiResponse
                 {
                     Data = null,
-                    StatusCode = (int)HttpStatusCode.BadGateway,
+                    StatusCode = (int)HttpStatusCode.BadRequest,
                     Type = (int)EApiResponseType.Error,
                     Message = ex.ToString(),
                 };
@@ -658,10 +664,79 @@ namespace WebMVC.Controllers
                 return new ApiResponse
                 {
                     Data = null,
-                    StatusCode = (int)HttpStatusCode.BadGateway,
+                    StatusCode = (int)HttpStatusCode.BadRequest,
                     Type = (int)EApiResponseType.Error,
                     Message = ex.ToString(),
                 };
+            }
+        }
+        [Route("trackings")]
+        [HttpPost]
+        public async Task<ApiResponse> EmailTrackings(EmailTrackingApiSearch request)
+        {
+            try
+            {
+                var data = await _campaignService.GetEmailTrackingApi(request);
+                return new ApiResponse
+                {
+                    Data = data,
+                    StatusCode = (int)HttpStatusCode.OK,
+                    Type = (int)EApiResponseType.Success
+                };
+            }catch(Exception ex)
+            {
+                return new ApiResponse
+                {
+                    Data = null,
+                    StatusCode = (int)HttpStatusCode.BadRequest,
+                    Type = (int)EApiResponseType.Error,
+                    Message = ex.ToString(),
+                };
+            }
+        }
+        [Route("campaign-report/export-tracking/{CampaignId}")]
+        [HttpPost]
+        public async Task<IActionResult> ExportTrackings(int CampaignId)
+        {
+            var db = _scopeFactory.CreateScope().ServiceProvider.GetRequiredService<AppDbContext>();
+            var campaign = await db.Campaigns.FindAsync(CampaignId);
+            var contactList = await db.ContactLists.FindAsync(campaign.ContactId);
+            var data = await db.EmailTrackings
+                .Where(x => x.CampaignId == CampaignId)
+                .OrderByDescending(x => x.Id)
+                .ToListAsync();
+
+            using (var workbook = new XLWorkbook())
+            {
+                var worksheet = workbook.Worksheets.Add("EmailTracking");
+
+                worksheet.Cell(1, 1).Value = "STT";
+                worksheet.Cell(1, 2).Value = "Email";
+                worksheet.Cell(1, 3).Value = "Campaign Name";
+                worksheet.Cell(1, 4).Value = "Email Sent";
+                worksheet.Cell(1, 5).Value = "Created At";
+
+                int row = 2;
+                int stt = data.Count();
+                foreach (var item in data)
+                {
+                    worksheet.Cell(row, 1).Value = stt;
+                    worksheet.Cell(row, 2).Value = item.RecipientEmail;
+                    worksheet.Cell(row, 3).Value = campaign?.Name;
+                    worksheet.Cell(row, 4).Value = campaign?.EmailSent;
+                    worksheet.Cell(row, 5).Value = item.CreatedAt;
+                    row++;
+                    stt--;
+                }
+
+                using (var stream = new MemoryStream())
+                {
+                    workbook.SaveAs(stream);
+                    stream.Seek(0, SeekOrigin.Begin);
+                    return File(stream.ToArray(),
+                        "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+                        $"{FormatDate.Format(campaign.SendAt)}-CampaignId-{CampaignId}.xlsx");
+                }
             }
         }
     }

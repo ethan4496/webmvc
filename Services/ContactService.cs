@@ -433,15 +433,20 @@ namespace WebMVC.Services
             var request = body.request;
             var contactListExists = await _unitOfWork.Repository<ContactList>()
             .GetQueryable()
-            .AnyAsync(x => x.Id == request.Id);
-
+            .AnyAsync(x => x.Id == id);
+            Console.WriteLine(
+                "body"
+            );
+            Console.WriteLine(
+                JsonConvert.SerializeObject(body, Formatting.Indented)
+            );
             if (!contactListExists)
             {
                 throw new Exception("ContactList not found");
             }
             var emailExists = await _unitOfWork.PlainRepository<ContactListContact>()
                 .GetQueryable()
-                .AnyAsync(clc => clc.ContactListId == request.Id && clc.Contact.Email == request.Email);
+                .AnyAsync(clc => clc.ContactListId == id && clc.Contact.Email == request.Email);
 
             if (emailExists)
             {
@@ -458,13 +463,19 @@ namespace WebMVC.Services
             await _unitOfWork.Repository<Contact>().Add(contact, currentDate, currentAccount.Id);
             var contactListContact = new ContactListContact
             {
-                ContactListId = request.Id,
+                ContactListId = id,
                 Contact = contact,
             };
             await _unitOfWork.PlainRepository<ContactListContact>().AddAsync(contactListContact);
 
             await _unitOfWork.SaveAsync();
-            rs.data = contact;
+            rs.data = new
+            {
+                contact.Id,
+                contact.FirstName,
+                contact.LastName,
+                contact.Email
+            };
             return rs;
         }
 
@@ -566,12 +577,15 @@ namespace WebMVC.Services
 
             if (entity == null)
                 throw new Exception("Không tìm thấy contact");
+            if(request.Email != entity.Email)
+            {
+                var emailTaken = await _unitOfWork.Repository<Contact>().GetQueryable()
+                    .AnyAsync(x => x.Email == request.Email && x.Id != id);
 
-            var emailTaken = await _unitOfWork.Repository<Contact>().GetQueryable()
-                .AnyAsync(x => x.Email == request.Email && x.Id != request.Id);
-
-            if (emailTaken)
-                throw new Exception("Email đã được sử dụng");
+                if (emailTaken)
+                    throw new Exception("Email đã được sử dụng");
+            }
+            
 
             var currentDate = DateTime.Now;
 
@@ -599,10 +613,10 @@ namespace WebMVC.Services
 
             await _unitOfWork.SaveAsync();
         }
-        public async Task<ResponseClass> DeleteContactApi(int id, int ContactListId, AppUser appUser)
+        public async Task<ResponseClass> DeleteContactApi(int id, DeleteContactApi request)
         {
             var rs = new ResponseClass();
-            var currentAccount = await _httpContextService.GetSessionAsync(appUser.Key, appUser.UserId);
+            var currentAccount = await _httpContextService.GetSessionAsync(request.Key, request.UserId);
             if (currentAccount == null)
             {
                 rs.Code = APIUtils.GetResponseCode(APIUtils.ResponseCode.NotFound);
@@ -611,7 +625,7 @@ namespace WebMVC.Services
                 return rs;
             }
             var entity = await _unitOfWork.PlainRepository<ContactListContact>().GetQueryable()
-                .FirstOrDefaultAsync(x => x.ContactId == id && x.ContactListId == ContactListId);
+                .FirstOrDefaultAsync(x => x.ContactId == id && x.ContactListId == request.ContactListId);
 
             if (entity == null)
             {
