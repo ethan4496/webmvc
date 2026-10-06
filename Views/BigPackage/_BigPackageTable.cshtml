@@ -28,8 +28,8 @@
                         </td>
                         <td>@Model[i].Partner</td>
                         <td>@Model[i].Quantity</td>
-                        <td>@Model[i].Weight</td>
-                        <td>@Model[i].Volume</td>
+                        <td>@Model[i].Weight.ToString("N2", System.Globalization.CultureInfo.InvariantCulture)</td>
+                        <td>@Model[i].Volume.ToString("N2", System.Globalization.CultureInfo.InvariantCulture)</td>
                         <td>Ngày tạo: @Model[i].Created.ToString("dd/MM/yyyy HH:mm")</td>
                         <td>@Model[i].StatusName</td>
                         <td class="text-center">

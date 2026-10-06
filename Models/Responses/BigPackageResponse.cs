@@ -1,4 +1,5 @@
 ﻿using WebMVC.Entities;
+using WebMVC.Ultilities;
 using WebMVC.Ultilities.Enums;
 
 namespace WebMVC.Models.Responses
@@ -13,6 +14,9 @@ namespace WebMVC.Models.Responses
         public double Weight { get; set; }
         public double Volume { get; set; }
         public int Quantity { get; set; }
+        public int? ShipId { get; set; }
+        public decimal? Total { get; set; }
+        public decimal? TotalExpense { get; set; }
 
         public string StatusName
         {
@@ -23,5 +27,7 @@ namespace WebMVC.Models.Responses
         }
 
         public List<BigPackageHistory> BigPackageHistories { get; set; }
+        public List<ExpenseResponse> Expenses { get; set; }
+        // public PagedList<OutOfStockResponse> OutOfStockResponse {get; set;}
     }
 }

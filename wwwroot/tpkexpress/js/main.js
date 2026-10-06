@@ -11,6 +11,7 @@ import SideModule from "./module/SideModule.js";
 import CommonModule from "./module/CommonModule.js";
 import ComponentModule from "./module/ComponentModule.js";
 import SmoothScrollModule from "./module/SmoothScrollModule.js";
+import LoginModule from "./module/LoginModule.js";
 
 
 window.addEventListener("DOMContentLoaded", () => {
@@ -27,6 +28,7 @@ window.addEventListener("DOMContentLoaded", () => {
     SideModule();
     ComponentModule();
     SmoothScrollModule();
+	LoginModule();
 
 	$(function () {
 		$(".acc-info-btn").click(function () {

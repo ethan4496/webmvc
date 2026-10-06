@@ -13,6 +13,7 @@ namespace WebMVC.Data
         public DbSet<AccountWarehouseSupervisor> AccountWarehouseSupervisors { get; set; }
         public DbSet<BigPackage> BigPackages { get; set; }
         public DbSet<BigPackageHistory> BigPackageHistories { get; set; }
+        public DbSet<Expense> Expenses { get; set; }
         public DbSet<Notification> Notifications { get; set; }
         public DbSet<OutOfStock> OutOfStocks { get; set; }
         public DbSet<Pricing> Pricings { get; set; }
@@ -52,6 +53,11 @@ namespace WebMVC.Data
             modelBuilder.Entity<Transportation>().HasIndex(x => x.Barcode).IsUnique();
             modelBuilder.Entity<Account>().HasIndex(x => x.Username).IsUnique();
             modelBuilder.Entity<BigPackage>().HasIndex(x => x.Name).IsUnique();
+
+            // Chỉ mục hỗ trợ truy vấn theo BigPackageId (report/detail bao hàng)
+            modelBuilder.Entity<Transportation>().HasIndex(x => x.BigPackageId);
+            modelBuilder.Entity<BigPackageHistory>().HasIndex(x => x.BigPackageId);
+            modelBuilder.Entity<Expense>().HasIndex(x => x.BigPackageId);
 
             // Thêm dữ liệu mẫu chỉ khi cơ sở dữ liệu được tạo lần đầu
             if (!Database.GetAppliedMigrations().Any())

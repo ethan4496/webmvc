@@ -87,6 +87,53 @@ namespace WebMVC.Services
             }
         }
 
+        public async Task<bool> CreateExpense(CreateExpenseRequest request)
+        {
+            var currentDate = DateTime.Now;
+            var currentAccount = await _httpContextService.GetCurrentAccount();
+            var expense = new Expense
+            {
+                Name = request.Name,
+                Total = request.Total,
+                ExchangeRate = request.ExchangeRate,
+                TotalVND = request.TotalVND,
+                Type = request.Type,
+                BigPackageId = request.BigPackageId,
+            };
+            await _unitOfWork.Repository<Expense>().Add(expense, currentDate, currentAccount.Id);
+            await _unitOfWork.SaveAsync();
+            return true;
+        }
+
+        public async Task<bool> UpdateExpense(int id, UpdateExpenseRequest request)
+        {
+            var currentDate = DateTime.Now;
+            var currentAccount = await _httpContextService.GetCurrentAccount();
+            var expense = await _unitOfWork.Repository<Expense>().GetQueryable().SingleOrDefaultAsync(x => x.Id == id);
+            if (expense == null)
+                throw new AppException("Không tìm thấy chi phí");
+
+            expense.Name = request.Name;
+            expense.Total = request.Total;
+            expense.ExchangeRate = request.ExchangeRate;
+            expense.TotalVND = request.TotalVND;
+            expense.Type = request.Type;
+            _unitOfWork.Repository<Expense>().Update(expense, currentDate, currentAccount.Id);
+            await _unitOfWork.SaveAsync();
+            return true;
+        }
+
+        public async Task<bool> DeleteExpense(int id)
+        {
+            var expense = await _unitOfWork.Repository<Expense>().GetQueryable().SingleOrDefaultAsync(x => x.Id == id);
+            if (expense == null)
+                throw new AppException("Không tìm thấy chi phí");
+
+            _unitOfWork.Repository<Expense>().Delete(expense);
+            await _unitOfWork.SaveAsync();
+            return true;
+        }
+
         public async Task<bool> DeleteSelected(List<int> ids)
         {
             var bigPackages = await _unitOfWork.Repository<BigPackage>().GetQueryable().Where(x => ids.Contains(x.Id)).ToListAsync();
@@ -148,6 +195,86 @@ namespace WebMVC.Services
             var bigPackageResponse = _mapper.Map<BigPackageResponse>(bigPackage);
             var histories = await _unitOfWork.Repository<BigPackageHistory>().GetQueryable().Where(x => x.BigPackageId == id).OrderByDescending(x => x.Id).ToListAsync();
             bigPackageResponse.BigPackageHistories = histories;
+
+            bigPackageResponse.Total = await _unitOfWork.Repository<Transportation>().GetQueryable()
+                .Where(x => x.BigPackageId == id)
+                .SumAsync(x => x.TotalPriceVND);
+
+            var expenses = await (from expense in _unitOfWork.Repository<Expense>().GetQueryable()
+                                  join account in _unitOfWork.Repository<Account>().GetQueryable() on expense.CreatedBy equals account.Id into accountJoin
+                                  from account in accountJoin.DefaultIfEmpty()
+                                  where expense.BigPackageId == id
+                                  select new ExpenseResponse
+                                  {
+                                      Id = expense.Id,
+                                      Name = expense.Name,
+                                      Total = expense.Total,
+                                      ExchangeRate = expense.ExchangeRate,
+                                      TotalVND = expense.TotalVND,
+                                      Type = expense.Type,
+                                      BigPackageId = expense.BigPackageId,
+                                      Created = expense.Created,
+                                      CreatedBy = expense.CreatedBy,
+                                      Username = account.Username,
+                                  })
+                                  .OrderByDescending(x => x.Id)
+                                  .ToListAsync();
+            bigPackageResponse.Expenses = expenses;
+            bigPackageResponse.TotalExpense = expenses.Sum(x => x.TotalVND);
+
+            // var transportationIds = await _unitOfWork.Repository<Transportation>().GetQueryable()
+            //     .Where(x => x.BigPackageId == id)
+            //     .Select(x => x.Id)
+            //     .ToListAsync();
+
+            // var outOfStockIds = await _unitOfWork.Repository<TransportationOutOfStock>().GetQueryable()
+            //     .Where(x => transportationIds.Contains(x.TransportationId))
+            //     .Select(x => x.OutOfStockId)
+            //     .Distinct()
+            //     .ToListAsync();
+
+            // var rows = await (from oos in _unitOfWork.Repository<OutOfStock>().GetQueryable()
+            //                   join toos in _unitOfWork.Repository<TransportationOutOfStock>().GetQueryable() on oos.Id equals toos.OutOfStockId into toosJoin
+            //                   from toos in toosJoin.DefaultIfEmpty()
+            //                   join transportation in _unitOfWork.Repository<Transportation>().GetQueryable() on toos.TransportationId equals transportation.Id into transportationJoin
+            //                   from transportation in transportationJoin.DefaultIfEmpty()
+            //                   where outOfStockIds.Contains(oos.Id)
+            //                   select new { OutOfStock = oos, Transportation = transportation })
+            //                   .OrderByDescending(x => x.OutOfStock.Id)
+            //                   .ToListAsync();
+
+            // var outOfStocks = rows
+            //     .GroupBy(x => x.OutOfStock)
+            //     .Select(g => new OutOfStockResponse
+            //     {
+            //         Id = g.Key.Id,
+            //         TransportationResponses = g.Where(x => x.Transportation != null).Select(x => new TransportationResponse
+            //         {
+            //             Id = x.Transportation.Id,
+            //             Barcode = x.Transportation.Barcode,
+            //             UserNote = x.Transportation.UserNote,
+            //             Status = x.Transportation.Status,
+            //             Weight = x.Transportation.Weight,
+            //             Volume = x.Transportation.Volume,
+            //             Quantity = x.Transportation.Quantity,
+            //             Currency = x.Transportation.Currency,
+            //             UnitWeight = x.Transportation.UnitWeight,
+            //             UnitVolume = x.Transportation.UnitVolume,
+            //             Surcharge = x.Transportation.Surcharge,
+            //             PriceShipping = x.Transportation.PriceShipping,
+            //             TotalPriceVND = x.Transportation.TotalPriceVND,
+            //             Discount = x.Transportation.Discount,
+            //             Created = x.Transportation.Created,
+            //         }).ToList()
+            //     })
+            //     .ToList();
+
+            // bigPackageResponse.OutOfStockResponse = new PagedList<OutOfStockResponse>
+            // {
+            //     TotalItem = outOfStocks.Count,
+            //     Items = outOfStocks
+            // };
+
             return bigPackageResponse;
         }
 
@@ -177,6 +304,54 @@ namespace WebMVC.Services
             };
         }
 
+        public async Task<PagedList<BigPackageResponse>> GetPagingReport(BigPackageSearch search)
+        {
+            var query = _unitOfWork.Repository<BigPackage>().GetQueryable()
+                .Where(x => (search.Status == null || x.Status == search.Status)
+                    && (string.IsNullOrEmpty(search.Name) || x.Name.Contains(search.Name))
+                    && (search.ShipId == null || x.ShipId == search.ShipId)
+                    && (search.FromDate == null || x.Created >= search.FromDate)
+                    && (search.ToDate == null || x.Created <= search.ToDate)
+                );
+
+            int total = await query.CountAsync();
+
+            var data = await query
+                .OrderByDescending(x => x.Id)   // phải đặt trước
+                .Skip((search.PageIndex - 1) * search.PageSize)
+                .Take(search.PageSize)
+                .ToListAsync();
+
+            var items = _mapper.Map<List<BigPackageResponse>>(data);
+            var bigPackageIds = items.Select(x => x.Id).ToList();
+
+            var totalsByBigPackageId = await _unitOfWork.Repository<Transportation>().GetQueryable()
+                .Where(x => bigPackageIds.Contains(x.BigPackageId ?? 0))
+                .GroupBy(x => x.BigPackageId)
+                .Select(g => new { BigPackageId = g.Key, Total = g.Sum(x => x.TotalPriceVND) })
+                .ToDictionaryAsync(x => x.BigPackageId, x => x.Total);
+
+            var totalExpensesByBigPackageId = await _unitOfWork.Repository<Expense>().GetQueryable()
+                .Where(x => bigPackageIds.Contains(x.BigPackageId ?? 0))
+                .GroupBy(x => x.BigPackageId)
+                .Select(g => new { BigPackageId = g.Key, Total = g.Sum(x => x.TotalVND) })
+                .ToDictionaryAsync(x => x.BigPackageId, x => x.Total);
+
+            foreach (var item in items)
+            {
+                item.Total = totalsByBigPackageId.TryGetValue(item.Id, out var itemTotal) ? itemTotal : 0;
+                item.TotalExpense = totalExpensesByBigPackageId.TryGetValue(item.Id, out var itemTotalExpense) ? itemTotalExpense : 0;
+            }
+
+            return new PagedList<BigPackageResponse>
+            {
+                PageIndex = search.PageIndex,
+                PageSize = search.PageSize,
+                TotalItem = total,
+                Items = items
+            };
+        }
+
         public async Task<bool> Update(int id, UpdateBigPackageRequest request)
         {
             var currentDate = DateTime.Now;
@@ -202,6 +377,7 @@ namespace WebMVC.Services
                     && request.Volume == bigPackage.Volume
                     && request.Name == bigPackage.Name
                     && request.Partner == bigPackage.Partner
+                    && request.ShipId == bigPackage.ShipId
                     )
                 {
                     await _unitOfWork.SaveAsync();
@@ -214,7 +390,8 @@ namespace WebMVC.Services
                     || request.Weight != bigPackage.Weight
                     || request.Volume != bigPackage.Volume
                     || request.Name != bigPackage.Name
-                    || request.Partner != bigPackage.Partner)
+                    || request.Partner != bigPackage.Partner
+                    || request.ShipId != bigPackage.ShipId)
                 {
                     await _unitOfWork.Repository<BigPackageHistory>().Add(new BigPackageHistory
                     {

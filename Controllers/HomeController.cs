@@ -43,6 +43,7 @@ namespace WebMVC.Controllers
             var model = new HomeViewModel
             {
                 AppNotiImage = webConfiguration.AppNotiImage,
+                webConfiguration = webConfiguration,
                 LatestPosts = latestPosts.Items.ToList()
             };
 
@@ -94,16 +95,19 @@ namespace WebMVC.Controllers
         }
 
         [Route("tin-tuc")]
-        public async Task<IActionResult> NewsAsync()
+        public async Task<IActionResult> NewsAsync(int page = 1)
         {
             var categories = await _categoryService.GetAllCategoryNames();
-            var posts = await _postService.GetPaging(new PostSearch { PageIndex = 1, PageSize = 5 });
+            var posts = await _postService.GetPaging(new PostSearch { PageIndex = page, PageSize = 7 });
 
             var model = new NewsViewModel
             {
                 Categories = categories,
                 Posts = posts.Items.ToList(),
-                PrimaryPost = posts.Items.FirstOrDefault()
+                PrimaryPost = posts.Items.FirstOrDefault(),
+                CurrentPage = posts.PageIndex,
+                TotalPages = posts.TotalPage,
+                TotalItems = posts.TotalItem
             };
 
             return View(model);

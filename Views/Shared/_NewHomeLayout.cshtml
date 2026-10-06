@@ -25,6 +25,7 @@
     <link rel="stylesheet" href="/tpkexpress/assets/library/swiper/swiper-bundle.min.css">
     <link rel="stylesheet" href="/tpkexpress/css/new-style.css">
     <link rel="stylesheet" href="/tpkexpress/css/huong-dan.css">
+    <link rel="stylesheet" href="/tpkexpress/css/login.css">
     <link rel="stylesheet" href="/tpkexpress/css/backdoor.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
     <script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
@@ -33,6 +34,14 @@
         data-autopopup="0" data-width="" data-height=""></div>
 
     <script src="https://sp.zalo.me/plugins/sdk.js"></script>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-7FXQ8YFWXX"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+
+        gtag('config', 'G-7FXQ8YFWXX');
+    </script>
 </head>
 
 <body>
@@ -91,9 +100,9 @@
                             </div>
                         }else{
                             <div class="d-flex buttons-sign-in align-items-center">
-                                <a href="/dang-nhap">Đăng nhập</a>
+                                <a id="login-btn" href="/dang-nhap">Đăng nhập</a>
                                 <span> | </span>
-                                <a class="btn btn-orange" href="/dang-ky">Đăng ký</a>
+                                <a id="signup-btn" class="btn btn-orange js-open-signup" href="/dang-ky">Đăng ký</a>
                             </div>
                         }
                         
@@ -143,6 +152,229 @@
                         </button>
                     </div>
                 </header>
+            </div>
+        </div>
+        <div class="modal fade modal-login" id="modal-login" tabindex="-1" aria-labelledby="modal-login-title"
+            aria-hidden="true" data-close-redirect="/">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="login-topbar"></div>
+                    <div class="login-body">
+                        <div class="login-visual">
+                            <picture>
+                                <source type="image/webp"
+                                    srcset="/tpkexpress/images/login/core-values.webp 1x, /tpkexpress/images/login/core-values@2x.webp 2x">
+                                <img src="/tpkexpress/images/login/core-values.jpg"
+                                    srcset="/tpkexpress/images/login/core-values.jpg 1x, /tpkexpress/images/login/core-values@2x.jpg 2x"
+                                    width="350" height="416"
+                                    alt="Giá trị cốt lõi TPK Express: Trung thực, Trách nhiệm, Hiệu quả, Tin cậy, Chuyên nghiệp, Đổi mới">
+                            </picture>
+                        </div>
+                        <div class="login-main">
+                            <a href="/" class="login-logo">
+                                <img src="/tpkexpress/images/login/logo.png"
+                                    srcset="/tpkexpress/images/login/logo.png 1x, /tpkexpress/images/login/logo@2x.png 2x"
+                                    width="217" height="36" alt="TPK Express">
+                            </a>
+                            <h2 id="modal-login-title" class="visually-hidden">Đăng nhập</h2>
+                            <form id="login-form" method="post" action="" novalidate>
+                                <div class="login-field">
+                                    <label for="login-account">Tài khoản<span class="required">*</span></label>
+                                    <div class="login-input">
+                                        <span class="login-input-icon"><img src="/tpkexpress/images/login/icon-profile.svg" alt=""></span>
+                                        <input id="login-account" name="UserName" type="text" placeholder="Nhập tên tài khoản"
+                                            autocomplete="username" required>
+                                    </div>
+                                    <div class="login-error" role="alert"></div>
+                                </div>
+                                <!-- Lỗi từ backend: thêm class is-invalid vào .login-field và ghi text vào .login-error (vd "Mật khẩu không chính xác!") -->
+                                <div class="login-field">
+                                    <label for="login-password">Mật khẩu<span class="required">*</span></label>
+                                    <div class="login-input f-pass">
+                                        <span class="login-input-icon"><img src="/tpkexpress/images/login/icon-lock.svg" alt=""></span>
+                                        <input id="login-password" class="re-input" name="Password" type="password"
+                                            placeholder="Nhập mật khẩu" autocomplete="current-password" required>
+                                        <button type="button" class="f-lock" aria-label="Hiện/ẩn mật khẩu">
+                                            <img src="/tpkexpress/images/login/icon-eye-off.svg" width="24" height="24" alt="">
+                                            <img src="/tpkexpress/images/login/icon-eye.svg" width="24" height="24" alt="">
+                                        </button>
+                                    </div>
+                                    <div class="login-error" role="alert"></div>
+                                </div>
+                                <a href="#" class="login-forgot" id="login-forgot-link">Quên mật khẩu?</a>
+                                <button type="submit" class="login-submit">Đăng nhập <img
+                                        src="/tpkexpress/images/login/icon-arrow-right.svg" width="24" height="24" alt=""></button>
+                                <p class="login-register">Chưa có tài khoản? <a href="#" class="js-open-signup">Đăng ký ngay</a></p>
+                            </form>
+                        </div>
+                    </div>
+                    <button type="button" class="login-close" data-bs-dismiss="modal" aria-label="Đóng">
+                        <img src="/tpkexpress/images/login/icon-close.svg" class="login-close-lg" alt="">
+                        <img src="/tpkexpress/images/login/icon-close-sm.svg" class="login-close-sm" alt="">
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div class="modal fade modal-login" id="modal-forgot-password" tabindex="-1"
+            aria-labelledby="modal-forgot-password-title" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="login-topbar"></div>
+                    <div class="login-body">
+                        <div class="login-visual">
+                            <picture>
+                                <source type="image/webp"
+                                    srcset="/tpkexpress/images/login/core-values.webp 1x, /tpkexpress/images/login/core-values@2x.webp 2x">
+                                <img src="/tpkexpress/images/login/core-values.jpg"
+                                    srcset="/tpkexpress/images/login/core-values.jpg 1x, /tpkexpress/images/login/core-values@2x.jpg 2x"
+                                    width="350" height="416"
+                                    alt="Giá trị cốt lõi TPK Express: Trung thực, Trách nhiệm, Hiệu quả, Tin cậy, Chuyên nghiệp, Đổi mới">
+                            </picture>
+                        </div>
+                        <div class="login-main">
+                            <div class="login-header">
+                                <button type="button" class="login-back" id="forgot-password-back" aria-label="Quay lại đăng nhập">
+                                    <img src="/tpkexpress/images/login/icon-arrow-left.svg" width="24" height="24" alt="">
+                                </button>
+                                <a href="/" class="login-logo">
+                                    <img src="/tpkexpress/images/login/logo.png"
+                                        srcset="/tpkexpress/images/login/logo.png 1x, /tpkexpress/images/login/logo@2x.png 2x"
+                                        width="217" height="36" alt="TPK Express">
+                                </a>
+                            </div>
+                            <h2 id="modal-forgot-password-title" class="login-subtitle">Quên mật khẩu</h2>
+                            <form id="forgot-password-form" method="post" action="" novalidate>
+                                <div class="login-field">
+                                    <label for="forgot-password-email">Email<span class="required">*</span></label>
+                                    <div class="login-input">
+                                        <span class="login-input-icon"><img src="/tpkexpress/images/login/icon-email.svg" alt=""></span>
+                                        <input id="forgot-password-email" name="Email" type="email"
+                                            placeholder="Nhập email đã sử dụng đăng ký" autocomplete="email" required>
+                                    </div>
+                                    <div class="login-error" role="alert"></div>
+                                </div>
+                                <button type="submit" class="login-submit">Lấy lại mật khẩu <img
+                                        src="/tpkexpress/images/login/icon-arrow-right.svg" width="24" height="24" alt=""></button>
+                                <p class="login-register">Chưa có tài khoản? <a href="#" class="js-open-signup">Đăng ký ngay</a></p>
+                            </form>
+                        </div>
+                    </div>
+                    <button type="button" class="login-close" data-bs-dismiss="modal" aria-label="Đóng">
+                        <img src="/tpkexpress/images/login/icon-close.svg" class="login-close-lg" alt="">
+                        <img src="/tpkexpress/images/login/icon-close-sm.svg" class="login-close-sm" alt="">
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div class="modal fade modal-login modal-signup" id="modal-signup" tabindex="-1"
+            aria-labelledby="modal-signup-title" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="login-topbar"></div>
+                    <div class="login-body">
+                        <div class="login-visual">
+                            <picture>
+                                <source type="image/webp"
+                                    srcset="/tpkexpress/images/login/core-values.webp 1x, /tpkexpress/images/login/core-values@2x.webp 2x">
+                                <img src="/tpkexpress/images/login/core-values.jpg"
+                                    srcset="/tpkexpress/images/login/core-values.jpg 1x, /tpkexpress/images/login/core-values@2x.jpg 2x"
+                                    width="350" height="416"
+                                    alt="Giá trị cốt lõi TPK Express: Trung thực, Trách nhiệm, Hiệu quả, Tin cậy, Chuyên nghiệp, Đổi mới">
+                            </picture>
+                        </div>
+                        <div class="login-main">
+                            <a href="/" class="login-logo">
+                                <img src="/tpkexpress/images/login/logo.png"
+                                    srcset="/tpkexpress/images/login/logo.png 1x, /tpkexpress/images/login/logo@2x.png 2x"
+                                    width="217" height="36" alt="TPK Express">
+                            </a>
+                            <h2 id="modal-signup-title" class="visually-hidden">Đăng ký tài khoản</h2>
+                            <form id="signup-form" method="post" action="" novalidate>
+                                <div class="login-field">
+                                    <label for="signup-fullname">Họ và tên<span class="required">*</span></label>
+                                    <div class="login-input">
+                                        <span class="login-input-icon"><img src="/tpkexpress/images/login/icon-profile.svg" alt=""></span>
+                                        <input id="signup-fullname" name="FullName" type="text" placeholder="Nhập họ và tên"
+                                            autocomplete="name" required>
+                                    </div>
+                                    <div class="login-error" role="alert"></div>
+                                </div>
+                                <div class="login-field">
+                                    <label for="signup-email">Email<span class="required">*</span></label>
+                                    <div class="login-input">
+                                        <span class="login-input-icon"><img src="/tpkexpress/images/login/icon-email.svg" alt=""></span>
+                                        <input id="signup-email" name="Email" type="email" placeholder="Nhập email"
+                                            autocomplete="email" required>
+                                    </div>
+                                    <div class="login-error" role="alert"></div>
+                                </div>
+                                <div class="login-field">
+                                    <label for="signup-phone">Số điện thoại<span class="required">*</span></label>
+                                    <div class="login-input">
+                                        <span class="login-input-icon"><img src="/tpkexpress/images/login/icon-phone.svg" alt=""></span>
+                                        <input id="signup-phone" name="PhoneNumber" type="tel" placeholder="Nhập số điện thoại"
+                                            autocomplete="tel" required>
+                                    </div>
+                                    <div class="login-error" role="alert"></div>
+                                </div>
+                                <div class="login-field">
+                                    <label for="signup-address">Địa chỉ<span class="required">*</span></label>
+                                    <div class="login-input">
+                                        <span class="login-input-icon login-input-icon-location">
+                                            <img src="/tpkexpress/images/login/icon-location-outer.svg" alt="">
+                                            <img src="/tpkexpress/images/login/icon-location-inner.svg" alt="">
+                                        </span>
+                                        <input id="signup-address" name="Address" type="text" placeholder="Nhập địa chỉ"
+                                            autocomplete="street-address" required>
+                                    </div>
+                                    <div class="login-error" role="alert"></div>
+                                </div>
+                                <div class="login-field">
+                                    <label for="signup-username">Tên đăng nhập<span class="required">*</span></label>
+                                    <div class="login-input">
+                                        <span class="login-input-icon"><img src="/tpkexpress/images/login/icon-profile.svg" alt=""></span>
+                                        <input id="signup-username" name="UserName" type="text" placeholder="Nhập tên đăng nhập"
+                                            autocomplete="username" required>
+                                    </div>
+                                    <div class="login-error" role="alert"></div>
+                                </div>
+                                <div class="login-field">
+                                    <label for="signup-password">Mật khẩu<span class="required">*</span></label>
+                                    <div class="login-input f-pass">
+                                        <span class="login-input-icon"><img src="/tpkexpress/images/login/icon-lock.svg" alt=""></span>
+                                        <input id="signup-password" class="re-input" name="Password" type="password"
+                                            placeholder="Nhập mật khẩu" autocomplete="new-password" required>
+                                        <button type="button" class="f-lock" aria-label="Hiện/ẩn mật khẩu">
+                                            <img src="/tpkexpress/images/login/icon-eye-off.svg" width="24" height="24" alt="">
+                                            <img src="/tpkexpress/images/login/icon-eye.svg" width="24" height="24" alt="">
+                                        </button>
+                                    </div>
+                                    <div class="login-error" role="alert"></div>
+                                </div>
+                                <div class="login-field">
+                                    <label for="signup-confirm-password">Xác nhận mật khẩu<span class="required">*</span></label>
+                                    <div class="login-input f-pass">
+                                        <span class="login-input-icon"><img src="/tpkexpress/images/login/icon-lock.svg" alt=""></span>
+                                        <input id="signup-confirm-password" class="re-input" name="ConfirmPassword" type="password"
+                                            placeholder="Nhập lại mật khẩu" autocomplete="new-password" required>
+                                        <button type="button" class="f-lock" aria-label="Hiện/ẩn mật khẩu">
+                                            <img src="/tpkexpress/images/login/icon-eye-off.svg" width="24" height="24" alt="">
+                                            <img src="/tpkexpress/images/login/icon-eye.svg" width="24" height="24" alt="">
+                                        </button>
+                                    </div>
+                                    <div class="login-error" role="alert"></div>
+                                </div>
+                                <button type="submit" class="login-submit">Đăng ký tài khoản <img
+                                        src="/tpkexpress/images/login/icon-arrow-right.svg" width="24" height="24" alt=""></button>
+                                <p class="login-register">Đã có tài khoản? <a href="#" class="js-open-login">Đăng nhập ngay</a></p>
+                            </form>
+                        </div>
+                    </div>
+                    <button type="button" class="login-close" data-bs-dismiss="modal" aria-label="Đóng">
+                        <img src="/tpkexpress/images/login/icon-close.svg" class="login-close-lg" alt="">
+                        <img src="/tpkexpress/images/login/icon-close-sm.svg" class="login-close-sm" alt="">
+                    </button>
+                </div>
             </div>
         </div>
         @RenderBody()
@@ -478,6 +710,44 @@
                 }
             });
         }
+
+        function signIn() {
+            let userName = $('#username').val();
+            if (userName.trim() === "") {
+                showToast("Username là bắt buộc", 3, false);
+                return;
+            }
+            let password = $('#password').val();
+            if (password.trim() === "") {
+                showToast("Password là bắt buộc", 3, false);
+                return;
+            }
+            disableButton();
+            // Gửi yêu cầu AJAX
+            $.ajax({
+                url: '/Home/SignIn', // URL tới action
+                type: 'POST',
+                data: { username: userName, password: password },
+                success: function (response) {
+                    if (response.Data == 2) {
+                        window.location.href = "/home";
+                    } else {
+                        window.location.href = "/dashboard";
+                    }
+                },
+                error: function (response) {
+                    showToast(response.responseJSON.Message, response.responseJSON.Type, false);
+                },
+                complete: function () {
+                    enableButton();
+                }
+            });
+        }
+        $('#login-form').on('submit', function(e){
+            e.preventDefault()
+            signIn();
+            return false;
+        })
 
         function enableButton() {
             // Chọn tất cả các button và link (a) có lớp 'disabled'

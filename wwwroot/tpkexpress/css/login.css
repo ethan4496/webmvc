@@ -1,0 +1,309 @@
+.modal-login .modal-dialog {
+    max-width: calc(100% - 32px);
+    margin: 16px auto;
+}
+.modal-login .modal-dialog-centered {
+    min-height: calc(100% - 32px);
+}
+.modal-login .modal-content {
+    position: relative;
+    padding: 1px;
+    background: #fff;
+    border: 1px solid rgba(255, 255, 255, .45);
+    border-radius: 20px;
+    box-shadow: 0 28px 80px rgba(8, 43, 87, .32);
+    overflow: hidden;
+}
+.modal-login .login-topbar {
+    height: 10px;
+    background: linear-gradient(90deg, #FF6A00, #FFB15C);
+    border-radius: 19px 19px 0 0;
+}
+.modal-login .login-body {
+    padding: 24px;
+}
+.modal-login .login-visual {
+    display: none;
+}
+.modal-login .login-visual img {
+    display: block;
+    width: 100%;
+    height: auto;
+    border: 0.8px solid #FF8A2A;
+    border-radius: 16px;
+}
+.modal-login .login-main {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+.modal-login .login-logo {
+    align-self: center;
+}
+.modal-login .login-logo img {
+    display: block;
+    width: 145px;
+    height: auto;
+}
+.modal-login .login-header {
+    position: relative;
+    display: flex;
+    justify-content: center;
+}
+.modal-login .login-back {
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 24px;
+    height: 24px;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    cursor: pointer;
+}
+.modal-login .login-subtitle {
+    margin: 0;
+    font-size: 18px;
+    line-height: 1.2;
+    font-weight: 600;
+    color: #101828;
+}
+.modal-login form {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+.modal-login .login-field {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+.modal-login .login-field label {
+    margin: 0;
+    font-size: 14px;
+    font-weight: 400;
+    color: #101828;
+}
+.modal-login .login-field .required {
+    margin-left: 2px;
+    color: #F10000;
+}
+.modal-login .login-input {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    height: 56px;
+    padding: 0 16px;
+    background: #fff;
+    border: 1px solid #E8EEF6;
+    border-radius: 16px;
+    transition: border-color .2s, box-shadow .2s;
+}
+.modal-login .login-input:focus-within {
+    border-color: #FF8A2A;
+    box-shadow: 0 0 0 4px rgba(255, 106, 0, .12);
+}
+.modal-login .login-input input {
+    flex: 1;
+    min-width: 0;
+    height: 100%;
+    padding: 0;
+    border: 0;
+    outline: 0;
+    background: transparent;
+    font-size: 14px;
+    color: #101828;
+}
+.modal-login .login-input input::placeholder {
+    color: rgba(16, 24, 40, .5);
+}
+.modal-login .login-input-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 24px;
+    height: 24px;
+    flex-shrink: 0;
+}
+.modal-login .login-input-icon-location {
+    position: relative;
+}
+.modal-login .login-input-icon-location img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+}
+.modal-login .login-input-icon-location img:last-child {
+    top: 18%;
+    left: 35%;
+    right: 35%;
+    bottom: 53%;
+    width: auto;
+    height: auto;
+}
+.modal-login .login-error {
+    display: none;
+    font-size: 13px;
+    line-height: 19.5px;
+    color: #F10000;
+}
+.modal-login .login-field.is-invalid .login-input {
+    border-color: #F10000;
+    box-shadow: 0 0 0 4px rgba(241, 0, 0, .08);
+}
+.modal-login .login-field.is-invalid .login-error {
+    display: block;
+}
+.modal-login .f-lock {
+    position: relative;
+    width: 24px;
+    height: 24px;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    flex-shrink: 0;
+    cursor: pointer;
+}
+.modal-login .f-lock img {
+    position: absolute;
+    inset: 0;
+}
+.modal-login .f-lock img:nth-child(1) {
+    display: none;
+}
+.modal-login .f-pass.active .f-lock img:nth-child(1) {
+    display: block;
+}
+.modal-login .f-pass.active .f-lock img:nth-child(2) {
+    display: none;
+}
+.modal-login .login-forgot {
+    align-self: flex-end;
+    font-size: 14px;
+    line-height: 21px;
+    font-weight: 500;
+    color: #FF6A00;
+    text-decoration: none;
+}
+.modal-login .login-forgot:hover {
+    color: #E85D00;
+}
+.modal-login .login-submit {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    width: 100%;
+    height: 51px;
+    padding: 0 28px;
+    border: 0;
+    border-radius: 16px;
+    background: #FF6A00;
+    color: #fff;
+    font-size: 14px;
+    line-height: 21px;
+    font-weight: 700;
+    box-shadow: 0 4px 8px rgba(255, 106, 0, .3);
+}
+.modal-login .login-submit:hover {
+    background: #E85D00;
+    color: #fff;
+}
+.modal-login .login-submit:focus-visible,
+.modal-login .login-close:focus-visible,
+.modal-login .f-lock:focus-visible {
+    outline: 2px solid #FFB15C;
+    outline-offset: 2px;
+}
+.modal-login .login-register {
+    margin: 0;
+    text-align: center;
+    font-size: 14px;
+    line-height: 21px;
+    color: #101828;
+}
+.modal-login .login-register a {
+    color: #0066FF;
+    font-weight: 500;
+    text-decoration: none;
+}
+.modal-login .login-register a:hover {
+    text-decoration: underline;
+}
+.modal-login .login-close {
+    position: absolute;
+    top: 16px;
+    right: 9px;
+    z-index: 2;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 24px;
+    height: 24px;
+    padding: 0;
+    border: 0;
+    border-radius: 50%;
+    background: #FF6A00;
+    box-shadow: 0 6.67px 8px rgba(255, 106, 0, .28);
+}
+.modal-login .login-close-lg {
+    display: none;
+}
+
+/* Figma tablet frame = 744px (iPad mini), nên popup dùng mốc 744 thay vì 768 */
+@media screen and (min-width: 744px) {
+    .modal-login .modal-dialog {
+        max-width: 712px;
+    }
+    .modal-login .login-body {
+        display: flex;
+        align-items: flex-start;
+        gap: 16px;
+        padding: 48px 16px 16px;
+    }
+    .modal-login .login-visual {
+        display: block;
+        width: 320px;
+        flex-shrink: 0;
+    }
+    .modal-login .login-close {
+        top: 14px;
+        right: 16px;
+        width: 36px;
+        height: 36px;
+        box-shadow: 0 10px 12px rgba(255, 106, 0, .28);
+    }
+    .modal-login .login-close-lg {
+        display: block;
+    }
+    .modal-login .login-close-sm {
+        display: none;
+    }
+}
+
+@media screen and (min-width: 1025px) {
+    .modal-login .modal-dialog {
+        max-width: 896px;
+    }
+    .modal-login .login-body {
+        align-items: center;
+        gap: 24px;
+        padding: 40px;
+    }
+    .modal-login .login-visual {
+        width: 350px;
+    }
+    .modal-login .login-visual img {
+        border-radius: 18px;
+    }
+    .modal-login .login-logo img {
+        width: 217px;
+    }
+}

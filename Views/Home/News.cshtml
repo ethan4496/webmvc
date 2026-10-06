@@ -117,6 +117,52 @@
                         </div>
                     }
                 </div>
+                @if (Model.TotalPages > 1)
+                {
+                    var pageNumbers = new List<int?>();
+                    foreach (var i in Enumerable.Range(1, Model.TotalPages))
+                    {
+                        if (i == 1 || i == Model.TotalPages || Math.Abs(i - Model.CurrentPage) <= 1)
+                        {
+                            pageNumbers.Add(i);
+                        }
+                        else if (pageNumbers.Count > 0 && pageNumbers[pageNumbers.Count - 1] != null)
+                        {
+                            pageNumbers.Add(null);
+                        }
+                    }
+                    <nav aria-label="Phân trang tin tức" class="news-pagination">
+                        <ul class="pagination justify-content-center">
+                            <li class="page-item @(Model.CurrentPage <= 1 ? "disabled" : "")">
+                                <a class="page-link" href="?page=@(Model.CurrentPage - 1)">
+                                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M10.06 12L11 11.06L7.94667 8L11 4.94L10.06 4L6.06 8L10.06 12Z" fill="#0B2D5C"/>
+                                    </svg>
+                                </a>
+                            </li>
+                            @foreach (var i in pageNumbers)
+                            {
+                                if (i == null)
+                                {
+                                    <li class="page-item disabled"><span class="page-link">...</span></li>
+                                }
+                                else
+                                {
+                                    <li class="page-item @(i == Model.CurrentPage ? "active" : "")">
+                                        <a class="page-link" href="?page=@i">@i</a>
+                                    </li>
+                                }
+                            }
+                            <li class="page-item @(Model.CurrentPage >= Model.TotalPages ? "disabled" : "")">
+                                <a class="page-link" href="?page=@(Model.CurrentPage + 1)">
+                                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M6.94 4L6 4.94L9.05333 8L6 11.06L6.94 12L10.94 8L6.94 4Z" fill="#0B2D5C"/>
+                                    </svg>
+                                </a>
+                            </li>
+                        </ul>
+                    </nav>
+                }
             </div>
         </div>
     </div>

@@ -25,5 +25,7 @@ namespace WebMVC.Entities
         public string ZaloLink { get; set; }
         public string Hotline { get; set; }
         public string AppNotiImage { get; set; }
+        public string NotiTitle {get; set;}
+        public string NotiContent {get; set;}
     }
 }

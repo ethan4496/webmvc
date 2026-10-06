@@ -7,6 +7,7 @@ namespace WebMVC.Entities
         public string Name { get; set; }
         public string Partner { get; set; }
         public int Status { get; set; }
+        public int? ShipId { get; set; }
         public double Weight { get; set; }
         public double Volume { get; set; }
         public int Quantity { get; set; }

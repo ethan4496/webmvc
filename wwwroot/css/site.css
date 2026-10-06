@@ -361,3 +361,6 @@ textarea.is-invalid {
     flex-wrap: wrap;
     gap: 4px;
 }
+#sidebar{
+    overflow: auto !important;
+}

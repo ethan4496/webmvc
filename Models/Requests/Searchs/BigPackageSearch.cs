@@ -3,6 +3,7 @@
     public class BigPackageSearch : PagingSearch
     {
         public int? Status { get; set; }
+        public int? ShipId { get; set;}
         public string Name { get; set; }
     }
 }

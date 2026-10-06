@@ -1,0 +1,305 @@
+@using WebMVC.Entities
+@using WebMVC.Models.Responses
+@using WebMVC.Ultilities.Enums
+@model List<ExpenseResponse>
+@{
+    var exportExpenses = Model.Where(x => x.Type == (int)EExpenseType.Export).ToList();
+    var importExpenses = Model.Where(x => x.Type == (int)EExpenseType.Import).ToList();
+    var totalExpense = Model.Sum(x => x.TotalVND);
+    var totalExpenseLeft = exportExpenses.Sum(x => x.TotalVND);
+    var totalExpenseRight = importExpenses.Sum(x => x.TotalVND);
+}
+<div id="table-expense">
+    <div class="d-flex justify-content-between align-items-center mb-2">
+        <h5 class="mb-0">Tổng chi phí: @totalExpense.ToString("N0", System.Globalization.CultureInfo.InvariantCulture)</h5>
+        <button type="button" class="btn btn-success btn-sm" data-bs-toggle="modal" data-bs-target="#addExpenseModal">
+            Tạo chi phí
+        </button>
+    </div>
+    <div class="row">
+        <div class="col-md-6">
+            <h6 class="text-center">Chi phí xuất - Tổng chi phí: @totalExpenseLeft.ToString("N0", System.Globalization.CultureInfo.InvariantCulture)</h6>
+            <div class="table-content">
+                <table class="table table-hover table-bordered">
+                    <thead class="table">
+                        <tr>
+                            <th class="text-center">Tên chi phí</th>
+                            <th class="text-center">Ngày tạo</th>
+                            <th class="text-center">Người tạo</th>
+                            <th class="text-center">RMB</th>
+                            <th class="text-center">Tỷ giá</th>
+                            <th class="text-center">VND</th>
+                            <th class="text-center"></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @for (int i = 0; i < exportExpenses.Count; i++)
+                        {
+                            <tr item-id="@exportExpenses[i].Id">
+                                <td>
+                                    @exportExpenses[i].Name
+                                </td>
+                                <td>@exportExpenses[i].Created.ToString("dd/MM/yyyy HH:mm")</td>
+                                <td>@exportExpenses[i].Username</td>
+                                <td>@exportExpenses[i].Total</td>
+                                <td>@exportExpenses[i].ExchangeRate</td>
+                                <td>@exportExpenses[i].TotalVND.ToString("N0", System.Globalization.CultureInfo.InvariantCulture)</td>
+                                <td class="text-center">
+                                    <div class="btn-group gap-1">
+                                        <button type="button" class="btn btn-sm btn-warning" onclick='editExpense(@Html.Raw(Json.Serialize(exportExpenses[i])))'>
+                                            <i class="bi bi-pencil-square"></i>
+                                        </button>
+                                        <button type="button" class="btn btn-sm btn-danger" onclick="deleteExpense(@exportExpenses[i].Id)">
+                                            <i class="bi bi-trash3"></i>
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <h6 class="text-center">Chi phí nhập - Tổng chi phí: @totalExpenseRight.ToString("N0", System.Globalization.CultureInfo.InvariantCulture)</h6>
+            <div class="table-content">
+                <table class="table table-hover table-bordered">
+                    <thead class="table">
+                        <tr>
+                            <th class="text-center">Tên chi phí</th>
+                            <th class="text-center">Ngày tạo</th>
+                            <th class="text-center">Người tạo</th>
+                            <th class="text-center">RMB</th>
+                            <th class="text-center">Tỷ giá</th>
+                            <th class="text-center">VND</th>
+                            <th class="text-center"></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @for (int i = 0; i < importExpenses.Count; i++)
+                        {
+                            <tr item-id="@importExpenses[i].Id">
+                                <td>
+                                    @importExpenses[i].Name
+                                </td>
+                                <td>@importExpenses[i].Created.ToString("dd/MM/yyyy HH:mm")</td>
+                                <td>@importExpenses[i].Username</td>
+                                <td>@importExpenses[i].Total</td>
+                                <td>@importExpenses[i].ExchangeRate</td>
+                                <td>@importExpenses[i].TotalVND.ToString("N0", System.Globalization.CultureInfo.InvariantCulture)</td>
+                                <td class="text-center">
+                                    <div class="btn-group gap-1">
+                                        <button type="button" class="btn btn-sm btn-warning" onclick='editExpense(@Html.Raw(Json.Serialize(importExpenses[i])))'>
+                                            <i class="bi bi-pencil-square"></i>
+                                        </button>
+                                        <button type="button" class="btn btn-sm btn-danger" onclick="deleteExpense(@importExpenses[i].Id)">
+                                            <i class="bi bi-trash3"></i>
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="addExpenseModal" tabindex="-1" aria-labelledby="addExpenseModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addExpenseModalLabel">Tạo chi phí</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="addExpenseForm">
+                    <div class="mb-3">
+                        <label for="expenseName" class="form-label">Tên chi phí</label>
+                        <input type="text" class="form-control" id="expenseName" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="expenseTotal" class="form-label">RMB</label>
+                        <input class="form-control input-money" id="expenseTotal">
+                    </div>
+                    <div class="mb-3">
+                        <label for="expenseExchangeRate" class="form-label">Tỷ giá</label>
+                        <input class="form-control input-money" id="expenseExchangeRate" value="1" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="expenseEstimate" class="form-label">Tạm tính (VNĐ)</label>
+                        <input class="form-control input-money" id="expenseEstimate" value="0">
+                    </div>
+                    <div class="mb-3">
+                        <label for="expenseType" class="form-label">Loại chi phí</label>
+                        <select id="expenseType" class="form-select">
+                            <option value="@((int)EExpenseType.Export)">Chi phí xuất</option>
+                            <option value="@((int)EExpenseType.Import)">Chi phí nhập</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="btn btn-success">Lưu</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="editExpenseModal" tabindex="-1" aria-labelledby="editExpenseModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editExpenseModalLabel">Cập nhật chi phí</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="editExpenseForm">
+                    <div class="mb-3">
+                        <label for="editExpenseName" class="form-label">Tên chi phí</label>
+                        <input type="text" class="form-control" id="editExpenseName" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="editExpenseTotal" class="form-label">RMB</label>
+                        <input class="form-control input-money" id="editExpenseTotal" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="editExpenseExchangeRate" class="form-label">Tỷ giá</label>
+                        <input class="form-control input-money" id="editExpenseExchangeRate" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="editExpenseEstimate" class="form-label">Tạm tính (VNĐ)</label>
+                        <input class="form-control input-money" id="editExpenseEstimate">
+                    </div>
+                    <div class="mb-3">
+                        <label for="editExpenseType" class="form-label">Loại chi phí</label>
+                        <select id="editExpenseType" class="form-select">
+                            <option value="@((int)EExpenseType.Export)">Chi phí xuất</option>
+                            <option value="@((int)EExpenseType.Import)">Chi phí nhập</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="btn btn-success">Lưu</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function updateExpenseEstimate() {
+        const total = getRawValue($('#expenseTotal').val()) || 0;
+        const exchangeRate = getRawValue($('#expenseExchangeRate').val()) || 0;
+        $('#expenseEstimate').val((total * exchangeRate).toLocaleString('en-US'));
+    }
+    $('#expenseTotal, #expenseExchangeRate').on('input', updateExpenseEstimate);
+
+    function updateEditExpenseEstimate() {
+        const total = getRawValue($('#editExpenseTotal').val()) || 0;
+        const exchangeRate = getRawValue($('#editExpenseExchangeRate').val()) || 0;
+        $('#editExpenseEstimate').val((total * exchangeRate).toLocaleString('en-US'));
+    }
+    $('#editExpenseTotal, #editExpenseExchangeRate').on('input', updateEditExpenseEstimate);
+
+    document.getElementById("addExpenseForm").addEventListener("submit", function (event) {
+        event.preventDefault();
+
+        const request = {
+            Name: $('#expenseName').val().trim(),
+            Total: getRawValue($('#expenseTotal').val()) || 0,
+            ExchangeRate: getRawValue($('#expenseExchangeRate').val()) || 1,
+            TotalVND: getRawValue($('#expenseEstimate').val()) || 0,
+            Type: parseInt($('#expenseType').val()),
+            BigPackageId: @ViewBag.BigPackageId
+        };
+
+        if (!request.Name) {
+            showToast('Vui lòng nhập tên chi phí', 2, false);
+            return;
+        }
+
+        disableButton();
+        $.ajax({
+            url: '/BigPackage/CreateExpense',
+            type: 'POST',
+            contentType: 'application/json',
+            data: JSON.stringify(request),
+            success: function (response) {
+                showToast(response.Message, response.Type, true);
+                location.reload();
+            },
+            error: function (response) {
+                showToast(response.responseJSON.Message, response.responseJSON.Type, false);
+            },
+            complete: function () {
+                enableButton();
+            }
+        });
+    });
+
+    function editExpense(item) {
+        $('#editExpenseForm').data('item-id', item.Id);
+        $('#editExpenseName').val(item.Name);
+        $('#editExpenseTotal').val(item.Total);
+        $('#editExpenseExchangeRate').val(item.ExchangeRate);
+        $('#editExpenseEstimate').val(item.TotalVND);
+        $('#editExpenseType').val(item.Type);
+
+        var modal = new bootstrap.Modal(document.getElementById('editExpenseModal'));
+        modal.show();
+    }
+
+    document.getElementById("editExpenseForm").addEventListener("submit", function (event) {
+        event.preventDefault();
+
+        const itemId = $('#editExpenseForm').data('item-id');
+        const request = {
+            Name: $('#editExpenseName').val().trim(),
+            Total: getRawValue($('#editExpenseTotal').val()) || 0,
+            ExchangeRate: getRawValue($('#editExpenseExchangeRate').val()) || 1,
+            TotalVND: getRawValue($('#editExpenseEstimate').val()) || 0,
+            Type: parseInt($('#editExpenseType').val()),
+        };
+
+        if (!request.Name) {
+            showToast('Vui lòng nhập tên chi phí', 2, false);
+            return;
+        }
+
+        disableButton();
+        $.ajax({
+            url: `/BigPackage/UpdateExpense?id=${itemId}`,
+            type: 'PUT',
+            contentType: 'application/json',
+            data: JSON.stringify(request),
+            success: function (response) {
+                showToast(response.Message, response.Type, true);
+                location.reload();
+            },
+            error: function (response) {
+                showToast(response.responseJSON.Message, response.responseJSON.Type, false);
+            },
+            complete: function () {
+                enableButton();
+            }
+        });
+    });
+
+    function deleteExpense(id) {
+        showConfirmModal('Bạn chắc chắn muốn xóa chi phí này?', function () {
+            disableButton();
+            $.ajax({
+                url: `/BigPackage/DeleteExpense?id=${id}`,
+                type: 'DELETE',
+                success: function (response) {
+                    showToast(response.Message, response.Type, true);
+                    location.reload();
+                },
+                error: function (response) {
+                    showToast(response.responseJSON.Message, response.responseJSON.Type, false);
+                },
+                complete: function () {
+                    enableButton();
+                }
+            });
+        });
+    }
+</script>

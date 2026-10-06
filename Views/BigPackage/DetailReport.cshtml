@@ -1,0 +1,159 @@
+@using WebMVC.Entities
+@using WebMVC.Models.Responses
+@using WebMVC.Ultilities
+@{
+    var warehouses = ViewBag.Warehouses as List<Warehouse> ?? new List<Warehouse>();
+}
+@model BigPackageResponse
+@{
+    ViewData["Title"] = "Chi tiết bao hàng";
+    ViewBag.BigPackageId = Model.Id;
+}
+<div class="container-fluid mt-4">
+    <h1 class="mb-4">Chi tiết bao hàng #@Model.Id</h1>
+    <!-- Thông tin bao hàng -->
+    <div class="row mb-4 equal-height">
+        <div class="card col-md-4">
+            <div class="card-header">
+                Thông tin bao hàng
+            </div>
+            <div class="card-body">
+                <div id="bag-info-form">
+                    <div class="row my-2">
+                        <div class="col-md-4">Mã bao: </div>
+                        <div class="col-md-8">
+                            @Model.Name
+                        </div>
+                    </div>
+                    <div class="row my-2">
+                        <div class="col-md-4">Đối tác: </div>
+                        <div class="col-md-8">
+                            @Model.Partner
+                        </div>
+                    </div>
+                    <div class="row my-2">
+                        <div class="col-md-4">Chi phí: </div>
+                        <div class="col-md-8">
+                            @Model.TotalExpense.GetValueOrDefault().ToString("N0", System.Globalization.CultureInfo.InvariantCulture)
+                        </div>
+                    </div>
+                    <div class="row my-2">
+                        <div class="col-md-4">Doanh số: </div>
+                        <div class="col-md-8">
+                            @Model.Total.GetValueOrDefault().ToString("N0", System.Globalization.CultureInfo.InvariantCulture)
+                        </div>
+                    </div>
+                    <div class="row my-2">
+                        <div class="col-md-4">Lợi nhuận: </div>
+                        <div class="col-md-8">
+                            <span class="@(Model.Total - Model.TotalExpense < 0 ? "text-danger" : "text-success")">@((Model.Total.GetValueOrDefault() - Model.TotalExpense.GetValueOrDefault()).ToString("N0", System.Globalization.CultureInfo.InvariantCulture))</span>
+                        </div>
+                    </div>
+                    <div class="row my-2">
+                        <div class="col-md-4">Hình thức vận chuyển: </div>
+                        <div class="col-md-8">
+                            @warehouses.SingleOrDefault(w => w.Id == Model.ShipId)?.Name
+                        </div>
+                    </div>
+                    <div class="row my-2">
+                        <div class="col-md-4">Trạng thái: </div>
+                        <div class="col-md-8">
+                            @Model.StatusName
+                        </div>
+                    </div>
+                    <div class="row my-2">
+                        <div class="col-md-4">Số kiện: </div>
+                        <div class="col-md-8">
+                            @Model.Quantity
+                        </div>
+                    </div>
+                    <div class="row my-2">
+                        <div class="col-md-4">Tổng cân: </div>
+                        <div class="col-md-8">
+                            @Model.Weight.ToString("N2", System.Globalization.CultureInfo.InvariantCulture)
+                        </div>
+                    </div>
+                    <div class="row my-2">
+                        <div class="col-md-4">Tổng khối: </div>
+                        <div class="col-md-8">
+                            @Model.Volume.ToString("N2", System.Globalization.CultureInfo.InvariantCulture)
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        <div class="card col-md-8">
+            <div class="card-header">
+                Lịch sử
+            </div>
+            <div class="card-body">
+                <div class="table-content" id="history-table-content">
+                    <table class="table table-hover table-bordered">
+                        <thead>
+                            <tr>
+                                <th class="text-center">Thời gian</th>
+                                <th class="text-center">Nội dung</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @if (Model.BigPackageHistories != null && Model.BigPackageHistories.Any())
+                            {
+                                @for (int i = 0; i < Model.BigPackageHistories.Count; i++)
+                                {
+                                    <tr>
+                                        <td class="text-center">@Model.BigPackageHistories[i].Created.ToString("dd/MM/yyyy HH:mm")</td>
+                                        <td class="td-break-space">@Model.BigPackageHistories[i].Content</td>
+                                    </tr>
+                                }
+                            }
+                            else
+                            {
+                                <tr>
+                                    <td colspan="3" class="text-center">Không có lịch sử</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row mb-4 equal-height">
+        <div class="card col-md-12 py-2">
+            @await Html.PartialAsync("~/Views/BigPackage/_ExpenseTable.cshtml", Model.Expenses ?? new List<ExpenseResponse>())
+        </div>
+    </div>
+    @await Html.PartialAsync("~/Views/Transportation/_TransportationTable.cshtml", new List<TransportationResponse>())
+</div>
+<style>
+    /* Đảm bảo cả hai card có cùng chiều cao */
+    .equal-height {
+        display: flex;
+    }
+    /* Đặt chiều cao cố định và thêm thanh cuộn cho lịch sử */
+    #history-table-content {
+        max-height: 300px; /* Thay đổi giá trị này cho phù hợp với chiều cao bạn muốn */
+        overflow-y: auto;
+    }
+</style>
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            loadPage(1);
+        });
+        function loadPage(page) {
+            $.ajax({
+                url: '/Transportation/GetTransportationPaging',
+                data: { PageIndex: page, BigPackageId: @Model.Id },
+                type: 'GET',
+                success: function (data) {
+                    $('#table-container').html(data);
+                },
+                error: function () {
+                    alert('Lỗi khi tải dữ liệu');
+                }
+            });
+        }
+    </script>
+}

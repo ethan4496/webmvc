@@ -183,6 +183,8 @@ namespace WebMVC.Services
             {
                 Username = loggedModel.Username,
                 Address = loggedModel.Address,
+                Company = loggedModel.Company,
+                TaxNumber = loggedModel.TaxNumber,
                 Avatar = loggedModel.Avatar,
                 Email = loggedModel.Email,
                 FullName = loggedModel.FullName,
@@ -585,6 +587,8 @@ namespace WebMVC.Services
             currentAccount.Email = request.Email;
             currentAccount.Phone = request.Phone;
             currentAccount.Address = request.Address;
+            currentAccount.Company = request.Company;
+            currentAccount.TaxNumber = request.TaxNumber;
             currentAccount.FullName = request.FullName;
             currentAccount.ToWarehouseId = request.ToWarehouseId;
             _unitOfWork.Repository<Account>().Update(currentAccount, currentDate, currentAccount.Id);

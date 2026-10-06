@@ -45,6 +45,24 @@
                     </div>
                 </div>
                 <div class="row">
+                    <div class="col-md-12 mb-3">
+                        <label for="company" class="form-label">Tên công ty</label>
+                        <input type="text" class="form-control" id="company" value="@Model.Company">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12 mb-3">
+                        <label for="taxNumber" class="form-label">Mã số thuế</label>
+                        <input type="text" class="form-control" id="taxNumber" value="@Model.TaxNumber">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12 mb-3">
+                        <label for="address" class="form-label">Address</label>
+                        <input type="text" class="form-control" id="address" value="@Model.Address">
+                    </div>
+                </div>
+                <div class="row">
                     <div class="col-md-6 mb-3">
                         <label for="warehouseTo" class="form-label">Kho VN</label>
                         <select id="warehouseTo" class="form-select" required>
@@ -107,6 +125,8 @@
             let email = $('#email').val().trim();
             let phone = $('#phone').val().trim();
             let address = $('#address').val().trim();
+            let company = $('#company').val().trim();
+            let taxNumber = $('#taxNumber').val().trim();
             let fullName = $('#fullName').val().trim();
             let password = $('#password').val().trim();
             let confirmPassword = $('#confirmPassword').val().trim();
@@ -123,6 +143,8 @@
             formData.append("Email", email);
             formData.append("Phone", phone);
             formData.append("Address", address);
+            formData.append("Company", company);
+            formData.append("TaxNumber", taxNumber);
             formData.append("FullName", fullName);
             formData.append("Password", password);
             formData.append("ConfirmPassword", confirmPassword);

@@ -2165,7 +2165,180 @@ a {
     background: #0B2D5C;
     color: #fff;
 }
-
+.modal-intro .modal-content{
+    border-radius: 16px;
+}
+.modal-intro .modal-header{
+    border-radius: 16px 16px 0 0;
+    background: linear-gradient(90deg, #FF6A00 0%, #FFB15C 100%);
+    padding: 0;
+    height: 10px;
+}
+.modal-intro .modal-body{
+    padding: 24px;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+.close-body{
+    position: absolute;
+    padding: 9px;
+    border-radius: 50%;
+    box-shadow: 0px 10px 24px 0px #FF6A0047;
+    background: #FF6A00;
+    right: 12px;
+    top: 4px;
+}
+.close-body img{
+    width: 18px;
+    height: 18px;
+}
+.tpkexpress-notification{
+    border: 1.05px solid #FDDCB4;
+    border-radius: 18px;
+    background: #FFF8F2;
+    padding: 22px;
+    
+}
+.tpkexpress-notification .logo-tpkexpress img{
+    width: 204px;
+}
+.icon-notification-alert{
+    margin-top: 28px;
+    padding: 16px;
+    border-radius: 16px;
+    background: #FF6A00;
+    display: inline-block;
+}
+.icon-notification-alert img{
+    width: 26px;
+}
+.tpkexpress-notification .heading-notification{
+    margin-top: 18px;
+    color: #FF6A00;
+    font-size: 12px;
+    line-height: 18px;
+    letter-spacing: 1.44px;
+    text-transform: uppercase;
+    font-weight: 800;
+}
+.tpkexpress-notification h2{
+    margin-top: 10px;
+    margin-bottom: 0;
+    font-weight: 800;
+    font-size: 23px;
+    line-height: 28px;
+    color: #0B2D5C;
+}
+.tpkexpress-notification p{
+    margin-bottom: 0;
+    margin-top: 12px;
+    color: #667085;
+    font-size: 14px;
+    line-height: 24px;
+}
+.waring-notification{
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+.waring-notification .warning-icon{
+    flex: 0 0 40px;
+    border-radius: 12px;
+    border-radius: 12px;
+    background: #F0F6FF;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.waring-notification .warning-text h3{
+    font-weight: 800;
+    font-size: 16px;
+    line-height: 24px;
+    color: #0B2D5C;
+    margin-bottom: 0;
+}
+.waring-notification .warning-text p{
+    margin-bottom: 0;
+    color: #667085;
+    font-size: 12px;
+    line-height: 18px;
+}
+.content-notification .warning-desc p{
+    margin-top: 18px;
+    font-size: 15px;
+    line-height: 27px;
+}
+.btn-dialog{
+    background: #0B2D5C;
+    padding: 12px 18px;
+    display: inline-flex;
+    gap: 8px;
+    width: 100%;
+    justify-content: center;
+    color: #fff;
+    align-items: center;
+    border-radius: 16px;
+}
+.btn-dialog span{
+    font-weight: 800;
+    font-size: 14px;
+    line-height: 21px;
+}
+.btn-knowledge{
+    background: #fff;
+    padding: 12px 18px;
+    display: inline-flex;
+    gap: 8px;
+    width: 100%;
+    justify-content: center;
+    color: #FF6A00;
+    border: 1px solid #FDDCB4;
+    align-items: center;
+    border-radius: 16px;
+    font-weight: 800;
+    font-size: 14px;
+    line-height: 21px;
+}
+.news-pagination{
+    margin-top: 24px;
+}
+.news-pagination .pagination{
+    gap: 5px;
+}
+.news-pagination .pagination .page-item .page-link{
+    padding: 0px;
+    background: #fff;
+    border-radius: 32px;
+    font-size: 13px;
+    font-weight: 600;
+    line-height: 1;
+    width: 32px;
+    height: 32px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #0B2D5C;
+}
+.news-pagination .pagination .page-item.active a.page-link{
+    background: #FF6A00;
+    border: 1px solid #FF6A00;
+    color: #fff;
+}
+.news-pagination .pagination .page-item a.page-link{
+    border: 1px solid #E8EEF6;
+}
+.news-pagination .pagination .page-item a.page-link:hover{
+    background: #F1F1F1;
+    border: 1px solid #F1F1F1;
+}
+.news-pagination .pagination .page-item .page-link svg{
+    width: 16px;
+    height: 16px;
+}
 @media screen and (min-width: 768px){
     .navbar-mobile-actions{
         flex-direction: row;
@@ -2330,6 +2503,21 @@ a {
     }
     .result-transportation .need-support .btn-support{
         flex: 1;
+    }
+    .btn-dialog{
+        width: auto;
+    }
+    .btn-knowledge{
+        width: auto;
+    }
+    .tpkexpress-notification h2{
+        font-size: 34px;
+        line-height: 41px;
+    }
+    .content-notification{
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
     }
 }
 @media screen and (min-width: 1025px) {
@@ -2582,6 +2770,14 @@ a {
         padding-left: 28px;
         padding-right: 28px;
     }
+    .modal-intro .modal-dialog{
+        max-width: 900px;
+    }
+    .modal-intro .modal-body{
+        flex-direction: row;
+        gap: 24px;
+    }
+    
 }
 @media screen and (min-width: 1440px) {
     .container {

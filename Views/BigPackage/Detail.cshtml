@@ -1,5 +1,6 @@
 ﻿@using WebMVC.Entities
 @using WebMVC.Models.Responses
+@using WebMVC.Ultilities
 @using WebMVC.Ultilities.Enums
 @{
     var warehouses = ViewBag.Warehouses as List<Warehouse> ?? new List<Warehouse>();
@@ -7,6 +8,7 @@
 @model BigPackageResponse
 @{
     ViewData["Title"] = "Chi tiết bao hàng";
+    ViewBag.BigPackageId = Model.Id;
 }
 <div class="container-fluid mt-4">
     <h1 class="mb-4">Chi tiết bao hàng #@Model.Id</h1>
@@ -36,7 +38,7 @@
                             <select id="shipId" class="form-select" name="ShipId">
                                 @foreach (var w in warehouses)
                                 {
-                                    <option value="@w.Id">@w.Name</option>
+                                    <option value="@w.Id" selected="@(w.Id == Model.ShipId)">@w.Name</option>
                                 }
                             </select>
                         </div>

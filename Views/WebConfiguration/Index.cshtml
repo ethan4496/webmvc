@@ -37,6 +37,15 @@
                     <img src="@Model.AppNotiImage" id="appNotiImagePreview" class="img-fluid mt-2 border" style="max-width: 100px;" />
                 </div>
                 <div class="row mt-2">
+                    <label for="NotiTitle" class="form-label">Noti Title</label>
+                    <input value="@Model.NotiTitle" type="text" class="form-control" id="NotiTitle" name="NotiTitle" placeholder="">
+                </div>
+                <div class="row mt-2">
+                    <label for="NotiContent" class="form-label">Noti Content</label>
+                    @* <input value="@Model.NotiContent" type="text" class="form-control" id="NotiContent" name="NotiContent" placeholder=""> *@
+                    <textarea class="form-control" id="NotiContent" name="NotiContent" placeholder="">@Model.NotiContent</textarea>
+                </div>
+                <div class="row mt-2">
                     <button type="button" class="btn btn-success w-50" onclick="updateItem()">Cập nhật</button>
                 </div>
             </div>
@@ -140,6 +149,8 @@
                 Hook07: $("#hook07").val(),
                 ZaloLink: $("#zaloLink").val(),
                 Hotline: $("#hotline").val(),
+                NotiTitle: $("#NotiTitle").val(),
+                NotiContent: $("#NotiContent").val(),
                 AppNotiImage: appNotiImage
             };
 

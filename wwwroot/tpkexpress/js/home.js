@@ -1,6 +1,18 @@
 $(document).ready(function () {
+    const INTRO_MODAL_KEY = 'tpk_modal_intro_shown';
+    if (!localStorage.getItem(INTRO_MODAL_KEY)) {
+        const introModalEl = document.getElementById('modal-intro');
+        if (introModalEl) {
+            new bootstrap.Modal(introModalEl).show();
+        }
+        localStorage.setItem(INTRO_MODAL_KEY, '1');
+    }
     const swiper = new Swiper('#banner', {
         loop: true,
+        autoplay: {
+            delay: 5000,
+            disableOnInteraction: false,
+        },
         pagination: {
             el: '.swiper-pagination',
         },

@@ -2,9 +2,11 @@
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
 using WebMVC.Interfaces;
+using WebMVC.Models.Requests.Creates;
 using WebMVC.Models.Requests.Searchs;
 using WebMVC.Models.Requests.Updates;
 using WebMVC.Models.Responses;
+using WebMVC.Models.ViewModels;
 using WebMVC.Ultilities;
 using WebMVC.Ultilities.Enums;
 
@@ -31,12 +33,38 @@ namespace WebMVC.Controllers
             ViewBag.CurrentPage = 1;
             return View(data.Items);
         }
+        [Route("report-package")]
+        public async Task<IActionResult> Report()
+        {
+            var data = await _bigPackageService.GetPagingReport(new BigPackageSearch { PageIndex = 1, PageSize = pageSize });
+            ViewBag.TotalPages = data.TotalPage;
+            ViewBag.PageSize = pageSize;
+            ViewBag.CurrentPage = 1;
+            var warehouses = await _warehouseService.GetWarehousesByType((int)EWarehouseType.Shipping);
+            var model = new BigPackageReportViewModel
+            {
+                Items = data.Items,
+                Warehouses = warehouses
+            };
+            return View(model);
+        }
 
         [HttpGet]
         public async Task<IActionResult> GetBigPackagePaging(BigPackageSearch search)
         {
             search.PageSize = pageSize;
             var data = await _bigPackageService.GetPaging(search);
+            ViewBag.CurrentPage = search.PageIndex;
+            ViewBag.PageSize = search.PageSize;
+            ViewBag.TotalPages = data.TotalPage;
+            return PartialView("_BigPackageTable", data.Items);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetBigPackagePagingReport(BigPackageSearch search)
+        {
+            search.PageSize = pageSize;
+            var data = await _bigPackageService.GetPagingReport(search);
             ViewBag.CurrentPage = search.PageIndex;
             ViewBag.PageSize = search.PageSize;
             ViewBag.TotalPages = data.TotalPage;
@@ -51,6 +79,52 @@ namespace WebMVC.Controllers
             var warehouses = await _warehouseService.GetWarehousesByType((int)EWarehouseType.Shipping);
             ViewBag.Warehouses = warehouses;
             return View(data);
+        }
+
+        [HttpGet]
+        [Route("report-package/{id}", Name = "report-package-detail")]
+        public async Task<IActionResult> DetailReport(int id)
+        {
+            var data = await _bigPackageService.GetById(id);
+            var warehouses = await _warehouseService.GetWarehousesByType((int)EWarehouseType.Shipping);
+            ViewBag.Warehouses = warehouses;
+            return View(data);
+        }
+
+        [HttpPost]
+        public async Task<ApiResponse> CreateExpense([FromBody] CreateExpenseRequest request)
+        {
+            await _bigPackageService.CreateExpense(request);
+            return new ApiResponse
+            {
+                Message = "Thêm chi phí thành công",
+                StatusCode = (int)HttpStatusCode.OK,
+                Type = (int)EApiResponseType.Success
+            };
+        }
+
+        [HttpPut]
+        public async Task<ApiResponse> UpdateExpense([FromQuery] int id, [FromBody] UpdateExpenseRequest request)
+        {
+            await _bigPackageService.UpdateExpense(id, request);
+            return new ApiResponse
+            {
+                Message = "Cập nhật chi phí thành công",
+                StatusCode = (int)HttpStatusCode.OK,
+                Type = (int)EApiResponseType.Success
+            };
+        }
+
+        [HttpDelete]
+        public async Task<ApiResponse> DeleteExpense([FromQuery] int id)
+        {
+            await _bigPackageService.DeleteExpense(id);
+            return new ApiResponse
+            {
+                Message = "Xóa chi phí thành công",
+                StatusCode = (int)HttpStatusCode.OK,
+                Type = (int)EApiResponseType.Success
+            };
         }
 
         [HttpPut]
